@@ -45,6 +45,12 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Role role;
 
+	public User update(String name, String picture) {
+		this.name = name;
+		this.picture = picture;
+		return this;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {

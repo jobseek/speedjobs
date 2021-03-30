@@ -1,6 +1,7 @@
 package com.jobseek.speedjobs.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class AuthController {
 
 	@ApiOperation(value = "로그인")
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest request) {
-		return ResponseEntity.ok(authService.login(request));
+	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest request, HttpServletResponse response) {
+		return ResponseEntity.ok(authService.login(request, response));
 	}
 
 	@ApiOperation(value = "로그아웃")
