@@ -1,17 +1,14 @@
 package com.jobseek.speedjobs.config;
 
+import com.jobseek.speedjobs.config.auth.LoginUserArgumentResolver;
 import java.util.List;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.jobseek.speedjobs.config.auth.LoginUserArgumentResolver;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
@@ -28,9 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins("*")
+			.allowedOrigins("http://localhost:3000")
 			.allowedMethods("*")
-			.allowCredentials(false)
+			.allowCredentials(true)
 			.maxAge(3600);
 	}
 

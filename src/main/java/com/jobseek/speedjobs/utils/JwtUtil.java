@@ -30,12 +30,12 @@ public class JwtUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-	private final String ACCESS_TOKEN = "ACCESS_TOKEN";
-	private final String REFRESH_TOKEN = "REFRESH_TOKEN";
+	public final String ACCESS_TOKEN = "ACCESS_TOKEN";
+	public final String REFRESH_TOKEN = "REFRESH_TOKEN";
 
 	private final String secretKey;
-	private final Long accessValidity;
-	private final Long refreshValidity;
+	public final Long accessValidity;
+	public final Long refreshValidity;
 
 	public JwtUtil(
 		@Value("${jwt.secret-key}") String secretKey,
