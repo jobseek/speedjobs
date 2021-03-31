@@ -10,6 +10,7 @@ import Header from './components/includes/Header';
 import Footer from './components/includes/Footer';
 import Home from './components/pages/Home';
 import Recruitment from './components/pages/Recruitment';
+import RecruitNew from './components/pages/RecruitNew';
 import RecruitmentDetail from './components/pages/RecruitmentDetail';
 import Community from './components/pages/Community';
 import PostDetail from './components/pages/PostDetail';
@@ -69,6 +70,7 @@ function App() {
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />
+          <Route exact path={'/recruitnew'} component={RecruitNew} />
         </Container>
         <Footer />
       </BrowserRouter>
