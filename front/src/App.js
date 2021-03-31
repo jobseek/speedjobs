@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useCookies } from 'react-cookie';
 import { BrowserRouter, Route } from 'react-router-dom';
 import styled from 'styled-components';
-// import { Helmet } from 'react-helmet';
 import './App.css';
 import Header from './components/includes/Header';
 import Footer from './components/includes/Footer';
@@ -18,7 +17,7 @@ import Resume from './components/pages/Resume';
 import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
-import { LOG_IN_FAILURE, LOG_IN_WELCOMED } from './reducers/user';
+import { loginInterceptor } from './auth/interceptor';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -28,6 +27,12 @@ const Container = styled.div`
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [refresh] = useCookies(['REFRESH_TOKEN']);
+  // 리프레시 토큰발급 함수 인터셉터 사용
+  useEffect(() => {
+    loginInterceptor(refresh);
+  }, [refresh]);
+  // 메타데이터설정 아이폰일경우 화면크기 조정
   useEffect(() => {
     const meta = document.createElement('meta');
 
@@ -35,24 +40,6 @@ function App() {
     meta.content =
       'width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover';
     document.getElementsByTagName('head')[0].appendChild(meta);
-
-    // 로그인연장
-    if (user.logInDone) {
-      axios
-        .get('/auth/reissue')
-        .then((response) =>
-          dispatch({
-            type: LOG_IN_WELCOMED,
-            data: response.data,
-          })
-        )
-        .catch((error) =>
-          dispatch({
-            type: LOG_IN_FAILURE,
-            error: '토큰 리프레시 실패' ?? error,
-          })
-        );
-    }
   }, [dispatch, user]);
   return (
     <div className="App">

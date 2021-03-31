@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from './Button';
 import Sns from './Sns';
 import InputLine from './InputLine';
@@ -68,6 +68,7 @@ const CanButton = styled.div`
 export default function Login(props) {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   const submitHandle = async (e) => {
     e.preventDefault();
@@ -75,8 +76,13 @@ export default function Login(props) {
       type: LOG_IN_REQUEST,
       data: loginForm,
     });
-    props.setClose(false);
+    // props.setClose(false);
+    props.setSns(true);
   };
+
+  useEffect(() => {
+    if (user.logInWelcomed) props.setClose((prev) => !prev);
+  }, [user, props]);
 
   return (
     <>

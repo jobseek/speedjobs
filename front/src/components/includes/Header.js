@@ -55,7 +55,6 @@ export default function Header(props) {
     <PopUp key={pop.id} type={pop.type} text={pop.text}></PopUp>
   ));
   const addPop = (pop) => {
-    console.log('add');
     setPopArr((prev) => {
       ref.current = v4();
       return prev.concat([{ type: pop.type, id: pop.id, text: pop.text }]);
@@ -63,15 +62,12 @@ export default function Header(props) {
     setTimeout(() => {
       setPopArr((prev) => {
         prev.shift();
-        console.log('delete');
         return prev;
       });
     }, 3500);
-    console.log(ref.current);
   };
 
   useEffect(() => {
-    // if (user.signUpDone) addPop({ type: 'sign', id: v4() });
     // 회원가입
     if (user.signUpDone) setPopModal(true);
     // 로그인

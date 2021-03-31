@@ -28,7 +28,7 @@ module.exports = {
     'no-console': 'off',
     'no-alert': 'off',
     'no-unused-vars': 'warn',
-    'dot-notation': 'warn',
+    'dot-notation': 'off',
     'padding-line-between-statements': 'off',
   },
 };

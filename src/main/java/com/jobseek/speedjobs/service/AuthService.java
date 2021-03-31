@@ -45,7 +45,7 @@ public class AuthService {
 		redisUtil.set(refreshToken, user.getId().toString(), jwtUtil.getRefreshValidity());
 
 		Cookie accessCookie = cookieUtil.createCookie(jwtUtil.ACCESS_TOKEN, accessToken,
-			jwtUtil.refreshValidity.intValue() / 1000);
+			jwtUtil.refreshValidity.intValue() / 30000);
 
 		Cookie refreshCookie = cookieUtil.createCookie(jwtUtil.REFRESH_TOKEN, refreshToken,
 			jwtUtil.refreshValidity.intValue() / 1000);

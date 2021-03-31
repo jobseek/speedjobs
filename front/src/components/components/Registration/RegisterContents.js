@@ -12,9 +12,7 @@ export default function RegisterContents(props) {
         <RegisterInput name="비밀번호 확인" type="password" />
         <h5 style={{ marginTop: '20px' }}>기업 정보</h5>
         <RegisterInput name="기업명" type="text" />
-        <RegisterInput name="담당자명" type="text" />
         <RegisterInput name="담당자 연락처" type="text" />
-        <RegisterInput name="채팅방 닉네임" type="text" />
         <div>
           <StyledButton style={{ width: '100%', margin: '15px 0 30px 0' }}>
             회원가입
