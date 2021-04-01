@@ -45,8 +45,8 @@ export const loginInterceptor = (refresh, removeRefresh) => {
         })
           .then((response) => response.json())
           .then((response) => {
-            if (response.status === 403) {
-              throw new Error('403');
+            if (response.status === 403 || response.status === 500) {
+              throw new Error(response.status);
             }
             axios.defaults.headers.common[
               'Authorization'
@@ -63,7 +63,6 @@ export const loginInterceptor = (refresh, removeRefresh) => {
   axios.interceptors.request.eject(requestInterceptorConfig);
   axios.interceptors.response.eject(responseInterceptorError);
   axios.interceptors.request.use(requestInterceptorConfig, (error) => {});
-
   axios.interceptors.response.use((response) => {
     return response;
   }, responseInterceptorError);

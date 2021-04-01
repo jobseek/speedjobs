@@ -1,25 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import { TextAreaCombine } from '../Styled';
-
-const ResumeTitle = styled.div`
-  margin-bottom: 15px;
-  font-size: 25px;
-`;
-
-const Warning = styled.span`
-  margin-left: 20px;
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: -1px;
-  @media (max-width: 992px) {
-    display: block;
-    margin-left: 0px;
-    margin-top: 10px;
-    font-size: 10px;
-  }
-`;
+import { ResumeTitle, TextAreaCombine, Warning } from '../Styled';
 
 export default function ResumeSelf() {
   return (

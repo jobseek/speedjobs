@@ -3,7 +3,6 @@ import {
   StyledButton,
   StyledHeaderDiv,
   StyledLeftLayout,
-  StyledRightDiv,
 } from '../components/Styled';
 import Post from '../components/Post';
 import SideMenu from '../components/SideMenu';
@@ -74,9 +73,9 @@ export default function LikeList(props) {
             {/* 태그 end*/}
 
             {/* 게시글*/}
-            <StyledRightDiv className={'col-12 col-lg-10'}>
+            <div className={'col-12 col-lg-10'}>
               <div className={'container-fluid'}>{mapPost}</div>
-            </StyledRightDiv>
+            </div>
             {/* 게시글 end*/}
           </div>
         </div>

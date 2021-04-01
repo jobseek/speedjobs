@@ -16,7 +16,14 @@ import {
 } from '../reducers/user';
 
 function logInAPI(data) {
-  return axios.post('/auth/login', data);
+  axios
+    .post('/auth/login', data)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      return new Error(err);
+    });
 }
 
 function logInAfterApi(data) {
@@ -49,15 +56,13 @@ function* logIn(action) {
     const result = yield call(logInAPI, action.data);
     // 보안 굳이 이해하실 필요 없습니다
     logInAfterApi(result.data);
-
     const userInfo = yield call(getUserApi);
-
     yield put({
       type: LOG_IN_SUCCESS,
       data: userInfo.data,
     });
   } catch (error) {
-    console.error(error);
+    console.log('에러완');
     yield put({
       type: LOG_IN_FAILURE,
       error: '에러' ?? error.response.data,

@@ -38,18 +38,18 @@ const StyledButtonInside = styled.div`
     props.first &&
     css`
       position: absolute;
-      left: 0px;
+      left: 0;
     `}
   ${(props) =>
     props.top &&
     css`
       position: absolute;
-      top: 0px;
+      top: 0;
     `} ${(props) =>
     props.bottom &&
     css`
       position: absolute;
-      bottom: 0px;
+      bottom: 0;
     `} ${(props) =>
     props.vcenter &&
     css`
@@ -116,7 +116,7 @@ const StyledButtonInside = styled.div`
 // Todo 텍스트 수직 중간
 export const StyledHeaderDivInside = styled.div`
   //border-bottom: 1px solid #eee;
-  padding: 20px 0px 5px 0px;
+  padding: 20px 0 5px 0;
   background-color: white;
   z-index: 1;
   margin-bottom: 50px;
@@ -131,15 +131,15 @@ export const StyledHeaderDivInside = styled.div`
     font-size: 20px;
   }
   @media (max-width: 992px) {
-    padding: 5px 0px 0px 0px;
+    padding: 5px 0 0 0;
   }
 
   ${(props) =>
     props.padding &&
     css`
-      padding: 40px 0px 0px 230px;
+      padding: 40px 0 0 230px;
       @media (max-width: 992px) {
-        padding-left: 0px;
+        padding-left: 0;
       }
     `}
 `;
@@ -220,7 +220,7 @@ const TagBodyInside = styled.div`
   text-align: center;
   vertical-align: middle;
   width: fit-content;
-  padding: 0px 13px 0px;
+  padding: 0 13px 0;
   @media (max-width: 768px) {
     font-size: 13px;
     height: 28px;
@@ -307,13 +307,6 @@ const StyledLeftLayoutInside = styled.div`
     `}
 `;
 
-export const StyledRightDiv = styled.div`
-  padding: 0 25px 0 80px;
-  @media (max-width: 992px) {
-    padding: 0;
-  }
-`;
-
 export const StyledLeftLayout = ({ borderNone, children, className }) => (
   <StyledLeftLayoutInside borderNone={borderNone} className={className}>
     {children}
@@ -321,7 +314,7 @@ export const StyledLeftLayout = ({ borderNone, children, className }) => (
 );
 
 // Profile Styled
-export default function Styled(props) {
+export default function Styled() {
   return <></>;
 }
 
@@ -388,7 +381,10 @@ export const TextAreaCombine = ({ cols, rows }) => {
   };
 
   return (
-    <StyledSelfText className={'container-fluid'}>
+    <div
+      className={'container-fluid'}
+      style={{ padding: '0px 58px 0px 30px', width: '100%' }}
+    >
       <TextArea
         id="content"
         cols={cols}
@@ -398,26 +394,13 @@ export const TextAreaCombine = ({ cols, rows }) => {
         onKeyPress={calc}
         onKeyDown={calc}
         onKeyUp={calc}
-      ></TextArea>
+      />
       <div style={{ textAlign: 'right' }}>
-        <TextAreaLength
-          id="result"
-          type="number"
-          value={result}
-          readOnly
-        ></TextAreaLength>
+        <TextAreaLength id="result" type="number" value={result} readOnly />
       </div>
-    </StyledSelfText>
+    </div>
   );
 };
-
-const StyledSelfText = styled.div`
-  padding: 0px 58px 0px 30px;
-  width: 100%;
-  @media (max-width: 992px) {
-    padding: 0;
-  }
-`;
 
 // SideMenu Styled
 export const MyButton = styled.div`
@@ -450,7 +433,7 @@ export const MySideMenu = styled.div`
 `;
 
 export const MyHr = styled.hr`
-  margin: 8px 0px;
+  margin: 8px 0;
 `;
 
 // Profile Image
@@ -465,7 +448,7 @@ export const MyImage = styled.img`
   border-radius: 50%;
   margin: 0 auto;
 `;
-export const CenterConatainer = styled.div`
+export const CenterContainer = styled.div`
   min-width: 280px;
   max-width: 544px;
   border: 1px solid #d3d3d3;
@@ -479,8 +462,110 @@ export const StyledArticle = styled.div`
   }
 `;
 
-export const StyledCol = styled.div`
+// Resume styled
+export const ResumeTitle = styled.div`
+  margin-bottom: 15px;
+  font-size: 25px;
+`;
+
+export const Warning = styled.span`
+  margin-left: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: -1px;
   @media (max-width: 992px) {
-    padding: 0;
+    display: block;
+    margin-left: 0;
+    margin-top: 10px;
+    font-size: 10px;
+  }
+`;
+
+export const Private = styled.span`
+  position: relative;
+  margin-top: 10px;
+  float: right;
+  font-size: 14px;
+  font-weight: bold;
+  @media (max-width: 992px) {
+    top: -65px;
+  }
+`;
+
+export const ResumeImg = styled.div`
+  display: inline-block;
+  border: 1px solid black;
+  width: 180px;
+  height: 200px;
+  text-align: center;
+  line-height: 200px;
+  margin-top: 12px;
+  margin-left: 30px;
+  @media (max-width: 992px) {
+    margin-left: 0;
+  }
+`;
+
+export const CareerItems = styled.div`
+  padding-left: 30px;
+`;
+
+export const Site = styled.span`
+  margin-right: 10px;
+`;
+
+export const MyEducation = styled.div`
+  font-size: 15px;
+  margin-bottom: 10px;
+  font-weight: bold;
+`;
+
+export const EducationItems = styled.div`
+  padding-left: 30px;
+`;
+
+export const ResumeItems = styled.div`
+  margin-bottom: 5px;
+`;
+
+export const ResumeTitles = styled.div`
+  margin-bottom: 5px;
+`;
+
+export const InputTextResume = styled.input`
+  width: 100%;
+  height: 35px;
+  border-radius: 27px;
+  border: 1px solid silver;
+  padding: 0 20px 3px;
+  margin-bottom: 5px;
+`;
+
+export const Wrapper = styled.div`
+  display: inline-block;
+  ${(props) =>
+    props.wide &&
+    css`
+      display: block;
+      padding-left: 30px;
+      padding-right: 50px;
+      width: 100%;
+    `}
+  ${(props) =>
+    props.small &&
+    css`
+      width: 340px;
+    `}
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: 992px) {
+    width: 100%;
+    ${(props) =>
+      props.wide &&
+      css`
+        padding: 0;
+      `}
   }
 `;
