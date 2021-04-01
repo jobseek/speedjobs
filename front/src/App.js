@@ -31,12 +31,14 @@ function App() {
   const [refresh, setRefresh, removeRefresh] = useCookies(['REFRESH_TOKEN']);
   // 리프레시 토큰발급 함수 인터셉터 사용
   useEffect(() => {
+    console.log('리프레시');
     setRefresh('toRefresh', 'toRefresh');
     removeRefresh('toRefresh');
     loginInterceptor(refresh, removeRefresh);
   }, [refresh, removeRefresh, setRefresh, user.logInDone]);
   //  유저 상태 유지
   useEffect(() => {
+    console.log('상태유지');
     if (!user.meDone) {
       dispatch({
         type: ME_REQUEST,

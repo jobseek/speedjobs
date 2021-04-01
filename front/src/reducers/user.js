@@ -97,6 +97,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ERROR_RESOLVED:
         draft.signUpError = null;
+        draft.logInError = null;
         break;
       default:
         break;

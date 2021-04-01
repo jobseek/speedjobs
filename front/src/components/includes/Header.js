@@ -10,7 +10,11 @@ import NavMenu from '../components/NavMenu';
 import PopUp from '../components/Notification/PopUp';
 import MapLink from '../data/mapLink';
 import ModalAlert from '../components/Notification/ModalAlert';
-import { ERROR_RESOLVED, LOG_IN_WELCOMED } from '../../reducers/user';
+import {
+  ERROR_RESOLVED,
+  LOG_IN_REQUEST,
+  LOG_IN_WELCOMED,
+} from '../../reducers/user';
 
 // 네비바스타일
 const NavBar = styled.div`
@@ -85,6 +89,9 @@ export default function Header(props) {
       });
     } else if (user.logInError) {
       addPop({ type: 'warn', id: v4(), text: user.logInError });
+      dispatch({
+        type: ERROR_RESOLVED,
+      });
     }
   }, [user, dispatch]);
 
