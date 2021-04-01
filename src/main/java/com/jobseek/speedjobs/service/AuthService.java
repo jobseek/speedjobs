@@ -35,7 +35,7 @@ public class AuthService {
 		User user = userRepository.findByEmail(request.getEmail())
 			.orElseThrow(() -> new IllegalArgumentException("해당 이메일을 갖는 유저가 존재하지 않습니다."));
 
-		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+		if (request.getPassword() != null && !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 			throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
 		}
 
@@ -45,7 +45,7 @@ public class AuthService {
 		redisUtil.set(refreshToken, user.getId().toString(), jwtUtil.getRefreshValidity());
 
 		Cookie accessCookie = cookieUtil.createCookie(jwtUtil.ACCESS_TOKEN, accessToken,
-			jwtUtil.refreshValidity.intValue() / 30000);
+			jwtUtil.accessValidity.intValue() / 1000);
 
 		Cookie refreshCookie = cookieUtil.createCookie(jwtUtil.REFRESH_TOKEN, refreshToken,
 			jwtUtil.refreshValidity.intValue() / 1000);

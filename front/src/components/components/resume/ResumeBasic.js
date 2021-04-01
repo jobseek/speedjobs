@@ -1,49 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Private, ResumeImg, ResumeTitle, Warning } from '../Styled';
 import ResumeInputs from './ResumeInputs';
-
-const ResumeTitle = styled.div`
-  margin-bottom: 15px;
-  font-size: 25px;
-`;
-
-const Warning = styled.span`
-  margin-left: 20px;
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: -1px;
-  @media (max-width: 992px) {
-    display: block;
-    margin-left: 0px;
-    margin-top: 10px;
-    font-size: 10px;
-  }
-`;
-
-const Private = styled.span`
-  position: relative;
-  margin-top: 10px;
-  float: right;
-  font-size: 14px;
-  font-weight: bold;
-  @media (max-width: 992px) {
-    top: -65px;
-  }
-`;
-
-const ResumeImg = styled.div`
-  display: inline-block;
-  border: 1px solid black;
-  width: 180px;
-  height: 200px;
-  text-align: center;
-  line-height: 200px;
-  margin-top: 12px;
-  margin-left: 30px;
-  @media (max-width: 992px) {
-    margin-left: 0px;
-  }
-`;
 
 export default function ResumeBasic() {
   return (

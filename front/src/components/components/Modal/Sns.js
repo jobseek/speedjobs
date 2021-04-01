@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Facebook, Google, Linkedin, Twitter } from 'react-bootstrap-icons';
+import { Facebook, Google, Linkedin, Github } from 'react-bootstrap-icons';
 
+<a href="http://localhost:8081/oauth2/authorization/github"></a>;
 const MySns = styled.div`
   text-align: center;
   .logo {
@@ -44,7 +45,9 @@ export default function Sns(props) {
           <Google onClick={() => props.setSns(true)} />
           <Facebook />
           <Linkedin />
-          <Twitter />
+          <a href="http://localhost:8081/oauth2/authorization/github">
+            <Github />
+          </a>
         </div>
       </MySns>
     </>
