@@ -38,12 +38,9 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 992px) {
+    display: block;
     width: 100%;
-    ${(props) =>
-      props.wide &&
-      css`
-        padding: 0;
-      `}
+    padding: 0;
   }
 `;
 

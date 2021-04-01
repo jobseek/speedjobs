@@ -72,6 +72,8 @@ export default function Header(props) {
     if (user.signUpDone) setPopModal(true);
     // 로그인
     else if (user.logInDone && !user.logInWelcomed) {
+      // v4 는 아이디를 자동으로 넣어줍니다
+      // 확실한 아이디가 있을경우 비추입니다
       addPop({ type: 'login', id: v4(), text: user.me.name });
       dispatch({ type: LOG_IN_WELCOMED });
     } else if (user.signUpError !== null) {

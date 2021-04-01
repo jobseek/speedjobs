@@ -18,6 +18,7 @@ import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
 import { loginInterceptor } from './auth/interceptor';
+import { ME_REQUEST } from './reducers/user';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -27,11 +28,21 @@ const Container = styled.div`
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [refresh] = useCookies(['REFRESH_TOKEN']);
+  const [refresh, setRefresh, removeRefresh] = useCookies(['REFRESH_TOKEN']);
   // 리프레시 토큰발급 함수 인터셉터 사용
   useEffect(() => {
-    loginInterceptor(refresh);
-  }, [refresh]);
+    setRefresh('toRefresh', 'toRefresh');
+    removeRefresh('toRefresh');
+    loginInterceptor(refresh, removeRefresh);
+  }, [refresh, removeRefresh, setRefresh, user.logInDone]);
+  //  유저 상태 유지
+  useEffect(() => {
+    if (!user.meDone) {
+      dispatch({
+        type: ME_REQUEST,
+      });
+    }
+  }, [dispatch, user.meDone]);
   // 메타데이터설정 아이폰일경우 화면크기 조정
   useEffect(() => {
     const meta = document.createElement('meta');

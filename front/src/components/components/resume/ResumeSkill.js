@@ -35,7 +35,9 @@ export default function ResumeSkill() {
         <ResumeTitle>
           Skill <Warning>자신있는 언어를 선택해주세요</Warning>
         </ResumeTitle>
-        <Tags tagList={tags}>Language</Tags>
+        <div className={'col-12'}>
+          <Tags tagList={tags}>Language</Tags>
+        </div>
       </div>
     </>
   );

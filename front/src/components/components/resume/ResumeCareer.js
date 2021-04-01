@@ -22,6 +22,9 @@ const Warning = styled.span`
 
 const CareerItems = styled.div`
   padding-left: 30px;
+  @media (max-width: 992px) {
+    padding-left: 0;
+  }
 `;
 
 const Test = styled.span`
@@ -49,24 +52,26 @@ export default function ResumeCareer() {
             &nbsp;&nbsp;버튼을 누르면 추가할 수 있습니다.
           </Warning>
         </ResumeTitle>
-        <CareerItems>
-          <Test>
-            <ResumeInputs name={'회사명'} />
-          </Test>
-          <Test>
-            <ResumeInputs name={'직무'} />
-          </Test>
-          <ResumeInputs small name={'기간'} />
-        </CareerItems>
-        <CareerItems>
-          <Test>
-            <ResumeInputs name={'회사명'} />
-          </Test>
-          <Test>
-            <ResumeInputs name={'직무'} />
-          </Test>
-          <ResumeInputs small name={'기간'} />
-        </CareerItems>
+        <div className={'col-12'}>
+          <CareerItems>
+            <Test>
+              <ResumeInputs name={'회사명'} />
+            </Test>
+            <Test>
+              <ResumeInputs name={'직무'} />
+            </Test>
+            <ResumeInputs small name={'기간'} />
+          </CareerItems>
+          <CareerItems>
+            <Test>
+              <ResumeInputs name={'회사명'} />
+            </Test>
+            <Test>
+              <ResumeInputs name={'직무'} />
+            </Test>
+            <ResumeInputs small name={'기간'} />
+          </CareerItems>
+        </div>
       </div>
     </>
   );

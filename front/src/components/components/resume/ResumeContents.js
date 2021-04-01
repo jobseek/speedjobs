@@ -14,11 +14,13 @@ export default function ResumeContents() {
   return (
     <>
       <StyledArticle className={'col-12 col-lg-10'}>
-        <ResumeBasic />
-        <ResumeEducation />
-        <ResumeCareer />
-        <ResumeSelf />
-        <ResumeSkill />
+        <div className={'container-fluid'}>
+          <ResumeBasic />
+          <ResumeEducation />
+          <ResumeCareer />
+          <ResumeSelf />
+          <ResumeSkill />
+        </div>
       </StyledArticle>
     </>
   );

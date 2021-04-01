@@ -38,17 +38,16 @@ export default function Profile() {
             >
               <SideMenu />
             </StyledLeftLayout>
-            <StyledArticle
-              className={'col-12 col-lg-10'}
-              style={{ paddingLeft: '60px' }}
-            >
-              <ProfileImg>
-                <MyImage
-                  src="http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                  alt="profile"
-                />
-              </ProfileImg>
-              <ProfileContents />
+            <StyledArticle className={'col-12 col-lg-10'}>
+              <div className={'container-fluid'}>
+                <ProfileImg>
+                  <MyImage
+                    src="http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                    alt="profile"
+                  />
+                </ProfileImg>
+                <ProfileContents />
+              </div>
             </StyledArticle>
           </div>
         </div>

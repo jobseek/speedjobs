@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Modal from './Modal/Modal';
+import { useDispatch, useSelector } from 'react-redux';
 import { MapDrop } from '../data/mapLink';
+import Modal from './Modal/Modal';
 
 const NavDropBody = styled.div`
   position: absolute;
@@ -65,6 +66,9 @@ export const Background = styled.div`
 
 export default function NavDrop(props) {
   const [toggle, setToggle] = useState('none');
+  const [isLogin, setIsLogin] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const DropRef = useRef();
   const toggleHandler = () => {
     setToggle(toggle === 'none' ? 'block' : 'none');
@@ -84,6 +88,16 @@ export default function NavDrop(props) {
     };
   });
 
+  useEffect(() => {
+    if (user.meDone || user.logInWelcomed) {
+      setIsLogin((prev) => true);
+      setMapPropsLogin((prev) => {
+        prev[0].name = user.me.name;
+        return prev;
+      });
+    }
+  }, [user, isLogin]);
+
   const [visible, setVisible] = useState(false);
   const [login, setLogin] = useState(true);
   const mapProps = [
@@ -92,7 +106,6 @@ export default function NavDrop(props) {
       onClick: () => {
         setVisible(true);
         setLogin(true);
-        toggleHandler();
       },
     },
     {
@@ -100,22 +113,15 @@ export default function NavDrop(props) {
       onClick: () => {
         setVisible(true);
         setLogin(false);
-        toggleHandler();
-      },
-    },
-    {
-      title: 'Membership',
-      onClick: () => {
-        toggleHandler();
-      },
-    },
-    {
-      title: 'Profile',
-      onClick: () => {
-        toggleHandler();
       },
     },
   ];
+  const [mapPropsLogin, setMapPropsLogin] = useState([
+    {
+      title: 'user',
+      name: '',
+    },
+  ]);
 
   return (
     <NavDropBody ref={DropRef}>
@@ -127,7 +133,12 @@ export default function NavDrop(props) {
       <NavDropContent toggle={toggle}>
         {/* <Spinner animation="border" />*/}
         <DropUl>
-          <MapDrop change={mapProps}></MapDrop>
+          <MapDrop
+            dispatch={dispatch}
+            change={isLogin ? mapPropsLogin : mapProps}
+            toggle={() => toggleHandler()}
+            isLogin={isLogin}
+          ></MapDrop>
         </DropUl>
       </NavDropContent>
     </NavDropBody>

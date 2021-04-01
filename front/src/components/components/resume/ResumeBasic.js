@@ -56,9 +56,9 @@ export default function ResumeBasic() {
         <Private>비공개</Private>
       </ResumeTitle>
       <div
-        className={'row m-0 p-0'}
+        className={'row w-100'}
         style={{
-          marginBottom: '10px',
+          margin: '0px 1px 10px 1px',
         }}
       >
         <div className={'col-12 col-lg-4 text-center'}>
@@ -72,7 +72,7 @@ export default function ResumeBasic() {
           {/* 연락처 */}
           <ResumeInputs name={'연락처'} />
         </div>
-        <div className={'col-12 col-lg-4'}>
+        <div className={'col-12 col-lg-4 '}>
           {/* 생년월일 */}
           <ResumeInputs name={'생년월일'} />
           {/* 성별 */}
@@ -80,6 +80,7 @@ export default function ResumeBasic() {
         </div>
       </div>
       <div
+        className={'col-12'}
         style={{
           width: '100%',
           marginBottom: '30px',

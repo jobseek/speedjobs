@@ -307,6 +307,13 @@ const StyledLeftLayoutInside = styled.div`
     `}
 `;
 
+export const StyledRightDiv = styled.div`
+  padding: 0 25px 0 80px;
+  @media (max-width: 992px) {
+    padding: 0;
+  }
+`;
+
 export const StyledLeftLayout = ({ borderNone, children, className }) => (
   <StyledLeftLayoutInside borderNone={borderNone} className={className}>
     {children}
@@ -381,10 +388,7 @@ export const TextAreaCombine = ({ cols, rows }) => {
   };
 
   return (
-    <div
-      className={'container-fluid'}
-      style={{ padding: '0px 58px 0px 30px', width: '100%' }}
-    >
+    <StyledSelfText className={'container-fluid'}>
       <TextArea
         id="content"
         cols={cols}
@@ -403,9 +407,17 @@ export const TextAreaCombine = ({ cols, rows }) => {
           readOnly
         ></TextAreaLength>
       </div>
-    </div>
+    </StyledSelfText>
   );
 };
+
+const StyledSelfText = styled.div`
+  padding: 0px 58px 0px 30px;
+  width: 100%;
+  @media (max-width: 992px) {
+    padding: 0;
+  }
+`;
 
 // SideMenu Styled
 export const MyButton = styled.div`
@@ -462,6 +474,12 @@ export const CenterConatainer = styled.div`
 `;
 export const StyledArticle = styled.div`
   padding-left: 60px;
+  @media (max-width: 992px) {
+    padding: 0;
+  }
+`;
+
+export const StyledCol = styled.div`
   @media (max-width: 992px) {
     padding: 0;
   }

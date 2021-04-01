@@ -28,6 +28,9 @@ const MyEducation = styled.div`
 
 const EducationItems = styled.div`
   padding-left: 30px;
+  @media (max-width: 992px) {
+    padding-left: 0px;
+  }
 `;
 
 const Test = styled.span`
@@ -55,28 +58,30 @@ export default function ResumeEducation() {
             &nbsp;&nbsp;버튼을 누르면 추가할 수 있습니다.
           </Warning>
         </ResumeTitle>
-        <EducationItems>
-          <MyEducation>고등학교</MyEducation>
-          <div>
+        <div className={'col-12'}>
+          <EducationItems>
+            <MyEducation>고등학교</MyEducation>
+            <div>
+              <Test>
+                <ResumeInputs name={'학교명'} />
+              </Test>
+              <Test>
+                <ResumeInputs name={'문과/이과/예체능'} />
+              </Test>
+              <ResumeInputs small name={'기간'} />
+            </div>
+          </EducationItems>
+          <EducationItems>
+            <MyEducation>대학교</MyEducation>
             <Test>
               <ResumeInputs name={'학교명'} />
             </Test>
             <Test>
-              <ResumeInputs name={'문과/이과/예체능'} />
+              <ResumeInputs name={'전공'} />
             </Test>
             <ResumeInputs small name={'기간'} />
-          </div>
-        </EducationItems>
-        <EducationItems>
-          <MyEducation>대학교</MyEducation>
-          <Test>
-            <ResumeInputs name={'학교명'} />
-          </Test>
-          <Test>
-            <ResumeInputs name={'전공'} />
-          </Test>
-          <ResumeInputs small name={'기간'} />
-        </EducationItems>
+          </EducationItems>
+        </div>
       </div>
     </>
   );

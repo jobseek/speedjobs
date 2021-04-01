@@ -7,6 +7,9 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
+  ME_FAILURE,
+  ME_REQUEST,
+  ME_SUCCESS,
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
@@ -26,11 +29,25 @@ function logInAfterApi(data) {
 function getUserApi() {
   return axios.get('/user/me');
 }
+function* getMe(action) {
+  try {
+    const result = yield call(getUserApi);
+    yield put({
+      type: ME_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: ME_FAILURE,
+      error: '에러' ?? error.response.data,
+    });
+  }
+}
 
 function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
-
+    // 보안 굳이 이해하실 필요 없습니다
     logInAfterApi(result.data);
 
     const userInfo = yield call(getUserApi);
@@ -99,6 +116,15 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+function* watchME() {
+  yield takeLatest(ME_REQUEST, getMe);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLogIn), fork(watchLogOut), fork(watchSignUp)]);
+  yield all([
+    fork(watchLogIn),
+    fork(watchLogOut),
+    fork(watchSignUp),
+    fork(watchME),
+  ]);
 }

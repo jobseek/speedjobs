@@ -7,6 +7,7 @@ const Jumbo = styled.div`
   left: 0;
   top: 0;
   padding: 0;
+  user-select: none;
 `;
 
 const Img = styled.img`

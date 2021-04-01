@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import {
   StyledButton,
   StyledHeaderDiv,
@@ -7,6 +8,7 @@ import {
 } from '../components/Styled';
 
 export default function PostDetail(props) {
+  const history = useHistory();
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
@@ -32,6 +34,7 @@ export default function PostDetail(props) {
               <StyledButton
                 wide
                 style={{ letterSpacing: '10px', paddingLeft: '20px' }}
+                onClick={() => history.goBack()}
               >
                 목록
               </StyledButton>

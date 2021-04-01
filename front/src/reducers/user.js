@@ -12,6 +12,8 @@ export const initialState = {
   signUpDone: false,
   signUpError: null,
   me: null,
+  meDone: false,
+  meError: null,
 };
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
@@ -28,11 +30,24 @@ export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 export const SIGN_UP_DONE = 'SIGN_UP_DONE';
 
+export const ME_REQUEST = 'ME_REQUEST';
+export const ME_SUCCESS = 'ME_SUCCESS';
+export const ME_FAILURE = 'ME_FAILURE';
+
 export const ERROR_RESOLVED = 'ERROR_RESOLVED';
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case ME_REQUEST:
+        break;
+      case ME_SUCCESS:
+        draft.meDone = true;
+        draft.me = action.data;
+        break;
+      case ME_FAILURE:
+        draft.meError = action.error;
+        break;
       case LOG_IN_REQUEST:
         draft.logInLoading = true;
         draft.logInError = null;

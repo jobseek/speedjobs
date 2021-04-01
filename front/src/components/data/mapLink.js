@@ -2,6 +2,7 @@ import React from 'react';
 import NavLink from '../components/NavLink';
 import { MenuLink, MenuList } from '../components/NavMenu';
 import { DropLink, DropList } from '../components/NavDrop';
+import { LOG_OUT_REQUEST } from '../../reducers/user';
 
 const Links = [
   { to: '/community', title: 'COMMUNITY', main: 'false' },
@@ -12,24 +13,52 @@ const DropLinks = [
   { title: 'Login', to: '/' },
   { title: 'Sign Up', to: '/' },
   { title: 'Membership', to: '/registration' },
-  { title: 'Profile', to: '/profile' },
+  { title: 'Profile 개발용', to: '/profile' },
+];
+//  아이디
+const DropLinksUser = [
+  { title: 'user', to: '/' },
+  { title: '개인정보', to: '/profile' },
+  { title: '이력서', to: '/resume' },
+  { title: '게시글', to: '/likelist/community' },
+  { title: '채용공고', to: '/likelist/recruit' },
+  {
+    title: '로그아웃',
+    to: '/',
+    onClick: (e, dispatch) => {
+      e.preventDefault();
+      dispatch({
+        type: LOG_OUT_REQUEST,
+      });
+      // window.location.href = '/';
+    },
+  },
 ];
 
-export const mappedLinkUser = (change) => {
-  const headLink = DropLinks.map((link) => ({
+//   모바일페이지 아래 부분 링크
+export const mappedLinkUser = (change, isLogin, toggle, dispatch) => {
+  const Drop = isLogin ? DropLinksUser : DropLinks;
+  const headLink = Drop.map((link) => ({
     ...change.find((c) => c.title === link.title),
     ...link,
   }));
 
   return headLink.map((link) => (
     <MenuList key={link.title}>
-      <MenuLink to={link.to} onClick={link.onClick}>
-        {link.title.toUpperCase()}
+      <MenuLink
+        to={link.to}
+        onClick={(e) => {
+          if (link.onClick) link.onClick(e, dispatch);
+          toggle();
+        }}
+      >
+        {link.title !== 'user' ? link.title.toUpperCase() : link.name}
       </MenuLink>
     </MenuList>
   ));
 };
 
+//  데스크탑페이지 헤더 링크
 const mappedLink = () => {
   const headLink = Links.slice(0, Math.trunc(Links.length / 2));
 
@@ -42,7 +71,9 @@ const mappedLink = () => {
   ));
 };
 
+//  모바일페이지 위에 링크
 const mappedMenu = (change) => {
+  // const Drop = isLogin ? DropLinksUser : DropLinks;
   const headLink = Links.map((link) => ({
     ...change.find((c) => c.title === link.title),
     ...link,
@@ -61,30 +92,37 @@ export const MapMenu = ({ change }) => {
   return <>{mappedMenu(change)}</>;
 };
 
-export const mappedDrop = (change) => {
-  const mapDropLink = DropLinks.map((link) => ({
+export const mappedDrop = (change, isLogin, toggle, dispatch) => {
+  const Drop = isLogin ? DropLinksUser : DropLinks;
+  const mapDropLink = Drop.map((link) => ({
     ...change.find((c) => c.title === link.title),
     ...link,
   }));
 
   return mapDropLink.map((link) => (
     <DropList key={link.title}>
-      <DropLink to={link.to} onClick={link.onClick}>
-        {link.title}
+      <DropLink
+        to={link.to}
+        onClick={(e) => {
+          if (link.onClick) link.onClick(e, dispatch);
+          toggle();
+        }}
+      >
+        {link.title !== 'user' ? link.title : link.name}
       </DropLink>
       {mapDropLink[mapDropLink.length - 1] !== link && <hr />}
     </DropList>
   ));
 };
 
-export default function MapLink(props) {
+export default function MapLink() {
   return <>{mappedLink()}</>;
 }
 
-export function MapDrop({ change }) {
-  return <>{mappedDrop(change)}</>;
+export function MapDrop({ change, toggle, isLogin, dispatch }) {
+  return <>{mappedDrop(change, isLogin, toggle, dispatch)}</>;
 }
 
-export function MapLinkUser({ change }) {
-  return <>{mappedLinkUser(change)}</>;
+export function MapLinkUser({ change, toggle, isLogin, dispatch }) {
+  return <>{mappedLinkUser(change, isLogin, toggle, dispatch)}</>;
 }

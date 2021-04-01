@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Link } from 'react-router-dom';
 import Modal from './Modal/Modal';
 import { MapLinkUser, MapMenu } from '../data/mapLink';
@@ -70,7 +72,10 @@ const Background = styled.div`
 
 export default function NavMenu(props) {
   const [toggle, setToggle] = useState('none');
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const MenuRef = useRef();
+  const [isLogin, setIsLogin] = useState(false);
   const toggleHandler = () => {
     setToggle(toggle === 'none' ? 'block' : 'none');
   };
@@ -96,7 +101,6 @@ export default function NavMenu(props) {
     {
       title: 'Login',
       onClick: () => {
-        toggleHandler();
         setVisible(true);
         setLogin(true);
       },
@@ -104,24 +108,17 @@ export default function NavMenu(props) {
     {
       title: 'Sign Up',
       onClick: () => {
-        toggleHandler();
         setVisible(true);
         setLogin(false);
       },
     },
-    {
-      title: 'Membership',
-      onClick: () => {
-        toggleHandler();
-      },
-    },
-    {
-      title: 'Profile',
-      onClick: () => {
-        toggleHandler();
-      },
-    },
   ];
+  const [mapPropsUserLogin, setMapPropsUserLogin] = useState([
+    {
+      title: 'user',
+      name: '',
+    },
+  ]);
 
   useEffect(() => {
     addEventListener('click', clickHandler, true);
@@ -129,6 +126,16 @@ export default function NavMenu(props) {
       removeEventListener('click', clickHandler, true);
     };
   });
+  // 로그인시 유저 혹인
+  useEffect(() => {
+    if (user.meDone || user.logInWelcomed) {
+      setIsLogin((prev) => true);
+      setMapPropsUserLogin((prev) => {
+        prev[0].name = user.me.name;
+        return prev;
+      });
+    }
+  }, [user, isLogin, mapPropsUserLogin]);
 
   const [visible, setVisible] = useState(false);
   const [login, setLogin] = useState(true);
@@ -145,7 +152,12 @@ export default function NavMenu(props) {
           <DropUl>
             <MapMenu change={mapProps}></MapMenu>
             <hr className="solid" style={{ margin: '10px' }}></hr>
-            <MapLinkUser change={mapPropsUser}></MapLinkUser>
+            <MapLinkUser
+              change={isLogin ? mapPropsUserLogin : mapPropsUser}
+              toggle={() => toggleHandler()}
+              isLogin={isLogin}
+              dispatch={dispatch}
+            ></MapLinkUser>
           </DropUl>
         </NavMenuContent>
       </NavMenuBody>
