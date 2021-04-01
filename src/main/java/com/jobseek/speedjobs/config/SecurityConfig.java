@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,6 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.jobseek.speedjobs.config.auth.CustomAccessDeniedHandler;
 import com.jobseek.speedjobs.config.auth.CustomAuthenticationEntryPoint;
 import com.jobseek.speedjobs.config.auth.JwtAuthenticationFilter;
+import com.jobseek.speedjobs.config.auth.CustomOAuth2UserService;
+import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationFailureHandler;
+import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationSuccessHandler;
 import com.jobseek.speedjobs.utils.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -23,8 +27,11 @@ import lombok.RequiredArgsConstructor;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 	private final JwtUtil jwtUtil;
 
 	@Bean
@@ -36,40 +43,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.httpBasic()
-			.disable()
+				.disable()
 			.csrf()
-			.disable()
+				.disable()
 			.cors()
-
-			.and()
+				.and()
 			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-			.and()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
 			.authorizeRequests()
-			.antMatchers("/api/auth/login", "/api/auth/logout", "/api/user/signup", "/error/**")
-			.permitAll()
-			.antMatchers("/api/manager/**")
-			.hasRole("MANAGER")
-			.antMatchers("/api/admin/**")
-			.hasRole("ADMIN")
-			.anyRequest()
-			.authenticated()
-
-			.and()
+				.antMatchers("/api/auth/**", "oauth2/**", "/api/user/signup", "/error/**")
+					.permitAll()
+				.antMatchers("/api/manager/**")
+					.hasRole("MANAGER")
+				.antMatchers("/api/admin/**")
+					.hasRole("ADMIN")
+				.anyRequest()
+					.authenticated()
+				.and()
 			.exceptionHandling()
-			.authenticationEntryPoint(customAuthenticationEntryPoint) // 인증
-			.accessDeniedHandler(customAccessDeniedHandler) // 인가
+				.authenticationEntryPoint(customAuthenticationEntryPoint)
+				.accessDeniedHandler(customAccessDeniedHandler)
+				.and()
+			.oauth2Login()
+				.userInfoEndpoint()
+					.userService(customOAuth2UserService)
+					.and()
+				.successHandler(oAuth2AuthenticationSuccessHandler)
+				.failureHandler(oAuth2AuthenticationFailureHandler);
 
-			.and()
-			.addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+		web
+			.ignoring()
+			.antMatchers("/v2/api-docs", "/swagger-resources/**",
 			"/swagger-ui.html", "/webjars/**", "/swagger/**");
-
+		web
+			.ignoring()
+			.antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/icon/**");
 	}
 
 }

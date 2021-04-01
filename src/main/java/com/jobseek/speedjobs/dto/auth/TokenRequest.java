@@ -21,7 +21,6 @@ public class TokenRequest {
 	@Email
 	private String email;
 
-	@NotBlank
 	private String password;
 
 }
