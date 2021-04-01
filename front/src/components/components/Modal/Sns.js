@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Facebook, Google, Linkedin, Github } from 'react-bootstrap-icons';
 
-<a href="http://localhost:8081/oauth2/authorization/github"></a>;
+// <a href="http://localhost:8081/oauth2/authorization/github"></a>;
 const MySns = styled.div`
   text-align: center;
   .logo {

@@ -3,7 +3,6 @@ import { Justify, PersonCircle, Search } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
-// import NavLink from '../components/NavLink';
 import NavDrop, { Background } from '../components/NavDrop';
 import NavSearch from '../components/NavSearch';
 import NavMenu from '../components/NavMenu';
@@ -85,8 +84,17 @@ export default function Header(props) {
       });
     } else if (user.logInError) {
       addPop({ type: 'warn', id: v4(), text: user.logInError });
+      dispatch({
+        type: ERROR_RESOLVED,
+      });
     }
   }, [user, dispatch]);
+
+  useEffect(() => {
+    if (user.logOutDone) {
+      addPop({ type: 'logout', id: v4() });
+    }
+  }, [user.logOutDone]);
 
   return (
     <>

@@ -28,6 +28,7 @@ const StyledButtonInside = styled.div`
     width: 60px;
     font-size: 10px;
   }
+
   ${(props) =>
     props.sm &&
     css`
@@ -70,6 +71,7 @@ const StyledButtonInside = styled.div`
     `} &:hover {
     background-color: #f2d411;
   }
+
   //흰색일경우
   ${(props) =>
     props.white &&
@@ -77,6 +79,7 @@ const StyledButtonInside = styled.div`
       color: #7c7c7c;
       background-color: white;
       border: 1px solid #7c7c7c;
+
       &:hover {
         color: white;
         background-color: #7c7c7c;
@@ -130,6 +133,7 @@ export const StyledHeaderDivInside = styled.div`
   h1 {
     font-size: 20px;
   }
+
   @media (max-width: 992px) {
     padding: 5px 0 0 0;
   }
@@ -286,8 +290,14 @@ export const StyledLike = styled.div`
     display: block;
   }
 `;
-export const TagBody = ({ sm, children, tagType, onClick, grey }) => (
-  <TagBodyInside sm={sm} tagType={tagType} onClick={onClick} grey={grey}>
+export const TagBody = ({ sm, children, tagType, onClick, grey, style }) => (
+  <TagBodyInside
+    sm={sm}
+    tagType={tagType}
+    onClick={onClick}
+    grey={grey}
+    style={style}
+  >
     <TagText>{children}</TagText>
   </TagBodyInside>
 );
@@ -377,7 +387,9 @@ export const TextAreaCombine = ({ cols, rows }) => {
   const onChangeHandler = (e) => {
     if (e.target.value.length <= 500) {
       setTextLength(e.target.value);
-    } else alert('500자 이내로 작성해주세요');
+    } else {
+      alert('500자 이내로 작성해주세요');
+    }
   };
 
   return (
@@ -543,6 +555,7 @@ export const InputTextResume = styled.input`
 
 export const Wrapper = styled.div`
   display: inline-block;
+
   ${(props) =>
     props.wide &&
     css`

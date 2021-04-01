@@ -81,7 +81,9 @@ export default function Login(props) {
   };
 
   useEffect(() => {
-    if (user.logInWelcomed) props.setClose((prev) => !prev);
+    if (user.logInWelcomed || user.logInError) {
+      props.setClose((prev) => !prev);
+    }
   }, [user, props]);
 
   return (

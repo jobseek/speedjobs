@@ -5,11 +5,11 @@ import { Check } from 'react-bootstrap-icons';
 const Alert = styled.div`
   @media (max-width: 500px) {
     width: 100%;
-    height: 45px;
+    min-height: 45px;
     font-size: 15px;
   }
   height: 50px;
-  width: 250px;
+  min-width: 250px;
   opacity: 1;
   display: flex;
   justify-content: center;
@@ -21,7 +21,7 @@ const Alert = styled.div`
   margin-bottom: 10px;
   animation: Bye 500ms linear 3s;
   animation-fill-mode: forwards;
-
+  padding: 0 5px 0 5px;
   p {
     margin: 0;
   }
@@ -65,6 +65,11 @@ export default function PopUp({ type, text }) {
       backColor: 'green',
       color: 'white',
       text: text + ' 님 환영합니다.',
+    },
+    logout: {
+      backColor: 'green',
+      color: 'white',
+      text: '로그아웃 되었습니다.',
     },
     default: {
       backColor: '#f5df4d',

@@ -128,12 +128,14 @@ export default function NavMenu(props) {
   });
   // 로그인시 유저 혹인
   useEffect(() => {
-    if (user.meDone || user.logInWelcomed) {
+    if ((user.meDone || user.logInWelcomed) && !user.logOutDone) {
       setIsLogin((prev) => true);
       setMapPropsUserLogin((prev) => {
         prev[0].name = user.me.name;
         return prev;
       });
+    } else {
+      setIsLogin(false);
     }
   }, [user, isLogin, mapPropsUserLogin]);
 
