@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { StyledButton, StyledHeaderDiv } from '../components/Styled';
 import ChatIcon from '../components/Chatting/ChatIcon';
+import ChatBox from '../components/Chatting/ChatBox';
 
 export default function RecruitmentDetail(props) {
   useEffect(() => {
@@ -77,10 +78,9 @@ export default function RecruitmentDetail(props) {
               style={{
                 width: '100%',
                 height: '650px',
-                backgroundColor: '#7c7c7c',
               }}
             >
-              채팅
+              <ChatBox></ChatBox>
             </div>
           </div>
         </div>
