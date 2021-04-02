@@ -42,7 +42,9 @@ export default function Sns(props) {
       <MySns>
         <hr />
         <div className="logo">
-          <Google onClick={() => props.setSns(true)} />
+          <a href="http://localhost:8081/oauth2/authorization/google">
+            <Google onClick={() => props.setSns(true)} />
+          </a>
           <Facebook />
           <Linkedin />
           <a href="http://localhost:8081/oauth2/authorization/github">
