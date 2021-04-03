@@ -37,7 +37,9 @@ public class OAuthAttributes {
 
 	public static OAuthAttributes of(String registrationId, String userNameAttributeName,
 		Map<String, Object> attributes) {
-		if ("github".equalsIgnoreCase(registrationId)) {
+		if ("naver".equalsIgnoreCase(registrationId)) {
+			return ofNaver("id", attributes);
+		} else if ("github".equalsIgnoreCase(registrationId)) {
 			return ofGithub(userNameAttributeName, attributes);
 		} else if ("kakao".equals(registrationId)) {
 			return ofKakao(userNameAttributeName, attributes);
@@ -46,6 +48,19 @@ public class OAuthAttributes {
 		} else {
 			throw new OAuth2RegistrationException();
 		}
+	}
+
+	private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+		Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+		return OAuthAttributes.builder()
+			.oauthId((String) response.get("id"))
+			.name((String) response.get("name"))
+			.email((String) response.get("email"))
+			.picture((String) response.get("profile_image"))
+			.provider(Provider.NAVER)
+			.attributes(response)
+			.nameAttributeKey(userNameAttributeName)
+			.build();
 	}
 
 	private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {

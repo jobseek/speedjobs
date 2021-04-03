@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Facebook, Google, Linkedin, Github } from 'react-bootstrap-icons';
+
+import { Google, Linkedin, Github } from 'react-bootstrap-icons';
+import { RiKakaoTalkLine } from 'react-icons/all';
 
 const MySns = styled.div`
   text-align: center;
@@ -49,12 +51,14 @@ export default function Sns(props) {
             <Google onClick={() => props.setSns(true)} />
           </a>
           <a href="http://localhost:8081/oauth2/authorization/kakao">
-            <Facebook onClick={() => props.setSns(true)} />
+            <RiKakaoTalkLine onClick={() => props.setSns(true)} />
           </a>
           <a href="http://localhost:8081/oauth2/authorization/github">
             <Github onClick={() => props.setSns(true)} />
           </a>
-          <Linkedin />
+          <a href="http://localhost:8081/oauth2/authorization/naver">
+            <Linkedin onClick={() => props.setSns(true)} />
+          </a>
         </div>
       </MySns>
     </>
