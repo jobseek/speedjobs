@@ -17,6 +17,7 @@ import Resume from './components/pages/Resume';
 import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
+import PostAdd from './components/pages/PostAdd';
 import { loginInterceptor } from './auth/interceptor';
 import { ME_REQUEST } from './reducers/user';
 
@@ -80,6 +81,7 @@ function App() {
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />
+          <Route exact path={'/community/add'} component={PostAdd} />
         </Container>
         <Footer />
       </BrowserRouter>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import Banner from '../components/Banner';
 import Tags from '../components/Tags';
-import { StyledButton, StyledLeftLayout, TagBody } from '../components/Styled';
+import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';
 
 export default function Community(props) {
+  const history = useHistory();
   const [tags] = useState([
     { name: 'backEnd', id: 0, selected: false },
     { name: 'frontEnd', id: 1, selected: false },
@@ -12,12 +14,12 @@ export default function Community(props) {
     { name: 'infra', id: 3, selected: false },
   ]);
 
-  const [orderList] = useState([
-    { name: '조회수', id: 0, selected: false },
-    { name: '댓글수', id: 1, selected: false },
-    { name: '찜수', id: 2, selected: false },
-    { name: '등록날짜', id: 3, selected: false },
-  ]);
+  // const [orderList] = useState([
+  //   { name: '조회수', id: 0, selected: false },
+  //   { name: '댓글수', id: 1, selected: false },
+  //   { name: '찜수', id: 2, selected: false },
+  //   { name: '등록날짜', id: 3, selected: false },
+  // ]);
 
   const dummy = () => {
     const dummyArr = [];
@@ -84,6 +86,9 @@ export default function Community(props) {
                 {/* </Tags>*/}
                 <TagBody
                   style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                  onClick={() => {
+                    history.push('./community/add');
+                  }}
                 >
                   글쓰기
                 </TagBody>

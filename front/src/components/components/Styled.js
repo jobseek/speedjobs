@@ -146,11 +146,18 @@ export const StyledHeaderDivInside = styled.div`
         padding-left: 0;
       }
     `}
+
+  ${(props) =>
+    props.fix &&
+    css`
+      position: relative;
+      top: 30px;
+    `}
 `;
 
-export const StyledHeaderDiv = ({ children, padding }) => (
+export const StyledHeaderDiv = ({ children, padding, fix }) => (
   <>
-    <StyledHeaderDivInside padding={padding}>
+    <StyledHeaderDivInside padding={padding} fix={fix}>
       <div style={{ borderBottom: '1px solid #eee ', paddingBottom: '20px' }}>
         {children}
       </div>
@@ -580,5 +587,41 @@ export const Wrapper = styled.div`
       css`
         padding: 0;
       `}
+  }
+`;
+
+//  #f5df4d
+export const PostTextArea = styled.textarea`
+  resize: none;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #d3d3d3;
+  padding: 8px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const PostTitleInput = styled.input`
+  border: none;
+  font-size: 25px;
+  padding-left: 15px;
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: 992px) {
+    font-size: 15px;
+    margin-left: 10px;
+  }
+`;
+
+export const PostWriterDate = styled.div`
+  margin: 10px 0px 20px 0px;
+  @media (max-width: 992px) {
+    font-size: 13px;
+    margin-left: 3px;
   }
 `;

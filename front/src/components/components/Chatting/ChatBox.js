@@ -11,17 +11,25 @@ const Container = styled.div`
 `;
 
 const Messaging = styled.div`
-  padding: 20px 0px 40px 0px; ;
+  padding: 0 0px 40px 0px; ;
 `;
 const MsgHistory = styled.div`
   height: 516px;
   background-color: #ffffff;
   overflow-y: auto;
-  border-bottom: #d3d3d3 2px solid;
+  //border-bottom: #d3d3d3 2px solid;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   display: flex;
   flex-direction: column;
+  &::-webkit-scrollbar {
+    width: 3px;
+    background-color: white;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 3px;
+    background-color: grey;
+    border-radius: 20px;
 `;
 
 const OutgoingMsg = styled.div`
