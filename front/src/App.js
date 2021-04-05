@@ -17,6 +17,7 @@ import Resume from './components/pages/Resume';
 import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
+import PostAdd from './components/pages/PostAdd';
 import { loginInterceptor } from './auth/interceptor';
 import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';

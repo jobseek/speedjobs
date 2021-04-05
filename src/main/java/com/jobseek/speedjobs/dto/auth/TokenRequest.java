@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.dto.auth;
 
+import com.jobseek.speedjobs.domain.user.Provider;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -17,10 +18,16 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TokenRequest {
 
-	@NotBlank
 	@Email
 	private String email;
 
 	private String password;
 
+	private Provider provider;
+
+	private String oauthId;
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
 }

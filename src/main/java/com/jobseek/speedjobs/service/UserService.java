@@ -1,16 +1,15 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.common.exception.UnauthorizedException;
+import com.jobseek.speedjobs.domain.user.Provider;
+import com.jobseek.speedjobs.domain.user.Role;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserRepository;
+import com.jobseek.speedjobs.dto.user.UserSaveRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
-import com.jobseek.speedjobs.domain.user.Role;
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.user.UserSaveRequest;
-import com.jobseek.speedjobs.domain.user.UserRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -39,6 +38,7 @@ public class UserService {
 			.email(request.getEmail())
 			.password(passwordEncoder.encode(request.getPassword()))
 			.role(request.getRole())
+			.provider(Provider.LOCAL)
 			.build();
 
 		return userRepository.save(user).getId();
