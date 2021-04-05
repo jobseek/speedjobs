@@ -14,6 +14,7 @@ body,html{
   font-family: 'Noto Sans KR', sans-serif;
   font-family: 'Quicksand', sans-serif;
   font-weight:700;
+  user-select: none;
 }
 
 .App-logo {

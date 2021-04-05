@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import {
   StyledButton,
   StyledHeaderDiv,
@@ -29,7 +29,7 @@ export default function PostDetail(props) {
             style={{ paddingTop: '15px' }}
           >
             <div className={'col-md-8 col-4 p-0'} style={{ marginTop: '14px' }}>
-              <h5>더미제목</h5>
+              <h5>{props.match.params.id}</h5>
             </div>
             <div className={'col-md-3 col-4 text-right'}>
               <StyledButton

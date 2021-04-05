@@ -22,7 +22,7 @@ export default function Post({ title, tags, writer, date, fav }) {
         }}
       >
         <h4 style={{ marginBottom: '30px', marginTop: '10px' }}>
-          <Link to={'./community/post'}>{title}</Link>
+          <Link to={`./community/post/${title}`}>{title}</Link>
         </h4>
         {mapTags}
         <div
