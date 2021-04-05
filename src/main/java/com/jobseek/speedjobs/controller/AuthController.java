@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.controller;
 
+import com.jobseek.speedjobs.domain.user.Provider;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class AuthController {
 	@ApiOperation(value = "로그인")
 	@PostMapping("/login")
 	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest request, HttpServletResponse response) {
+		request.setProvider(Provider.LOCAL);
 		return ResponseEntity.ok(authService.login(request, response));
 	}
 
