@@ -4,7 +4,7 @@ import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
-  LOG_OUT_FAILURE,
+  // LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   ME_FAILURE,
@@ -81,11 +81,14 @@ function* logOut() {
       type: LOG_OUT_SUCCESS,
     });
   } catch (error) {
-    console.error(error);
     yield put({
-      type: LOG_OUT_FAILURE,
-      error: error.response.data,
+      type: LOG_OUT_SUCCESS,
     });
+    // console.error(error);
+    // yield put({
+    //   type: LOG_OUT_FAILURE,
+    //   error: error.response.data,
+    // });
   }
 }
 

@@ -32,6 +32,8 @@ public class OAuthAttributes {
 		Map<String, Object> attributes) {
 		if ("github".equalsIgnoreCase(registrationId)) {
 			return ofGithub(userNameAttributeName, attributes);
+		} else if ("google".equalsIgnoreCase(registrationId)){
+			return ofGoogle(userNameAttributeName, attributes);
 		} else {
 			throw new OAuth2RegistrationException();
 		}
@@ -42,6 +44,16 @@ public class OAuthAttributes {
 			.name((String)attributes.get("name"))
 			.email((String)attributes.get("email"))
 			.picture((String)attributes.get("avatar_url"))
+			.attributes(attributes)
+			.nameAttributeKey(userNameAttributeName)
+			.build();
+	}
+
+	private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+		return OAuthAttributes.builder()
+			.name((String)attributes.get("name"))
+			.email((String)attributes.get("email"))
+			.picture((String)attributes.get("picture"))
 			.attributes(attributes)
 			.nameAttributeKey(userNameAttributeName)
 			.build();

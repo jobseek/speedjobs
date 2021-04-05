@@ -89,12 +89,14 @@ export default function NavDrop(props) {
   });
 
   useEffect(() => {
-    if (user.meDone || user.logInWelcomed) {
+    if ((user.meDone || user.logInWelcomed) && !user.logOutDone) {
       setIsLogin((prev) => true);
       setMapPropsLogin((prev) => {
         prev[0].name = user.me.name;
         return prev;
       });
+    } else {
+      setIsLogin(false);
     }
   }, [user, isLogin]);
 

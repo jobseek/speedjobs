@@ -6,6 +6,7 @@ import {
   StyledLike,
   TagBody,
 } from '../components/Styled';
+import PostDetailComment from './PostDetailComment';
 
 export default function PostDetail(props) {
   const history = useHistory();
@@ -100,6 +101,8 @@ export default function PostDetail(props) {
             안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
             안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
           </div>
+
+          <PostDetailComment></PostDetailComment>
         </div>
         {/* 찜 공유*/}
         <StyledLike></StyledLike>

@@ -4,7 +4,9 @@ export default function hello() {
   return null;
 }
 
-export const loginInterceptor = (refresh, removeRefresh) => {
+export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
+  axios.interceptors.request.eject(prevIDS.request);
+  axios.interceptors.response.eject(prevIDS.response);
   const requestInterceptorConfig = (config) => {
     if (config.url === '/auth/logout' && !config.headers._Retry) {
       axios
@@ -15,15 +17,15 @@ export const loginInterceptor = (refresh, removeRefresh) => {
           },
         })
         .catch((error) => {
-          console.log('cannot connect sever');
+          // console.log('cannot connect sever');
         })
         .finally(() => {
           if (refresh) {
             removeRefresh('REFRESH_TOKEN');
             removeRefresh('ACCESS_TOKEN');
           }
-          window.location.href = '/';
         });
+      return null;
     }
     return config;
   };
@@ -61,10 +63,13 @@ export const loginInterceptor = (refresh, removeRefresh) => {
       reject(error);
     });
   };
-  axios.interceptors.request.eject(requestInterceptorConfig);
-  axios.interceptors.response.eject(responseInterceptorError);
-  axios.interceptors.request.use(requestInterceptorConfig, (error) => {});
-  axios.interceptors.response.use((response) => {
+  const IDS = { request: 0, response: 0 };
+  IDS.request = axios.interceptors.request.use(
+    requestInterceptorConfig,
+    (error) => {}
+  );
+  IDS.response = axios.interceptors.response.use((response) => {
     return response;
   }, responseInterceptorError);
+  return IDS;
 };
