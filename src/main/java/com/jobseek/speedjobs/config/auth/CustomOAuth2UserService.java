@@ -1,7 +1,9 @@
 package com.jobseek.speedjobs.config.auth;
 
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserRepository;
 import java.util.Collections;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -11,13 +13,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.domain.user.UserRepository;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -45,7 +40,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	}
 
 	private User saveOrUpdate(OAuthAttributes attributes) {
-		User user = userRepository.findByEmail(attributes.getEmail())
+		User user = userRepository.findByProviderAndOauthId(attributes.getProvider(),
+			attributes.getOauthId())
 			.map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
 			.orElse(attributes.toEntity());
 

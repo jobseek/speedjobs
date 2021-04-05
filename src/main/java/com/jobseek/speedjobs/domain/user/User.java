@@ -31,10 +31,8 @@ public class User extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
 	private String name;
 
-	@Column(nullable = false, unique = true)
 	private String email;
 
 	private String password;
@@ -45,28 +43,16 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Role role;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Provider provider;
+
+	@Column(name = "oauth_id")
+	private String oauthId;
+
 	public User update(String name, String picture) {
 		this.name = name;
 		this.picture = picture;
 		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		User user = (User)o;
-
-		return id.equals(user.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return id.hashCode();
 	}
 }
