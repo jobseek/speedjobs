@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Google, Linkedin, Github } from 'react-bootstrap-icons';
-import { RiKakaoTalkLine } from 'react-icons/all';
 
 const MySns = styled.div`
   text-align: center;
+
   .logo {
     display: inline;
     //justify-content: space-between;
@@ -29,6 +29,7 @@ const MySns = styled.div`
     color: #d3d3d3;
     text-align: center;
     margin: 20px 0;
+
     :after {
       content: 'or';
       display: inline-block;
@@ -48,9 +49,6 @@ export default function Sns(props) {
         <div className="logo">
           <a href="http://localhost:8081/oauth2/authorization/google">
             <Google onClick={() => props.setSns(true)} />
-          </a>
-          <a href="http://localhost:8081/oauth2/authorization/kakao">
-            <RiKakaoTalkLine onClick={() => props.setSns(true)} />
           </a>
           <a href="http://localhost:8081/oauth2/authorization/github">
             <Github onClick={() => props.setSns(true)} />

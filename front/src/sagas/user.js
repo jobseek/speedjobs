@@ -71,7 +71,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/auth/logout');
+  return axios.get('/auth/logout');
 }
 
 function* logOut() {

@@ -4,28 +4,22 @@ export default function hello() {
   return null;
 }
 
-export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
+export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
   axios.interceptors.request.eject(prevIDS.request);
   axios.interceptors.response.eject(prevIDS.response);
   const requestInterceptorConfig = (config) => {
     if (config.url === '/auth/logout' && !config.headers._Retry) {
-      axios
-        .get('/auth/logout', {
-          headers: {
-            Authorization: `Bearer ${refresh['REFRESH_TOKEN']}`,
-            _Retry: true,
-          },
-        })
-        .catch((error) => {
-          // console.log('cannot connect sever');
-        })
-        .finally(() => {
-          if (refresh) {
-            removeRefresh('REFRESH_TOKEN');
-            removeRefresh('ACCESS_TOKEN');
-          }
-        });
-      return null;
+      config.headers['Authorization'] = `Bearer ${refresh['REFRESH_TOKEN']}`;
+      removeRefresh('REFRESH_TOKEN');
+      removeRefresh('ACCESS_TOKEN');
+      return config;
+    }
+    if (
+      config.headers['Authorization'] === undefined &&
+      refresh['ACCESS_TOKEN']
+    ) {
+      config.headers['Authorization'] = `Bearer ${refresh['ACCESS_TOKEN']}`;
+      return config;
     }
     return config;
   };
@@ -33,7 +27,7 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
       if (
-        error.response.status === 403 &&
+        (error.response.status === 403 || error.response.status === 500) &&
         error.config &&
         !error.config.__isRetryRequest
       ) {

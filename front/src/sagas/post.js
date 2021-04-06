@@ -1,35 +1,45 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { POST_GET_REQUEST } from '../reducers/post';
+import {
+  POST_LIST_FAIL,
+  POST_LIST_REQUEST,
+  POST_LIST_SUCCESS,
+} from '../reducers/post';
 
-function* signUp(action) {
-  console.log(action);
+function getPostListApi(action) {
+  const { size, page } = action.data;
+  const get = axios
+    .get(`/post/paging/?size=${size}&page=${page}`)
+    .then((res) => res)
+    .catch((err) => {
+      throw err;
+    });
+  console.log(get);
+  return get;
+}
+
+function* getPostList(action) {
   try {
-    yield call(signUpAPI, action.data);
+    const postList = yield call(getPostListApi, action);
+    console.log(postList);
     yield put({
-      type: SIGN_UP_SUCCESS,
+      type: POST_LIST_SUCCESS,
+      data: postList.data,
     });
   } catch (error) {
     yield put({
-      type: SIGN_UP_FAILURE,
-      error: '포스팅중 예외발생. 서버를 확인하세요' ?? error.response.data,
+      type: POST_LIST_FAIL,
+      error: 'error' ?? action.error,
     });
-  }
-}
-
-function getPostAip() {
-  return axios.get('.');
-}
-
-function* getPost(action) {
-  try {
-    yield call();
   }
 }
 
 function* watchPostGet() {
-  yield takeLatest(POST_GET_REQUEST, getPost);
+  // yield takeLatest(POST_GET_REQUEST, getPost);
+}
+function* watchPostList() {
+  yield takeLatest(POST_LIST_REQUEST, getPostList);
 }
 export default function* postSaga() {
-  yield all([fork(watchPostGet)]);
+  yield all([fork(watchPostGet), fork(watchPostList)]);
 }

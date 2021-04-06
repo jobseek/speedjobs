@@ -1,12 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Banner from '../components/Banner';
 import Tags from '../components/Tags';
 import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';
+import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
+import Loading from '../components/Notification/Loading';
 
 export default function Community(props) {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const page = useRef(0);
+  const prevY = useRef(500);
+  const isLast = useRef(false);
+  const targetRef = useRef();
+  const observe = useRef(
+    new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        const y = firstEntry.boundingClientRect.y;
+        if (prevY.current > y && !isLast.current) {
+          loadMore();
+        }
+        prevY.current = y;
+      },
+      { threshold: 1 }
+    )
+  );
+
+  const loadMore = () => {
+    dispatch({
+      type: POST_LIST_REQUEST,
+      data: {
+        size: 10,
+        page: page.current,
+      },
+    });
+  };
+  const rootRef = useRef();
+  const post = useSelector((state) => state.post);
+
+  const [loading, setLoading] = useState(false);
+  const [postList, setPostList] = useState([]);
+
   const [tags] = useState([
     { name: 'backEnd', id: 0, selected: false },
     { name: 'frontEnd', id: 1, selected: false },
@@ -14,35 +51,47 @@ export default function Community(props) {
     { name: 'infra', id: 3, selected: false },
   ]);
 
-  const dummy = () => {
-    const dummyArr = [];
-
-    for (let i = 0; i < 20; i++) {
-      dummyArr.push({
-        title: i + '번 제목',
-        fav: i % 2 === 1,
-        writer: i + '번 작성자',
-        date: '2020-01-01',
-        tags: ['backend', 'frontend'],
-      });
-    }
-    return dummyArr;
-  };
-
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
 
-  const [dummyPost] = useState(dummy);
+  useEffect(() => {
+    const currentObserver = observe.current;
+    const divElm = targetRef.current;
+    if (divElm) {
+      currentObserver.observe(divElm);
+    }
+    return () => {
+      if (divElm) {
+        currentObserver.unobserve(divElm);
+      }
+    };
+  }, []);
 
-  const mapPost = dummyPost.map((post) => (
+  useEffect(() => {
+    if (post.postListLoading) {
+      setLoading((prev) => true);
+    }
+    if (post.postListDone) {
+      setLoading((prev) => false);
+      setPostList((prev) => [...prev, ...post.postList.content]);
+      if (post.postList.last) {
+        isLast.current = true;
+      } else {
+        page.current++;
+      }
+      dispatch({ type: POST_LIST_DONE });
+    }
+  }, [post, setPostList, setLoading, page, dispatch]);
+
+  const mapPost = postList.map((pl) => (
     <Post
-      tags={post.tags}
-      title={post.title}
-      writer={post.writer}
-      date={post.date}
-      fav={post.fav}
-      key={post.title}
+      tags={['backEnd']}
+      title={pl.title}
+      writer="아직미구현"
+      date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
+      fav="미구현"
+      key={pl.id}
     ></Post>
   ));
 
@@ -59,7 +108,7 @@ export default function Community(props) {
           {/* 태그 end*/}
 
           {/* 게시글*/}
-          <div className={'col-12 col-lg-9'}>
+          <div ref={rootRef} className={'col-12 col-lg-9'}>
             <div
               className={'text-right'}
               style={{
@@ -71,12 +120,6 @@ export default function Community(props) {
                 className={'row justify-content-end'}
                 style={{ padding: '10px', paddingTop: '0' }}
               >
-                {/* <Tags*/}
-                {/*  tagList={orderList}*/}
-                {/*  style={{ margin: '10px', marginTop: '0' }}*/}
-                {/* >*/}
-                {/*  조회순*/}
-                {/* </Tags>*/}
                 <TagBody
                   style={{ marginTop: '0', border: '1px solid #f5df4d' }}
                   onClick={() => {
@@ -91,6 +134,10 @@ export default function Community(props) {
           </div>
           {/* 게시글 end*/}
         </div>
+        <div
+          style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
+          ref={targetRef}
+        ></div>
       </div>
     </>
   );

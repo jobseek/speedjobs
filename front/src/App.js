@@ -17,7 +17,6 @@ import Resume from './components/pages/Resume';
 import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
-import PostAdd from './components/pages/PostAdd';
 import { loginInterceptor } from './auth/interceptor';
 import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';
@@ -51,13 +50,14 @@ function App() {
     if (
       !user.logOutDone &&
       !user.meDone &&
+      !user.logInWelcomed &&
       refresh['REFRESH_TOKEN'] !== undefined
     ) {
       dispatch({
         type: ME_REQUEST,
       });
     }
-  }, [dispatch, user.meDone, refresh, user.logOutDone]);
+  }, [dispatch, user.meDone, refresh, user.logOutDone, user.logInWelcomed]);
   // 메타데이터설정 아이폰일경우 화면크기 조정
   useEffect(() => {
     const meta = document.createElement('meta');
