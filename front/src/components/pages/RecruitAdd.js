@@ -7,7 +7,7 @@ import {
 } from '../components/Styled';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
-import { POST_REQUEST } from '../../reducers/post';
+import { POST_GET_REQUEST } from '../../reducers/post';
 
 export default function RecruitAdd() {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ export default function RecruitAdd() {
 
   const SubmitHandler = () => {
     dispatch({
-      type: POST_REQUEST,
+      type: POST_GET_REQUEST,
       data: recruitForm,
     });
   };
