@@ -12,7 +12,7 @@ export default function Community(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const page = useRef(0);
-  const prevY = useRef(500);
+  const prevY = useRef(99999);
   const isLast = useRef(false);
   const targetRef = useRef();
   const observe = useRef(

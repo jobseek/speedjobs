@@ -56,7 +56,7 @@ export const Background = styled.div`
   position: fixed;
   left: 0;
   right: 0;
-  top: 0;
+  top: 60px;
   width: 100%;
   height: 100%;
   background-color: black;

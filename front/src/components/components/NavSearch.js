@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { Background } from './NavDrop';
+import SearchArea from './Search/SearchArea';
 
 const InAnimation = keyframes`
   0%{
@@ -44,6 +46,7 @@ const StyledSearch = styled.div`
   margin-left: 5px;
   margin-right: 20px;
   color: #707070;
+  z-index: 11;
   @media (max-width: 1200px) {
     right: 0em;
     z-index: 1;
@@ -73,6 +76,7 @@ const SearchHeader = styled.div`
     display: block;
   }
   display: inline;
+  z-index: 11;
 `;
 
 const SearchBar = styled.input`
@@ -86,6 +90,7 @@ const SearchBar = styled.input`
   background-color: #333333;
   color: white;
   text-align: center;
+  z-index: 11;
   &:focus {
     outline: none;
   }
@@ -97,8 +102,21 @@ const SearchBar = styled.input`
   }
 `;
 
+const StyledSearchArea = styled.div`
+  position: absolute;
+  top: 85px;
+  width: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border-radius: 15px;
+  min-height: 500px;
+  z-index: 11;
+`;
+
 export default function NavSearch(props) {
   const [toggle, setToggle] = useState('none');
+  const [searchText, setSearchText] = useState('');
   const SearchRef = useRef();
   const InputRef = useRef();
   const toggleHandler = () => {
@@ -120,15 +138,27 @@ export default function NavSearch(props) {
     };
   });
   return (
-    <StyledSearch ref={SearchRef} toggle={toggle}>
-      <SearchHeader onClick={() => toggleHandler()}>
-        {props.children}
-      </SearchHeader>
-      <SearchBar
-        placeholder="검색어를 입력하세요"
-        toggle={toggle}
-        ref={InputRef}
-      ></SearchBar>
-    </StyledSearch>
+    <>
+      <StyledSearch ref={SearchRef} toggle={toggle}>
+        <SearchHeader onClick={() => toggleHandler()}>
+          {props.children}
+        </SearchHeader>
+        <SearchBar
+          placeholder="검색어를 입력하세요"
+          toggle={toggle}
+          ref={InputRef}
+          onChange={(e) => setSearchText(e.target.value)}
+        ></SearchBar>
+      </StyledSearch>
+
+      {toggle === 'block' && (
+        <>
+          <StyledSearchArea>
+            <SearchArea text={searchText}></SearchArea>
+          </StyledSearchArea>
+          <Background></Background>
+        </>
+      )}
+    </>
   );
 }
