@@ -5,6 +5,7 @@ import ResumeEducation from './ResumeEducation';
 import ResumeCareer from './ResumeCareer';
 import ResumeSelf from './ResumeSelf';
 import ResumeSkill from './ResumeSkill';
+import ResumeCertificate from './ResumeCertificate';
 
 export default function ResumeContents() {
   useEffect(() => {
@@ -16,6 +17,7 @@ export default function ResumeContents() {
       <StyledArticle className={'col-12 col-lg-10'}>
         <div className={'container-fluid'}>
           <ResumeBasic />
+          <ResumeCertificate />
           <ResumeEducation />
           <ResumeCareer />
           <ResumeSelf />
