@@ -1,8 +1,10 @@
 import React from 'react';
 import ResumeInputs from './ResumeInputs';
 import {
+  Add,
   EducationItems,
   MyEducation,
+  MyPlus,
   ResumeTitle,
   Site,
   Warning,
@@ -16,8 +18,11 @@ export default function ResumeEducation() {
           marginBottom: '30px',
         }}
       >
+        <MyPlus>
+          <Add />
+        </MyPlus>
         <ResumeTitle>
-          학력
+          최종학력
           <Warning>
             <span
               style={{
@@ -33,23 +38,18 @@ export default function ResumeEducation() {
           <MyEducation>고등학교</MyEducation>
           <div>
             <Site>
-              <ResumeInputs name={'학교명'} />
+              <ResumeInputs name={'학교이름'} />
             </Site>
             <Site>
-              <ResumeInputs name={'문과/이과/예체능'} />
+              <ResumeInputs name={'전공'} />
             </Site>
-            <ResumeInputs small name={'기간'} />
+            <Site>
+              <ResumeInputs name={'입학날짜'} />
+            </Site>
+            <Site>
+              <ResumeInputs name={'졸업날짜'} />
+            </Site>
           </div>
-        </EducationItems>
-        <EducationItems>
-          <MyEducation>대학교</MyEducation>
-          <Site>
-            <ResumeInputs name={'학교명'} />
-          </Site>
-          <Site>
-            <ResumeInputs name={'전공'} />
-          </Site>
-          <ResumeInputs small name={'기간'} />
         </EducationItems>
       </div>
     </>

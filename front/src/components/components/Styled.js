@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Plus } from '@styled-icons/octicons';
 // 버튼 컬러로 노란색 흰색 지정가능
 const StyledButtonInside = styled.div`
   color: #7c7c7c;
@@ -558,6 +559,9 @@ export const InputTextResume = styled.input`
   border: 1px solid silver;
   padding: 0 20px 3px;
   margin-bottom: 5px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -623,5 +627,37 @@ export const PostWriterDate = styled.div`
   @media (max-width: 992px) {
     font-size: 13px;
     margin-left: 3px;
+  }
+`;
+
+export const MyPlus = styled.button`
+  float: right;
+  background: none;
+  outline: none;
+  border: none;
+  color: black;
+  font-size: 25px;
+  cursor: pointer;
+  padding-right: 0.9rem;
+  padding-left: 1rem;
+  padding-bottom: 0.4rem;
+  margin-right: 50px;
+  border-radius: 50%;
+  transition: 0.1s background ease-in;
+  &:hover {
+    background: radial-gradient(gold, white, white);
+  }
+`;
+
+export const Add = styled(Plus)`
+  width: 18px;
+  color: black;
+`;
+
+export const DataInputs = styled.input`
+  border-radius: 10px;
+  padding: 2px 0 2px 10px;
+  &:focus {
+    outline: none;
   }
 `;

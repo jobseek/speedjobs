@@ -20,6 +20,7 @@ import MemberRegistration from './components/pages/MemberRegistration';
 import { loginInterceptor } from './auth/interceptor';
 import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';
+import RecruitAdd from './components/pages/RecruitAdd';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -83,6 +84,7 @@ function App() {
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />
           <Route exact path={'/community/add'} component={PostAdd} />
+          <Route exact path={'/recruitment/add'} component={RecruitAdd} />
         </Container>
         <Footer />
       </BrowserRouter>

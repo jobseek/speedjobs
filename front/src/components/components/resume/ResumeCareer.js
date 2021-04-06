@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ResumeInputs from './ResumeInputs';
-import { CareerItems, ResumeTitle, Site, Warning } from '../Styled';
+import {
+  Add,
+  CareerItems,
+  MyPlus,
+  ResumeTitle,
+  Site,
+  Warning,
+} from '../Styled';
+import Tags from '../Tags';
 
 export default function ResumeCareer() {
+  const [tags] = useState([
+    { name: 'Backend', id: 0, selected: false },
+    { name: 'Frontend', id: 1, selected: false },
+    { name: 'Fullstack', id: 2, selected: false },
+    { name: 'Infra', id: 3, selected: false },
+  ]);
   return (
     <>
       <div
@@ -10,6 +24,9 @@ export default function ResumeCareer() {
           marginBottom: '30px',
         }}
       >
+        <MyPlus>
+          <Add />
+        </MyPlus>
         <ResumeTitle>
           경력
           <Warning>
@@ -25,21 +42,18 @@ export default function ResumeCareer() {
         </ResumeTitle>
         <CareerItems>
           <Site>
-            <ResumeInputs name={'회사명'} />
+            <ResumeInputs name={'회사이름'} />
           </Site>
           <Site>
-            <ResumeInputs name={'직무'} />
-          </Site>
-          <ResumeInputs small name={'기간'} />
-        </CareerItems>
-        <CareerItems>
-          <Site>
-            <ResumeInputs name={'회사명'} />
+            <ResumeInputs name={'직급'} />
           </Site>
           <Site>
-            <ResumeInputs name={'직무'} />
+            <ResumeInputs name={'입사날짜'} />
           </Site>
-          <ResumeInputs small name={'기간'} />
+          <Site>
+            <ResumeInputs name={'퇴사날짜'} />
+          </Site>
+          <Tags tagList={tags}>직무</Tags>
         </CareerItems>
       </div>
     </>
