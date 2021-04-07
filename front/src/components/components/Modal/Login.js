@@ -14,7 +14,7 @@ const Forget = styled.p`
   float: right;
   margin-bottom: 5px;
 
-  :hover {
+  &:hover {
     color: black;
   }
 `;
@@ -98,7 +98,6 @@ export default function Login(props) {
               setLoginForm({ ...loginForm, email: e.target.value })
             }
           />
-          <Forget>Forgot password?</Forget>
           <br />
           <InputLine
             name="PASSWORD"
@@ -109,7 +108,8 @@ export default function Login(props) {
             }
           />
         </div>
-
+        <Forget>Forgot password?</Forget>
+        <br />
         <div>
           <input type="checkbox" style={{ marginTop: '20px' }} /> Remember me
           <div className="buttons">

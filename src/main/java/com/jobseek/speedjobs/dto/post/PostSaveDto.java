@@ -1,6 +1,7 @@
 package com.jobseek.speedjobs.dto.post;
 
 import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.post.PostDetail;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class PostSaveDto {
 	}
 
 	public Post toEntity() {
-		return Post.builder().title(title).content(content).build();
+		return Post.builder().title(title).postDetail(PostDetail.from(content)).build();
 	}
 
 }

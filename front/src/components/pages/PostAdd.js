@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useState,useCallback,useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import axios from 'axios';
 import {
   PostTextArea,
   PostTitleInput,
@@ -12,6 +13,7 @@ import {
 import { POST_ADD_REQUEST } from '../../reducers/post';
 
 export default function PostAdd(props) {
+  const [postForm, setPostForm] = useState({ content: '', title: '' });
   const [form, setForm] = useState({ title: '', content: '' });
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();

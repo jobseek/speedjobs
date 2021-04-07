@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
 
 @ToString
@@ -20,7 +21,7 @@ public class Scholar {
 	@Column(name = "scholar_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "resume_id")
 	private Resume resume;
 }

@@ -3,17 +3,12 @@ package com.jobseek.speedjobs.domain.post;
 
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 
+import com.jobseek.speedjobs.domain.user.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +16,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
 
 @ToString
 @Getter
@@ -37,7 +35,9 @@ public class Post extends BaseTimeEntity {
 
 	private String title;
 
-	private String content;
+	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@ColumnDefault("0")
 	private int likeCount;
@@ -47,6 +47,9 @@ public class Post extends BaseTimeEntity {
 
 	@ColumnDefault("0")
 	private int commentCount;
+
+	@Embedded
+	private PostDetail postDetail;
 
 	public void increaseLikeCount() {
 		likeCount += 1;
@@ -74,6 +77,6 @@ public class Post extends BaseTimeEntity {
 
 	public void update(String title, String content) {
 		this.title = title;
-		this.content = content;
+		this.postDetail = PostDetail.from(content);
 	}
 }

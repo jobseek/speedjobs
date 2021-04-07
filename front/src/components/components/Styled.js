@@ -454,8 +454,8 @@ export const MyLink = styled(Link)`
 `;
 
 export const MySideMenu = styled.div`
-  position: relative;
-  top: -100px;
+  position: sticky;
+  top: 100px;
   width: 150px;
   border: 0.5px solid silver;
   border-radius: 10px;

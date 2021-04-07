@@ -16,11 +16,6 @@ const SignForm = styled.div`
     }
   }
 
-  input {
-    margin-bottom: 15px;
-    margin-right: 5px;
-  }
-
   ${(props) =>
     !props.fade &&
     css`
@@ -87,6 +82,7 @@ export default function SignUp(props) {
               setForm({ ...form, name: e.target.value });
             }}
           />
+          <br />
           <SignInput
             name="EMAIL"
             value={form.email}
@@ -95,6 +91,7 @@ export default function SignUp(props) {
             }}
             type="email"
           />
+          <br />
           <SignInput
             name="PASSWORD"
             value={form.password}
@@ -103,6 +100,7 @@ export default function SignUp(props) {
               setForm({ ...form, password: e.target.value });
             }}
           />
+          <br />
           <SignInput
             name="REPEAT PASSWORD"
             value={repeat}
@@ -111,6 +109,7 @@ export default function SignUp(props) {
             }}
             type="PASSWORD"
           />
+          <br />
           <input type="checkbox" />
           Accept all conditions
           <div>

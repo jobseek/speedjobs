@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.*;
 
@@ -42,6 +43,6 @@ public class Member{
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "member", cascade = ALL)
 	private List<Resume> resumeList = new ArrayList<>();
 }

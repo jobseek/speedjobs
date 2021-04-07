@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 const MyInput = styled.div`
+  position: relative;
+  &:after {
+    content: 'where are you?';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    color: red;
+    font-size: 11px;
+  }
+
   label {
     margin-bottom: 0;
   }
@@ -21,7 +31,7 @@ const MyInput = styled.div`
       `}
     width: 100%;
     height: 20px;
-    :focus {
+    &:focus {
       border-bottom: 2px solid black;
       outline: none;
     }

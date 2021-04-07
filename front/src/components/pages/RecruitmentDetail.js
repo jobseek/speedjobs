@@ -1,9 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
 import { StyledButton, StyledHeaderDiv } from '../components/Styled';
 import ChatIcon from '../components/Chatting/ChatIcon';
 import ChatBox from '../components/Chatting/ChatBox';
 
+const Chatting = styled.div`
+  width: 100%;
+  height: 650px;
+  @media (max-width: 992px) {
+    height: 0;
+  }
+`;
+
 export default function RecruitmentDetail(props) {
+  const [pop, setPop] = useState('none');
+  const ButtonEvent = () => {
+    if (pop === 'none') {
+      setPop('inline-block');
+    } else {
+      setPop('none');
+    }
+  };
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (pop === 'none') {
+      document.body.style.overflow = 'unset';
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [pop]);
+
   return (
     <>
       <div
@@ -71,14 +105,10 @@ export default function RecruitmentDetail(props) {
             className={'col-lg-5 col-12'}
             style={{ padding: '15px 5px 0px' }}
           >
-            <div
-              style={{
-                width: '100%',
-                height: '650px',
-              }}
-            >
-              <ChatBox></ChatBox>
-            </div>
+            <Chatting>
+              <ChatBox pop={pop} button={ButtonEvent} />
+              <ChatIcon onclick={ButtonEvent} />
+            </Chatting>
           </div>
         </div>
         {/* <StyledButton hcenter wide>*/}

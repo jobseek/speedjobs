@@ -28,10 +28,6 @@ public class Resume extends BaseTimeEntity {
 	@Column(name = "resume_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
-
 	private String open;
 
 	private String coverLetter;
@@ -44,6 +40,10 @@ public class Resume extends BaseTimeEntity {
 
 	private String resumeImage;
 
+	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@JoinColumn(name = "member_id")
+	private Member member;
+
 	@OneToMany(mappedBy = "resume", cascade = ALL)
 	private List<Certificate> certificateList = new ArrayList<>();
 
@@ -51,5 +51,6 @@ public class Resume extends BaseTimeEntity {
 	private List<Scholar> scholarList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", cascade = ALL)
-	private List<Career> career = new ArrayList<>();
+	private List<Career> careerList = new ArrayList<>();
+
 }
