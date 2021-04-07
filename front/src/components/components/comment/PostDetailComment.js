@@ -44,7 +44,7 @@ export default function PostDetailComment(props) {
         type: COMMENT_GET_REQUEST,
       });
     }
-  }, []);
+  }, [comment.commentGetLoading, dispatch]);
 
   useEffect(() => {
     if (comment.commentAddDone) {

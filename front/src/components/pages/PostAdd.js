@@ -1,7 +1,6 @@
-import React, {useState,useCallback,useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import axios from 'axios';
 import {
   PostTextArea,
   PostTitleInput,
@@ -13,7 +12,6 @@ import {
 import { POST_ADD_REQUEST } from '../../reducers/post';
 
 export default function PostAdd(props) {
-  const [postForm, setPostForm] = useState({ content: '', title: '' });
   const [form, setForm] = useState({ title: '', content: '' });
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
@@ -30,8 +28,11 @@ export default function PostAdd(props) {
     (e) => {
       e.preventDefault();
       if (form.title === '' || form.content === '') {
-        if (form.title === '') alert('제목을 입력하세요');
-        else if (form.content === '') alert('내용을 입력하세요');
+        if (form.title === '') {
+          alert('제목을 입력하세요');
+        } else if (form.content === '') {
+          alert('내용을 입력하세요');
+        }
       } else {
         dispatch({ type: POST_ADD_REQUEST, data: form });
       }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { ArrowLeftSquareFill } from 'react-bootstrap-icons';
 import { StyledButton } from '../../components/Styled';
