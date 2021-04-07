@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function hangul(kor) {
   const check = /[ㄱ-ㅎ|ㅏ-ㅣ가-힣]/;
   if (!kor.match(check)) return kor;
@@ -78,7 +76,6 @@ export default function hangul(kor) {
     'ㅍ',
     'ㅎ',
   ];
-  console.log(kor.charCodeAt(0));
   const ga = 44032;
   let fn = -1;
   let sn = 0;
@@ -86,11 +83,8 @@ export default function hangul(kor) {
   if (kor.charCodeAt(0) > ga) {
     const uni = kor.charCodeAt(0) - ga;
     fn = parseInt(uni / 588, 10);
-    console.log(fn);
     sn = parseInt((uni - fn * 588) / 28, 10) || 0;
-    console.log(sn);
     tn = parseInt(uni % 28, 10);
-    console.log(tn);
   } else {
     sn = s.length - 1;
     tn = 0;

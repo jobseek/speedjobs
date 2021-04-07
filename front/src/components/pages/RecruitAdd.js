@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   PostTitleInput,
@@ -11,9 +11,6 @@ import { POST_GET_REQUEST } from '../../reducers/post';
 
 export default function RecruitAdd() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
 
   const [recruitForm, setRecruitForm] = useState({
     content: '',

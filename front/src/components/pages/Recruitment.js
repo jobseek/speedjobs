@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
@@ -16,9 +16,6 @@ const RecruitContent = styled.div`
 export default function Recruitment(props) {
   const history = useHistory();
 
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
   const [update, setUpdate] = useState(0);
   const [tags] = useState([
     { name: 'backEnd', id: 0, selected: false },

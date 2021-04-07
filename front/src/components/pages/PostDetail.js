@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import {
   StyledButton,
@@ -9,9 +9,6 @@ import {
 
 export default function PostDetail(props) {
   const history = useHistory();
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
   return (
     <>
       <div

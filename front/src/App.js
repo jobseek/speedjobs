@@ -21,6 +21,7 @@ import { loginInterceptor } from './auth/interceptor';
 import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';
 import RecruitAdd from './components/pages/RecruitAdd';
+import ScrollToTop from './components/includes/ScrollToTop';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -71,6 +72,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop></ScrollToTop>
         <Header />
         <Container>
           <Route exact path={'/community'} component={Community} />

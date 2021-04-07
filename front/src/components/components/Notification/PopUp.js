@@ -71,6 +71,11 @@ export default function PopUp({ type, text }) {
       color: 'white',
       text: '로그아웃 되었습니다.',
     },
+    green: {
+      backColor: 'green',
+      color: 'white',
+      text,
+    },
     default: {
       backColor: '#f5df4d',
       color: '#7c7c7c',

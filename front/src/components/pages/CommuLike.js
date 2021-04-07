@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyledButton,
   StyledHeaderDiv,
@@ -8,9 +8,6 @@ import Post from '../components/Post';
 import SideMenu from '../components/SideMenu';
 
 export default function LikeList(props) {
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
   // const [tags] = useState([
   //   { name: 'backEnd', id: 0, selected: false },
   //   { name: 'frontEnd', id: 1, selected: false },

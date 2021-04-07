@@ -1,5 +1,5 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PostTextArea,
   PostTitleInput,
@@ -8,8 +8,33 @@ import {
   StyledHeaderDiv,
   TagBody,
 } from '../components/Styled';
+import { POST_ADD_REQUEST } from '../../reducers/post';
 
 export default function PostAdd(props) {
+  const [form, setForm] = useState({ title: '', content: '' });
+  const post = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+  const onChangHandler = useCallback((e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+  useEffect(() => {
+    if (post.postAddDone) {
+      history.goBack();
+    }
+  }, [post]);
+  const onSubmitHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (form.title === '' || form.content === '') {
+        if (form.title === '') alert('제목을 입력하세요');
+        else if (form.content === '') alert('내용을 입력하세요');
+      } else {
+        dispatch({ type: POST_ADD_REQUEST, data: form });
+      }
+    },
+    [dispatch, form]
+  );
+
   return (
     <div
       className="container text-left"
@@ -26,7 +51,11 @@ export default function PostAdd(props) {
             style={{ paddingTop: '15px' }}
           >
             <div className={'col-md-8 col-6 p-0'} style={{ marginTop: '14px' }}>
-              <PostTitleInput placeholder={'제목을 입력해주세요'} />
+              <PostTitleInput
+                onChange={(e) => onChangHandler(e)}
+                name={'title'}
+                placeholder={'제목을 입력해주세요'}
+              />
             </div>
             <div
               className={'col-md-4 col-6 text-right'}
@@ -35,17 +64,8 @@ export default function PostAdd(props) {
               <StyledButton
                 wide
                 style={{ letterSpacing: '10px', paddingLeft: '20px' }}
-                onClick={() => {
-                  // history.goBack()
-                  axios
-                    .post('/post/new', {
-                      content: '상휘천재',
-                      title: '우후후후ㅜ후',
-                    })
-                    .catch((err) => {
-                      console.log('error');
-                    });
-                  // console.log(axios.get('/post/paging?page=0&size=3'));
+                onClick={(e) => {
+                  onSubmitHandler(e);
                 }}
               >
                 등록
@@ -59,7 +79,12 @@ export default function PostAdd(props) {
           <PostWriterDate>작성자 2020-01-01</PostWriterDate>
           {/* 태그*/}
           {/* 본문*/}
-          <PostTextArea placeholder="내용을 입력하세요" rows={'20'} />
+          <PostTextArea
+            name={'content'}
+            onChange={(e) => onChangHandler(e)}
+            placeholder="내용을 입력하세요"
+            rows={'20'}
+          />
           <div style={{ marginTop: '40px' }}>
             <TagBody grey>백엔드</TagBody>
             <TagBody grey>백엔드</TagBody>

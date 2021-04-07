@@ -1,6 +1,8 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  POST_ADD_FAIL,
+  POST_ADD_REQUEST,
   POST_LIST_FAIL,
   POST_LIST_REQUEST,
   POST_LIST_SUCCESS,
@@ -14,14 +16,12 @@ function getPostListApi(action) {
     .catch((err) => {
       throw err;
     });
-  console.log(get);
   return get;
 }
 
 function* getPostList(action) {
   try {
     const postList = yield call(getPostListApi, action);
-    console.log(postList);
     yield put({
       type: POST_LIST_SUCCESS,
       data: postList.data,
@@ -34,6 +34,31 @@ function* getPostList(action) {
   }
 }
 
+function postAddApi(action) {
+  return axios.post('/post/new', action.data).catch((err) => {
+    throw err;
+  });
+}
+
+function* postAdd(action) {
+  try {
+    const post = yield call(postAddApi, action);
+    yield put({
+      type: POST_LIST_SUCCESS,
+      data: post.data,
+    });
+  } catch (error) {
+    yield put({
+      type: POST_ADD_FAIL,
+      error: 'error' ?? action.error,
+    });
+  }
+}
+
+function* watchPostAdd() {
+  yield takeLatest(POST_ADD_REQUEST, postAdd);
+}
+
 function* watchPostGet() {
   // yield takeLatest(POST_GET_REQUEST, getPost);
 }
@@ -41,5 +66,5 @@ function* watchPostList() {
   yield takeLatest(POST_LIST_REQUEST, getPostList);
 }
 export default function* postSaga() {
-  yield all([fork(watchPostGet), fork(watchPostList)]);
+  yield all([fork(watchPostGet), fork(watchPostList), fork(watchPostAdd)]);
 }

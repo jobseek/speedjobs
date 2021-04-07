@@ -6,7 +6,6 @@ import Tags from '../components/Tags';
 import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
-import Loading from '../components/Notification/Loading';
 
 export default function Community(props) {
   const history = useHistory();
@@ -41,7 +40,7 @@ export default function Community(props) {
   const rootRef = useRef();
   const post = useSelector((state) => state.post);
 
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
 
   const [tags] = useState([
@@ -50,11 +49,6 @@ export default function Community(props) {
     { name: 'machineLearning', id: 2, selected: false },
     { name: 'infra', id: 3, selected: false },
   ]);
-
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
-
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;

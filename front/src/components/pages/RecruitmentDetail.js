@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyledButton, StyledHeaderDiv } from '../components/Styled';
 import ChatIcon from '../components/Chatting/ChatIcon';
 import ChatBox from '../components/Chatting/ChatBox';
 
 export default function RecruitmentDetail(props) {
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
   return (
     <>
       <div

@@ -13,12 +13,21 @@ export const initialState = {
   postListDone: false,
   postListError: null,
   postList: null,
+  postAddLoading: false,
+  postAddDone: false,
+  postAddError: null,
+  postAdd: null,
 };
 
 export const POST_GET_REQUEST = 'POST_GET_REQUEST';
 export const POST_GET_SUCCESS = 'POST_GET_SUCCESS';
 export const POST_GET_FAIL = 'POST_GET_FAIL';
 export const POST_GET_DONE = 'POST_GET_DONE';
+
+export const POST_ADD_REQUEST = 'POST_ADD_REQUEST';
+export const POST_ADD_SUCCESS = 'POST_ADD_SUCCESS';
+export const POST_ADD_FAIL = 'POST_ADD_FAIL';
+export const POST_ADD_DONE = 'POST_ADD_DONE';
 
 // export const POST_ADD_REQUEST = 'POST_ADD_REQUEST';
 // export const POST_ADD_FAIL = 'POST_ADD_FAIL';
@@ -86,6 +95,27 @@ const reducer = (state = initialState, action) =>
       case POST_LIST_SUCCESS:
         draft.postListDone = true;
         draft.postList = action.data;
+        break;
+      case POST_ADD_REQUEST:
+        draft.postAddLoading = true;
+        draft.postAdd = null;
+        draft.postAddError = null;
+        draft.postAddDone = false;
+        break;
+      case POST_ADD_SUCCESS:
+        draft.postAddLoading = false;
+        draft.postAdd = action.data;
+        draft.postAddDone = true;
+        break;
+      case POST_ADD_FAIL:
+        draft.postAddLoading = false;
+        draft.postAddError = action.error;
+        break;
+      case POST_ADD_DONE:
+        draft.postAddLoading = false;
+        draft.postAdd = null;
+        draft.postAddError = null;
+        draft.postAddDone = false;
         break;
       default:
         break;

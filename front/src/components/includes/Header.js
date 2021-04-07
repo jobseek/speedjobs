@@ -10,6 +10,7 @@ import PopUp from '../components/Notification/PopUp';
 import MapLink from '../data/mapLink';
 import ModalAlert from '../components/Notification/ModalAlert';
 import { ERROR_RESOLVED, LOG_IN_WELCOMED } from '../../reducers/user';
+import { POST_ADD_DONE } from '../../reducers/post';
 
 // 네비바스타일
 const NavBar = styled.div`
@@ -27,6 +28,7 @@ const RightContainer = styled.div`
   width: 100%;
   top: 20px;
   right: 8px;
+
   & > * {
     margin: 0px 10px 2px;
   }
@@ -45,19 +47,24 @@ const PopUpBox = styled.div`
 `;
 
 export default function Header(props) {
-  const [popArr, setPopArr] = useState([]);
-  const [popModal, setPopModal] = useState(false);
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const state = useSelector((s) => s);
   const ref = useRef(0);
+  const dispatch = useDispatch();
+  // 팝업창 배열
+  const [popArr, setPopArr] = useState([]);
+  // 모달창
+  const [popModal, setPopModal] = useState(false);
+  // 팝업창 맵
   const mapPop = popArr.map((pop) => (
     <PopUp key={pop.id} type={pop.type} text={pop.text}></PopUp>
   ));
+  // 팝업 추가
   const addPop = (pop) => {
     setPopArr((prev) => {
       ref.current = v4();
       return prev.concat([{ type: pop.type, id: pop.id, text: pop.text }]);
     });
+    // 삼초뒤 삭제
     setTimeout(() => {
       setPopArr((prev) => {
         prev.shift();
@@ -65,36 +72,45 @@ export default function Header(props) {
       });
     }, 3500);
   };
-
+  // 팝업 동작 인식
   useEffect(() => {
     // 회원가입
-    if (user.signUpDone) setPopModal(true);
-    // 로그인
-    else if (user.logInDone && !user.logInWelcomed) {
+    if (state.user.signUpDone) {
+      setPopModal(true);
+    } // 로그인
+    else if (state.user.logInDone && !state.user.logInWelcomed) {
       // v4 는 아이디를 자동으로 넣어줍니다
       // 확실한 아이디가 있을경우 비추입니다
-      addPop({ type: 'login', id: v4(), text: user.me.name });
+      addPop({ type: 'login', id: v4(), text: state.user.me.name });
       dispatch({ type: LOG_IN_WELCOMED });
-    } else if (user.signUpError !== null) {
+    } else if (state.user.signUpError !== null) {
       // 회원가입오류
-      console.log(user.signUpError);
-      addPop({ type: 'warn', id: v4(), text: user.signUpError });
+      console.log(state.user.signUpError);
+      addPop({ type: 'warn', id: v4(), text: state.user.signUpError });
       dispatch({
         type: ERROR_RESOLVED,
       });
-    } else if (user.logInError) {
-      addPop({ type: 'warn', id: v4(), text: user.logInError });
+      // 로그인 오류
+    } else if (state.user.logInError) {
+      addPop({ type: 'warn', id: v4(), text: state.user.logInError });
       dispatch({
         type: ERROR_RESOLVED,
       });
-    }
-  }, [user, dispatch]);
-
-  useEffect(() => {
-    if (user.logOutDone) {
+      // 로그아웃
+    } else if (state.user.logOutDone) {
       addPop({ type: 'logout', id: v4() });
+    } else if (state.post.postAddDone) {
+      addPop({ type: 'green', id: v4(), text: '게시글이 등록되었습니다' });
+      dispatch({
+        type: POST_ADD_DONE,
+      });
+    } else if (state.post.postAddError) {
+      addPop({ type: 'warn', id: v4(), text: '게시글 등록 오류' });
+      dispatch({
+        type: POST_ADD_DONE,
+      });
     }
-  }, [user.logOutDone]);
+  }, [state, dispatch]);
 
   return (
     <>
