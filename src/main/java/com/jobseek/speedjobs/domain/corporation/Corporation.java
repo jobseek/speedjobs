@@ -1,9 +1,13 @@
 package com.jobseek.speedjobs.domain.corporation;
 
+import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
@@ -28,8 +32,13 @@ public class Corporation {
 
 	private int scale;
 
+	@Embedded
+	private CorporationDetail corporationDetail;
+
 	@OneToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@OneToMany(mappedBy = "corporation", cascade = ALL)
+	private List<Recruit> recruitList = new ArrayList<>();
 }

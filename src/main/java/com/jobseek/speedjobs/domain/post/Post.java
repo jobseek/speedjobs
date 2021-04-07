@@ -35,8 +35,6 @@ public class Post extends BaseTimeEntity {
 
 	private String title;
 
-	private String content;
-
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -49,6 +47,9 @@ public class Post extends BaseTimeEntity {
 
 	@ColumnDefault("0")
 	private int commentCount;
+
+	@Embedded
+	private PostDetail postDetail;
 
 	public void increaseLikeCount() {
 		likeCount += 1;
@@ -76,6 +77,6 @@ public class Post extends BaseTimeEntity {
 
 	public void update(String title, String content) {
 		this.title = title;
-		this.content = content;
+		this.postDetail = PostDetail.from(content);
 	}
 }

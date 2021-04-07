@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
 @ToString
@@ -34,7 +35,7 @@ public class Certificate {
 
 	private int degree;
 
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "resume_id")
 	private Resume resume;
 }
