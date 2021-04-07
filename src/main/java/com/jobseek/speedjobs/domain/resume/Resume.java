@@ -51,5 +51,5 @@ public class Resume extends BaseTimeEntity {
 	private List<Scholar> scholarList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", cascade = ALL)
-	private List<Career> career = new ArrayList<>();
+	private List<Career> careerList = new ArrayList<>();
 }
