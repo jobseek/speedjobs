@@ -44,6 +44,10 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
             if (response.status === 403 || response.status === 500) {
               throw new Error(response.status);
             }
+            console.log(response);
+            originalReq.headers[
+              'Authorization'
+            ] = `Bearer ${response.accessToken}`;
             axios.defaults.headers.common[
               'Authorization'
             ] = `Bearer ${response.accessToken}`;

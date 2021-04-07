@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import {
   PostTextArea,
   PostTitleInput,
@@ -14,6 +15,7 @@ export default function PostAdd(props) {
   const [form, setForm] = useState({ title: '', content: '' });
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
+  const history = useHistory();
   const onChangHandler = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
@@ -21,7 +23,7 @@ export default function PostAdd(props) {
     if (post.postAddDone) {
       history.goBack();
     }
-  }, [post]);
+  }, [post, history]);
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();

@@ -94,7 +94,7 @@ const SearchHeader = styled.div`
 const StyledSearchArea = styled.div`
   position: absolute;
   top: 85px;
-  width: 50%;
+  width: 600px;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
@@ -116,6 +116,9 @@ const StyledSearchArea = styled.div`
     props.typed &&
     css`
       height: 400px;
+      @media (max-width: 768px) {
+        height: 500px;
+      }
       transition: height 200ms ease-in-out;
     `}
 `;

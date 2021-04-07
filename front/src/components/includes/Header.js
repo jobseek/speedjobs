@@ -9,7 +9,11 @@ import NavMenu from '../components/NavMenu';
 import PopUp from '../components/Notification/PopUp';
 import MapLink from '../data/mapLink';
 import ModalAlert from '../components/Notification/ModalAlert';
-import { ERROR_RESOLVED, LOG_IN_WELCOMED } from '../../reducers/user';
+import {
+  ERROR_RESOLVED,
+  LOG_IN_WELCOMED,
+  LOG_OUT_DONE,
+} from '../../reducers/user';
 import { POST_ADD_DONE } from '../../reducers/post';
 
 // 네비바스타일
@@ -99,6 +103,9 @@ export default function Header(props) {
       // 로그아웃
     } else if (state.user.logOutDone) {
       addPop({ type: 'logout', id: v4() });
+      dispatch({
+        type: LOG_OUT_DONE,
+      });
     } else if (state.post.postAddDone) {
       addPop({ type: 'green', id: v4(), text: '게시글이 등록되었습니다' });
       dispatch({

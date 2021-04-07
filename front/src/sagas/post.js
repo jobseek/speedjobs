@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
   POST_ADD_FAIL,
   POST_ADD_REQUEST,
+  POST_ADD_SUCCESS,
   POST_LIST_FAIL,
   POST_LIST_REQUEST,
   POST_LIST_SUCCESS,
@@ -44,7 +45,7 @@ function* postAdd(action) {
   try {
     const post = yield call(postAddApi, action);
     yield put({
-      type: POST_LIST_SUCCESS,
+      type: POST_ADD_SUCCESS,
       data: post.data,
     });
   } catch (error) {

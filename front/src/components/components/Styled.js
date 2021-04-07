@@ -217,8 +217,18 @@ const TagBodyInside = styled.div`
   ${(props) =>
     props.tagType &&
     css`
-      border: #7c7c7c 1px solid;
+      border: #d3d3d3 1px solid;
       color: black;
+      &:after {
+        transform: translate(5px, 7px);
+        transition: all 1s ease-in-out;
+        content: '';
+        opacity: 0;
+      }
+      &:hover:after {
+        content: ' \\25B6';
+        opacity: 1;
+      }
     `};
   border-radius: 5px;
   //min-width: 125px;
@@ -265,10 +275,13 @@ export const StyledLike = styled.div`
   width: 50px;
   border-radius: 15px;
   height: 100px;
-  background-color: white;
-  border: grey 1px solid;
+  background-color: #eee;
+  //border: grey 1px solid;
   display: none;
-
+  padding: 10px 0 0 0;
+  & > * {
+    margin-bottom: 5px;
+  }
   @media (min-width: 576px) {
     display: none;
   }
