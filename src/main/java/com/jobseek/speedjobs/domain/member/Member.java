@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.*;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.*;
 
@@ -17,7 +16,6 @@ import static javax.persistence.FetchType.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
 @Entity
 @Table(name = "members")
 public class Member{
@@ -27,17 +25,13 @@ public class Member{
 	@Column(name = "member_id")
 	private Long id;
 
-	private String name;
-
 	private String sex;
 
 	private String birth;
 
-	private String nickName;
+	private String nickname;
 
 	private String intro;
-
-	private String profileImage;
 
 	@OneToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
@@ -45,4 +39,18 @@ public class Member{
 
 	@OneToMany(mappedBy = "member", cascade = ALL)
 	private List<Resume> resumeList = new ArrayList<>();
+
+	@Builder
+	public Member(String sex, String birth, String nickname, String intro) {
+		this.sex = sex;
+		this.birth = birth;
+		this.nickname = nickname;
+		this.intro = intro;
+	}
+
+	public void setResumeList(List<Resume> resumeList) {
+		this.resumeList = resumeList;
+	}
+
+
 }

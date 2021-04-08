@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.dto.user;
 
+import com.jobseek.speedjobs.domain.user.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,7 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ToString
 @Getter
@@ -34,10 +37,8 @@ public class UserSaveRequest {
 	private String password;
 
 	@NotBlank
-	private String role;
+	private Role role;
 
-	public Role getRole() {
-		return Role.valueOf(role);
-	}
+	private String contact;
 
 }
