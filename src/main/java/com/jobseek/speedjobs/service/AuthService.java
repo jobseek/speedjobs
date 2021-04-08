@@ -25,65 +25,65 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-  private final UserRepository userRepository;
-  private final JwtUtil jwtUtil;
-  private final RedisUtil redisUtil;
-  private final CookieUtil cookieUtil;
-  private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final JwtUtil jwtUtil;
+	private final RedisUtil redisUtil;
+	private final CookieUtil cookieUtil;
+	private final PasswordEncoder passwordEncoder;
 
-  public TokenResponse login(TokenRequest request, HttpServletResponse response) {
-    Provider provider = request.getProvider();
-    User user;
+	public TokenResponse login(TokenRequest request, HttpServletResponse response) {
+		Provider provider = request.getProvider();
+		User user;
 
-    if (Provider.LOCAL.equals(provider)) {
-      user = userRepository.findByEmail(request.getEmail())
-          .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 갖는 유저가 존재하지 않습니다."));
-      if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-        throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
-      }
-    } else if (Arrays.stream(Provider.values())
-        .anyMatch(p -> p.name().equals(provider.name()))) {
-      String oAuthId = request.getOauthId();
-      user = userRepository.findByProviderAndOauthId(provider, oAuthId)
-          .orElseThrow(() -> new IllegalArgumentException("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
-    } else {
-      throw new OAuth2RegistrationException();
-    }
+		if (Provider.LOCAL.equals(provider)) {
+			user = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new IllegalArgumentException("해당 이메일을 갖는 유저가 존재하지 않습니다."));
+			if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+				throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
+			}
+		} else if (Arrays.stream(Provider.values())
+			.anyMatch(p -> p.name().equals(provider.name()))) {
+			String oAuthId = request.getOauthId();
+			user = userRepository.findByProviderAndOauthId(provider, oAuthId)
+				.orElseThrow(() -> new IllegalArgumentException("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
+		} else {
+			throw new OAuth2RegistrationException();
+		}
 
-    String accessToken = jwtUtil.createAccessToken(UserTokenDto.from(user));
-    String refreshToken = jwtUtil.createRefreshToken(UserTokenDto.from(user));
+		String accessToken = jwtUtil.createAccessToken(UserTokenDto.from(user));
+		String refreshToken = jwtUtil.createRefreshToken(UserTokenDto.from(user));
 
-    redisUtil.set(refreshToken, user.getId().toString(), jwtUtil.getRefreshValidity());
+		redisUtil.set(refreshToken, user.getId().toString(), jwtUtil.getRefreshValidity());
 
-    Cookie accessCookie = cookieUtil.createCookie(jwtUtil.ACCESS_TOKEN, accessToken,
-        jwtUtil.accessValidity.intValue() / 1000);
+		Cookie accessCookie = cookieUtil.createCookie(jwtUtil.ACCESS_TOKEN, accessToken,
+			jwtUtil.accessValidity.intValue() / 1000);
 
-    Cookie refreshCookie = cookieUtil.createCookie(jwtUtil.REFRESH_TOKEN, refreshToken,
-        jwtUtil.refreshValidity.intValue() / 1000);
+		Cookie refreshCookie = cookieUtil.createCookie(jwtUtil.REFRESH_TOKEN, refreshToken,
+			jwtUtil.refreshValidity.intValue() / 1000);
 
-    response.addCookie(accessCookie);
-    response.addCookie(refreshCookie);
+		response.addCookie(accessCookie);
+		response.addCookie(refreshCookie);
 
-    return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-  }
+		return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+	}
 
-  public void logout(HttpServletRequest request) {
-    String refreshToken = jwtUtil.getTokenFromRequest(request);
+	public void logout(HttpServletRequest request) {
+		String refreshToken = jwtUtil.getTokenFromRequest(request);
 
-    if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.delete(refreshToken)) {
-      throw new InvalidTokenException();
-    }
-  }
+		if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.delete(refreshToken)) {
+			throw new InvalidTokenException();
+		}
+	}
 
   public TokenResponse reissueToken(HttpServletRequest request, HttpServletResponse response) {
     String refreshToken = jwtUtil.getTokenFromRequest(request);
 
-    if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.hasKey(refreshToken)) {
-      throw new InvalidTokenException();
-    }
+		if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.hasKey(refreshToken)) {
+			throw new InvalidTokenException();
+		}
 
-    UserTokenDto userTokenDto = jwtUtil.getUserTokenDto(refreshToken);
-    String accessToken = jwtUtil.createAccessToken(userTokenDto);
+		UserTokenDto userTokenDto = jwtUtil.getUserTokenDto(refreshToken);
+		String accessToken = jwtUtil.createAccessToken(userTokenDto);
 
     Cookie accessCookie = cookieUtil
         .createCookie(jwtUtil.ACCESS_TOKEN, accessToken, jwtUtil.accessValidity.intValue() / 1000);

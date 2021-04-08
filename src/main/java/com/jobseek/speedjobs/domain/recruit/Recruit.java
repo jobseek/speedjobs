@@ -1,8 +1,7 @@
 package com.jobseek.speedjobs.domain.recruit;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.corporation.Corporation;
-import com.jobseek.speedjobs.domain.corporation.CorporationDetail;
+import com.jobseek.speedjobs.domain.company.Company;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -50,5 +49,5 @@ public class Recruit extends BaseTimeEntity {
 
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "corp_id")
-	private Corporation corporation;
+	private Company company;
 }

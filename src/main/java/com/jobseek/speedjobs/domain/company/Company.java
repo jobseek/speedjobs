@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.domain.corporation;
+package com.jobseek.speedjobs.domain.company;
 
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
@@ -16,29 +16,43 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
 @Entity
-@Table(name = "corporations")
-public class Corporation {
+@Table(name = "companies")
+public class Company {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "corp_id")
+	@Column(name = "company_id")
 	private Long id;
 
-	private String corporationName;
+	private String companyName;
 
 	private String logoImage;
 
 	private int scale;
 
 	@Embedded
-	private CorporationDetail corporationDetail;
+	private CompanyDetail companyDetail;
 
 	@OneToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "corporation", cascade = ALL)
+	@OneToMany(mappedBy = "company", cascade = ALL)
 	private List<Recruit> recruitList = new ArrayList<>();
+
+	@Builder
+	public Company(String companyName, String logoImage, int scale,
+		CompanyDetail companyDetail) {
+		this.companyName = companyName;
+		this.logoImage = logoImage;
+		this.scale = scale;
+		this.companyDetail = companyDetail;
+	}
+
+	public void setRecruitList(List<Recruit> recruitList) {
+		this.recruitList = recruitList;
+	}
+
+
 }
