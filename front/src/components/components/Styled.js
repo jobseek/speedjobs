@@ -417,7 +417,7 @@ export const TextAreaCombine = ({ cols, rows }) => {
   return (
     <div
       className={'container-fluid'}
-      style={{ padding: '0px 58px 0px 30px', width: '100%' }}
+      style={{ padding: '0 0p 0px 30px', width: '100%' }}
     >
       <TextArea
         id="content"
@@ -559,7 +559,7 @@ export const EducationItems = styled.div`
 `;
 
 export const ResumeItems = styled.div`
-  margin-bottom: 5px;
+  margin: 0 5px 5px 0;
 `;
 
 export const ResumeTitles = styled.div`
@@ -582,17 +582,20 @@ export const Wrapper = styled.div`
   display: inline-block;
 
   ${(props) =>
-    props.wide &&
+    props.basic &&
     css`
-      display: block;
-      padding-left: 30px;
-      padding-right: 50px;
       width: 100%;
     `}
   ${(props) =>
-    props.small &&
+    props.sns &&
     css`
-      width: 340px;
+      margin: 0;
+      width: 100%;
+    `}
+  ${(props) =>
+    props.item &&
+    css`
+      width: 200px;
     `}
   &:focus {
     outline: none;
@@ -644,7 +647,7 @@ export const PostWriterDate = styled.div`
   }
 `;
 
-export const MyPlus = styled.button`
+export const MyPlus = styled.div`
   float: right;
   background: none;
   outline: none;

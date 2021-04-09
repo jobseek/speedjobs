@@ -14,11 +14,14 @@ export default function ResumeContents() {
 
   return (
     <>
-      <StyledArticle className={'col-12 col-lg-10'}>
+      <StyledArticle
+        className={'col-12 col-lg-10'}
+        style={{ border: '1px solid black' }}
+      >
         <div className={'container-fluid'}>
           <ResumeBasic />
-          <ResumeCertificate />
           <ResumeEducation />
+          <ResumeCertificate />
           <ResumeCareer />
           <ResumeSelf />
           <ResumeSkill />

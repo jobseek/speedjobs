@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import { ko } from 'date-fns/esm/locale';
+import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ToggleOff } from '@styled-icons/bootstrap/ToggleOff';
 import { ToggleOn } from '@styled-icons/bootstrap/ToggleOn';
-import { Private, ResumeImg, ResumeTitle, Warning } from '../Styled';
+import { Private, ResumeImg, ResumeTitles, Warning } from '../Styled';
 import ResumeInputs from './ResumeInputs';
 
 const Toggle1 = styled(ToggleOff)`
@@ -19,16 +22,35 @@ const Toggle2 = styled(ToggleOn)`
   padding-top: 5px;
 `;
 
+const StyledDatePicker = styled(DatePicker)`
+  //display: inline-block;
+  width: 255px;
+  height: 35px;
+  border-radius: 27px;
+  border: 1px solid silver;
+  margin-bottom: 5px;
+  padding-left: 15px;
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+`;
+
 export default function ResumeBasic() {
   const [bookmark, setBookmark] = useState(false);
-
+  const [startDate, setStartDate] = useState(null);
   const handleBookmark = () => {
     setBookmark(!bookmark);
   };
+
   return (
     <>
-      <ResumeTitle>
-        기본 정보
+      <div style={{ marginBottom: '40px', border: '1px solid black' }}>
+        <h5 style={{ display: 'inline-block' }}>기본 정보</h5>
         <Warning>
           입력하신 정보는 절대 사용자 동의 없이 외부로 유출, 공개되지 않습니다.
         </Warning>
@@ -46,35 +68,70 @@ export default function ResumeBasic() {
           </div>
         </span>
         {bookmark ? <Private>공개</Private> : <Private>비공개</Private>}
-      </ResumeTitle>
-      <div
-        className={'row w-100'}
-        style={{
-          margin: '0px 1px 10px 1px',
-        }}
-      >
-        <div className={'col-12 col-lg-4 text-center'}>
-          <ResumeImg>이미지 업로드</ResumeImg>
+        <div
+          className={'row w-100'}
+          style={{
+            margin: '0px 1px 10px 1px',
+          }}
+        >
+          <div className={'col-12 col-lg-4 pr-0'}>
+            <div
+              style={{
+                width: '200px',
+                height: '200px',
+              }}
+            >
+              <ResumeImg>이미지 업로드</ResumeImg>
+            </div>
+          </div>
+          <div className={'col-12 col-lg-8 row w-100 p-0 m-0'}>
+            <div className={'col-12 col-lg-6 pl-0'}>
+              <ResumeInputs basic name={'이름'} />
+              <div
+                style={{
+                  marginBottom: '5px',
+                }}
+              >
+                <ResumeTitles>&nbsp;생년월일</ResumeTitles>
+                <div>
+                  <StyledDatePicker
+                    locale={ko}
+                    dateFormat="yyyy-MM-dd"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    peekMonthDropdown
+                    showYearDropdown
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={'col-12 col-lg-6 pl-0'}>
+              <ResumeInputs basic name={'성별'} />
+              <ResumeInputs basic name={'연락처'} />
+            </div>
+            <div className={'row w-100'} style={{ padding: '0 0 0 15px' }}>
+              <div className={'col-12'} style={{ padding: '0' }}>
+                <ResumeInputs basic name={'주소'} />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className={'col-12 col-lg-4'}>
-          <ResumeInputs name={'이름'} />
-          <ResumeInputs name={'생년월일'} />
-          <ResumeInputs name={'주소'} />
+        <div
+          className={'col-12'}
+          style={{
+            width: '100%',
+            padding: '0',
+          }}
+        >
+          <div
+            style={{
+              padding: '0 15px 0 15px',
+            }}
+          >
+            <ResumeInputs sns name={'GitHub'} />
+            <ResumeInputs sns name={'기술 블로그'} />
+          </div>
         </div>
-        <div className={'col-12 col-lg-4 '}>
-          <ResumeInputs name={'성별'} />
-          <ResumeInputs name={'연락처'} />
-        </div>
-      </div>
-      <div
-        className={'col-12'}
-        style={{
-          width: '100%',
-          marginBottom: '30px',
-        }}
-      >
-        <ResumeInputs name={'GitHub'} />
-        <ResumeInputs name={'기술 블로그'} />
       </div>
     </>
   );
