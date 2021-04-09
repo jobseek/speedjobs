@@ -23,12 +23,11 @@ export default function PostDetailComment(props) {
   const mapComment = dummyComment.map((comment) => (
     <Comment
       writer={comment.title}
-      content={comment.content}
-      date="9999-99-99"
+      content={comment.postDetail.content}
+      date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
     ></Comment>
   ));
 
-  const [newDummy, setNewDummy] = useState([]);
   const comment = useSelector((state) => state.comment);
   const dispatch = useDispatch();
   const addComment = (newCom) => {
@@ -36,31 +35,32 @@ export default function PostDetailComment(props) {
       type: COMMENT_ADD_REQUEST,
       data: newCom,
     });
-    setNewDummy([newCom]);
   };
+  // 화면 변환시 최초 실행
   useEffect(() => {
-    if (!comment.commentGetLoading) {
-      dispatch({
-        type: COMMENT_GET_REQUEST,
-      });
-    }
-  }, [comment.commentGetLoading, dispatch]);
+    dispatch({
+      type: COMMENT_GET_REQUEST,
+    });
+  }, []);
 
   useEffect(() => {
-    if (comment.commentAddDone) {
-      console.log('AddData= ', comment.commentAddData);
-      setDummyComment((prev) => newDummy.concat(prev));
-      dispatch({
-        type: COMMENT_ADD_DONE,
-      });
-    } else if (comment.commentGetDone) {
+    if (comment.commentGetDone) {
       const getArr = comment.commentGetData.content;
       setDummyComment([...getArr]);
       dispatch({
         type: COMMENT_GET_DONE,
       });
+    } else if (comment.commentAddDone) {
+      console.log('AddData= ', comment.commentAddData);
+      dispatch({
+        type: COMMENT_ADD_DONE,
+      });
+    } else if (comment.commentAddData !== null) {
+      dispatch({
+        type: COMMENT_GET_REQUEST,
+      });
     }
-  }, [comment, dispatch, newDummy]);
+  }, [comment, dispatch]);
 
   return (
     <>
