@@ -19,6 +19,7 @@ import {
 function* addComment(action) {
   try {
     const result = yield call(addCommentAPI, action.data);
+    console.log('result= ', result.data);
     yield put({
       type: COMMENT_ADD_SUCCESS,
       data: result.data,
@@ -38,6 +39,7 @@ function addCommentAPI(data) {
     })
     .then((response) => response)
     .catch((error) => new Error(error));
+  console.log('res= ', res);
   return res;
 }
 
