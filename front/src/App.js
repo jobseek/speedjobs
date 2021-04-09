@@ -22,6 +22,7 @@ import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';
 import RecruitAdd from './components/pages/RecruitAdd';
 import ScrollToTop from './components/includes/ScrollToTop';
+import Test from './components/pages/Test';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -75,6 +76,7 @@ function App() {
         <ScrollToTop></ScrollToTop>
         <Header />
         <Container>
+          <Route exact path={'/test'} component={Test} />
           <Route exact path={'/community'} component={Community} />
           <Route exact path={'/'} component={Home} />
           <Route exact path={'/recruit'} component={Recruitment} />

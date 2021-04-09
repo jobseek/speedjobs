@@ -3,9 +3,9 @@ import { Justify, PersonCircle, Search } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
-import NavDrop, { Background } from '../components/NavDrop';
-import NavSearch from '../components/NavSearch';
-import NavMenu from '../components/NavMenu';
+import NavDrop, { Background } from '../components/Nav/NavDrop';
+import NavSearch from '../components/Nav/NavSearch';
+import NavMenu from '../components/Nav/NavMenu';
 import PopUp from '../components/Notification/PopUp';
 import MapLink from '../data/mapLink';
 import ModalAlert from '../components/Notification/ModalAlert';
@@ -23,7 +23,7 @@ const NavBar = styled.div`
   height: 60px;
   padding: 15px 0px 0px 0px;
   background-color: #333333;
-  z-index: 2;
+  z-index: 6;
   margin: 0px;
 `;
 

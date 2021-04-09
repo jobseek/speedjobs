@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import Banner from '../components/Banner';
+import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
 import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
+// import { loginInterceptor } from '../../auth/interceptor';
 
 export default function Community(props) {
   const history = useHistory();
@@ -19,16 +20,21 @@ export default function Community(props) {
       (entries) => {
         const firstEntry = entries[0];
         const y = firstEntry.boundingClientRect.y;
+        console.log(y);
+        console.log(prevY.current);
+        console.log(!isLast.current);
         if (prevY.current > y && !isLast.current) {
+          console.log('load');
           loadMore();
+          prevY.current = y;
         }
-        prevY.current = y;
       },
       { threshold: 1 }
     )
   );
 
   const loadMore = () => {
+    console.log(page.current);
     dispatch({
       type: POST_LIST_REQUEST,
       data: {
@@ -129,7 +135,13 @@ export default function Community(props) {
           {/* 게시글 end*/}
         </div>
         <div
-          style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
+          style={{
+            position: 'relative',
+            marginBottom: '100px',
+            backgroundColor: 'black',
+            width: '100px',
+            height: '100px',
+          }}
           ref={targetRef}
         ></div>
       </div>

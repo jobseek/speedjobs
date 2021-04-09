@@ -1,7 +1,7 @@
 import React from 'react';
-import NavLink from '../components/NavLink';
-import { MenuLink, MenuList } from '../components/NavMenu';
-import { DropLink, DropList } from '../components/NavDrop';
+import NavLink from '../components/Nav/NavLink';
+import { MenuLink, MenuList } from '../components/Nav/NavMenu';
+import { DropLink, DropList } from '../components/Nav/NavDrop';
 import { LOG_OUT_REQUEST } from '../../reducers/user';
 
 const Links = [

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Background } from './NavDrop';
-import SearchArea from './Search/SearchArea';
+import SearchArea from '../Search/SearchArea';
 
 // const InAnimation = keyframes`
 //   0% {
