@@ -24,6 +24,9 @@ const BlogCommentAvatar = styled.div`
   filter: Alpha(opacity=100);
   border-radius: 4px;
   background-color: #d3d3d3;
+  @media (max-width: 992px) {
+    width: 0;
+  }
 `;
 
 const PostComment = styled.div`
@@ -38,7 +41,9 @@ const PostComment = styled.div`
   overflow-wrap: normal;
 
   @media (max-width: 992px) {
+    margin-left: 0;
     padding: 5px 10px;
+    width: 100%;
   }
 `;
 
@@ -47,7 +52,7 @@ const A1 = styled.a`
   text-decoration: none;
 `;
 
-const P1 = styled.p`
+const P1 = styled.div`
   font-size: 14px;
   color: #4e5564;
   padding-bottom: 10px;
