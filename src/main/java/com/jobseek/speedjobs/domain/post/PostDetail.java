@@ -15,7 +15,7 @@ import static lombok.AccessLevel.*;
 @Getter @Setter @Builder
 public class PostDetail {
 
-//	@Column(columnDefinition = "TEXT")
+	//	@Column(columnDefinition = "TEXT")
 	@Lob
 	private String content;
 
