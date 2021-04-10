@@ -1,5 +1,10 @@
 package com.jobseek.speedjobs.domain.user;
 
+import com.jobseek.speedjobs.domain.likelist.CompanyLikeList;
+import com.jobseek.speedjobs.domain.likelist.PostLikeList;
+import com.jobseek.speedjobs.domain.likelist.RecruitLikeList;
+import com.jobseek.speedjobs.domain.message.Message;
+import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import javax.persistence.*;
 
@@ -13,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
 
-@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,8 +33,7 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
 
@@ -63,8 +65,23 @@ public class User extends BaseTimeEntity {
 	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
 	private Company company;
 
-	@OneToMany(mappedBy = "user", cascade = ALL)
+	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
 	private List<Post> postList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	private List<CompanyLikeList> companyLikeLists = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	private List<RecruitLikeList> recruitLikeLists = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	private List<PostLikeList> postLikeLists = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	private List<Comment> commentList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	private List<Message> messageList = new ArrayList<>();
 
 	@Builder
 	public User(String name, String email, String password, String picture, String contact,

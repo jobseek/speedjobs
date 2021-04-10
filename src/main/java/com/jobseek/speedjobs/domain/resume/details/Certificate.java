@@ -1,5 +1,6 @@
-package com.jobseek.speedjobs.domain.resume;
+package com.jobseek.speedjobs.domain.resume.details;
 
+import com.jobseek.speedjobs.domain.resume.Resume;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,18 +8,16 @@ import java.time.LocalDateTime;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
-@ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@Entity
+@Entity @Getter @Setter @Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @Table(name = "certificates")
 public class Certificate {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "cert_id")
 	private Long id;
 

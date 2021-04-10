@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@ToString
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
