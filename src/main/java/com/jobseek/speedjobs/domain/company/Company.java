@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.domain.company;
 
+import com.jobseek.speedjobs.domain.likelist.CompanyLikeList;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
 import lombok.*;
@@ -11,22 +12,23 @@ import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
-@ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
+@Entity @Getter @Setter @Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @Table(name = "companies")
 public class Company {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "company_id")
 	private Long id;
 
+	@Column(unique = true, length = 100)
 	private String companyName;
 
+	@Column(length = 120)
 	private String logoImage;
 
 	private int scale;
@@ -38,8 +40,11 @@ public class Company {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "company", cascade = ALL)
+	@OneToMany(mappedBy = "company", fetch = LAZY, cascade = ALL)
 	private List<Recruit> recruitList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "company", fetch = LAZY, cascade = ALL)
+	private List<CompanyLikeList> companyLikeLists = new ArrayList<>();
 
 	@Builder
 	public Company(String companyName, String logoImage, int scale,

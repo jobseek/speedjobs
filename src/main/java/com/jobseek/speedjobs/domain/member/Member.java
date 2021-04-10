@@ -11,17 +11,16 @@ import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
-@ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
+@Entity @Getter @Setter @Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @Table(name = "members")
 public class Member{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
 	private Long id;
 
@@ -37,7 +36,7 @@ public class Member{
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "member", cascade = ALL)
+	@OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
 	private List<Resume> resumeList = new ArrayList<>();
 
 	@Builder

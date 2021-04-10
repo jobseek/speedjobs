@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
