@@ -1,30 +1,37 @@
 package com.jobseek.speedjobs.domain.user;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.likelist.CompanyLikeList;
 import com.jobseek.speedjobs.domain.likelist.PostLikeList;
 import com.jobseek.speedjobs.domain.likelist.RecruitLikeList;
+import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.message.Message;
 import com.jobseek.speedjobs.domain.post.Comment;
-import com.jobseek.speedjobs.dto.user.UserSaveRequest;
-import javax.persistence.*;
-
-import com.jobseek.speedjobs.domain.BaseTimeEntity;
-
-import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.post.Post;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,7 +40,8 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
 
@@ -98,29 +106,12 @@ public class User extends BaseTimeEntity {
 
 	public void setMember(Member member) {
 		this.member = member;
+		member.setUser(this);
 	}
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	public static User createCustomUser(UserSaveRequest userSaveRequest, PasswordEncoder passwordEncoder) {
-		User user = User.builder()
-			.name(userSaveRequest.getName())
-			.email(userSaveRequest.getEmail())
-			.password(passwordEncoder.encode(userSaveRequest.getPassword()))
-			.contact(userSaveRequest.getContact())
-			.role(userSaveRequest.getRole())
-			.provider(Provider.LOCAL)
-			.build();
-
-		if (user.getRole() == Role.ROLE_MEMBER) {
-			user.setMember(Member.builder().build());
-		} else if (user.getRole() == Role.ROLE_COMPANY) {
-			user.setCompany(Company.builder().build());
-		}
-
-		return user;
+		company.setUser(this);
 	}
 
 	public User updateOAuthUserInfo(String name, String picture) {

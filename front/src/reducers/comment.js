@@ -43,7 +43,6 @@ const reducer = (state = initialState, action) =>
         break;
       case COMMENT_ADD_DONE:
         draft.commentAddDone = false;
-        draft.commentAddData = null;
         break;
 
       case COMMENT_GET_REQUEST:
@@ -62,6 +61,8 @@ const reducer = (state = initialState, action) =>
         draft.commentGetError = action.error;
         break;
       case COMMENT_GET_DONE:
+        draft.commentAddDone = false;
+        draft.commentAddData = null;
         draft.commentGetDone = false;
         draft.commentGetData = null;
         break;

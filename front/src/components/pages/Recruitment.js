@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import Banner from '../components/Banner';
+import Banner from '../components/banner/Banner';
 import RecruitCard from '../components/RecruitCard';
 import Tags from '../components/Tags';
 import Line from '../components/Line';
