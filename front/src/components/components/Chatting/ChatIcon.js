@@ -6,7 +6,7 @@ const Icon = styled.div`
   position: fixed;
   bottom: 30px;
   right: 30px;
-  display: inline-block;
+  display: none;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -17,13 +17,20 @@ const Icon = styled.div`
   transform: scaleX(-1);
   margin: auto;
   padding-top: 10px;
+  &:hover {
+    background-color: black;
+  }
+
+  @media (max-width: 992px) {
+    display: inline-block;
+  }
 `;
 
 export default function ChatIcon(props) {
   return (
     <>
       <Icon>
-        <ChatLeftDotsFill />
+        <ChatLeftDotsFill onClick={() => props.onclick()} />
       </Icon>
     </>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import BannerImg from './img/img.png';
+import BannerImg from './img/img.jpeg';
 // import BannerSvg from './img/BannerSvg';
 
 const Jumbo = styled.div`

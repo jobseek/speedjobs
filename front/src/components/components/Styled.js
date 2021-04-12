@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Plus } from '@styled-icons/octicons';
+import { Search } from 'react-bootstrap-icons';
 // 버튼 컬러로 노란색 흰색 지정가능
 const StyledButtonInside = styled.div`
   color: #7c7c7c;
@@ -28,6 +30,7 @@ const StyledButtonInside = styled.div`
     width: 60px;
     font-size: 10px;
   }
+
   ${(props) =>
     props.sm &&
     css`
@@ -70,6 +73,7 @@ const StyledButtonInside = styled.div`
     `} &:hover {
     background-color: #f2d411;
   }
+
   //흰색일경우
   ${(props) =>
     props.white &&
@@ -77,6 +81,7 @@ const StyledButtonInside = styled.div`
       color: #7c7c7c;
       background-color: white;
       border: 1px solid #7c7c7c;
+
       &:hover {
         color: white;
         background-color: #7c7c7c;
@@ -130,6 +135,7 @@ export const StyledHeaderDivInside = styled.div`
   h1 {
     font-size: 20px;
   }
+
   @media (max-width: 992px) {
     padding: 5px 0 0 0;
   }
@@ -142,11 +148,18 @@ export const StyledHeaderDivInside = styled.div`
         padding-left: 0;
       }
     `}
+
+  ${(props) =>
+    props.fix &&
+    css`
+      position: relative;
+      top: 30px;
+    `}
 `;
 
-export const StyledHeaderDiv = ({ children, padding }) => (
+export const StyledHeaderDiv = ({ children, padding, fix }) => (
   <>
-    <StyledHeaderDivInside padding={padding}>
+    <StyledHeaderDivInside padding={padding} fix={fix}>
       <div style={{ borderBottom: '1px solid #eee ', paddingBottom: '20px' }}>
         {children}
       </div>
@@ -204,8 +217,18 @@ const TagBodyInside = styled.div`
   ${(props) =>
     props.tagType &&
     css`
-      border: #7c7c7c 1px solid;
+      border: #d3d3d3 1px solid;
       color: black;
+      &:after {
+        transform: translate(5px, 7px);
+        transition: all 1s ease-in-out;
+        content: '';
+        opacity: 0;
+      }
+      &:hover:after {
+        content: ' \\25B6';
+        opacity: 1;
+      }
     `};
   border-radius: 5px;
   //min-width: 125px;
@@ -252,10 +275,13 @@ export const StyledLike = styled.div`
   width: 50px;
   border-radius: 15px;
   height: 100px;
-  background-color: white;
-  border: grey 1px solid;
+  background-color: #eee;
+  //border: grey 1px solid;
   display: none;
-
+  padding: 10px 0 0 0;
+  & > * {
+    margin-bottom: 5px;
+  }
   @media (min-width: 576px) {
     display: none;
   }
@@ -286,8 +312,14 @@ export const StyledLike = styled.div`
     display: block;
   }
 `;
-export const TagBody = ({ sm, children, tagType, onClick, grey }) => (
-  <TagBodyInside sm={sm} tagType={tagType} onClick={onClick} grey={grey}>
+export const TagBody = ({ sm, children, tagType, onClick, grey, style }) => (
+  <TagBodyInside
+    sm={sm}
+    tagType={tagType}
+    onClick={onClick}
+    grey={grey}
+    style={style}
+  >
     <TagText>{children}</TagText>
   </TagBodyInside>
 );
@@ -377,7 +409,9 @@ export const TextAreaCombine = ({ cols, rows }) => {
   const onChangeHandler = (e) => {
     if (e.target.value.length <= 500) {
       setTextLength(e.target.value);
-    } else alert('500자 이내로 작성해주세요');
+    } else {
+      alert('500자 이내로 작성해주세요');
+    }
   };
 
   return (
@@ -420,8 +454,8 @@ export const MyLink = styled(Link)`
 `;
 
 export const MySideMenu = styled.div`
-  position: relative;
-  top: -100px;
+  position: sticky;
+  top: 100px;
   width: 150px;
   border: 0.5px solid silver;
   border-radius: 10px;
@@ -539,10 +573,14 @@ export const InputTextResume = styled.input`
   border: 1px solid silver;
   padding: 0 20px 3px;
   margin-bottom: 5px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const Wrapper = styled.div`
   display: inline-block;
+
   ${(props) =>
     props.wide &&
     css`
@@ -569,3 +607,99 @@ export const Wrapper = styled.div`
       `}
   }
 `;
+
+//  #f5df4d
+export const PostTextArea = styled.textarea`
+  resize: none;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #d3d3d3;
+  padding: 8px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const PostTitleInput = styled.input`
+  border: none;
+  font-size: 25px;
+  padding-left: 15px;
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: 992px) {
+    font-size: 15px;
+    margin-left: 10px;
+  }
+`;
+
+export const PostWriterDate = styled.div`
+  margin: 10px 0px 20px 0px;
+  @media (max-width: 992px) {
+    font-size: 13px;
+    margin-left: 3px;
+  }
+`;
+
+export const MyPlus = styled.button`
+  float: right;
+  background: none;
+  outline: none;
+  border: none;
+  color: black;
+  font-size: 25px;
+  cursor: pointer;
+  padding-right: 0.9rem;
+  padding-left: 1rem;
+  padding-bottom: 0.4rem;
+  margin-right: 50px;
+  border-radius: 50%;
+  transition: 0.1s background ease-in;
+  &:hover {
+    background: radial-gradient(gold, white, white);
+  }
+`;
+
+export const Add = styled(Plus)`
+  width: 18px;
+  color: black;
+`;
+
+export const DataInputs = styled.input`
+  border-radius: 10px;
+  padding: 2px 0 2px 10px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const SearchInputInside = styled.input`
+  width: 100%;
+  border: none;
+  height: 50px;
+  border-radius: 15px;
+  border-bottom: 1px solid #eee;
+  padding: 0 0 4px 40px;
+  font-size: 25px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const SearchInput = ({ placeholder, onChange, value }) => {
+  return (
+    <>
+      <Search
+        style={{ position: 'absolute', top: '14px', left: '12px' }}
+      ></Search>
+      <SearchInputInside
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+      ></SearchInputInside>
+    </>
+  );
+};

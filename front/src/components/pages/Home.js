@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import TitleCards from './home/TitleCards';
 import AnnounceCard from './home/AnnounceCard';
-import Banner from '../components/Banner';
+import Banner from '../components/banner/Banner';
 
 export default function Home(props) {
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
   return (
     <>
       <Banner></Banner>

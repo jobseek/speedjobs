@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import Banner from '../components/Banner';
+import Banner from '../components/banner/Banner';
 import RecruitCard from '../components/RecruitCard';
 import Tags from '../components/Tags';
 import Line from '../components/Line';
+import { TagBody } from '../components/Styled';
 
 const RecruitContent = styled.div`
   border-radius: 15px;
@@ -12,9 +14,8 @@ const RecruitContent = styled.div`
 `;
 
 export default function Recruitment(props) {
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
+  const history = useHistory();
+
   const [update, setUpdate] = useState(0);
   const [tags] = useState([
     { name: 'backEnd', id: 0, selected: false },
@@ -64,10 +65,39 @@ export default function Recruitment(props) {
 
   return (
     <>
-      <Banner></Banner>
+      <Banner />
       <div className="container">
         <div style={{ textAlign: 'start', marginBottom: '10px' }}>
           <Tags tagList={tags}>filter</Tags>
+        </div>
+        <div className={'col-12 col-lg-9'}>
+          <div
+            className={'text-right'}
+            style={{
+              position: 'relative',
+              height: '60px',
+            }}
+          >
+            <div
+              className={'row justify-content-end'}
+              style={{ padding: '10px', paddingTop: '0' }}
+            >
+              {/* <Tags*/}
+              {/*  tagList={orderList}*/}
+              {/*  style={{ margin: '10px', marginTop: '0' }}*/}
+              {/* >*/}
+              {/*  조회순*/}
+              {/* </Tags>*/}
+              <TagBody
+                style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                onClick={() => {
+                  history.push('./recruitment/add');
+                }}
+              >
+                글쓰기
+              </TagBody>
+            </div>
+          </div>
         </div>
 
         <RecruitContent>{dummyOut}</RecruitContent>

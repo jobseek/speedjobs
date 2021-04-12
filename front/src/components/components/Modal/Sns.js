@@ -1,13 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Facebook, Google, Linkedin, Github } from 'react-bootstrap-icons';
+import { Kakaotalk } from '@styled-icons/simple-icons/Kakaotalk';
+import { Naver } from '@styled-icons/simple-icons/Naver';
+import { Google, Github } from 'react-bootstrap-icons';
 
-<a href="http://localhost:8081/oauth2/authorization/github"></a>;
 const MySns = styled.div`
   text-align: center;
   .logo {
     display: inline;
     //justify-content: space-between;
+
+    a {
+      margin: 0;
+    }
 
     * {
       color: #d3d3d3;
@@ -45,10 +50,14 @@ export default function Sns(props) {
           <a href="http://localhost:8081/oauth2/authorization/google">
             <Google onClick={() => props.setSns(true)} />
           </a>
-          <Facebook />
-          <Linkedin />
+          <a href="http://localhost:8081/oauth2/authorization/kakao">
+            <Kakaotalk onClick={() => props.setSns(true)} />
+          </a>
           <a href="http://localhost:8081/oauth2/authorization/github">
-            <Github />
+            <Github onClick={() => props.setSns(true)} />
+          </a>
+          <a href="http://localhost:8081/oauth2/authorization/naver">
+            <Naver onClick={() => props.setSns(true)} />
           </a>
         </div>
       </MySns>

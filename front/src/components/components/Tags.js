@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { CaretDownFill, X } from 'react-bootstrap-icons';
+import { X } from 'react-bootstrap-icons';
 import { TagBody } from './Styled';
 
 const TagDrop = styled.div`
@@ -10,7 +10,7 @@ const TagDrop = styled.div`
   top: 50px;
   left: 0px;
   background-color: white;
-  padding: 10px 30px 10px;
+  padding: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
   font-weight: bold;
@@ -18,7 +18,15 @@ const TagDrop = styled.div`
 `;
 
 const TagsInDrop = styled.div`
-  margin-bottom: 4px;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px 5px 10px;
+  color: black;
+
+  &:hover {
+    background-color: #fdf59c;
+    color: black;
+  }
 `;
 
 export default function Tags({ tagList, children, sm }) {
@@ -84,7 +92,6 @@ export default function Tags({ tagList, children, sm }) {
         }}
       >
         {children}
-        <CaretDownFill />
         {show && <TagDrop>{TagToDrop}</TagDrop>}
       </TagBody>
       {TagToMap}

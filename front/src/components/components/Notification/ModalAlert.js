@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Email from '../svg/Email';
 import { StyledButton } from '../Styled';
-import { SIGN_UP_DONE } from '../../../reducers/user';
+// import { SIGN_UP_DONE } from '../../../reducers/user';
 
 const StyledModal = styled.div`
   position: fixed;
@@ -25,22 +25,29 @@ const StyledModal = styled.div`
   }
 `;
 
-export default function ModalAlert(props) {
+export default function ModalAlert({
+  children,
+  text,
+  dispatchType,
+  setPopModal,
+}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'unset';
-      dispatch({ type: SIGN_UP_DONE });
+      dispatch({ type: { dispatchType } });
+      // SIGN_UP_DONE
     };
   });
   return (
     <>
       <StyledModal>
+        {children}
         <Email></Email>
-        <div style={{ marginTop: '35px' }}>이메일을 확인해주세요</div>
-        <StyledButton wide onClick={() => props.setPopModal(false)}>
+        <div style={{ marginTop: '35px' }}>{text}</div>
+        <StyledButton wide onClick={() => setPopModal(false)}>
           확인
         </StyledButton>
       </StyledModal>

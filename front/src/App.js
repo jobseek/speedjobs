@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCookies } from 'react-cookie';
@@ -19,6 +19,9 @@ import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
 import { loginInterceptor } from './auth/interceptor';
 import { ME_REQUEST } from './reducers/user';
+import PostAdd from './components/pages/PostAdd';
+import RecruitAdd from './components/pages/RecruitAdd';
+import ScrollToTop from './components/includes/ScrollToTop';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -28,23 +31,35 @@ const Container = styled.div`
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [interceptorID, setInterceptorID] = useState({
+    request: 0,
+    response: 0,
+  });
   const [refresh, setRefresh, removeRefresh] = useCookies(['REFRESH_TOKEN']);
   // 리프레시 토큰발급 함수 인터셉터 사용
   useEffect(() => {
-    console.log('리프레시');
     setRefresh('toRefresh', 'toRefresh');
     removeRefresh('toRefresh');
-    loginInterceptor(refresh, removeRefresh);
-  }, [refresh, removeRefresh, setRefresh, user.logInDone]);
+    const IDS = loginInterceptor(refresh, removeRefresh, interceptorID);
+    setInterceptorID((prev) => {
+      prev.request = IDS.request;
+      prev.response = IDS.response;
+      return prev;
+    });
+  }, [refresh, removeRefresh, setRefresh, user.logInDone, interceptorID]);
   //  유저 상태 유지
   useEffect(() => {
-    console.log('상태유지');
-    if (!user.meDone) {
+    if (
+      !user.logOutDone &&
+      !user.meDone &&
+      !user.logInWelcomed &&
+      refresh['REFRESH_TOKEN'] !== undefined
+    ) {
       dispatch({
         type: ME_REQUEST,
       });
     }
-  }, [dispatch, user.meDone]);
+  }, [dispatch, user.meDone, refresh, user.logOutDone, user.logInWelcomed]);
   // 메타데이터설정 아이폰일경우 화면크기 조정
   useEffect(() => {
     const meta = document.createElement('meta');
@@ -57,18 +72,21 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop></ScrollToTop>
         <Header />
         <Container>
           <Route exact path={'/community'} component={Community} />
           <Route exact path={'/'} component={Home} />
           <Route exact path={'/recruit'} component={Recruitment} />
           <Route exact path={'/recruit/detail'} component={RecruitmentDetail} />
-          <Route exact path={'/community/post'} component={PostDetail} />
+          <Route path={'/community/post/:id'} component={PostDetail} />
           <Route exact path={'/profile'} component={Profile} />
           <Route exact path={'/resume'} component={Resume} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />
+          <Route exact path={'/community/add'} component={PostAdd} />
+          <Route exact path={'/recruitment/add'} component={RecruitAdd} />
         </Container>
         <Footer />
       </BrowserRouter>

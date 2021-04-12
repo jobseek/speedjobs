@@ -24,6 +24,7 @@ export const LOG_IN_WELCOMED = 'LOG_IN_WELCOMED';
 export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
+export const LOG_OUT_DONE = 'LOG_OUT_DONE';
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
@@ -52,6 +53,7 @@ const reducer = (state = initialState, action) =>
         draft.logInLoading = true;
         draft.logInError = null;
         draft.logInDone = false;
+        draft.logOutDone = false;
         break;
       case LOG_IN_SUCCESS:
         draft.me = action.data;
@@ -73,11 +75,18 @@ const reducer = (state = initialState, action) =>
       case LOG_OUT_SUCCESS:
         draft.logOutLoading = false;
         draft.logOutDone = true;
+        draft.logInDone = false;
+        draft.logInWelcomed = false;
         draft.me = null;
+        draft.meDone = false;
         break;
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
         draft.logOutError = action.error;
+        break;
+      case LOG_OUT_DONE:
+        draft.logOutError = null;
+        draft.logOutDone = false;
         break;
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;

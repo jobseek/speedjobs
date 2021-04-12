@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { MapDrop } from '../data/mapLink';
-import Modal from './Modal/Modal';
+import { MapDrop } from '../../data/mapLink';
+import Modal from '../Modal/Modal';
 
 const NavDropBody = styled.div`
   position: absolute;
@@ -56,7 +56,7 @@ export const Background = styled.div`
   position: fixed;
   left: 0;
   right: 0;
-  top: 0;
+  top: 60px;
   width: 100%;
   height: 100%;
   background-color: black;
@@ -89,12 +89,14 @@ export default function NavDrop(props) {
   });
 
   useEffect(() => {
-    if (user.meDone || user.logInWelcomed) {
+    if ((user.meDone || user.logInWelcomed) && !user.logOutDone) {
       setIsLogin((prev) => true);
       setMapPropsLogin((prev) => {
         prev[0].name = user.me.name;
         return prev;
       });
+    } else {
+      setIsLogin(false);
     }
   }, [user, isLogin]);
 

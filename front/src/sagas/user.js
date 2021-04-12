@@ -4,7 +4,7 @@ import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
-  LOG_OUT_FAILURE,
+  // LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   ME_FAILURE,
@@ -23,20 +23,20 @@ function logInAPI(data) {
   return res;
 }
 
-function logInAfterApi(data) {
-  // console.log(data);
-  // eslint-disable-next-line
-  axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
-  return null;
+function getUserApi(data) {
+  return axios.get('/user/me', {
+    headers: {
+      Authorization: `Bearer ${data.accessToken}`,
+    },
+  });
 }
-
-function getUserApi() {
-  // 로그인된 정보를 조회
+function getUserOnly(data) {
   return axios.get('/user/me');
 }
+
 function* getMe(action) {
   try {
-    const result = yield call(getUserApi);
+    const result = yield call(getUserOnly);
     yield put({
       type: ME_SUCCESS,
       data: result.data,
@@ -52,10 +52,14 @@ function* getMe(action) {
 function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
-    // 보안 굳이 이해하실 필요 없습니다
-    logInAfterApi(result.data);
 
-    const userInfo = yield call(getUserApi);
+    // 보안 굳이 이해하실 필요 없습니다
+
+    const userInfo = yield call(getUserApi, result.data);
+
+    yield (axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${result.data.accessToken}`);
 
     yield put({
       type: LOG_IN_SUCCESS,
@@ -71,7 +75,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/auth/logout');
+  return axios.get('/auth/logout');
 }
 
 function* logOut() {
@@ -81,11 +85,14 @@ function* logOut() {
       type: LOG_OUT_SUCCESS,
     });
   } catch (error) {
-    console.error(error);
     yield put({
-      type: LOG_OUT_FAILURE,
-      error: error.response.data,
+      type: LOG_OUT_SUCCESS,
     });
+    // console.error(error);
+    // yield put({
+    //   type: LOG_OUT_FAILURE,
+    //   error: error.response.data,
+    // });
   }
 }
 
