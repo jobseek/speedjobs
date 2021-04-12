@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class PostService {
 
@@ -21,7 +21,6 @@ public class PostService {
 
 	@Transactional
 	public Long save(PostSaveDto postSaveDto) {
-		log.info("postSaveDto - {}", postSaveDto);
 		return postRepository.save(postSaveDto.toEntity()).getId();
 	}
 
@@ -33,7 +32,6 @@ public class PostService {
 		return id;
 	}
 
-	@Transactional(readOnly = true)
 	public Page<Post> findAllByPage(Pageable pageable) {
 		return postRepository.findAll(pageable);
 	}

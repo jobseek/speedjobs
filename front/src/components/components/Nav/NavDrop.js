@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { MapDrop } from '../data/mapLink';
-import Modal from './Modal/Modal';
+import { MapDrop } from '../../data/mapLink';
+import Modal from '../Modal/Modal';
 
 const NavDropBody = styled.div`
   position: absolute;

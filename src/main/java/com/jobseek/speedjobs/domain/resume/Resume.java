@@ -2,33 +2,32 @@ package com.jobseek.speedjobs.domain.resume;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.member.Member;
+import com.jobseek.speedjobs.domain.resume.details.Career;
+import com.jobseek.speedjobs.domain.resume.details.Certificate;
+import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.swing.text.Caret;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
-@ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@Entity
+@Entity @Getter @Setter @Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @Table(name = "resumes")
 public class Resume extends BaseTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "resume_id")
 	private Long id;
 
-	private String open;
+	@Enumerated
+	private Open open;
 
 	private String coverLetter;
 
@@ -44,13 +43,16 @@ public class Resume extends BaseTimeEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@OneToMany(mappedBy = "resume", cascade = ALL)
+	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
 	private List<Certificate> certificateList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "resume", cascade = ALL)
+	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
 	private List<Scholar> scholarList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "resume", cascade = ALL)
+	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
 	private List<Career> careerList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
+	private List<Apply> applies = new ArrayList<>();
 
 }

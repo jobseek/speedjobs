@@ -36,5 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
+### Setting ###
 .DS_Store
-/src/main/resources/application.yaml
+*.yaml
+*.txt

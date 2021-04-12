@@ -1,16 +1,10 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.config.auth.LoginUser;
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.user.UserInfoResponse;
-import com.jobseek.speedjobs.dto.user.UserSaveRequest;
-import com.jobseek.speedjobs.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jobseek.speedjobs.config.auth.LoginUser;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.user.UserInfoResponse;
+import com.jobseek.speedjobs.dto.user.UserSaveRequest;
+import com.jobseek.speedjobs.service.UserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 
 @Api(tags = {"1. User"})
 @RequiredArgsConstructor
@@ -38,7 +42,7 @@ public class UserController {
 	@GetMapping("/signup/confirm/{key}")
 	public void saveCustomUser(@PathVariable("key") String key,
 		HttpServletResponse response) throws IOException {
-		userService.saveUser(key);
+		userService.saveCustomUser(key);
 		response.sendRedirect("http://localhost:3000");
 	}
 

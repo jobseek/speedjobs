@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import Modal from './Modal/Modal';
-import { MapLinkUser, MapMenu } from '../data/mapLink';
+import Modal from '../Modal/Modal';
+import { MapLinkUser, MapMenu } from '../../data/mapLink';
 
 const NavMenuBody = styled.div`
   display: none;

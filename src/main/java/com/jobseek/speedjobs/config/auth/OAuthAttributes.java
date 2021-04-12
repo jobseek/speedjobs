@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.config.auth;
 
+import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import java.util.Map;
 
@@ -50,6 +51,7 @@ public class OAuthAttributes {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
 		Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 		return OAuthAttributes.builder()
@@ -104,7 +106,7 @@ public class OAuthAttributes {
 	}
 
 	public User toEntity() {
-		return User.builder()
+		User user = User.builder()
 			.name(name)
 			.email(email)
 			.picture(picture)
@@ -112,5 +114,7 @@ public class OAuthAttributes {
 			.provider(provider)
 			.oauthId(oauthId)
 			.build();
+		user.setMember(Member.builder().build());
+		return user;
 	}
 }

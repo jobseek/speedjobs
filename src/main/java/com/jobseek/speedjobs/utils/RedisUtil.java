@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.utils;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,8 +18,8 @@ public class RedisUtil {
 		redisTemplate.opsForValue().set(key, value, milliseconds, TimeUnit.MILLISECONDS);
 	}
 
-	public Object get(String key) {
-		return redisTemplate.opsForValue().get(key);
+	public Optional<Object> get(String key) {
+		return Optional.ofNullable(redisTemplate.opsForValue().get(key));
 	}
 
 	public Boolean delete(String key) {

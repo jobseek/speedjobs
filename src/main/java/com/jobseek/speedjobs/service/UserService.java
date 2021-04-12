@@ -1,19 +1,23 @@
 package com.jobseek.speedjobs.service;
 
+import java.util.UUID;
+import java.util.regex.Pattern;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jobseek.speedjobs.common.exception.NotExistException;
+import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.utils.MailUtil;
 import com.jobseek.speedjobs.utils.RedisUtil;
-import java.util.UUID;
-import java.util.regex.Pattern;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,12 +34,7 @@ public class UserService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다. id=" + userId));
 	}
 
-	public Boolean existsByEmail(String email) {
-		return userRepository.existsByEmail(email);
-	}
-
 	public void sendEmail(UserSaveRequest request) {
-		log.info("request - {}", request);
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
 		redisUtil.set(key, request, 30 * 60 * 1000);
@@ -43,30 +42,28 @@ public class UserService {
 	}
 
 	@Transactional
-	public Long saveUser(String key) {
-		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key);
-		if (request == null) {
-			throw new NotExistException("이미 처리된 요청이거나 시간초과되었습니다.");
-		}
-		User user = User.createCustomUser(request, passwordEncoder);
+	public Long saveCustomUser(String key) {
+		UserSaveRequest request = (UserSaveRequest)redisUtil.get(key)
+			.orElseThrow(() -> new NotExistException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
+		User user = request.toEntity(passwordEncoder);
 		return userRepository.save(user).getId();
 	}
 
 	private void validateUserSaveRequest(UserSaveRequest request) {
-		if (request.getRole() != Role.ROLE_MEMBER && request.getRole() != Role.ROLE_COMPANY) {
-			throw new IllegalArgumentException("올바르지 않는 요청입니다.");
-		}
-		String nameReg = "^[a-zA-Z가-힣]{2,15}$";
-		String emailReg = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
-		String passwordReg = "^[a-zA-Z0-9_\\-!#$%.]{8,20}$";
+		final String nameReg = "^[a-zA-Z가-힣]{2,15}$";
+		final String emailReg = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		final String passwordReg = "^[a-zA-Z0-9_\\-!#$%.]{8,20}$";
 
-		if (Pattern.matches(nameReg, request.getName()) &&
-			Pattern.matches(emailReg, request.getEmail()) &&
-			Pattern.matches(passwordReg, request.getPassword())) {
-			return;
+		if (!Pattern.matches(nameReg, request.getName()) ||
+			!Pattern.matches(emailReg, request.getEmail()) ||
+			!Pattern.matches(passwordReg, request.getPassword())) {
+			throw new IllegalArgumentException("회원가입 형식에 맞지 않습니다.");
 		}
-		throw new IllegalArgumentException("조건에 맞지 않습니다.");
+
+		if (userRepository.existsByEmail(request.getEmail())) {
+			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+		}
 	}
 
 }
