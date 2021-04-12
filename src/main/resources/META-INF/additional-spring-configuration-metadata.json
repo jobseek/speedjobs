@@ -14,6 +14,11 @@
       "name": "jwt.refresh-validity-in-ms",
       "type": "java.lang.Long",
       "description": "Description for jwt.refresh-validity-in-ms."
+    },
+    {
+      "name": "cloud.aws.s3.bucket",
+      "type": "java.lang.String",
+      "description": "Description for cloud.aws.s3.bucket."
     }
   ]
 }
