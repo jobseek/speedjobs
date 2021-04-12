@@ -36,8 +36,7 @@ export default function ResumeCareer() {
   };
   const test2 = () => {
     setItems((prev) => {
-      prev.pop();
-      return prev;
+      return prev.slice(0, prev.length - 1);
     });
     forceUp();
   };

@@ -29,7 +29,7 @@ export default function DatePick({ item, setItems }) {
           onChange={(date) => {
             setStartDate(date);
             setItems((prev) => {
-              prev[item.id].date = date;
+              // prev[item.id].date = date;
               return prev;
             });
           }}

@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { v4 } from 'uuid';
 import DatePick from '../DatePick';
 import ResumeInputs from './ResumeInputs';
 import { Add, MyPlus, Subtract, Warning } from '../Styled';
@@ -24,19 +25,16 @@ export default function ResumeCertificate() {
   });
 
   const test = () => {
-    setItems((prev) => [...items, { id: cnt.current, date: null }]);
+    setItems((prev) => [...items, { id: cnt, date: null }]);
     cnt.current++;
     console.log(cnt.current);
   };
-  const test2 = () => {
+  const test2 = useCallback(() => {
     setItems((prev) => {
-      prev.pop();
-      console.log(prev);
-      return prev;
+      return prev.slice(0, prev.length - 1);
     });
     forceUp();
-  };
-
+  }, []);
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
