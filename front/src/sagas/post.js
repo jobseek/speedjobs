@@ -36,7 +36,7 @@ function* getPostList(action) {
 }
 
 function postAddApi(action) {
-  return axios.post('/post/new', action.data).catch((err) => {
+  return axios.post('/post', action.data).catch((err) => {
     throw err;
   });
 }

@@ -41,7 +41,6 @@ public class UserService {
 	public void sendEmail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
-		log.info("승복이 :" + key);
 		redisUtil.set(key, request, 30 * 60 * 1000);
 		mailUtil.sendEmail(request.getEmail(), key);
 	}
