@@ -10,6 +10,7 @@ import {
   TagBody,
 } from '../components/Styled';
 import { RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
+import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
 export default function RecruitAdd() {
   const [form, setForm] = useState({ content: '', title: '' });
@@ -67,10 +68,7 @@ export default function RecruitAdd() {
                 placeholder={'제목을 입력해주세요'}
               />
             </div>
-            <div
-              className={'col-md-4 col-6 text-right'}
-              style={{ paddingRight: 0 }}
-            >
+            <div className={'col-md-3 col-3 text-right'}>
               <StyledButton
                 wide
                 style={{ letterSpacing: '10px', paddingLeft: '20px' }}
@@ -81,23 +79,15 @@ export default function RecruitAdd() {
             </div>
           </div>
         </StyledHeaderDiv>
-        {/* 내용 */}
+
         <div className={'container'}>
-          <PostWriterDate>작성자 2020-01-01</PostWriterDate>
-          {/* 태그*/}
-          {/* 본문*/}
-          <PostTextArea
-            name={'content'}
-            onChange={(e) => onChangHandler(e)}
-            placeholder="내용을 입력하세요"
-            rows={'20'}
-          />
-          <div style={{ marginTop: '40px' }}>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-          </div>
+          {/* <PostTextArea*/}
+          {/*  name={'content'}*/}
+          {/*  onChange={(e) => onChangHandler(e)}*/}
+          {/*  placeholder="내용을 입력하세요"*/}
+          {/*  rows={'20'}*/}
+          {/* />*/}
+          <RecruitAddContents onChange={(e) => onChangHandler(e)} />
         </div>
       </form>
     </div>

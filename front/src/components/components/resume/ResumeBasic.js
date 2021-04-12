@@ -40,6 +40,47 @@ const StyledDatePicker = styled(DatePicker)`
   }
 `;
 
+const InputTel = styled.input`
+  width: 100%;
+  height: 35px;
+  border-radius: 27px;
+  border: 1px solid silver;
+  padding: 0 20px 3px;
+  margin-bottom: 5px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const useInput = (initialState, validator) => {
+  const [value, setValue] = useState(initialState);
+  const onChange = (event) => {
+    const {
+      // eslint-disable-next-line no-shadow
+      target: { value },
+    } = event;
+    let willUpdate = true;
+
+    if (typeof validator === 'function') {
+      willUpdate = validator(value);
+    }
+    if (willUpdate) {
+      setValue(value);
+    }
+  };
+  return { value, onChange };
+};
+
+const UseInput = () => {
+  const maxLen = (value) => value.length <= 13;
+  const name = useInput('010-', maxLen);
+  return (
+    <div className="UseInput">
+      <InputTel {...name} />
+    </div>
+  );
+};
+
 export default function ResumeBasic() {
   const [bookmark, setBookmark] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -107,7 +148,17 @@ export default function ResumeBasic() {
             </div>
             <div className={'col-12 col-lg-6 pl-0'}>
               <ResumeInputs basic name={'성별'} />
-              <ResumeInputs basic name={'연락처'} />
+              <div>
+                <div
+                  style={{
+                    marginBottom: '5px',
+                    color: 'gray',
+                  }}
+                >
+                  연락처
+                </div>
+                <UseInput />
+              </div>
             </div>
             <div className={'row w-100'} style={{ padding: '0 0 0 15px' }}>
               <div className={'col-12'} style={{ padding: '0' }}>

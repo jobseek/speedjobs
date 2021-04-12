@@ -661,7 +661,7 @@ export const MyPlus = styled.div`
   padding-right: 0.9rem;
   padding-left: 1rem;
   padding-bottom: 0.4rem;
-  margin-right: 50px;
+  //margin-right: 50px;
   border-radius: 50%;
   transition: 0.1s background ease-in;
   &:hover {

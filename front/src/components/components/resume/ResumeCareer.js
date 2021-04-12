@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import ResumeInputs from './ResumeInputs';
-import { Add, MyPlus, Warning } from '../Styled';
+import { Add, MyPlus, Subtract, Warning } from '../Styled';
 import Tags from '../Tags';
 import DatePickRange from '../DatePickRange';
 
@@ -44,7 +44,9 @@ export default function ResumeCareer() {
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
-        <MyPlus onClick={() => test2()}>-</MyPlus>
+        <MyPlus onClick={() => test2()}>
+          <Subtract />
+        </MyPlus>
         <MyPlus onClick={() => test()}>
           <Add />
         </MyPlus>
