@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import DatePick from '../DatePick';
 import ResumeInputs from './ResumeInputs';
-import { Add, MyPlus, Warning } from '../Styled';
+import { Add, MyPlus, Subtract, Warning } from '../Styled';
 
 export default function ResumeCertificate() {
   const [force, setForce] = useState(false);
@@ -9,10 +9,10 @@ export default function ResumeCertificate() {
     setForce((prev) => !prev);
   };
   const cnt = useRef(1);
-  const [items, setItems] = useState([{ id: 0, date: null }]);
-  const itemList = items.map((item) => {
+  const [items, setItems] = useState([{ id: 1, date: null }]);
+  const itemList = items.map((item, index) => {
     return (
-      <div style={{ marginLeft: '15px' }}>
+      <div key={index} style={{ marginLeft: '15px' }}>
         <ResumeInputs item name={'이름'} />
         <ResumeInputs item name={'발급기관'} />
         <ResumeInputs item name={'발급번호'} />
@@ -26,10 +26,12 @@ export default function ResumeCertificate() {
   const test = () => {
     setItems((prev) => [...items, { id: cnt.current, date: null }]);
     cnt.current++;
+    console.log(cnt.current);
   };
   const test2 = () => {
     setItems((prev) => {
       prev.pop();
+      console.log(prev);
       return prev;
     });
     forceUp();
@@ -38,7 +40,9 @@ export default function ResumeCertificate() {
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
-        <MyPlus onClick={() => test2()}>-</MyPlus>
+        <MyPlus onClick={() => test2()}>
+          <Subtract />
+        </MyPlus>
         <MyPlus onClick={() => test()}>
           <Add />
         </MyPlus>

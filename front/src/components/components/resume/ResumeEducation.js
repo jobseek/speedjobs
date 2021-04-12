@@ -6,8 +6,8 @@ import DatePickRange from '../DatePickRange';
 
 export default function ResumeEducation() {
   const [items, setItems] = useState([{ id: 0 }]);
-  const itemList = items.map((item) => (
-    <div>
+  const itemList = items.map((item, index) => (
+    <div key={index}>
       <ResumeInputs item name={'학교이름'} />
       <ResumeInputs item name={'전공'} />
       <DatePickRange

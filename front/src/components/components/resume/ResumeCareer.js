@@ -18,8 +18,8 @@ export default function ResumeCareer() {
   ]);
   const cnt = useRef(1);
   const [items, setItems] = useState([{ id: 0 }]);
-  const itemList = items.map((item) => (
-    <div>
+  const itemList = items.map((item, index) => (
+    <div key={index}>
       <ResumeInputs item name={'회사이름'} />
       <ResumeInputs item name={'직급'} />
       <DatePickRange

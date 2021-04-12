@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Plus } from '@styled-icons/octicons';
+import { Minus } from '@styled-icons/entypo/Minus';
 import { Search } from 'react-bootstrap-icons';
 // 버튼 컬러로 노란색 흰색 지정가능
 const StyledButtonInside = styled.div`
@@ -564,6 +565,7 @@ export const ResumeItems = styled.div`
 
 export const ResumeTitles = styled.div`
   margin-bottom: 5px;
+  color: gray;
 `;
 
 export const InputTextResume = styled.input`
@@ -580,6 +582,7 @@ export const InputTextResume = styled.input`
 
 export const Wrapper = styled.div`
   display: inline-block;
+  color: gray;
 
   ${(props) =>
     props.basic &&
@@ -667,6 +670,11 @@ export const MyPlus = styled.div`
 `;
 
 export const Add = styled(Plus)`
+  width: 18px;
+  color: black;
+`;
+
+export const Subtract = styled(Minus)`
   width: 18px;
   color: black;
 `;

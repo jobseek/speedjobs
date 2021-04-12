@@ -49,7 +49,7 @@ export default function ResumeBasic() {
 
   return (
     <>
-      <div style={{ marginBottom: '40px', border: '1px solid black' }}>
+      <div style={{ marginBottom: '40px' }}>
         <h5 style={{ display: 'inline-block' }}>기본 정보</h5>
         <Warning>
           입력하신 정보는 절대 사용자 동의 없이 외부로 유출, 공개되지 않습니다.
