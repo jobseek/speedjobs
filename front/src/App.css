@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Quicksand&display=swap');
 
 .App {
-    text-align: center;
+  text-align: center;
+  background-color: white;
+  width: 100%;
 }
 
 body,html{

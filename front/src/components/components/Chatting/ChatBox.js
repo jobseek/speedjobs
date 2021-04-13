@@ -87,16 +87,8 @@ export default function ChatBox(props) {
           <BackButton onClick={() => props.button()} />
         </BackArea>
         <MsgHistory>
-          <Message income>안녕하셈</Message>
-          <Message income>안녕하셈</Message>
-          <Message income>안녕하셈</Message>
-          <Message income>안녕하셈</Message>
-          <Message out>그려그려</Message>
-          <Message out>그려그려</Message>
-          <Message out>그려그려</Message>
-          <Message out>그려그려</Message>
-          <Message out>그려그려</Message>
-          <Message out>그려그려</Message>
+          <Message income>안녕하세요?</Message>
+          <Message out>안녕하세요!</Message>
         </MsgHistory>
         <TypeMsg>
           <MsgWriteInput

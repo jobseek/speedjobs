@@ -19,17 +19,14 @@ import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.user.UserInfoResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
-import com.jobseek.speedjobs.dto.user.UserUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = {"1. User"})
+@Api(tags = {"User"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
@@ -52,14 +49,14 @@ public class UserController {
 		response.sendRedirect("http://localhost:3000");
 	}
 
-	@ApiOperation(value = "회원 정보 조회", notes = "로그인된 자신의 정보를 조회한다.")
+	@ApiOperation(value = "회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다.")
 	@GetMapping("/me")
 	public ResponseEntity<UserInfoResponse> getLoginUserInfo(@LoginUser User user) {
 		return ResponseEntity.ok(UserInfoResponse.from(user));
 	}
 
 	@ApiOperation(value = "개인회원 정보 수정", notes = "자신의 정보를 수정한다.")
-	@PatchMapping("/update/member/{id}")
+	@PatchMapping("/member/{id}")
 	@PreAuthorize("hasRole('MEMBER')")
 	public ResponseEntity<Void> updateInfo(
 		@PathVariable("id") Long id, @RequestBody MemberUpdateRequest request) {
