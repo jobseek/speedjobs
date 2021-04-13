@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Justify, PersonCircle, Search } from 'react-bootstrap-icons';
+import { PersonCircle, Search } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
@@ -131,9 +131,7 @@ export default function Header(props) {
         <NavSearch>
           <Search></Search>
         </NavSearch>
-        <NavMenu>
-          <Justify></Justify>
-        </NavMenu>
+        <NavMenu></NavMenu>
         <RightContainer>
           <NavDrop>
             <PersonCircle></PersonCircle>

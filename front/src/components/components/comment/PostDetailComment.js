@@ -41,7 +41,7 @@ export default function PostDetailComment(props) {
     dispatch({
       type: COMMENT_GET_REQUEST,
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (comment.commentGetDone) {

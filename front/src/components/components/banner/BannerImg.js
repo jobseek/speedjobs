@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 const Img = styled.img`
   position: absolute;
-  left: 4%;
-  width: 92%;
+  left: 2%;
+  width: 96%;
   height: 350px;
-  transition: margin 2s ease-in-out;
+  transition: all 2s ease-in-out;
   margin-left: ${(props) => props.now + 'vw'};
+  opacity: ${(props) => (props.now === 0 ? 1 : 0.3)};
   object-fit: cover;
   z-index: ${(props) => props.zIndex};
   @media (max-width: 768px) {
@@ -18,7 +19,7 @@ const Img = styled.img`
 export default function BannerImg({ src, now, zIndex }) {
   return (
     <>
-      <Img src={src} now={(now - 2) * 91} zIndex={zIndex}></Img>
+      <Img src={src} now={(now - 2) * 93} zIndex={zIndex}></Img>
     </>
   );
 }

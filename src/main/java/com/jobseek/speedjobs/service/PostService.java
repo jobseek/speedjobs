@@ -32,7 +32,7 @@ public class PostService {
 		return id;
 	}
 
-	public Page<Post> findAllByPage(Pageable pageable) {
+	public Page<Post> readByPage(Pageable pageable) {
 		return postRepository.findAll(pageable);
 	}
 
@@ -43,7 +43,7 @@ public class PostService {
 		postRepository.delete(posts);
 	}
 
-	public PostResponseDto findById(Long id) {
+	public PostResponseDto readById(Long id) {
 		Post entity = postRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 		return new PostResponseDto(entity);
