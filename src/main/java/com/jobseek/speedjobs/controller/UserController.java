@@ -20,7 +20,6 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.user.UserInfoResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.UserUpdateRequest;
-import com.jobseek.speedjobs.dto.user.UserUpdateResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.service.UserService;
 

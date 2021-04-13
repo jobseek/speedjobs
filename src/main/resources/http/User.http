@@ -26,8 +26,8 @@ Content-Type: application/json
   "role": "ROLE_COMPANY"
 }
 
-### 2.회원가입확인(이메일인증)=>accesstoken 받아오는부분
-GET http://localhost:8081/api/user/signup/confirm/84423476-3e43-4f25-b254-425813eecdca
+### 2.회원가입확인(이메일인증)
+GET http://localhost:8081/api/user/signup/confirm/d218ec0a-c5bd-4a07-bb79-91e618234011
 Accept: application/json
 
 ### 토큰 재발급
@@ -35,7 +35,7 @@ GET http://localhost:8081/api/auth/reissue
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJSRUZSRVNIX1RPS0VOIiwidXNlcklkIjoiMSIsInJvbGUiOiJST0xFX01FTUJFUiIsImlhdCI6MTYxODIwNTk1MSwiZXhwIjoxNjE5NDE1NTUxfQ.bkmbCsb5E8QD4BgczcJ99yt-2WYpNPNo9Fn2xH7ctp8
 Accept: application/json
 
-### 3.로그인
+### 3.로그인=>accesstoken 받아오는부분
 POST http://localhost:8081/api/auth/login
 Content-Type: application/json
 
