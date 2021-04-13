@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.service;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -8,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobseek.speedjobs.common.exception.NotExistException;
+import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
+import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.utils.MailUtil;
 import com.jobseek.speedjobs.utils.RedisUtil;
 
@@ -22,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
 	private final UserRepository userRepository;
@@ -64,6 +68,20 @@ public class UserService {
 		if (userRepository.existsByEmail(request.getEmail())) {
 			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 		}
+	}
+
+	@Transactional
+	public void update(Long id, MemberUpdateRequest request) {
+		User user = userRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("없는 유저입니다."));
+		user.setPassword(request.getPassword());
+		user.setPicture(request.getPicture());
+		user.setContact(request.getContact());
+		Member member = user.getMember();
+		member.setSex(request.getSex());
+		member.setBirth(request.getBirth());
+		member.setNickname(request.getNickname());
+		member.setIntro(request.getIntro());
 	}
 
 }

@@ -1,0 +1,62 @@
+### 회원가입(UUID<key>)값 생성 -> 회원가입 확인(엑세스토큰받아옴) -> 로그인 -> 이후에 모든 행동들이 access_token필요함
+
+### 1.회원가입(멤버)
+POST http://localhost:8081/api/user/signup
+Content-Type: application/json
+
+{
+  "email": "123@123.com",
+  "name": "승보쿠",
+  "password": "a12341234!",
+  "role": "ROLE_MEMBER"
+}
+
+### 1-1.회원가입(기업)
+POST http://localhost:8081/api/user/signup
+Content-Type: application/json
+
+{
+  "companyName": "스피드잡스",
+  "contact": "010-1234-5678",
+  "email": "1234@1234.com",
+  "homepage": "string",
+  "name": "보쿠",
+  "password": "a12341234!",
+  "registrationNumber": "111111",
+  "role": "ROLE_COMPANY"
+}
+
+### 2.회원가입확인(이메일인증)=>accesstoken 받아오는부분
+GET http://localhost:8081/api/user/signup/confirm/84423476-3e43-4f25-b254-425813eecdca
+Accept: application/json
+
+### 토큰 재발급
+GET http://localhost:8081/api/auth/reissue
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJSRUZSRVNIX1RPS0VOIiwidXNlcklkIjoiMSIsInJvbGUiOiJST0xFX01FTUJFUiIsImlhdCI6MTYxODIwNTk1MSwiZXhwIjoxNjE5NDE1NTUxfQ.bkmbCsb5E8QD4BgczcJ99yt-2WYpNPNo9Fn2xH7ctp8
+Accept: application/json
+
+### 3.로그인
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "123@123.com",
+  "password": "a12341234!",
+  "provider": "LOCAL"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 4.회원정보 수정(개인)
+PATCH http://localhost:8081/api/user/update/member/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "birth": "1992-05-30",
+  "contact": "010-5229-7882",
+  "intro": "안냐세용",
+  "nickname": "boki"
+}
+
+### 5.회원탈퇴

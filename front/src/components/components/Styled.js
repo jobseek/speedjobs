@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Plus } from '@styled-icons/octicons';
+import { Minus } from '@styled-icons/entypo/Minus';
 import { Search } from 'react-bootstrap-icons';
 // 버튼 컬러로 노란색 흰색 지정가능
 const StyledButtonInside = styled.div`
@@ -417,7 +418,7 @@ export const TextAreaCombine = ({ cols, rows }) => {
   return (
     <div
       className={'container-fluid'}
-      style={{ padding: '0px 58px 0px 30px', width: '100%' }}
+      style={{ padding: '0 0p 0px 30px', width: '100%' }}
     >
       <TextArea
         id="content"
@@ -559,11 +560,12 @@ export const EducationItems = styled.div`
 `;
 
 export const ResumeItems = styled.div`
-  margin-bottom: 5px;
+  margin: 0 5px 5px 0;
 `;
 
 export const ResumeTitles = styled.div`
   margin-bottom: 5px;
+  color: gray;
 `;
 
 export const InputTextResume = styled.input`
@@ -580,19 +582,23 @@ export const InputTextResume = styled.input`
 
 export const Wrapper = styled.div`
   display: inline-block;
+  color: gray;
 
   ${(props) =>
-    props.wide &&
+    props.basic &&
     css`
-      display: block;
-      padding-left: 30px;
-      padding-right: 50px;
       width: 100%;
     `}
   ${(props) =>
-    props.small &&
+    props.sns &&
     css`
-      width: 340px;
+      margin: 0;
+      width: 100%;
+    `}
+  ${(props) =>
+    props.item &&
+    css`
+      width: 200px;
     `}
   &:focus {
     outline: none;
@@ -644,7 +650,7 @@ export const PostWriterDate = styled.div`
   }
 `;
 
-export const MyPlus = styled.button`
+export const MyPlus = styled.div`
   float: right;
   background: none;
   outline: none;
@@ -655,7 +661,7 @@ export const MyPlus = styled.button`
   padding-right: 0.9rem;
   padding-left: 1rem;
   padding-bottom: 0.4rem;
-  margin-right: 50px;
+  //margin-right: 50px;
   border-radius: 50%;
   transition: 0.1s background ease-in;
   &:hover {
@@ -664,6 +670,11 @@ export const MyPlus = styled.button`
 `;
 
 export const Add = styled(Plus)`
+  width: 18px;
+  color: black;
+`;
+
+export const Subtract = styled(Minus)`
   width: 18px;
   color: black;
 `;

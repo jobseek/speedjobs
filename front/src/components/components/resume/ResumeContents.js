@@ -17,8 +17,8 @@ export default function ResumeContents() {
       <StyledArticle className={'col-12 col-lg-10'}>
         <div className={'container-fluid'}>
           <ResumeBasic />
-          <ResumeCertificate />
           <ResumeEducation />
+          <ResumeCertificate />
           <ResumeCareer />
           <ResumeSelf />
           <ResumeSkill />

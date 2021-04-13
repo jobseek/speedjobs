@@ -13,13 +13,11 @@ export default function ResumeSkill() {
 
   return (
     <>
-      <div>
-        <ResumeTitle>
-          Skill <Warning>자신있는 언어를 선택해주세요</Warning>
-        </ResumeTitle>
-        <div className={'col-12'}>
-          <Tags tagList={tags}>Language</Tags>
-        </div>
+      <h5>
+        Skill <Warning>자신있는 언어를 선택해주세요</Warning>
+      </h5>
+      <div className={'col-12'}>
+        <Tags tagList={tags}>Language</Tags>
       </div>
     </>
   );
