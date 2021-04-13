@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import Banner from '../components/Banner';
+import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
 import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';

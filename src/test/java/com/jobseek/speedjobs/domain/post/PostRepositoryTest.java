@@ -17,7 +17,6 @@ class PostRepositoryTest extends BaseTest {
 
 	@Test
 	void createPosts() {
-		postRepository.save(Post.builder().title("test").content("test").build());
 	}
 
 //	@Test
