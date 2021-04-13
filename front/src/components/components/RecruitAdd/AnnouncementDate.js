@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataInputs } from '../Styled';
 
-export default function AnnouncementDate() {
+export default function AnnouncementDate({ onChange }) {
   return (
     <>
       <div
@@ -21,7 +21,7 @@ export default function AnnouncementDate() {
           >
             공고시작일자
           </div>
-          <DataInputs type="text" />
+          <DataInputs type="text" onChange={onChange} />
         </span>
         <span>&nbsp;&nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <span
@@ -36,7 +36,7 @@ export default function AnnouncementDate() {
           >
             공고마감일자
           </div>
-          <DataInputs type="text" />
+          <DataInputs type="text" onChange={onChange} />
         </span>
       </div>
     </>

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DataInputs } from '../Styled';
 
 export default function CompanySummaryInfo({ onChange }) {
+  const [summaryinfo, setSummaryinfo] = useState({ title: '', content: '' });
+
   return (
     <>
       <div
@@ -35,7 +37,7 @@ export default function CompanySummaryInfo({ onChange }) {
             >
               회사이름 :
             </span>
-            <DataInputs type="text" />
+            <DataInputs type="text" onChange={onChange} />
           </span>
           <span
             style={{
@@ -50,7 +52,7 @@ export default function CompanySummaryInfo({ onChange }) {
             >
               회사규모 :
             </span>
-            <DataInputs type="text" />
+            <DataInputs type="text" onChange={onChange} />
           </span>
           <span>
             <span
@@ -60,7 +62,7 @@ export default function CompanySummaryInfo({ onChange }) {
             >
               연락처 :
             </span>
-            <DataInputs type="text" />
+            <DataInputs type="text" onChange={onChange} />
           </span>
         </div>
         <textarea
@@ -70,7 +72,14 @@ export default function CompanySummaryInfo({ onChange }) {
             height: '200px',
             resize: 'none',
           }}
-          onChange={onChange}
+          value={summaryInfo}
+          onChange={(e) => {
+            setRecruitForm((prev) => ({
+              ...prev,
+              summaryInfo: e.target.value,
+            }));
+          }}
+          name="summaryInfo"
         />
       </div>
     </>

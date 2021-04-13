@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataInputs } from '../Styled';
 
-export default function AnnouncementInfo() {
+export default function AnnouncementInfo({ onChange }) {
   return (
     <>
       <div
@@ -50,7 +50,7 @@ export default function AnnouncementInfo() {
             >
               고용형태 :
             </span>
-            <DataInputs type="text" />
+            <DataInputs type="text" onChange={onChange} />
           </span>
         </div>
         <textarea
@@ -59,6 +59,8 @@ export default function AnnouncementInfo() {
             height: '200px',
             resize: 'none',
           }}
+          onChange={onChange}
+          name="detailInfo"
         >
           글입력
         </textarea>
