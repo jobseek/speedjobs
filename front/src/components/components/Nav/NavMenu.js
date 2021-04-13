@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { animated } from 'react-spring';
+import { Squeeze } from 'hamburger-react';
 import { Link } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 import { MapLinkUser, MapMenu } from '../../data/mapLink';
+import NavAnimation from '../animation/NavAnimation';
 
 const NavMenuBody = styled.div`
   display: none;
@@ -18,24 +20,25 @@ const NavMenuBody = styled.div`
 
 const NavMenuHeader = styled.div`
   color: #707070;
-  margin-left: 20px;
-
+  & > * {
+    transform: translateY(-13px);
+  }
   &:hover {
     color: white;
   }
 `;
 
-const NavMenuContent = styled.div`
+export const NavMenuContent = styled(animated.div)`
   position: fixed;
   width: 100%;
   top: 40px;
   padding-top: 10px;
   background-color: #333333;
   z-index: 2;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  display: ${(props) => props.toggle};
-  border-bottom: black solid 1px;
+  //border-bottom-left-radius: 15px;
+  //border-bottom-right-radius: 15px;
+  overflow: hidden;
+  //border-bottom: black solid 1px;
 `;
 
 export const MenuList = styled.li`
@@ -71,17 +74,16 @@ const Background = styled.div`
 `;
 
 export default function NavMenu(props) {
-  const [toggle, setToggle] = useState('none');
+  const [toggle, setToggle] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const MenuRef = useRef();
   const [isLogin, setIsLogin] = useState(false);
   const toggleHandler = () => {
-    setToggle(toggle === 'none' ? 'block' : 'none');
+    setToggle((p) => !p);
   };
   const clickHandler = (e) => {
-    if (toggle === 'block' && !MenuRef.current.contains(e.target))
-      setToggle('none');
+    if (toggle && !MenuRef.current.contains(e.target)) setToggle(false);
   };
   const mapProps = [
     {
@@ -147,10 +149,15 @@ export default function NavMenu(props) {
       {visible && <Modal login={login} setVisible={setVisible} />}
       {visible && <Background onClick={() => setVisible(false)} />}
       <NavMenuBody ref={MenuRef}>
-        <NavMenuHeader onClick={() => toggleHandler()}>
-          {props.children}
+        <NavMenuHeader>
+          <Squeeze
+            rounded
+            size={18}
+            toggled={toggle}
+            toggle={setToggle}
+          ></Squeeze>
         </NavMenuHeader>
-        <NavMenuContent toggle={toggle}>
+        <NavAnimation toggle={toggle}>
           <DropUl>
             <MapMenu change={mapProps}></MapMenu>
             <hr className="solid" style={{ margin: '10px' }}></hr>
@@ -161,7 +168,7 @@ export default function NavMenu(props) {
               dispatch={dispatch}
             ></MapLinkUser>
           </DropUl>
-        </NavMenuContent>
+        </NavAnimation>
       </NavMenuBody>
     </div>
   );

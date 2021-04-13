@@ -56,13 +56,17 @@ const StyledSearch = styled.div`
 
 const SearchHeader = styled.div`
   color: #707070;
-
+  cursor: pointer;
   &:hover {
     color: white;
   }
-
+  transition: color 200ms ease-in-out 500ms;
   @media (max-width: 990px) {
     display: block;
+    & > * {
+      transform: translate(4px, -1px);
+      font-size: 17px;
+    }
   }
   display: inline;
   z-index: 11;
