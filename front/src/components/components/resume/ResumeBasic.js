@@ -5,7 +5,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ToggleOff } from '@styled-icons/bootstrap/ToggleOff';
 import { ToggleOn } from '@styled-icons/bootstrap/ToggleOn';
-import { Private, ResumeImg, ResumeTitles, Warning } from '../Styled';
+import {
+  Private,
+  ProfileImg,
+  ResumeImg,
+  ResumeTitles,
+  Warning,
+} from '../Styled';
 import ResumeInputs from './ResumeInputs';
 
 const Toggle1 = styled(ToggleOff)`
@@ -82,12 +88,25 @@ const UseInput = () => {
 };
 
 export default function ResumeBasic() {
+  const [img, setImage] = useState(null);
   const [bookmark, setBookmark] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const handleBookmark = () => {
     setBookmark(!bookmark);
   };
-
+  const onChange = (e) => {
+    console.log(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      setImage(evt.target.result);
+    };
+    if (e.target.files[0] !== undefined)
+      reader.readAsDataURL(e.target.files[0]);
+  };
+  const hiddenFileInput = React.useRef(null);
+  const handleClick = () => {
+    hiddenFileInput.current.click();
+  };
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
@@ -122,7 +141,20 @@ export default function ResumeBasic() {
                 height: '200px',
               }}
             >
-              <ResumeImg>이미지 업로드</ResumeImg>
+              <ProfileImg>
+                <ResumeImg
+                  onClick={handleClick}
+                  src={img}
+                  alt="resumeImg"
+                  style={{ cursor: 'pointer' }}
+                />
+              </ProfileImg>
+              <input
+                type="file"
+                ref={hiddenFileInput}
+                onChange={onChange}
+                style={{ display: 'none' }}
+              />
             </div>
           </div>
           <div className={'col-12 col-lg-8 row w-100 p-0 m-0'}>

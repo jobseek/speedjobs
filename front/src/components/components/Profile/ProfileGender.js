@@ -39,17 +39,6 @@ export default function ProfileInputs() {
         />
         <label>&nbsp;&nbsp;여</label>
       </div>
-
-      <div>
-        <input
-          type="radio"
-          name="gender"
-          value="noResponse"
-          onChange={handleChange}
-          checked={formData.gender === 'noResponse'}
-        />
-        <label>&nbsp;&nbsp;응답없음</label>
-      </div>
     </div>
   );
 }

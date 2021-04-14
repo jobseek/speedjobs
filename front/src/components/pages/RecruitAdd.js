@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  PostTextArea,
+  // PostTextArea,
   PostTitleInput,
-  PostWriterDate,
+  // PostWriterDate,
   StyledButton,
   StyledHeaderDiv,
-  TagBody,
+  // TagBody,
 } from '../components/Styled';
 import { RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
