@@ -60,3 +60,6 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 5.회원탈퇴
+DELETE http://localhost:8081/api/user/member/1
+Accept: application/json
+Authorization: Bearer {{accessTokens}}
