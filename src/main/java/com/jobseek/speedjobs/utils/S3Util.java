@@ -20,20 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class S3Util {
 
-	public final String BANNER = "banner";
-	public final String ORIGIN = "origin";
-	public final String THUMB = "thumb";
-
 	private final AmazonS3Client s3Client;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
-	public String upload(MultipartFile file, String dirName) {
-		String baseName = FilenameUtils.getBaseName(file.getOriginalFilename());
+	public String upload(MultipartFile file) {
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+		String key = "origin/" + UUID.randomUUID() + "." + extension;
 		try {
-			String key = dirName + "/" + baseName + "_" + UUID.randomUUID() + "." + extension;
 			s3Client.putObject(
 				new PutObjectRequest(bucket, key, file.getInputStream(), null)
 					.withCannedAcl(CannedAccessControlList.PublicRead));

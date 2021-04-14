@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 public class BannerResponses {
 
 	private int count;
-	private List<BannerResponse> data;
+	private List<BannerResponse> banners;
 
 	public static BannerResponses of(List<Banner> banners) {
-		List<BannerResponse> response = banners
+		List<BannerResponse> collect = banners
 			.stream()
 			.map(BannerResponse::of)
 			.collect(Collectors.toList());
-		return new BannerResponses(banners.size(), response);
+		return new BannerResponses(banners.size(), collect);
 	}
 }
