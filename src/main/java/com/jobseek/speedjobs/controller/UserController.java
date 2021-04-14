@@ -1,17 +1,9 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.config.auth.LoginUser;
-import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
-import com.jobseek.speedjobs.dto.user.UserInfoResponse;
-import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.UserValidateGroup;
 import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
-import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
-import com.jobseek.speedjobs.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -29,6 +21,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobseek.speedjobs.config.auth.LoginUser;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.user.UserInfoResponse;
+import com.jobseek.speedjobs.dto.user.UserSaveRequest;
+import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
+import com.jobseek.speedjobs.service.UserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
 @Slf4j
 @Api(tags = {"User"})
 @RequiredArgsConstructor
@@ -40,8 +43,7 @@ public class UserController {
 
 	@ApiOperation(value = "개인회원가입(이메일 인증 전)", notes = "정상적으로 처리되면 인증 이메일이 발송된다.")
 	@PostMapping("/signup/member")
-	public ResponseEntity<Void> sendMemberEmail(
-		@Validated(UserValidateGroup.member.class) @RequestBody UserSaveRequest request) {
+	public ResponseEntity<Void> sendMemberEmail(@Validated(UserValidateGroup.member.class) @RequestBody UserSaveRequest request) {
 		userService.sendEmail(request);
 		return ResponseEntity.noContent().build();
 	}
@@ -78,15 +80,13 @@ public class UserController {
 
 	@ApiOperation(value = "개인회원 상세정보 조회", notes = "개인회원의 상세정보를 조회한다.")
 	@GetMapping("/member/{id}")
-	public ResponseEntity<MemberInfoResponse> getMemberDetail(@PathVariable("id") Long id,
-		@LoginUser User user) {
+	public ResponseEntity<MemberInfoResponse> getMemberDetail(@PathVariable("id") Long id, @LoginUser User user) {
 		return ResponseEntity.ok(userService.getMember(id, user));
 	}
 
 	@ApiOperation(value = "기업회원 상세정보 조회", notes = "기업회원의 상세정보를 조회한다.")
 	@GetMapping("/company/{id}")
-	public ResponseEntity<CompanyInfoResponse> getCompanyDetail(@PathVariable("id") Long id,
-		@LoginUser User user) {
+	public ResponseEntity<CompanyInfoResponse> getCompanyDetail(@PathVariable("id") Long id, @LoginUser User user) {
 		return ResponseEntity.ok(userService.getCompany(id, user));
 	}
 
