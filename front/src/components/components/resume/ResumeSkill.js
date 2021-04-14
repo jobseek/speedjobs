@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Tags from '../Tags';
-import { ResumeTitle, Warning } from '../Styled';
+import { Warning } from '../Styled';
 
 export default function ResumeSkill() {
   const [tags] = useState([

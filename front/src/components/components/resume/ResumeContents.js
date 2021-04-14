@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyledArticle } from '../Styled';
 import ResumeBasic from './ResumeBasic';
 import ResumeEducation from './ResumeEducation';
@@ -8,10 +8,6 @@ import ResumeSkill from './ResumeSkill';
 import ResumeCertificate from './ResumeCertificate';
 
 export default function ResumeContents() {
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
-
   return (
     <>
       <StyledArticle className={'col-12 col-lg-10'}>

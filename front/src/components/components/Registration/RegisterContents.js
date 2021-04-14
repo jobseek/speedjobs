@@ -136,7 +136,7 @@ export default function RegisterContents(props) {
     }
   };
 
-  useEffect(() => autoHyphen(company, setCompany), [company.contact]);
+  useEffect(() => autoHyphen(company, setCompany), [company]);
   useEffect(() => {
     const str = company.registrationNumber;
     let tmp = '';
@@ -166,7 +166,7 @@ export default function RegisterContents(props) {
     if (user.signUpDone) {
       history.goBack();
     }
-  }, [user]);
+  }, [user, history]);
 
   return (
     <>

@@ -2,12 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  PostTextArea,
   PostTitleInput,
-  PostWriterDate,
   StyledButton,
   StyledHeaderDiv,
-  TagBody,
 } from '../components/Styled';
 import { RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
@@ -43,7 +40,7 @@ export default function RecruitAdd() {
         setForm({ content: '', title: '' });
       }
     },
-    [dispatch, form]
+    [dispatch, form, recruit.content, recruit.title]
   );
 
   return (

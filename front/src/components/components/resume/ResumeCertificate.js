@@ -1,11 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { v4 } from 'uuid';
 import DatePick from '../DatePick';
 import ResumeInputs from './ResumeInputs';
 import { Add, MyPlus, Subtract, Warning } from '../Styled';
 
 export default function ResumeCertificate() {
-  const [force, setForce] = useState(false);
+  const [, setForce] = useState(false);
   const forceUp = () => {
     setForce((prev) => !prev);
   };
