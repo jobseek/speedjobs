@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-// import styled from 'styled-components';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
 import { StyledLeftLayout, TagBody } from '../components/Styled';
@@ -11,12 +10,7 @@ import {
 } from '../../reducers/recruit';
 import Post from '../components/Post';
 
-// const RecruitContent = styled.div`
-//   border-radius: 15px;
-//   background-color: white;
-// `;
-
-export default function Recruitment() {
+export default function Recruitment(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const page = useRef(0);
@@ -175,7 +169,7 @@ export default function Recruitment() {
         <div
           style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
           ref={targetRef}
-        />
+        ></div>
       </div>
     </>
   );

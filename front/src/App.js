@@ -22,6 +22,8 @@ import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';
 import RecruitAdd from './components/pages/RecruitAdd';
 import ScrollToTop from './components/includes/ScrollToTop';
+import Login from './components/admin/page/Login';
+import AdminHome from './components/admin/page/AdminHome';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -87,6 +89,8 @@ function App() {
           <Route exact path={'/registration'} component={MemberRegistration} />
           <Route exact path={'/community/add'} component={PostAdd} />
           <Route exact path={'/recruitment/add'} component={RecruitAdd} />
+          <Route exact path={'/admin/login'} component={Login} />
+          <Route exact path={'/admin/home'} component={AdminHome} />
         </Container>
         <Footer />
       </BrowserRouter>

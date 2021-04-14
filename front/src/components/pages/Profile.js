@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  MyImage,
-  ProfileImg,
   StyledArticle,
   StyledButton,
   StyledHeaderDiv,

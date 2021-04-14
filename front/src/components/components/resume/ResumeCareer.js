@@ -6,7 +6,7 @@ import Tags from '../Tags';
 import DatePickRange from '../DatePickRange';
 
 export default function ResumeCareer() {
-  const [force, setForce] = useState(false);
+  const [, setForce] = useState(false);
   const forceUp = () => {
     setForce((prev) => !prev);
   };
