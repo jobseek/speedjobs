@@ -8,28 +8,26 @@ import lombok.*;
 
 import java.util.Set;
 
+@Setter
 @Getter
 @NoArgsConstructor
 public class PostSaveDto {
 
-	private Long userId;
 	private String title;
 	private String content;
 	private Set<Long> tagIds;
 
 	@Builder
-	public PostSaveDto(Long userId, String title, String content) {
-		this.userId = userId;
+	public PostSaveDto(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}
 
-	public Post toEntity(User user) {
-		return Post.builder()
-			.user(user)
-			.title(title)
-			.postDetail(PostDetail.from(content))
-			.build();
+	public Post toEntity() {
+		Post post = new Post();
+		post.setTitle(title);
+		post.setPostDetail(PostDetail.from(content));
+		return post;
 	}
 
 }

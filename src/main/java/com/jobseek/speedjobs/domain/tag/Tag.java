@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
@@ -26,30 +26,22 @@ public class Tag {
 	private Type type;
 
 	@Column(unique = true, length = 50)
-	private String tagName;
+	private String name;
 
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private List<PostTag> postTags = new ArrayList<>();
+	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = PERSIST)
+	private Set<PostTag> postTags = new HashSet<>();
 
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private List<RecruitTags> recruitTags = new ArrayList<>();
-
-	public void addPostTag(PostTag postTag) {
-		postTag.setTag(this);
-		postTags.add(postTag);
-	}
-
-	public void setPostTags(List<PostTag> postTags) {
-		this.postTags = postTags;
-	}
-
-	public void setRecruitTags(List<RecruitTags> recruitTags) {
-		this.recruitTags = recruitTags;
-	}
+	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = PERSIST)
+	private Set<RecruitTags> recruitTags = new HashSet<>();
 
 	@Builder
-	public Tag(Type type, String tagName) {
+	public Tag(Type type, String name) {
 		this.type = type;
-		this.tagName = tagName;
+		this.name = name;
+	}
+
+	public void addPostTag(PostTag postTag) {
+		postTags.add(postTag);
+		postTag.setTag(this);
 	}
 }

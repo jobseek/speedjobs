@@ -31,9 +31,9 @@ public class Recruit extends BaseTimeEntity {
 
 	private String title;
 
-	private LocalDateTime startRecruit;
+	private LocalDateTime openDate;
 
-	private LocalDateTime finishRecruit;
+	private LocalDateTime closeDate;
 
 	@Enumerated
 	private Status state;

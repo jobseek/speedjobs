@@ -34,7 +34,6 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'org.apache.velocity:velocity:1.7'
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
     implementation 'commons-io:commons-io:2.8.0'
 
     compileOnly 'org.projectlombok:lombok'
@@ -45,6 +44,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
 }
 
 test {

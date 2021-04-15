@@ -1,5 +1,15 @@
 package com.jobseek.speedjobs.controller;
 
+import com.jobseek.speedjobs.config.auth.LoginUser;
+import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.post.PostSaveDto;
+import com.jobseek.speedjobs.dto.post.PostUpdateDto;
+import com.jobseek.speedjobs.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.jobseek.speedjobs.config.auth.LoginUser;
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.PostSaveDto;
-import com.jobseek.speedjobs.dto.post.PostUpdateDto;
-import com.jobseek.speedjobs.service.PostService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Api(tags = {"Post"})
@@ -38,7 +36,7 @@ public class PostController {
 	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping("")
 	public ResponseEntity<Void> save(@LoginUser User user, @RequestBody PostSaveDto postSaveDto) {
-		postService.save(postSaveDto, user.getId());
+		postService.save(postSaveDto, user);
 		return ResponseEntity.noContent().build();
 	}
 

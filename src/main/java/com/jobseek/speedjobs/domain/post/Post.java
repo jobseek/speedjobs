@@ -10,7 +10,9 @@ import com.jobseek.speedjobs.domain.user.User;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
@@ -20,7 +22,7 @@ import static lombok.AccessLevel.*;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
@@ -51,8 +53,8 @@ public class Post extends BaseTimeEntity {
 	@OneToMany(mappedBy = "post", cascade = ALL)
 	private List<Comment> commentList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<PostTag> postTags = new ArrayList<>();
+	@OneToMany(mappedBy = "post", cascade = PERSIST)
+	private Set<PostTag> postTags = new HashSet<>();
 
 	public void increaseLikeCount() {
 		likeCount += 1;
@@ -105,17 +107,6 @@ public class Post extends BaseTimeEntity {
 		this.likeCount = 0;
 		this.viewCount = 0;
 		this.commentCount = 0;
-	}
-
-	public static Post createPost(User user, PostDetail postDetail, PostTag... postTags) {
-		Post post = new Post();
-		post.setUser(user);
-		post.setPostDetail(postDetail);
-		for (PostTag postTag : postTags) {
-			post.addPostTag(postTag);
-		}
-		post.initCount();
-		return post;
 	}
 
 	//비즈니스 로직
