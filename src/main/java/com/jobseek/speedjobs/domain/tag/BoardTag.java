@@ -1,9 +1,7 @@
 package com.jobseek.speedjobs.domain.tag;
 
 import com.jobseek.speedjobs.domain.post.Post;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Entity
@@ -31,4 +30,11 @@ public class BoardTag {
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
+
+	@Builder
+	public BoardTag(Post post, Tag tag) {
+		this.post = post;
+		this.tag = tag;
+	}
+
 }

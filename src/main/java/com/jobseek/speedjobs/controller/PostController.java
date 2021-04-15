@@ -38,7 +38,7 @@ public class PostController {
 	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping("")
 	public ResponseEntity<Void> save(@LoginUser User user, @RequestBody PostSaveDto postSaveDto) {
-		postService.save(postSaveDto);
+		postService.save(postSaveDto, user.getId());
 		return ResponseEntity.noContent().build();
 	}
 

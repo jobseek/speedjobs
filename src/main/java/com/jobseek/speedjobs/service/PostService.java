@@ -2,6 +2,9 @@ package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostRepository;
+import com.jobseek.speedjobs.domain.tag.BoardTag;
+import com.jobseek.speedjobs.domain.tag.Tag;
+import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostResponseDto;
 import com.jobseek.speedjobs.dto.post.PostSaveDto;
 import com.jobseek.speedjobs.dto.post.PostUpdateDto;
@@ -12,16 +15,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class PostService {
 
 	private final PostRepository postRepository;
+	private final UserService userService;
 
 	@Transactional
-	public Long save(PostSaveDto postSaveDto) {
-		return postRepository.save(postSaveDto.toEntity()).getId();
+	public Long save(PostSaveDto postSaveDto, Long userId) {
+		User user = userService.findById(userId);
+		return postRepository.save(postSaveDto.toEntity(user)).getId();
 	}
 
 	@Transactional

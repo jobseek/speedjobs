@@ -10,6 +10,7 @@ import com.jobseek.speedjobs.domain.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,17 @@ import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
 
-@Entity @Getter @Setter @Builder
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
 	private Long id;
 
@@ -33,13 +38,10 @@ public class Post extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ColumnDefault("0")
 	private int likeCount;
 
-	@ColumnDefault("0")
 	private int viewCount;
 
-	@ColumnDefault("0")
 	private int commentCount;
 
 	@Embedded
@@ -66,10 +68,6 @@ public class Post extends BaseTimeEntity {
 		viewCount += 1;
 	}
 
-	public void decreaseViewCount() {
-		viewCount -= 1;
-	}
-
 	public void increaseCommentCount() {
 		commentCount += 1;
 	}
@@ -82,4 +80,81 @@ public class Post extends BaseTimeEntity {
 		this.title = title;
 		this.postDetail = PostDetail.from(content);
 	}
+
+	//연관관계 편의 메서드
+	public void setUser(User user) {
+		this.user = user;
+		user.getPostList().add(this);
+	}
+
+	public void addPostLike(PostLikeList postLikeList) {
+		postLikeLists.add(postLikeList);
+		postLikeList.setPost(this);
+	}
+
+	public void addComment(Comment comment) {
+		commentList.add(comment);
+		comment.setPost(this);
+	}
+
+	public void addBoardTag(BoardTag boardTag) {
+		boardTags.add(boardTag);
+		boardTag.setPost(this);
+	}
+
+	//생성 메서드
+	public void initCount() {
+		this.likeCount = 0;
+		this.viewCount = 0;
+		this.commentCount = 0;
+	}
+
+	public static Post createPost(User user, PostDetail postDetail, BoardTag... boardTags) {
+		Post post = new Post();
+		post.setUser(user);
+		post.setPostDetail(postDetail);
+		for (BoardTag boardTag : boardTags) {
+			post.addBoardTag(boardTag);
+		}
+		post.initCount();
+		return post;
+	}
+
+	//비즈니스 로직
+	//봤을때, 댓글을 추가/삭제했을때, 좋아요 눌렀을때, 공고찜목록에 추가했을때, 태그를 추가했을 때
+	/**
+	* 포스트를 봤을 때
+	*/
+	public void showed() {
+		increaseViewCount();
+	}
+
+	/**
+	* 댓글 달렸을 때
+	*/
+	public void addComment() {
+		increaseCommentCount();
+	}
+
+	/**
+	* 댓글 지울 때
+	*/
+	public void deleteComment() {
+		decreaseCommentCount();
+	}
+
+	/**
+	* 좋아요 눌렸을 때
+	*/
+	public void pushLike() {
+		increaseLikeCount();
+	}
+
+	/**
+	* 싫어요 눌렀을 때
+	*/
+	public void pushHate() {
+		decreaseLikeCount();
+	}
+
 }

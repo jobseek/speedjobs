@@ -5,8 +5,8 @@ POST http://localhost:8081/api/user/signup
 Content-Type: application/json
 
 {
-  "email": "123@123.com",
-  "name": "승보쿠",
+  "email": "kkk@naver.com",
+  "name": "안녕",
   "password": "a12341234!",
   "role": "ROLE_MEMBER"
 }
