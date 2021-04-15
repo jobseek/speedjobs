@@ -1,6 +1,49 @@
 import styled, { css } from 'styled-components';
 import { animated } from 'react-spring';
 
+export const Header = styled.div`
+  background-color: #f2d411;
+  width: 100%;
+  padding-top: 100px;
+  font-size: 50px;
+  text-align: left;
+  padding-left: 70px;
+  color: white;
+`;
+
+export const Content = styled.div`
+  background-color: #f5f5f7;
+  width: 100%;
+  padding-left: 70px;
+  color: gray;
+  text-align: left;
+  height: 200px;
+`;
+
+export const SubHeader = styled.div`
+  text-align: left;
+  font-size: 20px;
+  padding-left: 70px;
+  width: 100%;
+  background-color: #f2d411;
+  color: white;
+`;
+
+export const Container = styled.div`
+  background-color: #f5f5f7;
+  position: fixed;
+  width: 50%;
+  height: 100%;
+  ${(props) =>
+    props.right &&
+    css`
+      margin-left: 50%;
+      padding: 10px 20px 0 20px;
+    `}
+  & * {
+    display: inline-block;
+  }
+`;
 export const CoverAll = styled.div`
   position: absolute;
   left: 0;
@@ -9,6 +52,7 @@ export const CoverAll = styled.div`
   height: 100%;
   background-color: #f5f5f7;
   z-index: 10;
+  //overflow: hidden;
 `;
 
 export const LoginForm = styled(animated.div)`

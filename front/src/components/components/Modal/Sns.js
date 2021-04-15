@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Kakaotalk } from '@styled-icons/simple-icons/Kakaotalk';
 import { Naver } from '@styled-icons/simple-icons/Naver';
 import { Google, Github } from 'react-bootstrap-icons';
+import address from '../../../auth/address';
 
 const MySns = styled.div`
   text-align: center;
@@ -47,16 +48,16 @@ export default function Sns(props) {
       <MySns>
         <hr />
         <div className="logo">
-          <a href="http://localhost:8081/oauth2/authorization/google">
+          <a href={`http://${address()}:8081/oauth2/authorization/google`}>
             <Google onClick={() => props.setSns(true)} />
           </a>
-          <a href="http://localhost:8081/oauth2/authorization/kakao">
+          <a href={`http://${address()}:8081/oauth2/authorization/kakao`}>
             <Kakaotalk onClick={() => props.setSns(true)} />
           </a>
-          <a href="http://localhost:8081/oauth2/authorization/github">
+          <a href={`http://${address()}:8081/oauth2/authorization/github`}>
             <Github onClick={() => props.setSns(true)} />
           </a>
-          <a href="http://localhost:8081/oauth2/authorization/naver">
+          <a href={`http://${address()}:8081/oauth2/authorization/naver`}>
             <Naver onClick={() => props.setSns(true)} />
           </a>
         </div>

@@ -23,34 +23,35 @@ const data = [
 export default function UserChart(props) {
   return (
     <>
-      <ResponsiveBar
-        width={500}
-        height={500}
-        data={data}
-        keys={['user']}
-        indexBy={'date'}
-        valueScale={{ type: 'linear' }}
-        indexScale={{ type: 'band,round:true' }}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'date',
-          legendPosition: 'middle',
-          legendOffset: 32,
-        }}
-        axisLeft={{
-          tickSize: 1,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'user',
-          legendPosition: 'middle',
-          legendOffset: 32,
-        }}
-        animate={true}
-        motionStiffness={90}
-        motionDamping={15}
-      ></ResponsiveBar>
+      <div style={{ width: '100%', height: '100%' }}>
+        <ResponsiveBar
+          data={data}
+          margin={{ top: 15, bottom: 25, left: 50 }}
+          keys={['user']}
+          indexBy={'date'}
+          valueScale={{ type: 'linear' }}
+          indexScale={{ type: 'band,round:true' }}
+          axisBottom={{
+            tickSize: 0,
+            tickPadding: 0,
+            tickRotation: 0,
+            legend: 'date',
+            legendPosition: 'center',
+            legendOffset: 20,
+          }}
+          axisLeft={{
+            tickSize: 0,
+            tickPadding: 0,
+            tickRotation: 0,
+            legend: 'user',
+            legendPosition: 'center',
+            legendOffset: -30,
+          }}
+          animate={true}
+          motionStiffness={90}
+          motionDamping={15}
+        ></ResponsiveBar>
+      </div>
     </>
   );
 }

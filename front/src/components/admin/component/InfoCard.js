@@ -4,15 +4,14 @@ import { animated, useSpring } from 'react-spring';
 
 const Card = styled(animated.div)`
   width: 100%;
-  min-width: 300px;
   margin: 30px auto;
-  height: 100%;
-  min-height: 400px;
+  height: ${(props) => (props.height ? `${props.height}px` : '500px')};
   border-radius: 15px;
   background-color: white;
+  padding: 30px 20px;
 `;
 
-export default function InfoCard({ index = 0, children }) {
+export default function InfoCard({ index = 0, children, height, styleProps }) {
   const [ani, set] = useState(false);
   useEffect(() => {
     set(true);
@@ -25,7 +24,12 @@ export default function InfoCard({ index = 0, children }) {
   });
   return (
     <>
-      <Card style={ani ? style : {}}>{children}</Card>
+      <Card
+        height={height}
+        style={ani ? { ...style, ...styleProps } : { ...styleProps }}
+      >
+        {children}
+      </Card>
     </>
   );
 }
