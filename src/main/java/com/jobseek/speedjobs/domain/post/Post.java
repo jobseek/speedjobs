@@ -5,12 +5,10 @@ import javax.persistence.*;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 
 import com.jobseek.speedjobs.domain.likelist.PostLikeList;
-import com.jobseek.speedjobs.domain.tag.BoardTag;
+import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.user.User;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +52,7 @@ public class Post extends BaseTimeEntity {
 	private List<Comment> commentList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<BoardTag> boardTags = new ArrayList<>();
+	private List<PostTag> postTags = new ArrayList<>();
 
 	public void increaseLikeCount() {
 		likeCount += 1;
@@ -97,9 +95,9 @@ public class Post extends BaseTimeEntity {
 		comment.setPost(this);
 	}
 
-	public void addBoardTag(BoardTag boardTag) {
-		boardTags.add(boardTag);
-		boardTag.setPost(this);
+	public void addPostTag(PostTag postTag) {
+		postTags.add(postTag);
+		postTag.setPost(this);
 	}
 
 	//생성 메서드
@@ -109,12 +107,12 @@ public class Post extends BaseTimeEntity {
 		this.commentCount = 0;
 	}
 
-	public static Post createPost(User user, PostDetail postDetail, BoardTag... boardTags) {
+	public static Post createPost(User user, PostDetail postDetail, PostTag... postTags) {
 		Post post = new Post();
 		post.setUser(user);
 		post.setPostDetail(postDetail);
-		for (BoardTag boardTag : boardTags) {
-			post.addBoardTag(boardTag);
+		for (PostTag postTag : postTags) {
+			post.addPostTag(postTag);
 		}
 		post.initCount();
 		return post;

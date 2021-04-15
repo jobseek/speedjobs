@@ -1,9 +1,6 @@
 package com.jobseek.speedjobs.domain.tag;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -32,8 +29,27 @@ public class Tag {
 	private String tagName;
 
 	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private List<BoardTag> boardTags = new ArrayList<>();
+	private List<PostTag> postTags = new ArrayList<>();
 
 	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
 	private List<RecruitTags> recruitTags = new ArrayList<>();
+
+	public void addPostTag(PostTag postTag) {
+		postTag.setTag(this);
+		postTags.add(postTag);
+	}
+
+	public void setPostTags(List<PostTag> postTags) {
+		this.postTags = postTags;
+	}
+
+	public void setRecruitTags(List<RecruitTags> recruitTags) {
+		this.recruitTags = recruitTags;
+	}
+
+	@Builder
+	public Tag(Type type, String tagName) {
+		this.type = type;
+		this.tagName = tagName;
+	}
 }

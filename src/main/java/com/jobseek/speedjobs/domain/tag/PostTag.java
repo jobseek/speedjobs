@@ -13,26 +13,26 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
 @Entity
-@Table(name = "board_tags")
-public class BoardTag {
+@Table(name = "post_tags")
+public class PostTag {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "board_tag_id")
+	@Column(name = "post_tag_id")
 	private Long id;
 
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "post_id")
 	private Post post;
 
+	@Id
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
 
 	@Builder
-	public BoardTag(Post post, Tag tag) {
+	public PostTag(Post post, Tag tag) {
 		this.post = post;
 		this.tag = tag;
 	}

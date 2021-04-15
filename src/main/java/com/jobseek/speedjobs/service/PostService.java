@@ -2,20 +2,22 @@ package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostRepository;
-import com.jobseek.speedjobs.domain.tag.BoardTag;
+import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.Tag;
+import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostResponseDto;
 import com.jobseek.speedjobs.dto.post.PostSaveDto;
 import com.jobseek.speedjobs.dto.post.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,12 +25,21 @@ import java.util.Set;
 public class PostService {
 
 	private final PostRepository postRepository;
+	private final TagRepository tagRepository;
 	private final UserService userService;
 
 	@Transactional
 	public Long save(PostSaveDto postSaveDto, Long userId) {
 		User user = userService.findById(userId);
-		return postRepository.save(postSaveDto.toEntity(user)).getId();
+		Post post = postSaveDto.toEntity(user);
+		List<PostTag> postTags = postSaveDto.getTagIds().stream()
+			.map(tagId -> PostTag.builder()
+				.post(post)
+				.tag(tagRepository.findById(tagId)
+					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
+				.build())
+			.collect(Collectors.toList());
+		post.setPostTags(postTags);
 	}
 
 	@Transactional

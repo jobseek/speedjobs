@@ -15,7 +15,7 @@ public class PostSaveDto {
 	private Long userId;
 	private String title;
 	private String content;
-//	private Set<Tag> tagIds;
+	private Set<Long> tagIds;
 
 	@Builder
 	public PostSaveDto(Long userId, String title, String content) {
