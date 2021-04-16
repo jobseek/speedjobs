@@ -11,6 +11,14 @@ Content-Type: application/json
   "role": "ROLE_MEMBER"
 }
 
+### 테스트
+POST http://localhost:8081/api/user/member/1
+Content-Type: application/json
+
+{
+
+}
+
 ### 1-1.회원가입(기업)
 POST http://localhost:8081/api/user/signup
 Content-Type: application/json
