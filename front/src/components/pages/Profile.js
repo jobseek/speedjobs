@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   StyledArticle,
@@ -6,13 +6,11 @@ import {
   StyledHeaderDiv,
   StyledLeftLayout,
 } from '../components/Styled';
+import ProfileModify from '../pages/ProfileModify';
 import SideMenu from '../components/SideMenu';
 import ProfileContents from '../components/Profile/ProfileContents';
-import ConfirmPassword from '../components/Profile/ConfirmPassword';
 
 export default function Profile() {
-  const [show, setShow] = useState(false);
-
   return (
     <form>
       <div className="container text-left">
@@ -28,13 +26,11 @@ export default function Profile() {
               className={'col-md-3 col-4 text-right'}
               style={{ paddingRight: '0' }}
             >
-              <StyledButton
-                style={{ marginRight: '0' }}
-                wide
-                onClick={() => setShow(show !== true)}
-              >
-                개인정보 수정
-              </StyledButton>
+              <Link to="profile/modify">
+                <StyledButton style={{ marginRight: '0' }} wide>
+                  개인정보 수정
+                </StyledButton>
+              </Link>
             </div>
           </div>
         </StyledHeaderDiv>
@@ -48,13 +44,12 @@ export default function Profile() {
             </StyledLeftLayout>
             <StyledArticle className={'col-12 col-lg-10'}>
               <div className={'container-fluid'}>
-                <ProfileContents />
+                <div>개인정보 조회 페이지</div>
               </div>
             </StyledArticle>
           </div>
         </div>
       </div>
-      {show ? <ConfirmPassword setShow={setShow} /> : ''}
     </form>
   );
 }
