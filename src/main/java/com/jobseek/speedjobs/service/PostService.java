@@ -1,19 +1,23 @@
 package com.jobseek.speedjobs.service;
 
+import static com.jobseek.speedjobs.domain.user.Role.*;
+
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.PostResponseDto;
-import com.jobseek.speedjobs.dto.post.PostSaveDto;
-import com.jobseek.speedjobs.dto.post.PostUpdateDto;
+import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.dto.post.PostRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +33,37 @@ public class PostService {
 	private final PostTagRepository postTagRepository;
 
 	@Transactional
-	public Long save(PostSaveDto postSaveDto, User user) {
-		Post post = postSaveDto.toEntity();
+	public Long save(PostRequest request, User user) {
+		Post post = request.toEntity();
 		post.setUser(user);
-		postSaveDto.getTagIds().stream()
-			.map(tagId -> tagRepository.findById(tagId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
-			.forEach(tag -> postTagRepository.save(PostTag.createPostTag(post, tag)));
+		addTags(request.getTagIds(), post);
 		return postRepository.save(post).getId();
 	}
 
 	@Transactional
-	public Long update(Long id, PostUpdateDto postUpdateDto) {
+	public void update(Long id, User user, PostRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-		post.update(postUpdateDto.getTitle(), postUpdateDto.getContent());
-		return id;
+		if (post.getUser().getId() != user.getId()) {
+			throw new UnauthorizedException("권한이 없습니다.");
+		}
+		addTags(request.getTagIds(), post);
+	}
+
+	@Transactional
+	public void delete(Long id, User user) {
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.  id=" + id));
+		if (user.getRole() != ROLE_ADMIN && post.getUser().getId() != user.getId()) {
+			throw new UnauthorizedException("권한이 없습니다.");
+		}
+		postRepository.delete(post);
+	}
+
+	public PostResponse readById(Long id) {
+		Post entity = postRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+		return new PostResponse(entity);
 	}
 
 	public Page<Post> readByPage(Pageable pageable) {
@@ -52,15 +71,10 @@ public class PostService {
 	}
 
 	@Transactional
-	public void delete(Long id) {
-		Post posts = postRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.  id=" + id));
-		postRepository.delete(posts);
-	}
-
-	public PostResponseDto readById(Long id) {
-		Post entity = postRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-		return new PostResponseDto(entity);
+	public void addTags(Set<Long> tagIds, Post post) {
+		tagIds.stream()
+			.map(tagId -> tagRepository.findById(tagId)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다. id=" + tagId)))
+			.forEach(tag -> postTagRepository.save(PostTag.createPostTag(post, tag)));
 	}
 }

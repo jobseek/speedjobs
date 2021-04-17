@@ -30,11 +30,11 @@ public class Comment extends BaseTimeEntity {
 
 	private String commentImage;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "user_id")
 	private User user;
 }

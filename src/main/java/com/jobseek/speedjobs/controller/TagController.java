@@ -44,6 +44,7 @@ public class TagController {
 	}
 
 	@ApiOperation(value = "태그 삭제", notes = "태그를 삭제한다.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		tagService.delete(id);
@@ -51,6 +52,7 @@ public class TagController {
 	}
 
 	@ApiOperation(value = "태그 수정", notes = "태그를 수정한다.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody TagUpdateRequest tagUpdateRequest) {
 		tagService.update(id, tagUpdateRequest);

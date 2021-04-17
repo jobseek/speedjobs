@@ -18,7 +18,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket swaggerApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-			.apis(RequestHandlerSelectors.basePackage("com.jobseek.speedjobs.controller"))
+			// .apis(RequestHandlerSelectors.basePackage("com.jobseek.speedjobs.controller"))
 			.paths(PathSelectors.any())
 			.build()
 			.useDefaultResponseMessages(false);

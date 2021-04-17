@@ -34,7 +34,7 @@ public class Post extends BaseTimeEntity {
 
 	private String title;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "user_id")
 	private User user;
 

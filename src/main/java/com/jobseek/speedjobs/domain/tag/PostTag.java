@@ -56,6 +56,11 @@ public class PostTag {
 		return postTag;
 	}
 
+	public void removePostTag() {
+		this.getPost().getPostTags().remove(this);
+		this.getTag().getPostTags().remove(this);
+	}
+
 	public void removeTagFromPost() {
 		post.getPostTags().remove(this);
 	}
