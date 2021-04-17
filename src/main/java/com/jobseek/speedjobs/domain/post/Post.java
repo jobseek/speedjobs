@@ -53,7 +53,7 @@ public class Post extends BaseTimeEntity {
 	@OneToMany(mappedBy = "post", cascade = ALL)
 	private List<Comment> commentList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "post", cascade = PERSIST)
+	@OneToMany(mappedBy = "post", cascade = ALL)
 	private Set<PostTag> postTags = new HashSet<>();
 
 	public void increaseLikeCount() {

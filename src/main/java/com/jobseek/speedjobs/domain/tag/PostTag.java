@@ -1,6 +1,6 @@
 package com.jobseek.speedjobs.domain.tag;
 
-import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -35,11 +35,11 @@ public class PostTag {
 	@Column(name = "post_tag_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
 
@@ -56,7 +56,11 @@ public class PostTag {
 		return postTag;
 	}
 
-//	public void setPost(Post post) {
+	public void removeTagFromPost() {
+		post.getPostTags().remove(this);
+	}
+
+	//	public void setPost(Post post) {
 //		if (this.post != null) {
 //			tag.getPostTags().remove(this);
 //		}

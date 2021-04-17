@@ -1,12 +1,14 @@
 package com.jobseek.speedjobs.dto.post;
 
+import java.util.Set;
+
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostDetail;
-import com.jobseek.speedjobs.domain.tag.Tag;
-import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
 
-import java.util.Set;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Setter
 @Getter

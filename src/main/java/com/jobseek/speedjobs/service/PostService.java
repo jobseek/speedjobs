@@ -1,5 +1,10 @@
 package com.jobseek.speedjobs.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.PostTag;
@@ -9,12 +14,9 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostResponseDto;
 import com.jobseek.speedjobs.dto.post.PostSaveDto;
 import com.jobseek.speedjobs.dto.post.PostUpdateDto;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
