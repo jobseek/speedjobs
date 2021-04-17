@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import {
   StyledArticle,
   StyledButton,
@@ -8,11 +7,8 @@ import {
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
 import ProfileContents from '../components/Profile/ProfileContents';
-import ConfirmPassword from '../components/Profile/ConfirmPassword';
 
 export default function Profile() {
-  const [show, setShow] = useState(false);
-
   return (
     <form>
       <div className="container text-left">
@@ -28,12 +24,8 @@ export default function Profile() {
               className={'col-md-3 col-4 text-right'}
               style={{ paddingRight: '0' }}
             >
-              <StyledButton
-                style={{ marginRight: '0' }}
-                wide
-                onClick={() => setShow(show !== true)}
-              >
-                개인정보 수정
+              <StyledButton style={{ marginRight: '0' }} wide>
+                개인정보 저장
               </StyledButton>
             </div>
           </div>
@@ -54,7 +46,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      {show ? <ConfirmPassword setShow={setShow} /> : ''}
     </form>
   );
 }

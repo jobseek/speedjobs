@@ -13,6 +13,7 @@ const Forget = styled.p`
   color: #d3d3d3;
   float: right;
   margin-bottom: 5px;
+  cursor: pointer;
 
   &:hover {
     color: black;

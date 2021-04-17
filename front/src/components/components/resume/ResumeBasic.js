@@ -59,35 +59,6 @@ const InputTel = styled.input`
   }
 `;
 
-const useInput = (initialState, validator) => {
-  const [value, setValue] = useState(initialState);
-  const onChange = (event) => {
-    const {
-      // eslint-disable-next-line no-shadow
-      target: { value },
-    } = event;
-    let willUpdate = true;
-
-    if (typeof validator === 'function') {
-      willUpdate = validator(value);
-    }
-    if (willUpdate) {
-      setValue(value);
-    }
-  };
-  return { value, onChange };
-};
-
-const UseInput = () => {
-  const maxLen = (value) => value.length <= 13;
-  const name = useInput('010-', maxLen);
-  return (
-    <div className="UseInput">
-      <InputTel {...name} />
-    </div>
-  );
-};
-
 export default function ResumeBasic() {
   const [img, setImage] = useState(
     'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
@@ -190,17 +161,7 @@ export default function ResumeBasic() {
             </div>
             <div className={'col-12 col-lg-6 pl-0'}>
               <ResumeInputs basic name={'성별'} />
-              <div>
-                <div
-                  style={{
-                    marginBottom: '5px',
-                    color: 'gray',
-                  }}
-                >
-                  연락처
-                </div>
-                <UseInput />
-              </div>
+              <ResumeInputs basic name={'연락처'} />
             </div>
             <div className={'row w-100'} style={{ padding: '0 0 0 15px' }}>
               <div className={'col-12'} style={{ padding: '0' }}>
