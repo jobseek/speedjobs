@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
 
-export default function ProfileInputs() {
-  const [formData, setFormData] = useState({
-    gender: '',
-  });
+export default function ProfileGender({ onChange, name }) {
+  // const [formData, setFormData] = useState({
+  //   gender: '',
+  // });
 
-  const handleChange = (e) => {
-    const target = e.target;
-    const name = target.name;
-    const value = target.value;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   const target = e.target;
+  //   const sex = target.name;
+  //   console.log(sex);
+  //   const value = target.value;
+  //   console.log(value);
+  //
+  //   setFormData({
+  //     ...formData,
+  //     [sex]: value,
+  //   });
+  // };
 
   return (
     <div style={{ margin: '0px 10px 15px 10px' }}>
       <div>
         <input
           type="radio"
-          name="gender"
+          name={name}
           value="male"
-          onChange={handleChange}
-          checked={formData.gender === 'male'}
+          onChange={onChange}
+          // checked={formData.sex === 'male'}
         />
         <label>&nbsp;&nbsp;남</label>
       </div>
@@ -32,10 +34,10 @@ export default function ProfileInputs() {
       <div>
         <input
           type="radio"
-          name="gender"
+          name={name}
           value="female"
-          onChange={handleChange}
-          checked={formData.gender === 'female'}
+          onChange={onChange}
+          // checked={formData.gender === 'female'}
         />
         <label>&nbsp;&nbsp;여</label>
       </div>

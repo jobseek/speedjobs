@@ -26,28 +26,35 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserSaveRequest {
 
-	@NotBlank
+	@NotBlank(groups = UserValidateGroup.member.class)
 	@Size(min = 2, max = 10)
 	private String name;
 
-	@NotBlank
+	@NotBlank(groups = UserValidateGroup.member.class)
 	@Size(max = 40)
 	@Email
 	private String email;
 
-	@NotBlank
+	@NotBlank(groups = UserValidateGroup.member.class)
 	@Size(min = 6, max = 20)
 	private String password;
 
-	@NotNull
+	@NotNull(groups = UserValidateGroup.member.class)
 	private Role role;
 
+	@NotBlank(groups = UserValidateGroup.company.class)
+	@Size(max = 13)
 	private String contact;
 
+	@NotBlank(groups = UserValidateGroup.company.class)
+	@Size(min = 2, max = 30)
 	private String companyName;
 
+	@NotBlank(groups = UserValidateGroup.company.class)
+	@Size(max = 12)
 	private String registrationNumber;
 
+	@NotBlank(groups = UserValidateGroup.company.class)
 	private String homepage;
 
 	public User toEntity(PasswordEncoder passwordEncoder) {

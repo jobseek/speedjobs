@@ -17,7 +17,7 @@ export default function SideMenu() {
       </MyButton>
       <MyHr />
       <MyButton>
-        <MyLink to={'/profile'}>개인정보 수정</MyLink>
+        <MyLink to={'/profile'}>계정관리</MyLink>
       </MyButton>
     </MySideMenu>
   );

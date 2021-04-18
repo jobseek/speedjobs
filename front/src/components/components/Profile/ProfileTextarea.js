@@ -1,35 +1,28 @@
 import React from 'react';
-import {
-  ProfileItems,
-  ProfileTitles,
-  RequiredItems,
-  TextArea,
-  TextAreaLength,
-} from '../Styled';
+import { TextArea, TextAreaLength } from '../Styled';
 
+// 글자 수 표시해주는 함수
 function calc() {
   document.getElementById('result').value = document.getElementById(
     'content'
   ).value.length;
 }
 
-export default function ProfileContents() {
+export default function ProfileContents({ onChange, name }) {
   return (
-    <ProfileItems>
-      <ProfileTitles>
-        <RequiredItems>*&nbsp;&nbsp;</RequiredItems>한 줄 소개
-      </ProfileTitles>
+    <>
       <TextArea
         id="content"
         cols="96"
         rows="3"
+        name={name}
         onKeyDown={calc}
         onKeyUp={calc}
-        onKeyPress={calc}
+        onChange={(calc, onChange)}
       />
       <div style={{ textAlign: 'right' }}>
         <TextAreaLength id="result" type="number" value="0" readOnly />
       </div>
-    </ProfileItems>
+    </>
   );
 }

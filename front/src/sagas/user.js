@@ -97,12 +97,15 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-  console.log(data);
-  return axios.post('/user/signup', data);
+  console.log('data= ', data);
+  if (data.role === 'ROLE_MEMBER') {
+    return axios.post('/user/signup/member', data);
+  } else {
+    return axios.post('/user/signup/company', data);
+  }
 }
 
 function* signUp(action) {
-  console.log(action);
   try {
     yield call(signUpAPI, action.data);
     yield put({
