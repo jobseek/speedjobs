@@ -1,26 +1,18 @@
 package com.jobseek.speedjobs.domain.tag;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.*;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.*;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -29,8 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tags")
 public class Tag {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
 	private Long id;
 
@@ -38,27 +29,11 @@ public class Tag {
 	private Type type;
 
 	@Column(unique = true, length = 50)
-	private String name;
+	private String tagName;
 
 	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private Set<PostTag> postTags = new HashSet<>();
+	private List<BoardTag> boardTags = new ArrayList<>();
 
 	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private Set<RecruitTags> recruitTags = new HashSet<>();
-
-	@Builder
-	public Tag(Type type, String name) {
-		this.type = type;
-		this.name = name;
-	}
-
-	public void addPostTag(PostTag postTag) {
-		postTags.add(postTag);
-		postTag.setTag(this);
-	}
-
-	public void changeTag(Type type, String name) {
-		this.type = type;
-		this.name = name;
-	}
+	private List<RecruitTags> recruitTags = new ArrayList<>();
 }

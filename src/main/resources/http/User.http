@@ -5,18 +5,10 @@ POST http://localhost:8081/api/user/signup
 Content-Type: application/json
 
 {
-  "email": "kkk@naver.com",
-  "name": "안녕",
+  "email": "123@123.com",
+  "name": "승보쿠",
   "password": "a12341234!",
   "role": "ROLE_MEMBER"
-}
-
-### 테스트
-POST http://localhost:8081/api/user/member/1
-Content-Type: application/json
-
-{
-
 }
 
 ### 1-1.회원가입(기업)
@@ -68,6 +60,3 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 5.회원탈퇴
-DELETE http://localhost:8081/api/user/member/1
-Accept: application/json
-Authorization: Bearer {{accessTokens}}

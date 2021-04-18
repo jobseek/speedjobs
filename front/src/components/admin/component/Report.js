@@ -1,5 +1,27 @@
 import React from 'react';
-import { Header, Content, SubHeader } from './adminStyled';
+import styled from 'styled-components';
+
+const Header = styled.div`
+  padding-top: 100px;
+  font-size: 50px;
+  text-align: left;
+  padding-left: 70px;
+`;
+
+const Content = styled.div`
+  background-color: #f5f5f7;
+  width: 100%;
+  padding-left: 70px;
+  color: gray;
+  text-align: left;
+  height: 350px;
+`;
+
+const SubHeader = styled.div`
+  text-align: left;
+  font-size: 20px;
+  padding-left: 70px;
+`;
 
 export default function Report(props) {
   return (
@@ -17,7 +39,18 @@ export default function Report(props) {
         <br />
       </Content>
       <SubHeader>어쩌구</SubHeader>
-      <Content>오예오예</Content>
+      <Content>
+        오예오예
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+      </Content>
     </>
   );
 }

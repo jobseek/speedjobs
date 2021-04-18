@@ -4,29 +4,28 @@ import { animated, useSpring } from 'react-spring';
 
 const Card = styled(animated.div)`
   width: 100%;
-  height: ${(props) => (props.height ? `${props.height}` : '100%')};
+  min-width: 300px;
+  margin: 30px auto;
+  height: 100%;
+  min-height: 400px;
   border-radius: 15px;
   background-color: white;
 `;
 
-export default function InfoCard({ index = 0, children, height, styleProps }) {
+export default function InfoCard({ index = 0, children }) {
   const [ani, set] = useState(false);
   useEffect(() => {
     set(true);
   }, []);
   const style = useSpring({
+    transform: 'translateY(0%)',
     opacity: '1',
-    from: { opacity: '0' },
+    from: { transform: 'translateY(10%)', opacity: '0' },
     delay: 100 * index,
   });
   return (
     <>
-      <Card
-        height={height}
-        style={ani ? { ...style, ...styleProps } : { ...styleProps }}
-      >
-        {children}
-      </Card>
+      <Card style={ani ? style : {}}>{children}</Card>
     </>
   );
 }

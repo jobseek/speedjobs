@@ -5,6 +5,7 @@ import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.likelist.RecruitLikeList;
 import com.jobseek.speedjobs.domain.message.Message;
 import com.jobseek.speedjobs.domain.resume.Apply;
+import com.jobseek.speedjobs.domain.tag.BoardTag;
 import com.jobseek.speedjobs.domain.tag.RecruitTags;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,9 +32,9 @@ public class Recruit extends BaseTimeEntity {
 
 	private String title;
 
-	private LocalDateTime openDate;
+	private LocalDateTime startRecruit;
 
-	private LocalDateTime closeDate;
+	private LocalDateTime finishRecruit;
 
 	@Enumerated
 	private Status state;

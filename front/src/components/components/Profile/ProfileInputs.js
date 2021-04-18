@@ -1,10 +1,21 @@
 import React from 'react';
+import {
+  InputText,
+  ProfileItems,
+  ProfileTitles,
+  RequiredItems,
+} from '../Styled';
 
 export default function ProfileInputs(props) {
   return (
-    <div style={{ marginBottom: '10px' }}>
-      <span style={{ color: 'red' }}>*&nbsp;&nbsp;</span>
-      {props.name}
+    <div>
+      <ProfileItems>
+        <ProfileTitles>
+          <RequiredItems>*&nbsp;&nbsp;</RequiredItems>
+          {props.name}
+        </ProfileTitles>
+        <InputText type="text" />
+      </ProfileItems>
     </div>
   );
 }

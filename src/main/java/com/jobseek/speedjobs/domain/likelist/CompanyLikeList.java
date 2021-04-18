@@ -28,4 +28,5 @@ public class CompanyLikeList {
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "company_id")
 	private Company company;
+
 }

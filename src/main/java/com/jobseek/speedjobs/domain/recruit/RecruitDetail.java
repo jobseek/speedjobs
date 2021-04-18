@@ -1,18 +1,15 @@
 package com.jobseek.speedjobs.domain.recruit;
 
-import static lombok.AccessLevel.PROTECTED;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Embeddable
-@Getter
-@Setter
+import static lombok.AccessLevel.*;
+
+@Embeddable @Getter @Setter @Builder
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 public class RecruitDetail {
 
 	@Enumerated
@@ -22,20 +19,5 @@ public class RecruitDetail {
 	private Position position;
 
 	private String content;
-
-	@Builder
-	public RecruitDetail(Experience experience, Position position, String content) {
-		this.experience = experience;
-		this.position = position;
-		this.content = content;
-	}
-
-	RecruitDetail from(Experience experience, Position position, String content) {
-		return RecruitDetail.builder()
-			.experience(experience)
-			.position(position)
-			.content(content)
-			.build();
-	}
 
 }

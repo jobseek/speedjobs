@@ -527,7 +527,7 @@ export const Private = styled.span`
   }
 `;
 
-export const ResumeImg = styled.img`
+export const ResumeImg = styled.div`
   display: inline-block;
   border: 1px solid black;
   width: 180px;

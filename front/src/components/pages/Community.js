@@ -38,7 +38,7 @@ export default function Community(props) {
     });
   };
   const rootRef = useRef();
-  const { post, user } = useSelector((state) => state);
+  const post = useSelector((state) => state.post);
 
   const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
@@ -114,18 +114,14 @@ export default function Community(props) {
                 className={'row justify-content-end'}
                 style={{ padding: '10px', paddingTop: '0' }}
               >
-                {user.me !== null ? (
-                  <TagBody
-                    style={{ marginTop: '0', border: '1px solid #f5df4d' }}
-                    onClick={() => {
-                      history.push('./community/add');
-                    }}
-                  >
-                    글쓰기
-                  </TagBody>
-                ) : (
-                  ''
-                )}
+                <TagBody
+                  style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                  onClick={() => {
+                    history.push('./community/add');
+                  }}
+                >
+                  글쓰기
+                </TagBody>
               </div>
             </div>
             {mapPost}

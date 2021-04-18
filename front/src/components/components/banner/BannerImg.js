@@ -19,7 +19,7 @@ const Img = styled.img`
 export default function BannerImg({ src, now, zIndex }) {
   return (
     <>
-      <Img src={src} now={(now - 2) * 96} zIndex={zIndex}></Img>
+      <Img src={src} now={(now - 2) * 93} zIndex={zIndex}></Img>
     </>
   );
 }

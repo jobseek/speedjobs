@@ -13,7 +13,6 @@ import {
   ERROR_RESOLVED,
   LOG_IN_WELCOMED,
   LOG_OUT_DONE,
-  SIGN_UP_DONE,
 } from '../../reducers/user';
 import { POST_ADD_DONE } from '../../reducers/post';
 import { RECRUIT_ADD_DONE } from '../../reducers/recruit';
@@ -84,7 +83,6 @@ export default function Header(props) {
 
     if (state.user.signUpDone) {
       setPopModal(true);
-      dispatch({ type: SIGN_UP_DONE });
     } // 로그인
     else if (state.recruit.recruitAddDone) {
       dispatch({ type: RECRUIT_ADD_DONE });

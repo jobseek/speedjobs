@@ -75,11 +75,9 @@ export default function PostAdd(props) {
               >
                 등록
               </StyledButton>
-              <StyledButton white onClick={() => history.goBack()}>
-                뒤로
-              </StyledButton>
             </div>
           </div>
+          <div className={'row'}></div>
         </StyledHeaderDiv>
         {/* 작성자*/}
         <div className={'container'}>

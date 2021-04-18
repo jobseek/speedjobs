@@ -1,34 +1,33 @@
 package com.jobseek.speedjobs.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.domain.banner.Banner;
 import com.jobseek.speedjobs.domain.banner.BannerRepository;
 import com.jobseek.speedjobs.dto.banner.BannerResponses;
-
+import com.jobseek.speedjobs.utils.S3Util;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class BannerService {
 
+	private final S3Util s3Util;
 	private final BannerRepository bannerRepository;
 
 	@Transactional
-	public BannerResponses save(List<File> files) {
+	public BannerResponses save(List<MultipartFile> files) {
 		List<Banner> banners = files.stream()
 			.map(file -> bannerRepository.save(Banner.builder()
-				.baseName(file.getBaseName())
-				.extension(file.getExtension())
-				.url(file.getUrl())
-				.build()))
+				.baseName(FilenameUtils.getBaseName(file.getOriginalFilename()))
+				.extension(FilenameUtils.getExtension(file.getOriginalFilename()))
+				.url(s3Util.upload(file, s3Util.BANNER)).build()))
 			.collect(Collectors.toList());
 		return BannerResponses.of(banners);
 	}

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { Squeeze } from 'hamburger-react';
 
 const SideBarBody = styled.div`
   position: fixed;
@@ -43,12 +44,9 @@ const SideSpan = styled.div`
 
 const SideDiv = styled.div`
   margin: 10px 0 0 0;
-  &:hover {
-    color: gray;
-  }
 `;
 
-export default function SideBar({ toggle, setToggle, set }) {
+export default function SideBar({ toggle, setToggle }) {
   return (
     <>
       <div></div>
@@ -57,10 +55,9 @@ export default function SideBar({ toggle, setToggle, set }) {
         onMouseEnter={() => setToggle(true)}
         onMouseLeave={() => setToggle(false)}
       >
-        <SideDiv onClick={() => set('Main')}>최근동향</SideDiv>
-        <SideSpan>유저수,등록수를 차트로 보고 관리 </SideSpan>
-        <SideDiv onClick={() => set('Banner')}>배너관리</SideDiv>
-        <SideSpan>메인홈화면 배너 변경 </SideSpan>
+        <SideDiv>게시글 관리</SideDiv>
+        <SideSpan>게시물을 관리,삭제 </SideSpan>
+        <SideDiv>게시글 관리</SideDiv>
         <SideDiv>게시글 관리</SideDiv>
         <SideDiv>게시글 관리</SideDiv>
         <SideDiv>게시글 관리</SideDiv>
