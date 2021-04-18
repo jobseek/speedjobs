@@ -22,6 +22,9 @@ import { ME_REQUEST } from './reducers/user';
 import PostAdd from './components/pages/PostAdd';
 import RecruitAdd from './components/pages/RecruitAdd';
 import ScrollToTop from './components/includes/ScrollToTop';
+import Login from './components/admin/page/Login';
+import AdminHome from './components/admin/page/AdminHome';
+// import ProfileModify from './components/pages/ProfileModify';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -81,7 +84,7 @@ function App() {
           <Route exact path={'/recruit/detail'} component={RecruitmentDetail} />
           <Route path={'/community/post/:id'} component={PostDetail} />
           <Route exact path={'/profile'} component={Profile} />
-          <Route exact path={'/profile/modify'} component={ProfileModify} />
+          {/* <Route exact path={'/profile/modify'} component={ProfileModify} /> */}
           <Route exact path={'/resume'} component={Resume} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
