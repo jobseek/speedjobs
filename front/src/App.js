@@ -83,6 +83,7 @@ function App() {
           <Route exact path={'/recruit/detail'} component={RecruitmentDetail} />
           <Route path={'/community/post/:id'} component={PostDetail} />
           <Route exact path={'/profile'} component={Profile} />
+          <Route exact path={'/profile/modify'} component={ProfileModify} />
           <Route exact path={'/resume'} component={Resume} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
