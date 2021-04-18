@@ -1,29 +1,46 @@
 import styled, { css } from 'styled-components';
 import { animated } from 'react-spring';
 
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-left: 50px;
+`;
+
+const Inner = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+`;
+
+export const PageContainer = ({ children }) => {
+  return (
+    <MainContainer>
+      <Inner>{children}</Inner>
+    </MainContainer>
+  );
+};
+
 export const Header = styled.div`
   background-color: #f2d411;
   width: 100%;
-  padding-top: 100px;
-  font-size: 50px;
+  font-size: 40px;
   text-align: left;
-  padding-left: 70px;
   color: white;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  padding-left: 20px;
 `;
 
 export const Content = styled.div`
-  background-color: #f5f5f7;
-  width: 100%;
-  padding-left: 70px;
   color: gray;
   text-align: left;
-  height: 200px;
+  padding: 25px;
 `;
 
 export const SubHeader = styled.div`
   text-align: left;
   font-size: 20px;
-  padding-left: 70px;
   width: 100%;
   background-color: #f2d411;
   color: white;

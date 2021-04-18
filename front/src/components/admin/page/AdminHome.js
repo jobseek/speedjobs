@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CoverAll } from '../component/adminStyled';
+import { CoverAll, PageContainer } from '../component/adminStyled';
 import SideBar from '../component/SideBar';
 import AdminMain from './AdminMain';
 import BannerSetting from './BannerSetting';
@@ -10,8 +10,10 @@ export default function AdminHome(props) {
   return (
     <>
       <CoverAll style={{ textAlign: 'left' }}>
-        {now === 'Main' && <AdminMain></AdminMain>}
-        {now === 'Banner' && <BannerSetting></BannerSetting>}
+        <PageContainer>
+          {now === 'Main' && <AdminMain></AdminMain>}
+          {now === 'Banner' && <BannerSetting></BannerSetting>}
+        </PageContainer>
         <SideBar toggle={toggle} setToggle={setToggle} set={set}></SideBar>
       </CoverAll>
     </>
