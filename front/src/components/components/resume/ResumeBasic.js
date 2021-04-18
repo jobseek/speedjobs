@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ToggleOff } from '@styled-icons/bootstrap/ToggleOff';
 import { ToggleOn } from '@styled-icons/bootstrap/ToggleOn';
-import { Private, ResumeImg, ResumeTitles, Warning } from '../Styled';
+import {
+  Private,
+  ProfileImg,
+  ResumeImg,
+  ResumeTitles,
+  Warning,
+} from '../Styled';
 import ResumeInputs from './ResumeInputs';
 
 const Toggle1 = styled(ToggleOff)`
@@ -52,42 +59,35 @@ const InputTel = styled.input`
   }
 `;
 
-const useInput = (initialState, validator) => {
-  const [value, setValue] = useState(initialState);
-  const onChange = (event) => {
-    const {
-      // eslint-disable-next-line no-shadow
-      target: { value },
-    } = event;
-    let willUpdate = true;
-
-    if (typeof validator === 'function') {
-      willUpdate = validator(value);
-    }
-    if (willUpdate) {
-      setValue(value);
-    }
-  };
-  return { value, onChange };
-};
-
-const UseInput = () => {
-  const maxLen = (value) => value.length <= 13;
-  const name = useInput('010-', maxLen);
-  return (
-    <div className="UseInput">
-      <InputTel {...name} />
-    </div>
-  );
-};
-
 export default function ResumeBasic() {
+  const [img, setImage] = useState(
+    'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
+  );
   const [bookmark, setBookmark] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const handleBookmark = () => {
     setBookmark(!bookmark);
   };
+  const onChange = async (e) => {
+    const formData = new FormData();
+    formData.append('files', e.target.files[0]);
+    console.log(formData);
+    console.log(e.target.files[0]);
 
+    const url = await axios
+      .post('/file', formData)
+      .then((res) => res.data.files[0].url)
+      .catch(
+        (error) =>
+          'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
+      );
+    console.log(url);
+    setImage(url);
+  };
+  const hiddenFileInput = React.useRef(null);
+  const handleClick = async () => {
+    hiddenFileInput.current.click();
+  };
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
@@ -122,7 +122,20 @@ export default function ResumeBasic() {
                 height: '200px',
               }}
             >
-              <ResumeImg>이미지 업로드</ResumeImg>
+              <div>
+                <ResumeImg
+                  onClick={handleClick}
+                  src={img}
+                  alt="resumeImg"
+                  style={{ cursor: 'pointer' }}
+                />
+                <input
+                  type="file"
+                  ref={hiddenFileInput}
+                  onChange={onChange}
+                  style={{ display: 'none' }}
+                />
+              </div>
             </div>
           </div>
           <div className={'col-12 col-lg-8 row w-100 p-0 m-0'}>
@@ -148,17 +161,7 @@ export default function ResumeBasic() {
             </div>
             <div className={'col-12 col-lg-6 pl-0'}>
               <ResumeInputs basic name={'성별'} />
-              <div>
-                <div
-                  style={{
-                    marginBottom: '5px',
-                    color: 'gray',
-                  }}
-                >
-                  연락처
-                </div>
-                <UseInput />
-              </div>
+              <ResumeInputs basic name={'연락처'} />
             </div>
             <div className={'row w-100'} style={{ padding: '0 0 0 15px' }}>
               <div className={'col-12'} style={{ padding: '0' }}>

@@ -1,0 +1,21 @@
+### 1. 게시글 등록
+POST http://localhost:8081/api/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJBQ0NFU1NfVE9LRU4iLCJ1c2VySWQiOiIxIiwicm9sZSI6IlJPTEVfTUVNQkVSIiwiaWF0IjoxNjE4NDc4NjkyLCJleHAiOjE2MTg0ODA0OTJ9.wy0PpGuV4Sap8KhcjZyi2GvUqEfXQrSC3TmNT0FQus8
+
+{
+  "userId": 1,
+  "title": "안냐세용",
+  "content": "테스트촤하하"
+}
+
+###
+POST http://localhost:8081/api/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJBQ0NFU1NfVE9LRU4iLCJ1c2VySWQiOiIyIiwicm9sZSI6IlJPTEVfTUVNQkVSIiwiaWF0IjoxNjE4NDc4ODk4LCJleHAiOjE2MTg0ODA2OTh9.q1WMs-FeoVLAjaRtVrejUauWibZzoVfFWB2yHoPzLME
+
+{
+"userId": 2,
+"title": "두번째",
+"content": "테스트"
+}
