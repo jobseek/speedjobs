@@ -25,7 +25,6 @@ public class Comment extends BaseTimeEntity {
 	@Lob
 	private String content;
 
-	@ColumnDefault("0")
 	private int likeCount;
 
 	private String commentImage;
@@ -37,4 +36,13 @@ public class Comment extends BaseTimeEntity {
 	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	public void increaseLikeCount() {
+		likeCount += 1;
+	}
+
+	public void decreaseLikeCount() {
+		likeCount -= 1;
+	}
+
 }

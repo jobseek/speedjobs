@@ -56,29 +56,8 @@ public class PostTag {
 		return postTag;
 	}
 
-	public void removePostTag() {
-		this.getPost().getPostTags().remove(this);
-		this.getTag().getPostTags().remove(this);
-	}
-
-	public void removeTagFromPost() {
+	public void removePostTagFromPost() {
 		post.getPostTags().remove(this);
 	}
-
-	//	public void setPost(Post post) {
-//		if (this.post != null) {
-//			tag.getPostTags().remove(this);
-//		}
-//		this.post = post;
-//		post.getPostTags().add(this);
-//	}
-//
-//	public void setTag(Tag tag) {
-//		if (this.tag != null) {
-//			tag.getPostTags().remove(this);
-//		}
-//		this.tag = tag;
-//		tag.getPostTags().add(this);
-//	}
 
 }

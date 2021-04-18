@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.service;
 
 import static com.jobseek.speedjobs.domain.user.Role.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.domain.Page;
@@ -22,7 +23,6 @@ import com.jobseek.speedjobs.dto.post.PostRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -47,7 +47,10 @@ public class PostService {
 		if (post.getUser().getId() != user.getId()) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
+		post.getPostTags().forEach(postTagRepository::delete);
+		post.getPostTags().clear();
 		addTags(request.getTagIds(), post);
+		post.update(request.getTitle(), request.getContent());
 	}
 
 	@Transactional
@@ -60,10 +63,12 @@ public class PostService {
 		postRepository.delete(post);
 	}
 
+	@Transactional
 	public PostResponse readById(Long id) {
-		Post entity = postRepository.findById(id)
+		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-		return new PostResponse(entity);
+		post.increaseViewCount();
+		return new PostResponse(post);
 	}
 
 	public Page<Post> readByPage(Pageable pageable) {

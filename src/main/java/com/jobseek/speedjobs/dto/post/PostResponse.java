@@ -1,5 +1,7 @@
 package com.jobseek.speedjobs.dto.post;
 
+import java.util.Set;
+
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostDetail;
 import lombok.Getter;
