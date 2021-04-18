@@ -1,24 +1,38 @@
 package com.jobseek.speedjobs.domain.post;
 
-import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.*;
-
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
+import static lombok.AccessLevel.*;
 
-@Entity @Getter @Setter @Builder
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.user.User;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "comments")
 public class Comment extends BaseTimeEntity {
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	@Column(name = "comment_id")
 	private Long id;
 
@@ -27,13 +41,11 @@ public class Comment extends BaseTimeEntity {
 
 	private int likeCount;
 
-	private String commentImage;
-
-	@ManyToOne(fetch = LAZY, cascade = PERSIST)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@ManyToOne(fetch = LAZY, cascade = PERSIST)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "user_id")
 	private User user;
 

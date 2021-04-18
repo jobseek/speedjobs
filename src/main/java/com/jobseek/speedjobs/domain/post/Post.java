@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.domain.post;
 
 import javax.persistence.*;
 
+import com.google.common.base.Objects;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 
 import com.jobseek.speedjobs.domain.likelist.PostLikeList;
@@ -34,7 +35,7 @@ public class Post extends BaseTimeEntity {
 
 	private String title;
 
-	@ManyToOne(fetch = LAZY, cascade = PERSIST)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -50,10 +51,10 @@ public class Post extends BaseTimeEntity {
 	@OneToMany(mappedBy = "post", cascade = ALL)
 	private List<PostLikeList> postLikeLists = new ArrayList<>();
 
-	@OneToMany(mappedBy = "post", cascade = ALL)
+	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
 	private List<Comment> commentList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "post", cascade = ALL)
+	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
 	private Set<PostTag> postTags = new HashSet<>();
 
 	public void increaseLikeCount() {
@@ -94,7 +95,12 @@ public class Post extends BaseTimeEntity {
 
 	public void addComment(Comment comment) {
 		commentList.add(comment);
-		comment.setPost(this);
+		increaseCommentCount();
+	}
+
+	public void removeComment(Comment comment) {
+		commentList.remove(comment);
+		decreaseCommentCount();
 	}
 
 	public void addPostTag(PostTag postTag) {

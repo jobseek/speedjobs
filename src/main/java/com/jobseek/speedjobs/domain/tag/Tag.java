@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Objects;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +42,7 @@ public class Tag {
 	@Column(unique = true, length = 50)
 	private String name;
 
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
+	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL, orphanRemoval = true)
 	private Set<PostTag> postTags = new HashSet<>();
 
 	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)

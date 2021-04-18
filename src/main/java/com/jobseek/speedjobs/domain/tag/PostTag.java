@@ -1,11 +1,9 @@
 package com.jobseek.speedjobs.domain.tag;
 
 import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
+import static javax.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
-import com.jobseek.speedjobs.domain.post.Post;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.jobseek.speedjobs.domain.post.Post;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,11 +36,11 @@ public class PostTag {
 	@Column(name = "post_tag_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY, cascade = PERSIST)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@ManyToOne(fetch = LAZY, cascade = PERSIST)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
 
@@ -54,6 +55,10 @@ public class PostTag {
 		post.getPostTags().add(postTag);
 		tag.getPostTags().add(postTag);
 		return postTag;
+	}
+
+	public void removePostTagFromTag() {
+		tag.getPostTags().remove(this);
 	}
 
 	public void removePostTagFromPost() {
