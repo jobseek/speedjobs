@@ -38,11 +38,12 @@ public class UserService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다. id=" + userId));
 	}
 
-	public void sendEmail(UserSaveRequest request) {
+	public String sendEmail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
 		redisUtil.set(key, request, 30 * 60 * 1000);
 		mailUtil.sendEmail(request.getEmail(), key);
+		return key;
 	}
 
 	@Transactional
