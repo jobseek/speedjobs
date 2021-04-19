@@ -42,21 +42,10 @@ public class Tag {
 	@Column(unique = true, length = 50)
 	private String name;
 
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL, orphanRemoval = true)
-	private Set<PostTag> postTags = new HashSet<>();
-
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private Set<RecruitTags> recruitTags = new HashSet<>();
-
 	@Builder
 	public Tag(Type type, String name) {
 		this.type = type;
 		this.name = name;
-	}
-
-	public void addPostTag(PostTag postTag) {
-		postTags.add(postTag);
-		postTag.setTag(this);
 	}
 
 	public void changeTag(Type type, String name) {

@@ -38,9 +38,9 @@ public class TagService {
 
 	@Transactional
 	public void delete(Long id) {
-		Tag tag = tagRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
-		tag.getPostTags().forEach(PostTag::removePostTagFromPost);
-		tagRepository.delete(tag);
+//		Tag tag = tagRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
+//		tag.getPostTags().forEach(PostTag::removePostTagFromPost);
+//		tagRepository.delete(tag);
 	}
 
 	@Transactional
