@@ -15,17 +15,21 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.*;
 import static lombok.AccessLevel.PROTECTED;
 
-@Entity @Getter @Setter @Builder
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "companies")
 public class Company {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "company_id")
 	private Long id;
 
-	@Column(unique = true, length = 100)
+	@Column(length = 100)
 	private String companyName;
 
 	@Column(length = 120)

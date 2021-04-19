@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import 'autoheight-textarea';
 import { ThumbUp } from '@styled-icons/material-rounded/ThumbUp';
 import { StyledButton } from '../Styled';
 
@@ -41,7 +43,7 @@ const PostComment = styled.div`
   overflow-wrap: normal;
 
   @media (max-width: 992px) {
-    margin-left: 0;
+    margin-left: 5px;
     padding: 5px 10px;
     width: 100%;
   }
@@ -52,24 +54,27 @@ const A1 = styled.a`
   text-decoration: none;
 `;
 
-const P1 = styled.div`
+const P1 = styled.textarea`
   font-size: 14px;
   color: #4e5564;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  overflow-y: auto;
+  overflow-y: hidden;
+  width: 100%;
+  outline: none;
+  resize: none;
+  border: none;
 `;
 
-const MetaP = styled.p`
+const MetaP = styled.div`
   font-size: 13px;
   color: #aaaaaa;
   padding-bottom: 8px;
   margin-bottom: 10px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
 `;
 
-const Meta = styled.p`
+const Meta = styled.div`
   font-size: 13px;
   color: #aaaaaa;
   margin-bottom: 0;
@@ -110,7 +115,8 @@ const TextLength = styled.input`
   user-select: none;
 `;
 
-export default function Comment({ writer, content, date }) {
+export default function Comment({ writer, content, date, onClick }) {
+  const user = useSelector((state) => state.user);
   return (
     <ClearFix>
       <BlogCommentAvatar />
@@ -121,7 +127,18 @@ export default function Comment({ writer, content, date }) {
           </div>
           <ThumbUpSt />
         </MetaP>
-        <P1>{content}</P1>
+        <autoheight-textarea>
+          <P1 value={content} readOnly />
+        </autoheight-textarea>
+        <Meta>
+          {user.me !== null ? (
+            <StyledButton white onClick={onClick}>
+              삭제
+            </StyledButton>
+          ) : (
+            ''
+          )}
+        </Meta>
       </PostComment>
     </ClearFix>
   );
@@ -147,16 +164,20 @@ export function CommentsForm(props) {
     <CommentForm>
       <BlogCommentAvatar />
       <PostComment>
-        <CmtInput
-          maxLength="300"
-          rows="4"
-          value={comForm.content}
-          placeholder="내용을 입력해주세요."
-          onKeyPress={cal}
-          onKeyDown={cal}
-          onKeyUp={cal}
-          onChange={(e) => setComForm({ ...comForm, content: e.target.value })}
-        />
+        <autoheight-textarea>
+          <CmtInput
+            maxLength="300"
+            rows="4"
+            value={comForm.content}
+            placeholder="내용을 입력해주세요."
+            onKeyPress={cal}
+            onKeyDown={cal}
+            onKeyUp={cal}
+            onChange={(e) =>
+              setComForm({ ...comForm, content: e.target.value })
+            }
+          />
+        </autoheight-textarea>
         <Meta>
           <TextLength value={result} readOnly />
           <StyledButton
