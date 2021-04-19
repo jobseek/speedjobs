@@ -12,6 +12,7 @@ import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,8 @@ public class PostService {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. postId=" + postId));
 		post.increaseViewCount();
-		return PostResponse.builder().build();
+		List<Tag> tags = post.getPostTags().getTags();
+		return PostResponse.of(post, TagResponses.mappedByType(tags));
 	}
 
 	private void createPostTags(Post post, List<Tag> tags) {

@@ -32,30 +32,31 @@ public class TagController {
 	@ApiOperation(value = "태그 등록", notes = "태그를 등록한다.")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("")
-	public ResponseEntity<Void> save(@Valid @RequestBody TagSaveRequest tagSaveRequest) {
-		tagService.save(tagSaveRequest);
+	public ResponseEntity<Void> saveTag(@Valid @RequestBody TagSaveRequest tagSaveRequest) {
+		tagService.saveTag(tagSaveRequest);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "태그 조회", notes = "태그를 조회한다.")
 	@GetMapping("")
-	public ResponseEntity<TagResponses> read() {
-		return ResponseEntity.ok().body(tagService.readByTagType());
+	public ResponseEntity<TagResponses> findTagsByType() {
+		return ResponseEntity.ok().body(tagService.findTagsByType());
 	}
 
 	@ApiOperation(value = "태그 삭제", notes = "태그를 삭제한다.")
 	@PreAuthorize("hasRole('ADMIN')")
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		tagService.delete(id);
+	@DeleteMapping("/{tagId}")
+	public ResponseEntity<Void> deleteTag(@PathVariable Long tagId) {
+		tagService.deleteTag(tagId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "태그 수정", notes = "태그를 수정한다.")
 	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody TagUpdateRequest tagUpdateRequest) {
-		tagService.update(id, tagUpdateRequest);
+	@PutMapping("/{tagId}")
+	public ResponseEntity<Void> updateTag(@PathVariable Long tagId,
+		@Valid @RequestBody TagUpdateRequest tagUpdateRequest) {
+		tagService.updateTag(tagId, tagUpdateRequest);
 		return ResponseEntity.noContent().build();
 	}
 }

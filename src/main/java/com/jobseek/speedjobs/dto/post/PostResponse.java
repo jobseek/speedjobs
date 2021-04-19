@@ -31,7 +31,12 @@ public class PostResponse {
 		this.comments = comments;
 	}
 
-//	public PostResponse of(Post post) {
-//		return PostResponse
-//	}
+	public static PostResponse of(Post post, TagResponses tagResponses) {
+		return PostResponse.builder()
+			.id(post.getId())
+			.title(post.getTitle())
+			.content(post.getPostDetail().getContent())
+			.tags(tagResponses)
+			.build();
+	}
 }

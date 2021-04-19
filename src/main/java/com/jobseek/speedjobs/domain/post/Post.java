@@ -8,7 +8,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.likelist.PostLikeList;
+import com.jobseek.speedjobs.domain.likelist.PostLike;
 import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.PostTags;
 import com.jobseek.speedjobs.domain.tag.Tag;
@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
@@ -54,10 +54,10 @@ public class Post extends BaseTimeEntity {
 	private PostDetail postDetail;
 
 	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<PostLikeList> postLikeLists = new ArrayList<>();
+	private List<PostLike> postLikes = new ArrayList<>();
 
 	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-	private List<Comment> commentList = new ArrayList<>();
+	private List<Comment> comments = new ArrayList<>();
 
 	@Embedded
 	private PostTags postTags = PostTags.empty();
@@ -108,18 +108,18 @@ public class Post extends BaseTimeEntity {
 		this.postDetail = post.getPostDetail();
 	}
 
-	public void addPostLike(PostLikeList postLikeList) {
-		postLikeLists.add(postLikeList);
-		postLikeList.setPost(this);
-	}
+//	public void addPostLike(PostLike postLike) {
+//		postLikes.add(postLike);
+//		postLike.setPost(this);
+//	}
 
 	public void addComment(Comment comment) {
-		commentList.add(comment);
+		comments.add(comment);
 		increaseCommentCount();
 	}
 
 	public void removeComment(Comment comment) {
-		commentList.remove(comment);
+		comments.remove(comment);
 		decreaseCommentCount();
 	}
 

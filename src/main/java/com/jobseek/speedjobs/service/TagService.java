@@ -1,20 +1,20 @@
 package com.jobseek.speedjobs.service;
 
-import java.util.Arrays;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.PostTag;
+import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
 import com.jobseek.speedjobs.dto.tag.TagSaveRequest;
 import com.jobseek.speedjobs.dto.tag.TagUpdateRequest;
-
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,29 +23,29 @@ import lombok.extern.slf4j.Slf4j;
 public class TagService {
 
 	private final TagRepository tagRepository;
+	private final PostTagRepository postTagRepository;
 
 	@Transactional
-	public Tag save(TagSaveRequest request) {
-		return tagRepository.save(request.toEntity());
+	public void saveTag(TagSaveRequest request) {
+		tagRepository.save(request.toEntity());
 	}
 
-	public TagResponses readByTagType() {
-		TagResponses tagResponses = new TagResponses();
-		Arrays.stream(Type.values())
-			.forEach(type -> tagResponses.addTags(type, tagRepository.findAllByType(type)));
-		return tagResponses;
-	}
-
-	@Transactional
-	public void delete(Long id) {
-//		Tag tag = tagRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
-//		tag.getPostTags().forEach(PostTag::removePostTagFromPost);
-//		tagRepository.delete(tag);
+	public TagResponses findTagsByType() {
+		List<Tag> tags = tagRepository.findAll();
+		return TagResponses.mappedByType(tags);
 	}
 
 	@Transactional
-	public void update(Long id, TagUpdateRequest request) {
-		Tag tag = tagRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
+	public void deleteTag(Long tagId) {
+		List<PostTag> postTags = postTagRepository.findByTagId(tagId);
+		postTags.forEach(PostTag::deletePostTag);
+		tagRepository.deleteById(tagId);
+	}
+
+	@Transactional
+	public void updateTag(Long tagId, TagUpdateRequest request) {
+		Tag tag = tagRepository.findById(tagId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
 		tag.changeTag(request.getType(), request.getName());
 	}
 }
