@@ -9,6 +9,7 @@ import {
   RECRUIT_LIST_REQUEST,
 } from '../../reducers/recruit';
 import Post from '../components/Post';
+import { COMPANY_GET_REQUEST } from '../../reducers/company';
 
 export default function Recruitment(props) {
   const history = useHistory();
@@ -42,7 +43,8 @@ export default function Recruitment(props) {
   };
 
   const rootRef = useRef();
-  const recruit = useSelector((state) => state.recruit);
+  const { user, recruit } = useSelector((state) => state);
+  const me = useState({ ...user.me });
 
   const [, setLoading] = useState(false);
   const [recruitList, setRecruitList] = useState([]);
@@ -94,25 +96,6 @@ export default function Recruitment(props) {
     />
   ));
 
-  // const dummy = useCallback(() => {
-  //   const dummyData = [];
-  //
-  //   for (let i = 0; i < 10; i++) {
-  //     dummyData[i] = {};
-  //     dummyData[i].title = i + '번 더미 데이터';
-  //     dummyData[i].job = i + '번 더미 데이터 JOB';
-  //     dummyData[i].date = '1999.01.01~2021.06.01';
-  //     dummyData[i].tag = ['backEnd', 'frontEnd', 'java'];
-  //     dummyData[i].favorite = i % 2 === 1 && true;
-  //   }
-  //   dummyData.push({ title: 'hello' });
-  //   dummyData.shift();
-  //   dummyData.shift();
-  //   return dummyData;
-  // }, []);
-
-  // const [dummyData] = useState(dummy);
-
   // const dummyOut = dummyData.map((temp) => {
   //   return (
   //     <div key={v4()}>
@@ -153,14 +136,22 @@ export default function Recruitment(props) {
                 className={'row justify-content-end'}
                 style={{ padding: '10px', paddingTop: '0' }}
               >
-                <TagBody
-                  style={{ marginTop: '0', border: '1px solid #f5df4d' }}
-                  onClick={() => {
-                    history.push('./recruitment/add');
-                  }}
-                >
-                  글쓰기
-                </TagBody>
+                {me[0].role === 'ROLE_COMPANY' ? (
+                  <TagBody
+                    style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                    onClick={() => {
+                      history.push('./recruitment/add');
+                      dispatch({
+                        type: COMPANY_GET_REQUEST,
+                        data: user.me,
+                      });
+                    }}
+                  >
+                    글쓰기
+                  </TagBody>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             {mapRecruit}

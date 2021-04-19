@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "date-fns": "^2.21.1",
     "gsap": "^3.6.0",
     "hamburger-react": "^2.4.0",
     "immer": "^9.0.1",

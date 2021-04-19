@@ -53,8 +53,6 @@ function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
 
-    // 보안 굳이 이해하실 필요 없습니다
-
     const userInfo = yield call(getUserApi, result.data);
 
     yield (axios.defaults.headers.common[
@@ -97,7 +95,6 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-  console.log('data= ', data);
   if (data.role === 'ROLE_MEMBER') {
     return axios.post('/user/signup/member', data);
   } else {

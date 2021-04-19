@@ -58,7 +58,7 @@ export default function ProfileContents() {
         dispatch({ type: PROFILE_UPDATE_REQUEST, data: form, me: user.me.id });
       }
     },
-    [dispatch, form]
+    [dispatch, form, user]
   );
 
   const autoHyphen = (com, input) => {

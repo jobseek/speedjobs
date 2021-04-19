@@ -35,6 +35,8 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'org.apache.velocity:velocity:1.7'
     implementation 'commons-io:commons-io:2.8.0'
+    implementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
 
     compileOnly 'org.projectlombok:lombok'
 

@@ -10,13 +10,29 @@ import { RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
 export default function RecruitAdd() {
-  const [form, setForm] = useState({ content: '', title: '' });
+  const [form, setForm] = useState({
+    title: '',
+    position: '',
+    experience: '',
+    content: '',
+    startRecruit: '',
+    finishRecruit: '',
+  });
   const recruit = useSelector((state) => state.recruit);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onChangHandler = useCallback((e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
+  const onChangHandler = useCallback(
+    (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value })),
+    []
+  );
+  const onSubmitHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch({ type: RECRUIT_ADD_REQUEST, data: form });
+    },
+    [form, dispatch]
+  );
+
   useEffect(() => {
     console.log('effect');
     if (recruit.recruitAddDone) {
@@ -25,23 +41,6 @@ export default function RecruitAdd() {
       history.goBack();
     }
   }, [recruit, history]);
-  const onSubmitHandler = useCallback(
-    (e) => {
-      console.log('handler');
-      e.preventDefault();
-      if (recruit.title === '' || recruit.content === '') {
-        if (recruit.title === '') {
-          alert('제목을 입력하세요');
-        } else if (recruit.content === '') {
-          alert('내용을 입력하세요');
-        }
-      } else {
-        dispatch({ type: RECRUIT_ADD_REQUEST, data: form });
-        setForm({ content: '', title: '' });
-      }
-    },
-    [dispatch, form, recruit.content, recruit.title]
-  );
 
   return (
     <div
@@ -78,13 +77,7 @@ export default function RecruitAdd() {
         </StyledHeaderDiv>
 
         <div className={'container'}>
-          {/* <PostTextArea*/}
-          {/*  name={'content'}*/}
-          {/*  onChange={(e) => onChangHandler(e)}*/}
-          {/*  placeholder="내용을 입력하세요"*/}
-          {/*  rows={'20'}*/}
-          {/* />*/}
-          <RecruitAddContents onChange={(e) => onChangHandler(e)} />
+          <RecruitAddContents onChange={onChangHandler} />
         </div>
       </form>
     </div>

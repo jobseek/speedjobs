@@ -7,6 +7,7 @@ import postSage from './post';
 import recruitSaga from './recruit';
 import address from '../auth/address';
 import profileSaga from './profile';
+import companySaga from './company';
 
 axios.defaults.baseURL = `http://${address()}:8081/api`;
 axios.defaults.withCredentials = true;
@@ -15,8 +16,8 @@ export default function* rootSaga() {
   yield all([
     fork(userSaga),
     fork(postSage),
-    fork(profileSaga),
     fork(commentSaga),
     fork(recruitSaga),
+    fork(companySaga),
   ]);
 }
