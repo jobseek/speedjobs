@@ -26,7 +26,7 @@ public class Company {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "company_id")
+	@Column(name = "id")
 	private Long id;
 
 	@Column(length = 100)
@@ -40,7 +40,7 @@ public class Company {
 	@Embedded
 	private CompanyDetail companyDetail;
 
-	@OneToOne(fetch = LAZY, cascade = ALL)
+	@OneToOne(mappedBy = "company", fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 

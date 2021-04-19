@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member{
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "member_id")
+	@Column(name = "id")
 	private Long id;
 
 	private String sex;
@@ -32,7 +32,7 @@ public class Member{
 
 	private String intro;
 
-	@OneToOne(fetch = LAZY, cascade = ALL)
+	@OneToOne(mappedBy = "member", fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 

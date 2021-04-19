@@ -71,10 +71,10 @@ public class User extends BaseTimeEntity {
 	@Column(name = "oauth_id")
 	private String oauthId;
 
-	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	@OneToOne(fetch = LAZY, cascade = ALL)
 	private Member member;
 
-	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
+	@OneToOne(fetch = LAZY, cascade = ALL)
 	private Company company;
 
 	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
