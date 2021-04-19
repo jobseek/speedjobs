@@ -1,29 +1,20 @@
 package com.jobseek.speedjobs.domain.resume.details;
 
-import com.jobseek.speedjobs.domain.resume.Resume;
 import lombok.*;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Entity @Getter @Setter @Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
-@Table(name = "scholars")
+@Embeddable
+@Getter
+@ToString
 public class Scholar {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "scholar_id")
-	private Long id;
-
-	@Enumerated
-	private School finalEducation;
+	@Enumerated(EnumType.STRING)
+	private Education education;
 
 	@Column(length = 70)
 	private String schoolName;
@@ -31,11 +22,10 @@ public class Scholar {
 	@Column(length = 50)
 	private String major;
 
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime inDate; //입학날짜
 
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime outDate; //졸업날짜
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
-	@JoinColumn(name = "resume_id")
-	private Resume resume;
 }

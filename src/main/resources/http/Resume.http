@@ -1,0 +1,128 @@
+### 1-1.회원가입(멤버)
+POST http://localhost:8081/api/user/signup/member
+Content-Type: application/json
+
+{
+  "email": "lsb530@naver.com",
+  "name": "안녕",
+  "password": "12341234",
+  "role": "ROLE_MEMBER"
+}
+
+### 이메일 인증
+### key
+GET http://localhost:8081/api/user/signup/confirm/589e2f34-45e8-4bf3-ad89-ec6fc89e32da
+Accept: application/json
+
+### 토큰받기
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "lsb530@naver.com",
+  "password": "12341234",
+  "provider": "LOCAL"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 1. 이력서 등록
+POST http://localhost:8081/api/resume
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "open": "NO",
+  "coverLetter": "소개입니당",
+  "address": "서울시 강북구 번동",
+  "blogUrl": "https://www.naver.com",
+  "githubUrl": "https://www.naver.com",
+  "resumeImage": "https://www.naver.com",
+  "careerList": [
+    {
+      "companyName": "보기컴퍼니",
+      "position": "사장",
+      "inDate": "2020-01-02 00:00:00",
+      "outDate": "2021-12-15 00:00:00"
+    },
+    {
+      "companyName": "짱우컴퍼니",
+      "position": "부하",
+      "inDate": "2020-01-05 00:00:00",
+      "outDate": "2021-11-15 00:00:00"
+    }
+  ],
+  "scholarList": [
+    {
+      "education": "HIGH",
+      "schoolName": "양명고",
+      "major": "이과",
+      "inDate": "2014-03-02 00:00:00",
+      "outDate": "2017-02-21 00:00:00"
+    },
+    {
+      "education": "UNIVERSITY",
+      "schoolName": "서울대",
+      "major": "컴퓨터공학과",
+      "inDate": "2017-03-02 00:00:00",
+      "outDate": "2020-03-21 00:00:00"
+    }
+  ],
+  "certificateList": [
+    {
+      "certName": "컴퓨터활용능력1급",
+      "certNumber": "111-11-11111",
+      "institute": "보기컴퍼니",
+      "certDate": "2011-08-23 13:25:08",
+      "score": null,
+      "degree": 1
+    },
+    {
+      "certName": "토익",
+      "certNumber": "222-22-22222",
+      "institute": "보기토익컴퍼니",
+      "certDate": "2018-05-30 13:25:08",
+      "score": 800,
+      "degree": null
+    }
+  ]
+}
+
+### 1-1. 공고등록2
+POST http://localhost:8081/api/recruit
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "안냐세용2",
+  "openDate": "2020-01-01 00:00:00",
+  "closeDate": "2021-12-31 00:00:00",
+  "state": "PROCESS",
+  "thumbnail": "https://www.naver.com",
+  "experience": "JUNIOR",
+  "position": "PERMANENT",
+  "content": "테스트촤하하",
+  "tagIds": ["1","2","5","6"]
+}
+
+### 2. 공고수정
+PUT http://localhost:8081/api/recruit/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "수정할거에요.",
+  "openDate": "2020-01-02 00:00:00",
+  "closeDate": "2021-12-30 00:00:00",
+  "state": "END",
+  "thumbnail": "www.naver.com",
+  "experience": "SENIOR",
+  "position": "PERMANENT",
+  "content": "수정",
+  "tagIds": ["1","3","4","7"]
+}
+
+### 3. 삭제
+DELETE http://localhost:8081/api/resume/1
+Accept: application/json
+Authorization: Bearer {{accessToken}}

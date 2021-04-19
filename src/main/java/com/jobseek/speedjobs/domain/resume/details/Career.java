@@ -1,38 +1,26 @@
 package com.jobseek.speedjobs.domain.resume.details;
 
-import com.jobseek.speedjobs.domain.resume.Resume;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.*;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
-
-@Entity @Getter @Setter @Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
-@Table(name = "careers")
+@Embeddable
+@Getter
+@ToString
 public class Career {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "career_id")
-	private Long id;
-
-	@Column(length = 120)
 	private String companyName;
 
 	private String position;
 
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime inDate; //입사날짜
 
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime outDate; //퇴사날짜
-
-	@ManyToOne(fetch = LAZY, cascade = ALL)
-	@JoinColumn(name = "resume_id")
-	private Resume resume;
 
 }
