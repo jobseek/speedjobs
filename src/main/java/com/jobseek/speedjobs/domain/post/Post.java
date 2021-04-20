@@ -1,28 +1,40 @@
 package com.jobseek.speedjobs.domain.post;
 
-import javax.persistence.*;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-
-import com.jobseek.speedjobs.domain.likelist.PostLikeList;
+import com.jobseek.speedjobs.domain.likelist.PostLike;
 import com.jobseek.speedjobs.domain.tag.PostTag;
+import com.jobseek.speedjobs.domain.tag.PostTags;
+import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
@@ -32,11 +44,23 @@ public class Post extends BaseTimeEntity {
 	@Column(name = "post_id")
 	private Long id;
 
-	private String title;
-
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	private String title;
+
+	@Embedded
+	private PostDetail postDetail;
+
+	@OneToMany(mappedBy = "post", cascade = ALL)
+	private List<PostLike> postLikes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+	private List<Comment> comments = new ArrayList<>();
+
+	@Embedded
+	private PostTags postTags = PostTags.empty();
 
 	private int likeCount;
 
@@ -44,17 +68,11 @@ public class Post extends BaseTimeEntity {
 
 	private int commentCount;
 
-	@Embedded
-	private PostDetail postDetail;
-
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<PostLikeList> postLikeLists = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<Comment> commentList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private Set<PostTag> postTags = new HashSet<>();
+	@Builder
+	public Post(String title, PostDetail postDetail) {
+		this.title = title;
+		this.postDetail = postDetail;
+	}
 
 	public void increaseLikeCount() {
 		likeCount += 1;
@@ -76,72 +94,74 @@ public class Post extends BaseTimeEntity {
 		commentCount -= 1;
 	}
 
-	public void update(String title, String content) {
-		this.title = title;
-		this.postDetail = PostDetail.from(content);
+	public static Post createPost(String title, String content) {
+		return new Post(title, PostDetail.from(content));
 	}
 
-	//연관관계 편의 메서드
 	public void setUser(User user) {
 		this.user = user;
-		user.getPostList().add(this);
 	}
 
-	public void addPostLike(PostLikeList postLikeList) {
-		postLikeLists.add(postLikeList);
-		postLikeList.setPost(this);
+	public void update(Post post, List<Tag> tags) {
+		updatePostTags(tags);
+		this.title = post.getTitle();
+		this.postDetail = post.getPostDetail();
 	}
+
+//	public void addPostLike(PostLike postLike) {
+//		postLikes.add(postLike);
+//		postLike.setPost(this);
+//	}
 
 	public void addComment(Comment comment) {
-		commentList.add(comment);
-		comment.setPost(this);
+		comments.add(comment);
+		increaseCommentCount();
 	}
 
-	public void addPostTag(PostTag postTag) {
-		postTags.add(postTag);
-		postTag.setPost(this);
+	public void removeComment(Comment comment) {
+		comments.remove(comment);
+		decreaseCommentCount();
 	}
 
-	//생성 메서드
-	public void initCount() {
-		this.likeCount = 0;
-		this.viewCount = 0;
-		this.commentCount = 0;
+	public void updatePostTags(List<Tag> tags) {
+		postTags.clear();
+		tags.forEach(tag -> PostTag.createPostTag(this, tag));
 	}
 
 	//비즈니스 로직
 	//봤을때, 댓글을 추가/삭제했을때, 좋아요 눌렀을때, 공고찜목록에 추가했을때, 태그를 추가했을 때
+
 	/**
-	* 포스트를 봤을 때
-	*/
+	 * 포스트를 봤을 때
+	 */
 	public void showed() {
 		increaseViewCount();
 	}
 
 	/**
-	* 댓글 달렸을 때
-	*/
+	 * 댓글 달렸을 때
+	 */
 	public void addComment() {
 		increaseCommentCount();
 	}
 
 	/**
-	* 댓글 지울 때
-	*/
+	 * 댓글 지울 때
+	 */
 	public void deleteComment() {
 		decreaseCommentCount();
 	}
 
 	/**
-	* 좋아요 눌렸을 때
-	*/
+	 * 좋아요 눌렸을 때
+	 */
 	public void pushLike() {
 		increaseLikeCount();
 	}
 
 	/**
-	* 싫어요 눌렀을 때
-	*/
+	 * 싫어요 눌렀을 때
+	 */
 	public void pushHate() {
 		decreaseLikeCount();
 	}

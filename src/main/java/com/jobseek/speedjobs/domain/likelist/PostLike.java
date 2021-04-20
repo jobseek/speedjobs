@@ -1,23 +1,32 @@
 package com.jobseek.speedjobs.domain.likelist;
 
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-
-import javax.persistence.*;
-
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-@Entity @Getter @Setter @Builder
+import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.user.User;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Table(name = "post_like_list")
-public class PostLikeList {
+@Table(name = "post_likes")
+public class PostLike {
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	@Column(name = "post_like_id")
 	private Long id;
 

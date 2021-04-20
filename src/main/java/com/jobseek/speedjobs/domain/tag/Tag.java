@@ -1,12 +1,12 @@
 package com.jobseek.speedjobs.domain.tag;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,9 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,21 +38,10 @@ public class Tag {
 	@Column(unique = true, length = 50)
 	private String name;
 
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private Set<PostTag> postTags = new HashSet<>();
-
-	@OneToMany(mappedBy = "tag", fetch = LAZY, cascade = ALL)
-	private Set<RecruitTags> recruitTags = new HashSet<>();
-
 	@Builder
 	public Tag(Type type, String name) {
 		this.type = type;
 		this.name = name;
-	}
-
-	public void addPostTag(PostTag postTag) {
-		postTags.add(postTag);
-		postTag.setTag(this);
 	}
 
 	public void changeTag(Type type, String name) {
