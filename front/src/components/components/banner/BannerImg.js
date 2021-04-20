@@ -6,7 +6,7 @@ const Img = styled.img`
   left: 2%;
   width: 96%;
   height: 350px;
-  transition: all 2s ease-in-out;
+  transition: margin 2s ease-in-out;
   margin-left: ${(props) => props.now + 'vw'};
   opacity: ${(props) => (props.now === 0 ? 1 : 0.3)};
   object-fit: cover;
@@ -19,7 +19,7 @@ const Img = styled.img`
 export default function BannerImg({ src, now, zIndex }) {
   return (
     <>
-      <Img src={src} now={(now - 2) * 96} zIndex={zIndex}></Img>
+      <Img src={src} now={(now - 1) * 96} zIndex={zIndex}></Img>
     </>
   );
 }

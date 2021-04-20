@@ -12,7 +12,7 @@ import {
 import { POST_ADD_REQUEST } from '../../reducers/post';
 
 export default function PostAdd(props) {
-  const [form, setForm] = useState({ title: '', content: '' });
+  const [form, setForm] = useState({ title: '', content: '', tagIds: [] });
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const history = useHistory();
