@@ -57,7 +57,7 @@ public class PostController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@ApiOperation(value = "게시글 업데이트", notes = "게시글을 업데이트한다.")
+	@ApiOperation(value = "게시글 수정", notes = "게시글을 수정한다.")
 	@PreAuthorize("hasRole('MEMBER')")
 	@PutMapping("/{postId}")
 	public ResponseEntity<Void> updatePost(@PathVariable Long postId, @LoginUser User user,

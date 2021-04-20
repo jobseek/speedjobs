@@ -46,6 +46,17 @@ public class RecruitService {
 		recruitRepository.delete(recruit);
 	}
 
+	@Transactional
+	public void update(Long recruitId, User user, RecruitRequest recruitRequest) {
+		Recruit recruit = recruitRepository.findById(recruitId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 공곽 없습니다."));
+		if(recruit.getCompany().getId() != user.getCompany().getId()) {
+			throw new UnauthorizedException("권한이 없습니다.");
+		}
+		List<Tag> tags = getTagsById(recruitRequest.getTagIds());
+		recruit.update(recruitRequest.toEntity(), tags);
+	}
+
 	private void createRecruitTags(Recruit recruit, List<Tag> tags) {
 		tags.forEach(tag -> RecruitTag.createRecruitTag(recruit, tag));
 	}
@@ -56,6 +67,4 @@ public class RecruitService {
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
 			.collect(Collectors.toList());
 	}
-
-
 }

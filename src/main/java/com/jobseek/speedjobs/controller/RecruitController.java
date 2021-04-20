@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,4 +46,12 @@ public class RecruitController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@ApiOperation(value = "공고 수정", notes = "공고를 수정한다.")
+	@PreAuthorize("hasAnyRole('COMPANY', 'ADMIN')")
+	@PutMapping("/{recruitId}")
+	public ResponseEntity<Void> updateRecruit(@PathVariable Long recruitId, @LoginUser User user,
+		@Valid @RequestBody RecruitRequest recruitRequest) {
+		recruitService.update(recruitId, user, recruitRequest);
+		return ResponseEntity.created(URI.create("/api/recruit/" + recruitId)).build();
+	}
 }
