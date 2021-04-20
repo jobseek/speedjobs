@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Tags from '../Tags';
 import { Warning } from '../Styled';
 
 export default function ResumeSkill() {
-  const [tags] = useState([
-    { name: '#C', id: 0, selected: false },
-    { name: '#C++', id: 1, selected: false },
-    { name: '#JAVA', id: 2, selected: false },
-    { name: '#Python', id: 3, selected: false },
-  ]);
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.SKILL);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
 
   return (
     <>
@@ -17,7 +30,7 @@ export default function ResumeSkill() {
         Skill <Warning>자신있는 언어를 선택해주세요</Warning>
       </h5>
       <div className={'col-12'}>
-        <Tags tagList={tags}>Language</Tags>
+        <Tags tagList={taglist}>기술</Tags>
       </div>
     </>
   );

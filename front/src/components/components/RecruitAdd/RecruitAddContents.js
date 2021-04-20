@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Tags from '../Tags';
 import AnnouncementDate from './AnnouncementDate';
 import CompanySummaryInfo from './CompanySummaryInfo';
 import AnnouncementInfo from './AnnouncementInfo';
+// import { StyledLeftLayout } from '../Styled';
 
 export default function RecruitAddContents({ onChange }) {
-  const [tags] = useState([
-    { name: 'Backend', id: 0, selected: false },
-    { name: 'Frontend', id: 1, selected: false },
-    { name: 'Fullstack', id: 2, selected: false },
-  ]);
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
   return (
     <>
       {/* 작성자 */}
@@ -26,7 +41,7 @@ export default function RecruitAddContents({ onChange }) {
           marginTop: '20px',
         }}
       >
-        <Tags tagList={tags}>직무추가</Tags>
+        <Tags tagList={taglist}>직무</Tags>
       </div>
     </>
   );

@@ -42,7 +42,6 @@ export default function RecruitAdd() {
     },
     [dispatch, form, recruit.content, recruit.title]
   );
-
   return (
     <div
       className="container text-left"

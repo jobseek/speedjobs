@@ -6,6 +6,7 @@ import commentSaga from './comment';
 import postSage from './post';
 import recruitSaga from './recruit';
 import profileSaga from './profile';
+import tagSaga from './tag';
 
 axios.defaults.baseURL = 'http://localhost:8081/api';
 axios.defaults.withCredentials = true;
@@ -17,5 +18,6 @@ export default function* rootSaga() {
     fork(profileSaga),
     fork(commentSaga),
     fork(recruitSaga),
+    fork(tagSaga),
   ]);
 }

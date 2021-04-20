@@ -8,7 +8,7 @@ const TagDrop = styled.div`
   position: absolute;
   border-radius: 5px;
   top: 50px;
-  left: 0px;
+  left: 0;
   background-color: white;
   padding: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -59,7 +59,7 @@ export default function Tags({ tagList, children, sm }) {
           }}
         >
           {tags.name}
-          <X></X>
+          <X />
         </TagBody>
       );
     });

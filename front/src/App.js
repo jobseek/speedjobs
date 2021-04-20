@@ -25,6 +25,7 @@ import ScrollToTop from './components/includes/ScrollToTop';
 import Login from './components/admin/page/Login';
 import AdminHome from './components/admin/page/AdminHome';
 import ProfileModify from './components/pages/ProfileModify';
+import { TAG_GET_REQUEST } from './reducers/tag';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -33,7 +34,7 @@ const Container = styled.div`
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const { user, tag } = useSelector((state) => state);
   const [interceptorID, setInterceptorID] = useState({
     request: 0,
     response: 0,
@@ -72,10 +73,19 @@ function App() {
       'width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover';
     document.getElementsByTagName('head')[0].appendChild(meta);
   }, [dispatch, user]);
+
+  // 태그 불러오기
+  useEffect(() => {
+    if (!tag.tagGetData && user.meDone && user.me) {
+      dispatch({
+        type: TAG_GET_REQUEST,
+      });
+    }
+  }, [tag.tagGetData, user, dispatch]);
   return (
     <div className="App">
       <BrowserRouter>
-        <ScrollToTop></ScrollToTop>
+        <ScrollToTop />
         <Header />
         <Container>
           <Route exact path={'/community'} component={Community} />

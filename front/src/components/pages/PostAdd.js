@@ -7,11 +7,11 @@ import {
   PostWriterDate,
   StyledButton,
   StyledHeaderDiv,
-  TagBody,
 } from '../components/Styled';
 import { POST_ADD_REQUEST } from '../../reducers/post';
+import Tags from '../components/Tags';
 
-export default function PostAdd(props) {
+export default function PostAdd() {
   const [form, setForm] = useState({ title: '', content: '' });
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
@@ -39,6 +39,32 @@ export default function PostAdd(props) {
     },
     [dispatch, form]
   );
+
+  const [taglist, setTaglist] = useState([]);
+  const [taglist2, setTaglist2] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      const temp2 = Array.from(tagss.tagGetData.tags.SKILL);
+
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      setTaglist((p) => [...p, ...tt]);
+      console.log(tt);
+      const tt2 = temp2.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt2);
+      setTaglist2((p) => [...p, ...tt2]);
+    }
+  }, [tagss.tagGetData]);
 
   return (
     <div
@@ -93,10 +119,8 @@ export default function PostAdd(props) {
             rows={'20'}
           />
           <div style={{ marginTop: '40px' }}>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
+            <Tags tagList={taglist}>직무</Tags>
+            <Tags tagList={taglist2}>기술</Tags>
           </div>
         </div>
       </form>

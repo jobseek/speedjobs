@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   StyledButton,
   StyledHeaderDiv,
@@ -7,8 +8,9 @@ import {
 import SideMenu from '../components/SideMenu';
 import RecruitCard from '../components/RecruitCard';
 import Line from '../components/Line';
+import Tags from '../components/Tags';
 
-export default function CommunityLike(props) {
+export default function CommunityLike() {
   const [update, setUpdate] = useState(0);
   // const [tags] = useState([
   //   { name: 'backEnd', id: 0, selected: false },
@@ -50,11 +52,30 @@ export default function CommunityLike(props) {
             temp.favorite = fav;
             setUpdate(update + 1);
           }}
-        ></RecruitCard>
+        />
         <Line margin={'20px'} />
       </div>
     );
   });
+
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
 
   return (
     <>
@@ -84,6 +105,8 @@ export default function CommunityLike(props) {
               className={'col-12 col-lg-10'}
               style={{ paddingLeft: '60px', paddingRight: '60px' }}
             >
+              <Tags tagList={taglist}>직무</Tags>
+
               {/* {mapPost}*/}
               {dummyOut}
             </div>

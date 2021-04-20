@@ -7,7 +7,7 @@ import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 
-export default function Community(props) {
+export default function Community() {
   const history = useHistory();
   const dispatch = useDispatch();
   const page = useRef(0);
@@ -43,12 +43,31 @@ export default function Community(props) {
   const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
 
-  const [tags] = useState([
-    { name: 'backEnd', id: 0, selected: false },
-    { name: 'frontEnd', id: 1, selected: false },
-    { name: 'machineLearning', id: 2, selected: false },
-    { name: 'infra', id: 3, selected: false },
-  ]);
+  // const [tags] = useState([
+  //   { name: 'backEnd', id: 0, selected: false },
+  //   { name: 'frontEnd', id: 1, selected: false },
+  //   { name: 'machineLearning', id: 2, selected: false },
+  //   { name: 'infra', id: 3, selected: false },
+  // ]);
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
+
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
@@ -86,7 +105,7 @@ export default function Community(props) {
       date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
       fav="미구현"
       key={pl.id}
-    ></Post>
+    />
   ));
 
   return (
@@ -97,7 +116,7 @@ export default function Community(props) {
         <div className={'row justify-content-center'}>
           {/* 태그 레이아웃 */}
           <StyledLeftLayout className={'col-12 col-lg-3 text-left'}>
-            <Tags tagList={tags}>filter</Tags>
+            <Tags tagList={taglist}>filter</Tags>
           </StyledLeftLayout>
           {/* 태그 end*/}
 
@@ -135,7 +154,7 @@ export default function Community(props) {
         <div
           style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
           ref={targetRef}
-        ></div>
+        />
       </div>
     </>
   );
