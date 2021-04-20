@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   recruit,
   profile,
   tag,
-    company,
+  company,
 });
 
 export default rootReducer;
