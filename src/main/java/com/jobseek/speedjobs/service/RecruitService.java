@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.service;
 
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
 
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
