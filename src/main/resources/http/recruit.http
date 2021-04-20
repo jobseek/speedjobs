@@ -1,0 +1,46 @@
+### 1-1.회원가입(기업)
+POST http://localhost:8081/api/user/signup/company
+Content-Type: application/json
+
+{
+  "companyName": "스피드잡스",
+  "contact": "010-1234-5678",
+  "email": "lsb530@naver.com",
+  "homepage": "https://www.naver.com",
+  "name": "보쿠",
+  "password": "12341234",
+  "registrationNumber": "123-45-67549",
+  "role": "ROLE_COMPANY"
+}
+
+### 2.회원가입확인(이메일인증)
+GET http://localhost:8081/api/user/signup/confirm/5b041286-c17c-48d6-a4e3-5714455f1416
+Accept: application/json
+
+### 로그인(토큰받기)
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "lsb530@naver.com",
+  "password": "12341234"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 1. 공고 등록
+POST http://localhost:8081/api/recruit
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "제목입니당",
+  "openDate": "2020-01-02 00:00:00",
+  "closeDate": "2021-12-15 00:00:00",
+  "status": "PROCESS",
+  "thumbnail": "Empty",
+  "experience": "JUNIOR",
+  "position": "PERMANENT",
+  "content": "모집합니다아",
+  "tagIds": [1,3]
+}
