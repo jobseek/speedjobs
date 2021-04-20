@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### 2.회원가입확인(이메일인증)
-GET http://localhost:8081/api/user/signup/confirm/47941e7f-f4b1-417e-8a2d-c206c9b4b7a4
+GET http://localhost:8081/api/user/signup/confirm/a6f5e31e-cfb2-46fc-b3cb-9c34d26489e5
 Accept: application/json
 
 ### 로그인(토큰받기)
@@ -59,7 +59,7 @@ Authorization: Bearer {{accessToken}}
   "experience": "JUNIOR",
   "position": "PERMANENT",
   "content": "수정입니다아",
-  "tagIds": [1,5,6]
+  "tagIds": [1,5,10,14]
 }
 
 ### 3. 공고 삭제
@@ -67,3 +67,6 @@ DELETE http://localhost:8081/api/recruit/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
+### 4. 공고 단건 조회
+GET http://localhost:8081/api/recruit/1
+Accept: application/json

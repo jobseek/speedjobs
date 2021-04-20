@@ -83,14 +83,6 @@ public class Recruit extends BaseTimeEntity {
 	@Embedded
 	private RecruitDetail recruitDetail;
 
-	public void increaseLikeCount() {
-		likeCount += 1;
-	}
-
-	public void decreaseLikeCount() {
-		likeCount -= 1;
-	}
-
 	public void increaseViewCount() {
 		viewCount += 1;
 	}

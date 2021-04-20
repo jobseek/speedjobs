@@ -4,6 +4,7 @@ import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
+import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
 import com.jobseek.speedjobs.service.RecruitService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,5 +55,11 @@ public class RecruitController {
 		@Valid @RequestBody RecruitRequest recruitRequest) {
 		recruitService.update(recruitId, user, recruitRequest);
 		return ResponseEntity.created(URI.create("/api/recruit/" + recruitId)).build();
+	}
+
+	@ApiOperation(value = "공고 단건 조회", notes = "공고를 1개 조회한다.")
+	@GetMapping("/{recruitId}")
+	public ResponseEntity<RecruitResponse> readRecruit(@PathVariable Long recruitId) {
+		return ResponseEntity.ok().body(recruitService.readById(recruitId));
 	}
 }
