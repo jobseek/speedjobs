@@ -6,9 +6,7 @@ import {
   StyledHeaderDiv,
   StyledLeftLayout,
 } from '../components/Styled';
-import ProfileModify from '../pages/ProfileModify';
 import SideMenu from '../components/SideMenu';
-import ProfileContents from '../components/Profile/ProfileContents';
 
 export default function Profile() {
   return (

@@ -1,6 +1,6 @@
 package com.jobseek.speedjobs.domain.company;
 
-import com.jobseek.speedjobs.domain.likelist.CompanyLikeList;
+import com.jobseek.speedjobs.domain.likelist.CompanyLike;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
 import lombok.*;
@@ -48,7 +48,7 @@ public class Company {
 	private List<Recruit> recruitList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "company", fetch = LAZY, cascade = ALL)
-	private List<CompanyLikeList> companyLikeLists = new ArrayList<>();
+	private List<CompanyLike> companyLikes = new ArrayList<>();
 
 	@Builder
 	public Company(String companyName, String logoImage, int scale,

@@ -6,6 +6,7 @@ import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.Status;
 import com.jobseek.speedjobs.domain.user.User;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,6 @@ public class RecruitSaveRequest {
 
 	private String content;
 
-	private Set<Long> tagIds;
+	private List<Long> tagIds;
 
 }

@@ -45,7 +45,7 @@ public class BannerController {
 
 	@ApiOperation(value = "배너 삭제", notes = "배너를 삭제한다.")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		bannerService.delete(id);
 		return ResponseEntity.noContent().build();
 	}

@@ -6,13 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ToggleOff } from '@styled-icons/bootstrap/ToggleOff';
 import { ToggleOn } from '@styled-icons/bootstrap/ToggleOn';
-import {
-  Private,
-  ProfileImg,
-  ResumeImg,
-  ResumeTitles,
-  Warning,
-} from '../Styled';
+import { Private, ResumeImg, ResumeTitles, Warning } from '../Styled';
 import ResumeInputs from './ResumeInputs';
 
 const Toggle1 = styled(ToggleOff)`
@@ -44,18 +38,6 @@ const StyledDatePicker = styled(DatePicker)`
 
   @media (max-width: 960px) {
     width: 100%;
-  }
-`;
-
-const InputTel = styled.input`
-  width: 100%;
-  height: 35px;
-  border-radius: 27px;
-  border: 1px solid silver;
-  padding: 0 20px 3px;
-  margin-bottom: 5px;
-  &:focus {
-    outline: none;
   }
 `;
 

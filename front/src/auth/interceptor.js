@@ -1,4 +1,5 @@
 import axios from 'axios';
+import address from './address';
 
 export default function hello() {
   return null;
@@ -32,7 +33,7 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
         !error.config.__isRetryRequest
       ) {
         originalReq.__isRetryRequest = true;
-        const res = fetch('http://localhost:8081/api/auth/reissue', {
+        const res = fetch(`http://${address()}:8081/api/auth/reissue`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${refresh['REFRESH_TOKEN']}`,

@@ -5,6 +5,7 @@ import post from './post';
 import recruit from './recruit';
 import profile from './profile';
 import tag from './tag';
+import company from './company';
 
 const rootReducer = combineReducers({
   user,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   recruit,
   profile,
   tag,
+    company,
 });
 
 export default rootReducer;

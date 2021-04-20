@@ -39,6 +39,7 @@ export default function Community() {
   };
   const rootRef = useRef();
   const { post, user } = useSelector((state) => state);
+  const me = useState({ ...user.me });
 
   const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
@@ -133,7 +134,7 @@ export default function Community() {
                 className={'row justify-content-end'}
                 style={{ padding: '10px', paddingTop: '0' }}
               >
-                {user.me !== null ? (
+                {me[0].role === 'ROLE_MEMBER' ? (
                   <TagBody
                     style={{ marginTop: '0', border: '1px solid #f5df4d' }}
                     onClick={() => {
