@@ -79,7 +79,7 @@ export default function PostAdd() {
         <StyledHeaderDiv fix>
           <div
             className={'container row justify-content-end'}
-            style={{ paddingTop: '15px' }}
+            style={{ paddingTop: '15px', paddingRight: 0 }}
           >
             <div className={'col-md-8 col-6 p-0'} style={{ marginTop: '14px' }}>
               <PostTitleInput

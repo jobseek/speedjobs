@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataInputs } from '../Styled';
+import Input from '../../admin/component/Input';
 
 export default function AnnouncementDate() {
   return (
@@ -9,35 +10,9 @@ export default function AnnouncementDate() {
           marginBottom: '30px',
         }}
       >
-        <span
-          style={{
-            display: 'inline-block',
-          }}
-        >
-          <div
-            style={{
-              marginBottom: '5px',
-            }}
-          >
-            공고시작일자
-          </div>
-          <DataInputs type="text" />
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span
-          style={{
-            display: 'inline-block',
-          }}
-        >
-          <div
-            style={{
-              marginBottom: '5px',
-            }}
-          >
-            공고마감일자
-          </div>
-          <DataInputs type="text" />
-        </span>
+        <DataInputs placeholder={'2020/11/11'} type="text" />
+        ~
+        <DataInputs placeholder={'2020/11/11'} type="text" />
       </div>
     </>
   );
