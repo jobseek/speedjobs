@@ -1,33 +1,33 @@
 package com.jobseek.speedjobs.domain.company;
 
-import com.jobseek.speedjobs.domain.likelist.CompanyLike;
-import com.jobseek.speedjobs.domain.recruit.Recruit;
-import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-
-import javax.persistence.*;
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.*;
-import static lombok.AccessLevel.PROTECTED;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import com.jobseek.speedjobs.domain.likelist.CompanyLike;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Table(name = "companies")
-public class Company {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Company extends User {
 
 	@Column(length = 100)
 	private String companyName;
@@ -40,28 +40,18 @@ public class Company {
 	@Embedded
 	private CompanyDetail companyDetail;
 
-	@OneToOne(mappedBy = "company", fetch = LAZY, cascade = ALL)
-	@JoinColumn(name = "user_id")
-	private User user;
-
 	@OneToMany(mappedBy = "company", fetch = LAZY, cascade = ALL)
 	private List<Recruit> recruitList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "company", fetch = LAZY, cascade = ALL)
 	private List<CompanyLike> companyLikes = new ArrayList<>();
 
-	@Builder
-	public Company(String companyName, String logoImage, int scale,
-		CompanyDetail companyDetail) {
-		this.companyName = companyName;
-		this.logoImage = logoImage;
-		this.scale = scale;
-		this.companyDetail = companyDetail;
+	public Company(UserDto userDto) {
+		super(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(), userDto.getRole());
+		this.companyName = userDto.getCompanyName();
+		this.logoImage = userDto.getLogoImage();
+		this.scale = userDto.getScale();
+		this.companyDetail = userDto.getCompanyDetail();
 	}
-
-	public void setRecruitList(List<Recruit> recruitList) {
-		this.recruitList = recruitList;
-	}
-
 
 }

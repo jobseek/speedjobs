@@ -117,12 +117,11 @@ public class UserService {
 			.orElseThrow(() -> new IllegalArgumentException("없는 유저입니다."));
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setPicture(request.getPicture());
-		user.setContact(request.getContact());
 		Member member = user.getMember();
 		member.setSex(request.getSex());
 		member.setBirth(request.getBirth());
 		member.setNickname(request.getNickname());
-		member.setIntro(request.getIntro());
+		member.setBio(request.getIntro());
 	}
 
 	@Transactional

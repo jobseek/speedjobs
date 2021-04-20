@@ -1,31 +1,35 @@
 package com.jobseek.speedjobs.domain.member;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jobseek.speedjobs.domain.resume.Resume;
-import com.jobseek.speedjobs.domain.user.User;
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
 import java.time.LocalDate;
-import lombok.*;
-
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.*;
-import static lombok.AccessLevel.PROTECTED;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 
-@Entity @Getter @Setter @Builder
+import com.jobseek.speedjobs.domain.resume.Resume;
+import com.jobseek.speedjobs.domain.user.Provider;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Table(name = "members")
-public class Member{
-
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Member extends User {
 
 	private String sex;
 
@@ -33,26 +37,24 @@ public class Member{
 
 	private String nickname;
 
-	private String intro;
-
-	@OneToOne(mappedBy = "member", fetch = LAZY, cascade = PERSIST)
-	@JoinColumn(name = "user_id")
-	private User user;
+	private String bio;
 
 	@OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
 	private List<Resume> resumeList = new ArrayList<>();
 
-	@Builder
-	public Member(String sex, LocalDate birth, String nickname, String intro) {
-		this.sex = sex;
-		this.birth = birth;
-		this.nickname = nickname;
-		this.intro = intro;
-	}
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Provider provider;
 
-	public void setResumeList(List<Resume> resumeList) {
-		this.resumeList = resumeList;
-	}
+	@Column(name = "oauth_id")
+	private String oauthId;
 
+	public Member(UserDto userDto) {
+		super(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(), userDto.getRole());
+		this.sex = userDto.getSex();
+		this.birth = userDto.getBirth();
+		this.nickname = userDto.getNickname();
+		this.bio = userDto.getBio();
+	}
 
 }
