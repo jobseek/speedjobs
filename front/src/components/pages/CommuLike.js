@@ -11,7 +11,7 @@ import Post from '../components/Post';
 import SideMenu from '../components/SideMenu';
 import Tags from '../components/Tags';
 
-export default function LikeList(props) {
+export default function LikeList() {
   // const [tags] = useState([
   //   { name: 'backEnd', id: 0, selected: false },
   //   { name: 'frontEnd', id: 1, selected: false },
@@ -93,8 +93,10 @@ export default function LikeList(props) {
             {/* 태그 end*/}
 
             {/* 게시글*/}
-            <Tags tagList={taglist}>직무</Tags>
-            <ProfileDiv className={'col-12 col-lg-10'}>{mapPost}</ProfileDiv>
+            <ProfileDiv className={'col-12 col-lg-10'}>
+              <Tags tagList={taglist}>직무</Tags>
+              {mapPost}
+            </ProfileDiv>
             {/* 게시글 end*/}
           </div>
         </div>

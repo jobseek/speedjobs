@@ -15,6 +15,12 @@ const TagDrop = styled.div`
   z-index: 1;
   font-weight: bold;
   text-align: left;
+  overflow-y: scroll;
+  width: 150px;
+  height: 150px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TagsInDrop = styled.div`

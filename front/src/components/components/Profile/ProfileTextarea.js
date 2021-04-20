@@ -18,7 +18,7 @@ export default function ProfileContents({ onChange, name }) {
         name={name}
         onKeyDown={calc}
         onKeyUp={calc}
-        onChange={(calc, onChange)}
+        onChange={(onChange, calc)}
       />
       <div style={{ textAlign: 'right' }}>
         <TextAreaLength id="result" type="number" value="0" readOnly />
