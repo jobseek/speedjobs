@@ -10,16 +10,14 @@ import ResumeCertificate from './ResumeCertificate';
 export default function ResumeContents() {
   return (
     <>
-      <StyledArticle className={'col-12 col-lg-10'}>
-        <div className={'container-fluid'}>
-          <ResumeBasic />
-          <ResumeEducation />
-          <ResumeCertificate />
-          <ResumeCareer />
-          <ResumeSelf />
-          <ResumeSkill />
-        </div>
-      </StyledArticle>
+      <div className={'container-fluid'}>
+        <ResumeBasic />
+        <ResumeEducation />
+        <ResumeCertificate />
+        <ResumeCareer />
+        <ResumeSelf />
+        <ResumeSkill />
+      </div>
     </>
   );
 }

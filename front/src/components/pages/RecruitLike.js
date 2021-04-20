@@ -1,7 +1,10 @@
+import styled from 'styled-components';
 import React, { useCallback, useState } from 'react';
 import {
+  ProfileDiv,
   StyledButton,
   StyledHeaderDiv,
+  StyledHeaderMargin,
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
@@ -60,19 +63,19 @@ export default function CommunityLike(props) {
     <>
       <div className={'container text-left'}>
         <StyledHeaderDiv padding>
-          <div className={'container row justify-content-end'}>
+          <StyledHeaderMargin className={'container row justify-content-end'}>
             <div
               className={'col-md-9 col-8'}
               style={{ marginTop: '14px', paddingTop: '5px' }}
             >
               <h5>공고 찜목록</h5>
             </div>
-            <div className={'col-md-3 col-4 text-right'}>
+            <div className={'col-md-3 col-4 text-right pr-0'}>
               <StyledButton wide>수정</StyledButton>
             </div>
-          </div>
+          </StyledHeaderMargin>
         </StyledHeaderDiv>
-        <div style={{ marginTop: '100px' }}>
+        <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone
@@ -80,13 +83,13 @@ export default function CommunityLike(props) {
             >
               <SideMenu />
             </StyledLeftLayout>
-            <div
+            <ProfileDiv
               className={'col-12 col-lg-10'}
-              style={{ paddingLeft: '60px', paddingRight: '60px' }}
+              style={{ paddingLeft: '30px' }}
             >
               {/* {mapPost}*/}
               {dummyOut}
-            </div>
+            </ProfileDiv>
           </div>
         </div>
       </div>

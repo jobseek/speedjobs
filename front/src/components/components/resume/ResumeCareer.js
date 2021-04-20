@@ -19,17 +19,21 @@ export default function ResumeCareer() {
   const cnt = useRef(1);
   const [items, setItems] = useState([{ id: 0 }]);
   const itemList = items.map((item, index) => (
-    <div key={index}>
-      <ResumeInputs item name={'회사이름'} />
-      <ResumeInputs item name={'직급'} />
-      <DatePickRange
-        start={'입사날짜'}
-        end={'퇴사날짜'}
-        item={item}
-        setItems={setItems}
-      />
-      <Tags tagList={tags}>직무</Tags>
-    </div>
+    <>
+      <div key={index} style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <ResumeInputs item name={'회사이름'} />
+        <ResumeInputs item name={'직급'} />
+        <DatePickRange
+          start={'입사날짜'}
+          end={'퇴사날짜'}
+          item={item}
+          setItems={setItems}
+        />
+      </div>
+      <div style={{ paddingTop: '26px' }}>
+        <Tags tagList={tags}>직무</Tags>
+      </div>
+    </>
   ));
   const test = () => {
     setItems((prev) => [...items, { id: cnt.current }]);
@@ -57,9 +61,7 @@ export default function ResumeCareer() {
             &nbsp;&nbsp;버튼을 누르면 추가할 수 있습니다.
           </Warning>
         </h5>
-        <div style={{ display: 'inline-block', marginLeft: '15px' }}>
-          {itemList}
-        </div>
+        <div style={{ display: 'inline-block' }}>{itemList}</div>
       </div>
     </>
   );

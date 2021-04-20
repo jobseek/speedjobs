@@ -55,16 +55,16 @@ export default function RecruitAdd() {
         <StyledHeaderDiv fix>
           <div
             className={'container row justify-content-end'}
-            style={{ paddingTop: '15px' }}
+            style={{ padding: '15px 0 0 15px' }}
           >
-            <div className={'col-md-9 col-4 p-0'} style={{ marginTop: '14px' }}>
+            <div className={'col-9 p-0'} style={{ marginTop: '14px' }}>
               <PostTitleInput
                 onChange={(e) => onChangHandler(e)}
                 name={'title'}
                 placeholder={'제목을 입력해주세요'}
               />
             </div>
-            <div className={'col-md-3 col-3 text-right'}>
+            <div className={'col-3 text-right'}>
               <StyledButton
                 wide
                 style={{ letterSpacing: '10px', paddingLeft: '20px' }}
