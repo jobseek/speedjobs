@@ -26,7 +26,7 @@ public class Resume extends BaseTimeEntity {
 	@Column(name = "resume_id")
 	private Long id;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Open open;
 
 	private String coverLetter;
@@ -39,20 +39,51 @@ public class Resume extends BaseTimeEntity {
 
 	private String resumeImage;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
+	@ElementCollection
+	@CollectionTable(name = "certificate", joinColumns = @JoinColumn(name = "resume_id"), uniqueConstraints = @UniqueConstraint(columnNames = {"certNumber"}))
 	private List<Certificate> certificateList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
+	@ElementCollection
+	@CollectionTable(name = "scholar", joinColumns = @JoinColumn(name = "resume_id"))
 	private List<Scholar> scholarList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
+	@ElementCollection
+	@CollectionTable(name = "career", joinColumns = @JoinColumn(name = "resume_id"))
 	private List<Career> careerList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
 	private List<Apply> applies = new ArrayList<>();
+
+	public Resume(Open open, String coverLetter, String address, String blogUrl, String githubUrl,
+		String resumeImage) {
+		this.open = open;
+		this.coverLetter = coverLetter;
+		this.address = address;
+		this.blogUrl = blogUrl;
+		this.githubUrl = githubUrl;
+		this.resumeImage = resumeImage;
+	}
+
+	//연관관계 편의 메서드
+	public void setMember(Member member) {
+		this.member = member;
+		member.getResumeList().add(this);
+	}
+
+	public void addCareer(Career career) {
+		careerList.add(career);
+	}
+
+	public void addScholar(Scholar scholar) {
+		scholarList.add(scholar);
+	}
+
+	public void addCertificate(Certificate certificate) {
+		certificateList.add(certificate);
+	}
 
 }

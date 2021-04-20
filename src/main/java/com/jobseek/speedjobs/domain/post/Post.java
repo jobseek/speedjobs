@@ -48,19 +48,19 @@ public class Post extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@OneToMany(mappedBy = "post", cascade = ALL)
+	private final List<PostLike> postLikes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+	private final List<Comment> comments = new ArrayList<>();
+
+	@Embedded
+	private final PostTags postTags = PostTags.empty();
+
 	private String title;
 
 	@Embedded
 	private PostDetail postDetail;
-
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<PostLike> postLikes = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-	private List<Comment> comments = new ArrayList<>();
-
-	@Embedded
-	private PostTags postTags = PostTags.empty();
 
 	private int likeCount;
 
