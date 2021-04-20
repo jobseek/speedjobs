@@ -1,21 +1,45 @@
-### 1. 게시글 등록
-POST http://localhost:8081/api/post
+### 로그인
+POST http://{{host}}/auth/login
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJBQ0NFU1NfVE9LRU4iLCJ1c2VySWQiOiIxIiwicm9sZSI6IlJPTEVfTUVNQkVSIiwiaWF0IjoxNjE4NDc4NjkyLCJleHAiOjE2MTg0ODA0OTJ9.wy0PpGuV4Sap8KhcjZyi2GvUqEfXQrSC3TmNT0FQus8
 
 {
-  "userId": 1,
-  "title": "안냐세용",
-  "content": "테스트촤하하"
+  "email": "{{member_email}}",
+  "password": "{{password}}"
 }
 
-###
-POST http://localhost:8081/api/post
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 1. 등록
+POST http://{{host}}/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJBQ0NFU1NfVE9LRU4iLCJ1c2VySWQiOiIyIiwicm9sZSI6IlJPTEVfTUVNQkVSIiwiaWF0IjoxNjE4NDc4ODk4LCJleHAiOjE2MTg0ODA2OTh9.q1WMs-FeoVLAjaRtVrejUauWibZzoVfFWB2yHoPzLME
+Authorization: Bearer {{accessToken}}
 
 {
-"userId": 2,
-"title": "두번째",
-"content": "테스트"
+  "title": "제목",
+  "content": "내용",
+  "tagIds": [1,2,9,13]
 }
+
+### 2. 수정
+PUT http://{{host}}/post/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "수정된 제목",
+  "content": "수정된 내용",
+  "tagIds": [3,4,10,14]
+}
+
+### 3. 단건 조회
+GET http://{{host}}/post/1
+Content-Type: application/json
+
+### 4. 페이징 조회
+GET http://{{host}}/post/paging?page=0&size=3&sort=id,DESC
+Content-Type: application/json
+
+### 5. 삭제
+DELETE http://{{host}}/post/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

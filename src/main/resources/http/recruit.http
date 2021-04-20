@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### 2.회원가입확인(이메일인증)
-GET http://localhost:8081/api/user/signup/confirm/5b041286-c17c-48d6-a4e3-5714455f1416
+GET http://localhost:8081/api/user/signup/confirm/13da2ed2-f319-47ac-8b0d-d8aa023c200f
 Accept: application/json
 
 ### 로그인(토큰받기)
@@ -44,3 +44,9 @@ Authorization: Bearer {{accessToken}}
   "content": "모집합니다아",
   "tagIds": [1,3]
 }
+
+### 2. 공고 삭제
+DELETE http://localhost:8081/api/recruit/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+

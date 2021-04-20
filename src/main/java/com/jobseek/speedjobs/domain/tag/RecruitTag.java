@@ -26,11 +26,11 @@ public class RecruitTag extends BaseTimeEntity {
 	@Column(name = "recruit_tag_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne
 	@JoinColumn(name = "recruit_id")
 	private Recruit recruit;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
 

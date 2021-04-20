@@ -1,5 +1,9 @@
 package com.jobseek.speedjobs.service;
 
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
+
+import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
 import com.jobseek.speedjobs.domain.tag.RecruitTag;
@@ -10,28 +14,39 @@ import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RecruitService {
+
 	private final RecruitRepository recruitRepository;
 	private final TagRepository tagRepository;
 
 	@Transactional
 	public Long save(RecruitRequest recruitRequest, User user) {
 		Recruit recruit = recruitRequest.toEntity();
-		System.out.println("user = " + user);
 		recruit.setCompany(user.getCompany());
-		System.out.println("user.getCompany() = " + user.getCompany());
 		List<Tag> tags = getTagsById(recruitRequest.getTagIds());
-		createPostTags(recruit,tags);
+		createRecruitTags(recruit, tags);
 		return recruitRepository.save(recruit).getId();
 	}
 
-	private void createPostTags(Recruit recruit, List<Tag> tags) {
+	@Transactional
+	public void delete(Long recruitId, User user) {
+		Recruit recruit = recruitRepository.findById(recruitId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.  recruitId=" + recruitId));
+		if (user.getRole() != ROLE_ADMIN && recruit.getCompany().getId() != user.getId()) {
+			throw new UnauthorizedException("권한이 없습니다.");
+		}
+		recruitRepository.delete(recruit);
+	}
+
+	private void createRecruitTags(Recruit recruit, List<Tag> tags) {
 		tags.forEach(tag -> RecruitTag.createRecruitTag(recruit, tag));
 	}
 
@@ -41,4 +56,6 @@ public class RecruitService {
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
 			.collect(Collectors.toList());
 	}
+
+
 }
