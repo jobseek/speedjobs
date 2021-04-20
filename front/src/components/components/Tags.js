@@ -8,13 +8,19 @@ const TagDrop = styled.div`
   position: absolute;
   border-radius: 5px;
   top: 50px;
-  left: 0px;
+  left: 0;
   background-color: white;
   padding: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
   font-weight: bold;
   text-align: left;
+  overflow-y: scroll;
+  width: 150px;
+  height: 150px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TagsInDrop = styled.div`
@@ -59,7 +65,7 @@ export default function Tags({ tagList, children, sm }) {
           }}
         >
           {tags.name}
-          <X></X>
+          <X />
         </TagBody>
       );
     });

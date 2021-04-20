@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   ProfileDiv,
   StyledButton,
@@ -8,8 +9,9 @@ import {
 } from '../components/Styled';
 import Post from '../components/Post';
 import SideMenu from '../components/SideMenu';
+import Tags from '../components/Tags';
 
-export default function LikeList(props) {
+export default function LikeList() {
   // const [tags] = useState([
   //   { name: 'backEnd', id: 0, selected: false },
   //   { name: 'frontEnd', id: 1, selected: false },
@@ -42,8 +44,27 @@ export default function LikeList(props) {
       date={post.date}
       fav={post.fav}
       key={post.title}
-    ></Post>
+    />
   ));
+
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
 
   return (
     <>
@@ -72,7 +93,10 @@ export default function LikeList(props) {
             {/* 태그 end*/}
 
             {/* 게시글*/}
-            <ProfileDiv className={'col-12 col-lg-10'}>{mapPost}</ProfileDiv>
+            <ProfileDiv className={'col-12 col-lg-10'}>
+              <Tags tagList={taglist}>직무</Tags>
+              {mapPost}
+            </ProfileDiv>
             {/* 게시글 end*/}
           </div>
         </div>

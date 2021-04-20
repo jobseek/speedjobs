@@ -11,7 +11,7 @@ import {
 import Post from '../components/Post';
 import { COMPANY_GET_REQUEST } from '../../reducers/company';
 
-export default function Recruitment(props) {
+export default function Recruitment() {
   const history = useHistory();
   const dispatch = useDispatch();
   const page = useRef(0);
@@ -49,12 +49,31 @@ export default function Recruitment(props) {
   const [, setLoading] = useState(false);
   const [recruitList, setRecruitList] = useState([]);
 
-  const [tags] = useState([
-    { name: 'backEnd', id: 0, selected: false },
-    { name: 'frontEnd', id: 1, selected: false },
-    { name: 'machineLearning', id: 2, selected: false },
-    { name: 'infra', id: 3, selected: false },
-  ]);
+  // const [tags] = useState([
+  //   { name: 'backEnd', id: 0, selected: false },
+  //   { name: 'frontEnd', id: 1, selected: false },
+  //   { name: 'machineLearning', id: 2, selected: false },
+  //   { name: 'infra', id: 3, selected: false },
+  // ]);
+
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
 
   useEffect(() => {
     const currentObserver = observe.current;
@@ -122,7 +141,7 @@ export default function Recruitment(props) {
         <div className={'row justify-content-center'}>
           {' '}
           <StyledLeftLayout className={'col-12 col-lg-3 text-left'}>
-            <Tags tagList={tags}>filter</Tags>
+            <Tags tagList={taglist}>직무</Tags>
           </StyledLeftLayout>
           <div ref={rootRef} className={'col-12 col-lg-9'}>
             <div
@@ -160,7 +179,7 @@ export default function Recruitment(props) {
         <div
           style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
           ref={targetRef}
-        ></div>
+        />
       </div>
     </>
   );

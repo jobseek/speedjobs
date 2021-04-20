@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import * as PropTypes from 'prop-types';
+import { ArrowRight } from 'react-bootstrap-icons';
+import logo512 from '../../components/components/img/logo512.png';
 
 const StyledCard = styled.div`
   height: ${(props) => (props.height === '0' ? '200px' : '415px')};
@@ -12,26 +14,55 @@ const StyledCard = styled.div`
   }
 `;
 
-const StyledCardBody = styled.div``;
+const Image = styled.img`
+  width: 45px;
+  height: 45px;
+  position: relative;
+  top: 25px;
+  left: 20px;
+  margin-bottom: 15px;
+  border: none;
+  //background-color: #d3d3d3;
+`;
+
+const Subtitle = styled.div`
+  right: 20px;
+  //height: 80px;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+  line-height: 1.2;
+`;
+
+const Arrow = styled(ArrowRight)`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+`;
+
+// const StyledCardBody = styled.div``;
 
 const StyledCardTitle = styled.div``;
 
-const StyledCardSubTitle = styled.div``;
+// const StyledCardSubTitle = styled.div``;
 
-const StyledCardText = styled.div``;
+// const StyledCardText = styled.div``;
 
 // const StyledCardLink = styled.div``;
 
 export default function Cards(props) {
   return (
     <StyledCard className="card text-left" height={props.height}>
-      <StyledCardBody className="card-body">
+      <Image className="card-img-top" src={logo512} />
+      <div className="card-body">
         <StyledCardTitle className="card-title">{props.title}</StyledCardTitle>
-        <StyledCardSubTitle className="card-subtitle mb-2 text-muted">
+        <Subtitle className="card-subtitle mb-2 text-muted">
           {props.subTitle}
-        </StyledCardSubTitle>
-        <StyledCardText className="card-test">{props.children}</StyledCardText>
-      </StyledCardBody>
+        </Subtitle>
+        {/* <StyledCardText className="card-test">{props.children}</StyledCardText>*/}
+        <Arrow />
+      </div>
     </StyledCard>
   );
 }
