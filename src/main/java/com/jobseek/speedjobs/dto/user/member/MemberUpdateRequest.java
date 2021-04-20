@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.dto.user.member;
 
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
@@ -9,7 +10,7 @@ public class MemberUpdateRequest {
 	private String picture;
 	private String contact;
 	//멤버
-	private String birth;
+	private LocalDate birth;
 	private String nickname;
 	private String intro;
 	private String sex;

@@ -1,7 +1,9 @@
 package com.jobseek.speedjobs.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.user.User;
+import java.time.LocalDate;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
 import static lombok.AccessLevel.PROTECTED;
@@ -26,13 +29,13 @@ public class Member{
 
 	private String sex;
 
-	private String birth;
+	private LocalDate birth;
 
 	private String nickname;
 
 	private String intro;
 
-	@OneToOne(mappedBy = "member", fetch = LAZY, cascade = ALL)
+	@OneToOne(mappedBy = "member", fetch = LAZY, cascade = PERSIST)
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -40,7 +43,7 @@ public class Member{
 	private List<Resume> resumeList = new ArrayList<>();
 
 	@Builder
-	public Member(String sex, String birth, String nickname, String intro) {
+	public Member(String sex, LocalDate birth, String nickname, String intro) {
 		this.sex = sex;
 		this.birth = birth;
 		this.nickname = nickname;

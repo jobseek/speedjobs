@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.dto.user.member;
 
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.User;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class MemberInfoResponse {
 	private String picture;
 
 	//detail
-	private String birth;
+	private LocalDate birth;
 	private String intro;
 	private String nickname;
 	private String sex;
