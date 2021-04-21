@@ -1,12 +1,12 @@
 package com.jobseek.speedjobs.dto.post;
 
-import com.jobseek.speedjobs.domain.post.Comment;
-import com.jobseek.speedjobs.domain.tag.Tag;
-import com.jobseek.speedjobs.dto.tag.TagResponses;
-import java.util.List;
-
 import com.jobseek.speedjobs.domain.post.Post;
-
+import com.jobseek.speedjobs.domain.tag.Type;
+import com.jobseek.speedjobs.dto.tag.TagMap;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,36 +19,46 @@ public class PostResponse {
 	private Long id;
 	private String title;
 	private String content;
-	private List<Tag> tagList;
-	private List<Comment> commentList;
-	private TagResponses tags;
-	private CommentResponse comments;
-
-	public PostResponse(Post post) {
-		this.id = post.getId();
-		this.title = post.getTitle();
-		this.content = post.getPostDetail().getContent();
-		this.tagList = post.getPostTags().getTags();
-	}
+	private String author;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
+	private int commentCount;
+	private int likeCount;
+	private int viewCount;
+	private Map<Type, List<TagMap>> tags;
+	private List<CommentResponse> comments;
 
 	@Builder
-	public PostResponse(Long id, String title, String content,
-		TagResponses tags, CommentResponse comments) {
+	public PostResponse(Long id, String title, String content, String author,
+		LocalDateTime createdDate, LocalDateTime modifiedDate, int commentCount, int likeCount,
+		int viewCount,
+		Map<Type, List<TagMap>> tags, List<CommentResponse> comments) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
+		this.author = author;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+		this.commentCount = commentCount;
+		this.likeCount = likeCount;
+		this.viewCount = viewCount;
 		this.tags = tags;
 		this.comments = comments;
 	}
 
-	public static PostResponse of(Post post, TagResponses tagResponses) {
+	public static PostResponse of(Post post) {
 		return PostResponse.builder()
 			.id(post.getId())
 			.title(post.getTitle())
 			.content(post.getPostDetail().getContent())
-			.tags(tagResponses)
+			.author(post.getUser().getName())
+			.createdDate(post.getCreatedDate())
+			.modifiedDate(post.getModifiedDate())
+			.commentCount(post.getComments().size())
+			.likeCount(post.getLikeCount())
+			.viewCount(post.getViewCount())
+			.tags(TagMap.toMap(post))
+			.comments(post.getComments().stream().map(CommentResponse::of).collect(Collectors.toList()))
 			.build();
 	}
-
-
 }

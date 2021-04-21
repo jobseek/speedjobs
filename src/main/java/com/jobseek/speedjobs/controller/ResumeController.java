@@ -39,12 +39,11 @@ public class ResumeController {
 		return ResponseEntity.created(URI.create("/api/resume/" + id)).build();
 	}
 
-	// TODO 추가필요
 	@ApiOperation(value = "이력서 수정", notes = "이력서를 수정한다.")
 	@PreAuthorize("hasRole('MEMBER')")
 	@PutMapping("/{resumeId}")
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
-		ResumeRequest resumeRequest) {
+		@RequestBody ResumeRequest resumeRequest) {
 		resumeService.update(resumeId, user, resumeRequest);
 		return ResponseEntity.created(URI.create("/api/resume/" + resumeId)).build();
 	}

@@ -16,11 +16,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor(access = PRIVATE)
 public class ResumeRequest {
 
-	@Enumerated(EnumType.STRING)
 	private Open open;
 
 	private String coverLetter;
@@ -39,7 +38,7 @@ public class ResumeRequest {
 
 	private List<Certificate> certificateList;
 
-	public ResumeRequest(Open open, String coverLetter, String address, String blogUrl,
+	public ResumeRequest (Open open, String coverLetter, String address, String blogUrl,
 		String githubUrl, String resumeImage,
 		List<Career> careerList,
 		List<Scholar> scholarList,

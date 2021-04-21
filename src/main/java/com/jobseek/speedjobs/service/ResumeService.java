@@ -5,18 +5,19 @@ import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.ResumeRepository;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class ResumeService {
 
 	private final ResumeRepository resumeRepository;
@@ -36,7 +37,6 @@ public class ResumeService {
 		return resumeRepository.save(resume).getId();
 	}
 
-	//TODO 만들어야됨
 	@Transactional
 	public void update(Long resumeId, User user, ResumeRequest resumeRequest) {
 		Resume resume = resumeRepository.findById(resumeId)

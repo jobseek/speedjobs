@@ -34,20 +34,22 @@ public class CommentService {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId=" + postId));
 		Comment comment = commentRequest.of(user, post);
-		post.addComment(comment);
+		comment.addComment(post);
 		return commentRepository.save(comment).getId();
 	}
 
 	@Transactional
-	public void updateComment(CommentRequest commentRequest, User user) {
-
+	public void updateComment(CommentRequest commentRequest, User user, Long commentId) {
+		Comment comment = commentRepository.findById(commentId).orElseThrow(
+			() -> new IllegalArgumentException("존재하지 않는 댓글입니다. commentId = " + commentId));
+		comment.updateComment(commentRequest.toEntity());
 	}
 
 	@Transactional
 	public void deleteComment(User user, Long postId, Long commentId) {
 		Comment comment = commentRepository.findById(commentId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. commentId=" + commentId));
-		comment.getPost().decreaseCommentCount();
+			.orElseThrow(
+				() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. commentId=" + commentId));
 		commentRepository.delete(comment);
 	}
 
@@ -57,7 +59,22 @@ public class CommentService {
 		Page<CommentListResponse> page = new PageImpl<>(list.stream()
 			.map(comment -> CommentListResponse.builder().createdDate(comment.getCreatedDate())
 				.content(comment.getContent()).author(comment.getUser().getName())
-				.id(comment.getId()).build()).collect(Collectors.toList()), pageable, totalElements);
+				.id(comment.getId()).build()).collect(Collectors.toList()), pageable,
+			totalElements);
 		return page;
+	}
+
+	@Transactional
+	public void like(Long commentId) {
+		Comment comment = commentRepository.findById(commentId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+		comment.increaseLikeCount();
+	}
+
+	@Transactional
+	public void hate(Long commentId) {
+		Comment comment = commentRepository.findById(commentId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+		comment.decreaseLikeCount();
 	}
 }

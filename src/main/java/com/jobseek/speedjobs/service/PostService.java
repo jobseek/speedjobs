@@ -1,30 +1,24 @@
 package com.jobseek.speedjobs.service;
 
-import static com.jobseek.speedjobs.domain.user.Role.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
 
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.PostTag;
-import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.PostResponses;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
-import com.jobseek.speedjobs.dto.tag.TagResponses;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -33,7 +27,6 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final TagRepository tagRepository;
-	private final PostTagRepository postTagRepository;
 
 	@Transactional
 	public Long save(PostRequest postRequest, User user) {
@@ -65,30 +58,30 @@ public class PostService {
 		postRepository.delete(post);
 	}
 
+	@Transactional
 	public PostResponse readById(Long postId) {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. postId=" + postId));
 		post.increaseViewCount();
-		List<Tag> tags = post.getPostTags().getTags();
-		return PostResponse.of(post, TagResponses.mappedByType(tags));
+		return PostResponse.of(post);
 	}
 
 	public List<PostResponse> readAll() {
 		return postRepository.findAllDesc().stream()
-			.map(PostResponse::new)
+			.map(PostResponse::of)
 			.collect(Collectors.toList());
+	}
+
+	public Page<PostResponse> readByPage(Pageable pageable) {
+		Page<Post> page = postRepository.findAll(pageable);
+		int totalElements = (int) page.getTotalElements();
+		return new PageImpl<>(page.stream()
+			.map(PostResponse::of)
+			.collect(Collectors.toList()), pageable, totalElements);
 	}
 
 	private void createPostTags(Post post, List<Tag> tags) {
 		tags.forEach(tag -> PostTag.createPostTag(post, tag));
-	}
-
-	public Page<PostResponses> readByPage(Pageable pageable) {
-		Page<Post> page = postRepository.findAll(pageable);
-		int totalElements = (int)page.getTotalElements();
-		return new PageImpl<>(page.stream()
-			.map(PostResponses::of)
-			.collect(Collectors.toList()), pageable, totalElements);
 	}
 
 	private List<Tag> getTagsById(List<Long> tagIds) {
@@ -98,4 +91,20 @@ public class PostService {
 			.collect(Collectors.toList());
 	}
 
+	/**
+	 * 기능
+	 */
+	@Transactional
+	public void like(Long postId) {
+		Post post = postRepository.findById(postId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+		post.increaseLikeCount();
+	}
+
+	@Transactional
+	public void hate(Long postId) {
+		Post post = postRepository.findById(postId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+		post.decreaseLikeCount();
+	}
 }

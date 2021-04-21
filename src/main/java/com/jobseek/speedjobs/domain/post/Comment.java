@@ -49,12 +49,20 @@ public class Comment extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	public void addComment(Post post) {
+		post.getComments().add(this);
+	}
+
+	public void updateComment(Comment comment) {
+		this.content = comment.getContent();
+	}
+
 	public void increaseLikeCount() {
-		likeCount += 1;
+		this.likeCount += 1;
 	}
 
 	public void decreaseLikeCount() {
-		likeCount -= 1;
+		this.likeCount -= 1;
 	}
 
 }

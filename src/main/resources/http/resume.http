@@ -71,7 +71,7 @@ Authorization: Bearer {{accessToken}}
   ]
 }
 
-#### 2. 이력서 수정 //TODO
+#### 2. 이력서 수정
 PUT http://{{host}}/resume/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}

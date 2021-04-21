@@ -14,16 +14,32 @@ import lombok.NoArgsConstructor;
 public class CommentResponse {
 
 	private Long id;
+	private String author;
 	private String content;
 	private LocalDateTime createdDate;
-	private String author;
+	private LocalDateTime modifiedDate;
+	private int likeCount;
 
 	@Builder
-	public CommentResponse(Long id, String content, LocalDateTime createdDate, String author) {
+	public CommentResponse(Long id, String author, String content, LocalDateTime createdDate,
+		LocalDateTime modifiedDate, int likeCount) {
 		this.id = id;
-		this.content = content;
 		this.author = author;
+		this.content = content;
 		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+		this.likeCount = likeCount;
+	}
+
+	public static CommentResponse of(Comment comment) {
+		return CommentResponse.builder()
+			.id(comment.getId())
+			.author(comment.getUser().getName())
+			.content(comment.getContent())
+			.createdDate(comment.getCreatedDate())
+			.modifiedDate(comment.getModifiedDate())
+			.likeCount(comment.getLikeCount())
+			.build();
 	}
 
 }
