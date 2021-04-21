@@ -1,28 +1,49 @@
 package com.jobseek.speedjobs.domain.resume;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
-import lombok.*;
-
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.*;
-
-@Entity @Getter @Setter @Builder
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "resumes")
 public class Resume extends BaseTimeEntity {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "resume_id")
 	private Long id;
 
@@ -44,7 +65,7 @@ public class Resume extends BaseTimeEntity {
 	private Member member;
 
 	@ElementCollection
-	@CollectionTable(name = "certificate", joinColumns = @JoinColumn(name = "resume_id"), uniqueConstraints = @UniqueConstraint(columnNames = {"certNumber"}))
+	@CollectionTable(name = "certificate", joinColumns = @JoinColumn(name = "resume_id"))
 	private List<Certificate> certificateList = new ArrayList<>();
 
 	@ElementCollection

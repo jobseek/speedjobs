@@ -108,6 +108,39 @@ public class User extends BaseTimeEntity {
 		this.oauthId = oauthId;
 	}
 
+	@Builder
+	public User(String name, String email, String password, String picture, String contact,
+		Role role, Provider provider, String oauthId, Member member) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.picture = picture;
+		this.contact = contact;
+		this.role = role;
+		this.provider = provider;
+		this.oauthId = oauthId;
+		if(member != null) {
+			setMember(member);
+		}
+	}
+
+	@Builder
+	public User(String name, String email, String password, String picture, String contact,
+		Role role, Provider provider, String oauthId,
+		Company company) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.picture = picture;
+		this.contact = contact;
+		this.role = role;
+		this.provider = provider;
+		this.oauthId = oauthId;
+		if(company != null) {
+			setCompany(company);
+		}
+	}
+
 	public void setMember(Member member) {
 		this.member = member;
 		member.setUser(this);

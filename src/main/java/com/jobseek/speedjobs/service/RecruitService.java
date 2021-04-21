@@ -58,11 +58,19 @@ public class RecruitService {
 		recruitRepository.delete(recruit);
 	}
 
+	@Transactional(readOnly = true)
 	public RecruitResponse readById(Long recruitId) {
 		Recruit recruit = recruitRepository.findById(recruitId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 공고가 존재하지 않습니다."));
 		List<Tag> tags = recruit.getRecruitTags().getTags();
 		return RecruitResponse.of(recruit, TagResponses.mappedByType(tags));
+	}
+
+	@Transactional(readOnly = true)
+	public List<RecruitResponse> readAll() {
+		return recruitRepository.findAllDesc().stream()
+			.map(RecruitResponse::new)
+			.collect(Collectors.toList());
 	}
 
 	private void createRecruitTags(Recruit recruit, List<Tag> tags) {

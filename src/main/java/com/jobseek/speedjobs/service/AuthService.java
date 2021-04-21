@@ -75,8 +75,8 @@ public class AuthService {
 		}
 	}
 
-  public TokenResponse reissueToken(HttpServletRequest request, HttpServletResponse response) {
-    String refreshToken = jwtUtil.getTokenFromRequest(request);
+	public TokenResponse reissueToken(HttpServletRequest request, HttpServletResponse response) {
+		String refreshToken = jwtUtil.getTokenFromRequest(request);
 
 		if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.hasKey(refreshToken)) {
 			throw new InvalidTokenException();
@@ -85,12 +85,13 @@ public class AuthService {
 		UserTokenDto userTokenDto = jwtUtil.getUserTokenDto(refreshToken);
 		String accessToken = jwtUtil.createAccessToken(userTokenDto);
 
-    Cookie accessCookie = cookieUtil
-        .createCookie(jwtUtil.ACCESS_TOKEN, accessToken, jwtUtil.accessValidity.intValue() / 1000);
+		Cookie accessCookie = cookieUtil
+			.createCookie(jwtUtil.ACCESS_TOKEN, accessToken,
+				jwtUtil.accessValidity.intValue() / 1000);
 
-    response.addCookie(accessCookie);
+		response.addCookie(accessCookie);
 
-    return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-  }
+		return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+	}
 
 }

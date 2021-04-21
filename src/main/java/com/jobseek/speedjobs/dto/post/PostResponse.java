@@ -1,6 +1,9 @@
 package com.jobseek.speedjobs.dto.post;
 
+import com.jobseek.speedjobs.domain.post.Comment;
+import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
+import java.util.List;
 import java.util.Set;
 
 import com.jobseek.speedjobs.domain.post.Post;
@@ -18,8 +21,17 @@ public class PostResponse {
 	private Long id;
 	private String title;
 	private String content;
+	private List<Tag> tagList;
+	private List<Comment> commentList;
 	private TagResponses tags;
 	private CommentResponses comments;
+
+	public PostResponse(Post post) {
+		this.id = post.getId();
+		this.title = post.getTitle();
+		this.content = post.getPostDetail().getContent();
+		this.tagList = post.getPostTags().getTags();
+	}
 
 	@Builder
 	public PostResponse(Long id, String title, String content,
@@ -39,4 +51,6 @@ public class PostResponse {
 			.tags(tagResponses)
 			.build();
 	}
+
+
 }

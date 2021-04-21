@@ -4,8 +4,11 @@ import com.jobseek.speedjobs.domain.recruit.Experience;
 import com.jobseek.speedjobs.domain.recruit.Position;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.Status;
+import com.jobseek.speedjobs.domain.tag.Tag;
+import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +26,21 @@ public class RecruitResponse {
 	private Experience experience;
 	private Position position;
 	private String content;
+	private List<Tag> tagList;
 	private TagResponses tags;
+
+	public RecruitResponse(Recruit recruit) {
+		this.id = recruit.getId();
+		this.title = recruit.getTitle();
+		this.openDate = recruit.getOpenDate();
+		this.closeDate = recruit.getCloseDate();
+		this.status = recruit.getStatus();
+		this.thumbnail = recruit.getThumbnail();
+		this.experience = recruit.getRecruitDetail().getExperience();
+		this.position = recruit.getRecruitDetail().getPosition();
+		this.content = recruit.getRecruitDetail().getContent();
+		this.tagList = recruit.getRecruitTags().getTags();
+	}
 
 	@Builder
 	public RecruitResponse(Long id, String title, LocalDateTime openDate, LocalDateTime closeDate,

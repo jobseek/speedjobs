@@ -5,6 +5,7 @@ import com.jobseek.speedjobs.dto.post.CommentListResponse;
 import com.jobseek.speedjobs.dto.post.PostListResponse;
 import java.net.URI;
 
+import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -75,8 +76,14 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.readById(postId));
 	}
 
+	@ApiOperation(value = "게시글 전체 조회", notes = "게시글을 전체 조회한다")
+	@GetMapping
+	public ResponseEntity<List<PostResponse>> readAllPosts() {
+		return ResponseEntity.ok().body(postService.readAll());
+	}
+
 	// TODO: 태그와 검색어 등으로 조회하도록 수정 예정
-	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 조회한다.")
+	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
 	@GetMapping("/paging")
 	public Page<PostListResponse> readPostsByPage(final Pageable pageable) {
 		return postService.readByPage(pageable);
