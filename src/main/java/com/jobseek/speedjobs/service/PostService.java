@@ -64,6 +64,7 @@ public class PostService {
     postRepository.delete(post);
   }
 
+
   public PostResponse readById(Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. postId=" + postId));
@@ -71,6 +72,7 @@ public class PostService {
     List<Tag> tags = post.getPostTags().getTags();
     return PostResponse.of(post, TagResponses.mappedByType(tags));
   }
+
 
   private void createPostTags(Post post, List<Tag> tags) {
     tags.forEach(tag -> PostTag.createPostTag(post, tag));

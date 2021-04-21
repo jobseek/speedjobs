@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataInputs } from '../Styled';
+import Input from '../../admin/component/Input';
 
 export default function AnnouncementDate() {
   return (

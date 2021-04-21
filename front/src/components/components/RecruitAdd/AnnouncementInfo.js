@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { DataInputs } from '../Styled';
 import Tags from '../Tags';
 
 export default function AnnouncementInfo() {
