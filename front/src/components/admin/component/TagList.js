@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { HiPlus, MdDelete, MdEdit } from 'react-icons/all';
 import styled, { css } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/Notification/Loading';
+import {
+  TAG_ADD_REQUEST,
+  TAG_GET_DONE,
+  TAG_GET_REQUEST,
+} from '../../../reducers/tag';
 
 const AdminStyledInput = styled.input`
   flex: 1;
@@ -23,6 +30,15 @@ const AdminStyledSelect = styled.select`
 
 const AdminStyledButton = styled.button`
   flex: 0 0 50px;
+  ${(props) =>
+    !props.show &&
+    css`
+      flex: 0 0 0;
+      padding: 0;
+      & > * {
+        display: none;
+      }
+    `}
   border: none;
   background-color: #d7d7d7;
   transition: all ease-in-out 300ms;
@@ -51,33 +67,49 @@ const AdminStyledCol = styled.div`
 
 export default function TagList(props) {
   const [tagList, set] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const tags = useSelector((state) => state.tag);
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState([]);
   const [input, setInput] = useState({
     id: -1,
     name: '',
-    type: '',
+    type: 'SKILL',
     selected: false,
   });
 
   const onChangeHandler = useCallback((e) => {
     setInput((p) => ({ ...p, [e.target.name]: e.target.value }));
   }, []);
-  const onClickHandler = useCallback((tag) => {
-    if (!tag.selected) {
-      tag.selected = true;
-      setSelected((p) => [...p, tag]);
-      setInput(tag);
-    } else {
-      selected.find((s) => s.id === tag.id).selected = false;
-      setSelected((p) => selected.filter((s) => s.selected));
-    }
-  }, []);
+  const onClickHandler = useCallback(
+    (tag) => {
+      if (!tag.selected) {
+        tag.selected = true;
+        setSelected((p) => {
+          return [...p, tag];
+        });
+        setInput(tag);
+      } else {
+        tag.selected = false;
+        setSelected((p) => {
+          const ret = selected.filter((s) => s.selected);
+          if (ret.length === 0)
+            setInput({ id: -1, name: '', selected: false, type: 'SKILL' });
+          return ret;
+        });
+      }
+    },
+    [selected]
+  );
   const onSubmitHandler = (e) => {
     console.log(input);
     const temp = input;
     temp.selected = false;
     if (input.id < 0) {
-      console.log('서버전송이 필요');
+      dispatch({
+        type: TAG_ADD_REQUEST,
+        data: { name: temp.name, type: temp.type },
+      });
     } else {
       set((p) => {
         return [
@@ -93,69 +125,88 @@ export default function TagList(props) {
       setInput({ id: -1, name: '', selected: false, type: '' });
     }
   };
-  const initTagList = () => {
-    set((p) => {
-      let arr = [...p];
-      for (let i = 0; i < 10; i++) {
-        arr = [
-          ...arr,
-          { id: i, name: `태그${i}`, type: '스킬', selected: false },
-        ];
-      }
-      return arr;
-    });
-  };
+
+  const deleteHandler = useCallback((e) => {}, [selected]);
 
   useEffect(() => {
-    initTagList();
-  }, []);
-
+    console.log('hi');
+    if (tags.tagAddDone || tags.tagDeleteDone || tags.tagEditDone) {
+      console.log('patch');
+      dispatch({
+        type: TAG_GET_REQUEST,
+      });
+    }
+    if (!tags.tagGetLoading) {
+      const pList = [...tags.tagGetData.tags.POSITION];
+      const sList = [...tags.tagGetData.tags.SKILL];
+      set(
+        pList
+          .map((p) => ({ ...p, type: 'POSITION', selected: false }))
+          .concat(sList.map((s) => ({ ...s, type: 'SKILL', selected: false })))
+      );
+      setLoading(false);
+    } else if (
+      tags.tagDeleteLoading ||
+      tags.tagEditLoading ||
+      tags.tagGetLoading ||
+      tags.tagAddLoading
+    ) {
+      setLoading(true);
+    }
+  }, [tags]);
   return (
     <>
-      <div style={{ display: 'flex', height: '35px' }}>
-        <AdminStyledInput
-          onChange={onChangeHandler}
-          value={input.name}
-          name={'name'}
-          placeholder={'태그이름'}
-        ></AdminStyledInput>
-        <AdminStyledSelect
-          onChange={onChangeHandler}
-          value={input.type}
-          name={'type'}
-        >
-          <option>스킬</option>
-          <option>직무</option>
-        </AdminStyledSelect>
-        <AdminStyledButton onClick={onSubmitHandler}>
-          {selected.length === 0 ? <HiPlus></HiPlus> : <MdEdit></MdEdit>}
-        </AdminStyledButton>
-        {selected.length !== 0 && (
-          <AdminStyledButton warning>
-            <MdDelete></MdDelete>
-          </AdminStyledButton>
-        )}
-      </div>
-      <div className={'container-fluid p-0'}>
-        <AdminStyledRow className={'row m-0'}>
-          <div className={'col-4'}>이름</div>
-          <div className={'col-4'}>아이디</div>
-          <div className={'col-4'}>분류</div>
-        </AdminStyledRow>
-        {tagList.map((tag) => (
-          <AdminStyledCol
-            id={tag.id}
-            className={'row m-0'}
-            style={{ width: '100%', borderBottom: '#e7e7e7 solid 1px' }}
-            onClick={() => onClickHandler(tag)}
-            selected={tag.selected}
-          >
-            <div className={'col-4'}>{tag.name}</div>
-            <div className={'col-4'}>{tag.id}</div>
-            <div className={'col-4'}>{tag.type}</div>
-          </AdminStyledCol>
-        ))}
-      </div>
+      {loading ? (
+        <Loading></Loading>
+      ) : (
+        <>
+          <div style={{ display: 'flex', height: '35px' }}>
+            <AdminStyledInput
+              onChange={onChangeHandler}
+              value={input.name}
+              name={'name'}
+              placeholder={'태그이름'}
+            ></AdminStyledInput>
+            <AdminStyledSelect
+              onChange={onChangeHandler}
+              value={input.type}
+              name={'type'}
+            >
+              <option>SKILL</option>
+              <option>POSITION</option>
+            </AdminStyledSelect>
+            <AdminStyledButton show={true} onClick={onSubmitHandler}>
+              {selected.length === 0 ? <HiPlus></HiPlus> : <MdEdit></MdEdit>}
+            </AdminStyledButton>
+            <AdminStyledButton show={selected.length !== 0} warning>
+              <MdDelete></MdDelete>
+            </AdminStyledButton>
+          </div>
+
+          <div className={'container-fluid p-0'}>
+            <AdminStyledRow className={'row m-0'}>
+              <div className={'col-4'}>이름</div>
+              <div className={'col-4'}>아이디</div>
+              <div className={'col-4'}>분류</div>
+            </AdminStyledRow>
+            <div style={{ overflowY: 'scroll', height: '80vh' }}>
+              {tagList.map((tag) => (
+                <AdminStyledCol
+                  id={tag.id}
+                  className={'row m-0'}
+                  style={{ width: '100%', borderBottom: '#e7e7e7 solid 1px' }}
+                  onClick={() => onClickHandler(tag)}
+                  selected={tag.selected}
+                >
+                  <div className={'col-4'}>{tag.name}</div>
+                  <div className={'col-4'}>{tag.id}</div>
+                  <div className={'col-4'}>{tag.type}</div>
+                </AdminStyledCol>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
