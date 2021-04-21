@@ -4,12 +4,10 @@ import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.util.List;
-import java.util.Set;
 
 import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.post.PostDetail;
+
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +22,7 @@ public class PostResponse {
 	private List<Tag> tagList;
 	private List<Comment> commentList;
 	private TagResponses tags;
-	private CommentResponses comments;
+	private CommentResponse comments;
 
 	public PostResponse(Post post) {
 		this.id = post.getId();
@@ -35,7 +33,7 @@ public class PostResponse {
 
 	@Builder
 	public PostResponse(Long id, String title, String content,
-		TagResponses tags, CommentResponses comments) {
+		TagResponses tags, CommentResponse comments) {
 		this.id = id;
 		this.title = title;
 		this.content = content;

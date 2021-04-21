@@ -46,5 +46,4 @@ Accept: application/json
 
 ### 6. 게시글 페이징 조회
 GET http://{{host}}/post/paging?page=0&size=3&sort=id,DESC
-Accept: application/json
 

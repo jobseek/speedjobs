@@ -1,5 +1,7 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.domain.member.Member;
+import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.ResumeRepository;
 import com.jobseek.speedjobs.domain.user.User;
@@ -18,13 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class ResumeService {
 
 	private final ResumeRepository resumeRepository;
+	private final MemberRepository memberRepository;
 
 	@Transactional
 	public Long save(User user, ResumeRequest request) {
 		Resume resume = new Resume(request.getOpen(), request.getCoverLetter(),
-			request.getAddress(),
-			request.getBlogUrl(), request.getGithubUrl(), request.getResumeImage());
-		resume.setMember(user.getMember());
+			request.getAddress(), request.getBlogUrl(), request.getGithubUrl(),
+			request.getResumeImage());
+		Member member = memberRepository.findById(user.getId())
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+		resume.setMember(member);
 		request.getCareerList().forEach(resume::addCareer);
 		request.getScholarList().forEach(resume::addScholar);
 		request.getCertificateList().forEach(resume::addCertificate);

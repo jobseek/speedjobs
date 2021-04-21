@@ -12,6 +12,6 @@ public class MemberUpdateRequest {
 	//멤버
 	private LocalDate birth;
 	private String nickname;
-	private String intro;
+	private String bio;
 	private String sex;
 }

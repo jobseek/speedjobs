@@ -110,3 +110,4 @@ class UserServiceTest {
 		Assertions.assertThat(userService.getMember(Id, user).getNickname()).isEqualTo("테스트닉네임");
 	}
 }
+

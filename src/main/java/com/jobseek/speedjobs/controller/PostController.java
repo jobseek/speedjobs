@@ -1,11 +1,8 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.domain.post.Comment;
-import com.jobseek.speedjobs.dto.post.CommentListResponse;
-import com.jobseek.speedjobs.dto.post.PostListResponse;
 import java.net.URI;
-
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -22,11 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobseek.speedjobs.config.auth.LoginUser;
-import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.post.CommentListResponse;
 import com.jobseek.speedjobs.dto.post.CommentRequest;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.dto.post.PostResponses;
 import com.jobseek.speedjobs.service.CommentService;
 import com.jobseek.speedjobs.service.PostService;
 
@@ -84,7 +82,7 @@ public class PostController {
 
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
 	@GetMapping("/paging")
-	public Page<PostListResponse> readPostsByPage(final Pageable pageable) {
+	public Page<PostResponses> readPostsByPage(final Pageable pageable) {
 		return postService.readByPage(pageable);
 	}
 
@@ -102,7 +100,7 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
 	@PutMapping("/{postId}/{commentId}")
 	public ResponseEntity<Void> updateComment(@LoginUser User user, @Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId, @PathVariable Long commentId) {
@@ -111,7 +109,7 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
 	@DeleteMapping("/{postId}/{commentId}")
 	public ResponseEntity<Void> deleteComment(@LoginUser User user, @PathVariable Long postId,
 		@PathVariable Long commentId) {
@@ -121,8 +119,8 @@ public class PostController {
 
 	@ApiOperation(value = "댓글페이지조회", notes = "댓글을 조회한다.")
 	@GetMapping("/{postId}/paging")
-	public Page<CommentListResponse> readCommentsByPage(final Pageable pageable,@PathVariable Long postId) {
+	public Page<CommentListResponse> readCommentsByPage(final Pageable pageable, @PathVariable Long postId) {
 		log.info(postId.toString());
-		return commentService.readByPage(pageable,postId);
+		return commentService.readByPage(pageable, postId);
 	}
 }

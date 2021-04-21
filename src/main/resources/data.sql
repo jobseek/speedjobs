@@ -1,21 +1,22 @@
--- 테스트 비밀번호 : jobseek2021!
--- MEMBER
-insert into members(birth, intro, nickname, sex)
-values ('2021-04-20', '안녕하세요.', 'member', 'M');
+ -- 테스트 비밀번호 : jobseek2021!
+ -- MEMBER
+ insert into users(email, password, name, role)
+ values ('member@member.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', '잡숙이', 'ROLE_MEMBER');
 
-insert into users(email, password, name, provider, role, member_id)
-values ('member@member.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', '잡숙이', 'LOCAL', 'ROLE_MEMBER', 1);
+ insert into members(birth, bio, nickname, sex, oauth_id, provider, user_id)
+ values ('2021-04-20', '안녕하세요.', 'member', 'M', '1234214', 'LOCAL', 1);
 
--- COMPANY
-insert into companies(description, homepage, registration_number, company_name, logo_image, scale)
-values ('잡식컴퍼니입니다.', 'jobseek@jobseek.com', '123-45-67890', '(주)잡식', 'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png', 6);
+ -- COMPANY
+ insert into users(email, password, name, role)
+ values ('company@company.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', '잡숙이', 'ROLE_COMPANY');
 
-insert into users(email, password, name, provider, role, company_id)
-values ('company@company.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', '잡숙이', 'LOCAL', 'ROLE_COMPANY', 1);
 
--- ADMIN
-insert into users(email, password, name, provider, role)
-values ('admin@admin.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'admin', 'LOCAL', 'ROLE_ADMIN');
+ insert into companies(description, homepage, registration_number, company_name, logo_image, scale, user_id)
+ values ('잡식컴퍼니입니다.', 'jobseek@jobseek.com', '123-45-67890', '(주)잡식', 'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png', 6, 2);
+
+ -- ADMIN
+ insert into users(email, password, name, role)
+ values ('admin@admin.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'admin', 'ROLE_ADMIN');
 
 -- 직무 태그
 insert into tags(name, type) values ('서버/백엔드', 'POSITION');

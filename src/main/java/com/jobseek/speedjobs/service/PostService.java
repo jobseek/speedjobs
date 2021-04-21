@@ -1,6 +1,15 @@
 package com.jobseek.speedjobs.service;
 
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
+import static com.jobseek.speedjobs.domain.user.Role.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
@@ -10,18 +19,12 @@ import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.PostListResponse;
+import com.jobseek.speedjobs.dto.post.PostResponses;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
-import java.util.List;
-import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -80,13 +83,12 @@ public class PostService {
 		tags.forEach(tag -> PostTag.createPostTag(post, tag));
 	}
 
-	public Page<PostListResponse> readByPage(Pageable pageable) {
+	public Page<PostResponses> readByPage(Pageable pageable) {
 		Page<Post> page = postRepository.findAll(pageable);
-		int totalElements = (int) page.getTotalElements();
-		return new PageImpl<PostListResponse>(page.stream().map(
-			post -> PostListResponse.builder().id(post.getId()).author(post.getUser().getName())
-				.title(post.getTitle()).tags(post.getPostTags()).createdDate(post.getCreatedDate()).build()).collect(
-			Collectors.toList()), pageable, totalElements);
+		int totalElements = (int)page.getTotalElements();
+		return new PageImpl<>(page.stream()
+			.map(PostResponses::of)
+			.collect(Collectors.toList()), pageable, totalElements);
 	}
 
 	private List<Tag> getTagsById(List<Long> tagIds) {
@@ -95,6 +97,5 @@ public class PostService {
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
 			.collect(Collectors.toList());
 	}
-
 
 }

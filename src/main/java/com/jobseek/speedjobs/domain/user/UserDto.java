@@ -1,14 +1,18 @@
 package com.jobseek.speedjobs.domain.user;
 
+import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.member.Member;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
 
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class UserDto {
 
 	private String name;
@@ -24,6 +28,7 @@ public class UserDto {
 	private Provider provider;
 	private String oauthId;
 
+	private String contact;
 	private String companyName;
 	private String logoImage;
 	private int scale;
@@ -38,4 +43,5 @@ public class UserDto {
 			.role(role)
 			.build();
 	}
+
 }

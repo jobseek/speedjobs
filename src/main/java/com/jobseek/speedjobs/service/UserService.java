@@ -1,27 +1,28 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.dto.user.UserCheckRequest;
-import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
-import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.jobseek.speedjobs.common.exception.NotExistException;
+import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
+import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserDto;
 import com.jobseek.speedjobs.domain.user.UserRepository;
+import com.jobseek.speedjobs.dto.user.UserCheckRequest;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
+import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
+import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.utils.MailUtil;
 import com.jobseek.speedjobs.utils.RedisUtil;
-
+import java.util.UUID;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
+	private final CompanyRepository companyRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 	private final MailUtil mailUtil;
@@ -53,8 +56,16 @@ public class UserService {
 		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key)
 			.orElseThrow(() -> new NotExistException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
-		User user = request.toEntity(passwordEncoder);
-		return userRepository.save(user).getId();
+		UserDto userDto = request.getUserDto(passwordEncoder);
+		if (userDto.getRole() == Role.ROLE_MEMBER) {
+			Member member = new Member(userDto);
+			return memberRepository.save(member).getId();
+		} else if (userDto.getRole() == Role.ROLE_COMPANY) {
+			Company company = new Company(userDto);
+			return companyRepository.save(company).getId();
+		} else {
+			throw new IllegalArgumentException("존재하지 않는 역할입니다.");
+		}
 	}
 
 	private void validateUserSaveRequest(UserSaveRequest request) {
@@ -93,40 +104,40 @@ public class UserService {
 		}
 	}
 
-	public MemberInfoResponse getMember(Long id, User user) {
+	public MemberInfoResponse getMemberInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_MEMBER) {
 			throw new IllegalArgumentException("개인회원이 아닙니다.");
-		} else if (id != user.getId()) {
+		} else if (userId != user.getId()) {
 			throw new IllegalArgumentException("올바른 경로가 아닙니다.");
 		}
-		return MemberInfoResponse.of(user);
+		Member member = memberRepository.findById(userId)
+			.orElseThrow(() -> new IllegalArgumentException("개인회원이 아닙니다."));
+		return MemberInfoResponse.of(member);
 	}
 
-	public CompanyInfoResponse getCompany(Long id, User user) {
+	public CompanyInfoResponse getCompanyInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_COMPANY) {
 			throw new IllegalArgumentException("기업회원이 아닙니다.");
-		} else if (id != user.getId()) {
+		} else if (userId != user.getId()) {
 			throw new IllegalArgumentException("올바른 경로가 아닙니다.");
 		}
-		return CompanyInfoResponse.of(user);
+		Company company = companyRepository.findById(userId)
+			.orElseThrow(() -> new IllegalArgumentException("기업회원이 아닙니다."));
+		return CompanyInfoResponse.of(company);
 	}
 
 	@Transactional
-	public void update(Long id, MemberUpdateRequest request) {
-		User user = userRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("없는 유저입니다."));
-		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		user.setPicture(request.getPicture());
-		Member member = user.getMember();
-		member.setSex(request.getSex());
-		member.setBirth(request.getBirth());
-		member.setNickname(request.getNickname());
-		member.setBio(request.getIntro());
+	public void update(Long userId, MemberUpdateRequest request) {
+		memberRepository.findById(userId)
+			.map(entity -> entity.updateCustomUserInfo(null, request.getPassword(),
+				request.getPicture(), request.getSex(), request.getBirth(), request.getNickname(),
+				request.getBio()))
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 	}
 
 	@Transactional
-	public void delete(Long id) {
-		User user = userRepository.findById(id)
+	public void delete(Long userId) {
+		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new IllegalArgumentException("없는 유저입니다."));
 		userRepository.delete(user);
 	}

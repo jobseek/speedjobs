@@ -18,6 +18,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.likelist.CompanyLike;
 import com.jobseek.speedjobs.domain.likelist.PostLike;
@@ -34,7 +36,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -87,8 +88,9 @@ public class User extends BaseTimeEntity {
 		this.role = role;
 	}
 
-	public User updateOAuthUserInfo(String name, String picture) {
+	public User updateUserInfo(String name, String password, String picture) {
 		this.name = name;
+		this.password = password;
 		this.picture = picture;
 		return this;
 	}
