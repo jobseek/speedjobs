@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -37,6 +37,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "posts")
+@ToString(exclude = {"postLikes", "comments", "postTags"})
 public class Post extends BaseTimeEntity {
 
 	@Id

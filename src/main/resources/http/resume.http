@@ -1,16 +1,16 @@
-### 토큰받기
-POST http://localhost:8081/api/auth/login
+### 멤버 로그인
+POST http://{{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "jobSeek@naver.com",
-  "password": "jobseek2021!"
+  "email": "{{member_email}}",
+  "password": "{{password}}"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
 
 ### 1. 이력서 등록
-POST http://localhost:8081/api/resume
+POST http://{{host}}/resume
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -23,13 +23,13 @@ Authorization: Bearer {{accessToken}}
   "resumeImage": "https://www.naver.com",
   "careerList": [
     {
-      "companyName": "보기컴퍼니",
+      "companyName": "잡식컴퍼니",
       "position": "사장",
       "inDate": "2020-01-02 00:00:00",
       "outDate": "2021-12-15 00:00:00"
     },
     {
-      "companyName": "짱우컴퍼니",
+      "companyName": "잡식컴퍼니",
       "position": "부하",
       "inDate": "2020-01-05 00:00:00",
       "outDate": "2021-11-15 00:00:00"
@@ -55,7 +55,7 @@ Authorization: Bearer {{accessToken}}
     {
       "certName": "컴퓨터활용능력1급",
       "certNumber": "111-11-11111",
-      "institute": "보기컴퍼니",
+      "institute": "잡식컴퍼니",
       "certDate": "2011-08-23 13:25:08",
       "score": null,
       "degree": 1
@@ -63,7 +63,7 @@ Authorization: Bearer {{accessToken}}
     {
       "certName": "토익",
       "certNumber": "222-22-22222",
-      "institute": "보기토익컴퍼니",
+      "institute": "토익컴퍼니",
       "certDate": "2018-05-30 13:25:08",
       "score": 800,
       "degree": null
@@ -71,7 +71,83 @@ Authorization: Bearer {{accessToken}}
   ]
 }
 
-### 2. 삭제
-DELETE http://localhost:8081/api/resume/1
+#### 2. 이력서 수정 //TODO
+PUT http://{{host}}/resume/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "open": "YES",
+  "coverLetter": "소개를 수정합니당",
+  "address": "서울시 노원구 강남시",
+  "blogUrl": "https://www.naver.com",
+  "githubUrl": "https://www.naver.com",
+  "resumeImage": "https://www.naver.com",
+  "careerList": [
+    {
+      "companyName": "스피드잡스",
+      "position": "사장",
+      "inDate": "2020-01-02 00:00:00",
+      "outDate": "2021-12-15 00:00:00"
+    },
+    {
+      "companyName": "스피드잡식",
+      "position": "CTO",
+      "inDate": "2020-01-05 00:00:00",
+      "outDate": "2021-11-15 00:00:00"
+    }
+  ],
+  "scholarList": [
+    {
+      "education": "HIGH",
+      "schoolName": "못먹어도고",
+      "major": "문과",
+      "inDate": "2014-03-02 00:00:00",
+      "outDate": "2017-02-21 00:00:00"
+    },
+    {
+      "education": "UNIVERSITY",
+      "schoolName": "포항공대",
+      "major": "컴퓨터공학과",
+      "inDate": "2017-03-02 00:00:00",
+      "outDate": "2020-03-21 00:00:00"
+    }
+  ],
+  "certificateList": [
+    {
+      "certName": "컴퓨터활용능력1급",
+      "certNumber": "111-11-11111",
+      "institute": "컴활컴퍼니",
+      "certDate": "2011-08-23 13:25:08",
+      "score": null,
+      "degree": 1
+    },
+    {
+      "certName": "토익",
+      "certNumber": "222-22-22222",
+      "institute": "토익컴퍼니",
+      "certDate": "2018-05-30 13:25:08",
+      "score": 900,
+      "degree": null
+    }
+  ]
+}
+
+### 3. 이력서 삭제
+DELETE http://{{host}}/resume/1
 Accept: application/json
 Authorization: Bearer {{accessToken}}
+
+### 4. 이력서 단건 조회
+GET http://{{host}}/resume/2
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### 5. 이력서 전체 조회
+GET http://{{host}}/resume
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### 6. 이력서 페이징 조회 //TODO)
+#GET http://{{host}}/resume/paging?page=0&size=3&sort=id,DESC
+#Accept: application/json

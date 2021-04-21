@@ -1,35 +1,16 @@
-### 1-1.회원가입(기업)
-POST http://localhost:8081/api/user/signup/company
+### 기업 로그인
+POST http://{{host}}/auth/login
 Content-Type: application/json
 
 {
-  "companyName": "스피드잡스",
-  "contact": "010-1234-5678",
-  "email": "lsb530@naver.com",
-  "homepage": "https://www.naver.com",
-  "name": "보쿠",
-  "password": "12341234",
-  "registrationNumber": "123-45-67549",
-  "role": "ROLE_COMPANY"
-}
-
-### 2.회원가입확인(이메일인증)
-GET http://localhost:8081/api/user/signup/confirm/a6f5e31e-cfb2-46fc-b3cb-9c34d26489e5
-Accept: application/json
-
-### 로그인(토큰받기)
-POST http://localhost:8081/api/auth/login
-Content-Type: application/json
-
-{
-  "email": "lsb530@naver.com",
-  "password": "12341234"
+  "email": "{{company_email}}",
+  "password": "{{password}}"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
 
 ### 1. 공고 등록
-POST http://localhost:8081/api/recruit
+POST http://{{host}}/recruit
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -46,7 +27,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 2. 공고 수정
-PUT http://localhost:8081/api/recruit/1
+PUT http://{{host}}/recruit/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -63,10 +44,18 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 3. 공고 삭제
-DELETE http://localhost:8081/api/recruit/1
+DELETE http://{{host}}/recruit/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 4. 공고 단건 조회
-GET http://localhost:8081/api/recruit/1
+GET http://{{host}}/recruit/1
 Accept: application/json
+
+### 5. 공고 전체 조회
+GET http://{{host}}/recruit
+Accept: application/json
+
+### 6. 공고 페이징 조회 // TODO
+#GET http://{{host}}/recruit/paging?page=0&size=3&sort=id,DESC
+#Accept: application/json

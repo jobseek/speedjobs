@@ -108,7 +108,6 @@ public class Recruit extends BaseTimeEntity {
 
 	public void setCompany(Company company) {
 		this.company = company;
-
 	}
 
 	public void update(Recruit recruit, List<Tag> tags) {

@@ -65,6 +65,12 @@ public class RecruitService {
 		return RecruitResponse.of(recruit, TagResponses.mappedByType(tags));
 	}
 
+	public List<RecruitResponse> readAll() {
+		return recruitRepository.findAllDesc().stream()
+			.map(RecruitResponse::new)
+			.collect(Collectors.toList());
+	}
+
 	private void createRecruitTags(Recruit recruit, List<Tag> tags) {
 		tags.forEach(tag -> RecruitTag.createRecruitTag(recruit, tag));
 	}

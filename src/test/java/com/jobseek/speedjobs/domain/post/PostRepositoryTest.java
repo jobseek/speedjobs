@@ -1,47 +1,36 @@
-package com.jobseek.speedjobs.service;
+package com.jobseek.speedjobs.domain.post;
 
 import static com.jobseek.speedjobs.domain.user.Provider.LOCAL;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.fail;
 
-import com.jobseek.speedjobs.common.exception.NotExistException;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.post.PostDetail;
-import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.post.PostRequest;
+import com.jobseek.speedjobs.service.PostService;
 import java.util.Arrays;
-import java.util.Optional;
-import javax.persistence.EntityManager;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-@Rollback(false)
-//@Commit
+@Commit
 @Slf4j
-class PostServiceTest {
+class PostRepositoryTest {
 
 	@Autowired
 	PostService postService;
@@ -88,51 +77,13 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName(value = "저장 테스트")
-	public void save() throws Exception {
-		//given
-		PostRequest data = PostRequest.builder().title("title").content("content")
-			.tagIds(Arrays.asList(10L, 13L, 15L)).build();
-		User user = userRepository.findByEmail("member@test.com")
-			.orElseThrow(() -> new NotExistException("존재하지 않습니다."));
-
-		//when
-//		log.info("유저데이터 : {}", user);
-//		log.info("유저이름 : {}", user.getName());
-		Long savedId = postService.save(data, user);
-
-		//then
-		assertThat(savedId).isEqualTo(3L);
-	}
-
-	@Test
-	@DisplayName(value = "수정 테스트")
-	public void update() throws Exception {
-		//given
-		User user = userRepository.findByEmail("member@test.com")
-			.orElseThrow(() -> new NotExistException("존재하지 않습니다."));
-		PostRequest data = PostRequest.builder().title("수정된제목").content("수정된내용")
-			.tagIds(Arrays.asList(2L, 3L, 4L)).build();
-
-		//when
-		postService.update(1L, user, data);
-
-		//then
-		Post post = postRepository.findById(1L)
-			.orElseThrow(() -> new IllegalArgumentException("없다"));
-		assertThat(post.getTitle()).isEqualTo("수정된제목");
-	}
-
-	@Test
-	@DisplayName(value = "삭제 테스트")
-	public void delete() throws Exception
+	@DisplayName(value = "검색테스트")
+	public void findUser() throws Exception
 	{
-	  //given
-
-	  //when
-
-	  //then
+		List<Post> findPosts = postRepository.findAllByUserId(1L);
+		for (Post findPost : findPosts) {
+			log.info("포스트 : {}", findPost);
+		}
+		assertThat(findPosts.size()).isEqualTo(2);
 	}
-
-
 }
