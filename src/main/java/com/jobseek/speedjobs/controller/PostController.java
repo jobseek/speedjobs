@@ -1,5 +1,8 @@
 package com.jobseek.speedjobs.controller;
 
+import com.jobseek.speedjobs.domain.post.Comment;
+import com.jobseek.speedjobs.dto.post.CommentListResponse;
+import com.jobseek.speedjobs.dto.post.PostListResponse;
 import java.net.URI;
 
 import javax.validation.Valid;
@@ -75,7 +78,7 @@ public class PostController {
 	// TODO: 태그와 검색어 등으로 조회하도록 수정 예정
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 조회한다.")
 	@GetMapping("/paging")
-	public Page<Post> readPostsByPage(final Pageable pageable) {
+	public Page<PostListResponse> readPostsByPage(final Pageable pageable) {
 		return postService.readByPage(pageable);
 	}
 
@@ -87,6 +90,7 @@ public class PostController {
 	@PostMapping("/{postId}")
 	public ResponseEntity<Void> saveComment(@LoginUser User user, @Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId) {
+		log.info(commentRequest.toString());
 		Long id = commentService.saveComment(commentRequest, user, postId);
 		return ResponseEntity.created(URI.create("/api/post/" + id)).build();
 	}
@@ -107,5 +111,12 @@ public class PostController {
 		@PathVariable Long commentId) {
 		commentService.deleteComment(user, postId, commentId);
 		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
+	}
+
+	@ApiOperation(value = "댓글페이지조회", notes = "댓글을 조회한다.")
+	@GetMapping("/{postId}/paging")
+	public Page<CommentListResponse> readCommentsByPage(final Pageable pageable,@PathVariable Long postId) {
+		log.info(postId.toString());
+		return commentService.readByPage(pageable,postId);
 	}
 }

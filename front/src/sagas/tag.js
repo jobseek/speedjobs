@@ -39,7 +39,7 @@ function editTagApi(tag) {
 
 function* editTag(action) {
   try {
-    const result = yield call(editTagApi, action.data);
+    yield call(editTagApi, action.data);
     yield put({
       type: TAG_EDIT_SUCCESS,
     });

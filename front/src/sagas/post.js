@@ -4,6 +4,9 @@ import {
   POST_ADD_FAIL,
   POST_ADD_REQUEST,
   POST_ADD_SUCCESS,
+  POST_GET_FAIL,
+  POST_GET_REQUEST,
+  POST_GET_SUCCESS,
   POST_LIST_FAIL,
   POST_LIST_REQUEST,
   POST_LIST_SUCCESS,
@@ -55,13 +58,33 @@ function* postAdd(action) {
     });
   }
 }
+function postGetApi(action) {
+  return axios.get(`/post/${action.data}`).catch((err) => {
+    throw err;
+  });
+}
+
+function* postGet(action) {
+  try {
+    const post = yield call(postGetApi, action);
+    yield put({
+      type: POST_GET_SUCCESS,
+      data: post.data,
+    });
+  } catch (error) {
+    yield put({
+      type: POST_GET_FAIL,
+      error: 'error' ?? action.error,
+    });
+  }
+}
 
 function* watchPostAdd() {
   yield takeLatest(POST_ADD_REQUEST, postAdd);
 }
 
 function* watchPostGet() {
-  // yield takeLatest(POST_GET_REQUEST, getPost);
+  yield takeLatest(POST_GET_REQUEST, postGet);
 }
 function* watchPostList() {
   yield takeLatest(POST_LIST_REQUEST, getPostList);

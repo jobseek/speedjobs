@@ -23,9 +23,9 @@ export default function PostDetailComment(props) {
   const mapComment = dummyComment.map((comment, index) => (
     <Comment
       key={comment.id}
-      writer={comment.title}
-      content={comment.postDetail.content}
-      date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
+      writer={comment.author}
+      content={comment.content}
+      date={`${comment.createDate[0]}/${comment.createDate[1]}/${comment.createDate[2]}`}
       onClick={() => deleteHandler(comment.id)}
     ></Comment>
   ));
@@ -34,6 +34,7 @@ export default function PostDetailComment(props) {
   const dispatch = useDispatch();
 
   const addComment = (newCom) => {
+    console.log('add');
     dispatch({
       type: COMMENT_ADD_REQUEST,
       data: newCom,
@@ -51,8 +52,9 @@ export default function PostDetailComment(props) {
   useEffect(() => {
     dispatch({
       type: COMMENT_GET_REQUEST,
+      data: props.id,
     });
-  }, [dispatch]);
+  }, [dispatch, props.id]);
 
   useEffect(() => {
     if (comment.commentGetDone) {
@@ -67,6 +69,7 @@ export default function PostDetailComment(props) {
     ) {
       dispatch({
         type: COMMENT_GET_REQUEST,
+        data: props.id,
       });
     }
   }, [comment, dispatch]);
@@ -74,7 +77,11 @@ export default function PostDetailComment(props) {
   return (
     <>
       <BlogComment>
-        {user.me !== null ? <CommentsForm onclick={addComment} /> : ''}
+        {user.me !== null ? (
+          <CommentsForm id={props.id} onclick={addComment} />
+        ) : (
+          ''
+        )}
         <CommentList>{mapComment}</CommentList>
       </BlogComment>
     </>

@@ -147,8 +147,8 @@ export default function Comment({ writer, content, date, onClick }) {
 export function CommentsForm(props) {
   const [result, setResult] = useState('0/300');
   const [comForm, setComForm] = useState({
+    id: props.id,
     content: '',
-    title: '작성자',
   });
   const commentHandler = () => {
     props.onclick(comForm);

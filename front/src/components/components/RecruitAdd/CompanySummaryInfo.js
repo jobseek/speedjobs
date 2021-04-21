@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import Input from '../../admin/component/Input';
 
 const Info = styled.div`
   color: #a1a1a1;

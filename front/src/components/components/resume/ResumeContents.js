@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyledArticle } from '../Styled';
 import ResumeBasic from './ResumeBasic';
 import ResumeEducation from './ResumeEducation';
 import ResumeCareer from './ResumeCareer';

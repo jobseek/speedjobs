@@ -1,5 +1,6 @@
-import React from 'react';
-import { useHistory } from 'react-router';
+import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import { HeartFill, ShareFill } from 'react-bootstrap-icons';
 import {
   StyledButton,
@@ -8,9 +9,33 @@ import {
   TagBody,
 } from '../components/Styled';
 import PostDetailComment from '../components/comment/PostDetailComment';
+import { POST_GET_DONE, POST_GET_REQUEST } from '../../reducers/post';
 
 export default function PostDetail(props) {
   const history = useHistory();
+  const { id } = useParams();
+  const post = useSelector((state) => state.post);
+  // const content = useState({
+  //   title: '',
+  //   content: '',
+  //   author: '',
+  //   createDate: '',
+  // });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({
+      type: POST_GET_REQUEST,
+      data: id,
+    });
+  }, [dispatch, id]);
+  useEffect(() => {
+    if (post.postGetDone) {
+      console.log(post);
+      dispatch({
+        type: POST_GET_DONE,
+      });
+    }
+  }, [post.postGetDone, post, dispatch]);
   return (
     <>
       <div
@@ -116,7 +141,7 @@ export default function PostDetail(props) {
             </span>
           </div>
         </StyledLike>
-        <PostDetailComment />
+        <PostDetailComment id={id} />
       </div>
     </>
   );

@@ -3,11 +3,7 @@ import { HiPlus, MdDelete, MdEdit } from 'react-icons/all';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/Notification/Loading';
-import {
-  TAG_ADD_REQUEST,
-  TAG_GET_DONE,
-  TAG_GET_REQUEST,
-} from '../../../reducers/tag';
+import { TAG_ADD_REQUEST, TAG_GET_REQUEST } from '../../../reducers/tag';
 
 const AdminStyledInput = styled.input`
   flex: 1;
@@ -126,7 +122,7 @@ export default function TagList(props) {
     }
   };
 
-  const deleteHandler = useCallback((e) => {}, [selected]);
+  // const deleteHandler = useCallback((e) => {}, [selected]);
 
   useEffect(() => {
     console.log('hi');
@@ -153,7 +149,7 @@ export default function TagList(props) {
     ) {
       setLoading(true);
     }
-  }, [tags]);
+  }, [dispatch, tags]);
   return (
     <>
       {loading ? (

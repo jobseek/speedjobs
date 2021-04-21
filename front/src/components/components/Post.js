@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { TagBody } from './Styled';
 
-export default function Post({ title, tags, writer, date, fav }) {
+export default function Post({ title, tags, writer, date, fav, id }) {
   // 태그 맵
   const mapTags = tags.map((tag) => (
     <TagBody grey sm key={tag}>
@@ -22,7 +22,7 @@ export default function Post({ title, tags, writer, date, fav }) {
         }}
       >
         <h4 style={{ marginBottom: '30px', marginTop: '10px' }}>
-          <Link to={`./community/post/${title}`}>{title}</Link>
+          <Link to={`./community/post/${id}`}>{title}</Link>
         </h4>
         {mapTags}
         <div

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
-import { StyledLeftLayout, TagBody } from '../components/Styled';
+import { TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 
@@ -39,7 +39,7 @@ export default function Community(props) {
   };
   const rootRef = useRef();
   const { post, user } = useSelector((state) => state);
-  const me = useState({ ...user.me });
+  // const me = useState({ ...user.me });
 
   const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
@@ -100,6 +100,7 @@ export default function Community(props) {
 
   const mapPost = postList.map((pl) => (
     <Post
+      id={pl.id}
       tags={['backEnd']}
       title={pl.title}
       writer="아직미구현"

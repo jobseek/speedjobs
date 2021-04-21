@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.dto.post;
 
+import com.jobseek.speedjobs.domain.post.Post;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class CommentResponses {
 
 	private List<CommentResponse> comments;
+
 }

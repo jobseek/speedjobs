@@ -55,6 +55,7 @@ const reducer = (state = initialState, action) =>
         draft.commentGetDone = false;
         draft.commentGetData = null;
         draft.commentGetError = null;
+        draft.commentAddData = null;
         break;
       case COMMENT_GET_SUCCESS:
         draft.commentGetLoading = false;

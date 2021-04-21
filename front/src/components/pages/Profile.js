@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   ProfileDiv,
-  StyledArticle,
   StyledButton,
   StyledHeaderDiv,
   StyledHeaderMargin,
