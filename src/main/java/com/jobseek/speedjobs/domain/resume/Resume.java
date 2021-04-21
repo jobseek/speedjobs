@@ -89,10 +89,28 @@ public class Resume extends BaseTimeEntity {
 		this.resumeImage = resumeImage;
 	}
 
+	public Resume(Open open, String coverLetter, String address, String blogUrl, String githubUrl,
+		String resumeImage, List<Certificate> certificates, List<Scholar> scholars, List<Career> careers) {
+		this.open = open;
+		this.coverLetter = coverLetter;
+		this.address = address;
+		this.blogUrl = blogUrl;
+		this.githubUrl = githubUrl;
+		this.resumeImage = resumeImage;
+		this.certificateList = certificates;
+		this.scholarList = scholars;
+		this.careerList = careers;
+	}
+
 	//연관관계 편의 메서드
 	public void setMember(Member member) {
 		this.member = member;
 		member.getResumeList().add(this);
+	}
+
+	public static Resume createResume(Open open, String coverLetter, String address, String blogUrl,
+		String githubUrl, String resumeImage, List<Certificate> certificates, List<Scholar> scholars, List<Career> careers) {
+		return new Resume(open, coverLetter, address, blogUrl, githubUrl, resumeImage, certificates, scholars, careers);
 	}
 
 	public void addCareer(Career career) {
@@ -105,6 +123,18 @@ public class Resume extends BaseTimeEntity {
 
 	public void addCertificate(Certificate certificate) {
 		certificateList.add(certificate);
+	}
+
+	public void update(Resume resume) {
+		this.open = resume.getOpen();
+		this.coverLetter = resume.getCoverLetter();
+		this.address = resume.getAddress();
+		this.blogUrl = resume.getBlogUrl();
+		this.githubUrl = resume.getGithubUrl();
+		this.resumeImage = resume.getResumeImage();
+		this.certificateList = resume.getCertificateList();
+		this.scholarList = resume.getScholarList();
+		this.careerList = resume.getCareerList();
 	}
 
 }

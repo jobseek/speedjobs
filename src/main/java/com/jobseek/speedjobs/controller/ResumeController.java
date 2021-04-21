@@ -46,7 +46,7 @@ public class ResumeController {
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
 		ResumeRequest resumeRequest) {
 		resumeService.update(resumeId, user, resumeRequest);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.created(URI.create("/api/resume/" + resumeId)).build();
 	}
 
 	@ApiOperation(value = "이력서 삭제", notes = "이력서를 삭제한다.")

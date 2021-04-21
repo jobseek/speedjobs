@@ -62,7 +62,6 @@ public class PostService {
 		postRepository.delete(post);
 	}
 
-	@Transactional(readOnly = true)
 	public PostResponse readById(Long postId) {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. postId=" + postId));
@@ -71,7 +70,6 @@ public class PostService {
 		return PostResponse.of(post, TagResponses.mappedByType(tags));
 	}
 
-	@Transactional(readOnly = true)
 	public List<PostResponse> readAll() {
 		return postRepository.findAllDesc().stream()
 			.map(PostResponse::new)

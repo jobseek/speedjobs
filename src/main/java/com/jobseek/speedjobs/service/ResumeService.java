@@ -36,7 +36,7 @@ public class ResumeService {
 	public void update(Long resumeId, User user, ResumeRequest resumeRequest) {
 		Resume resume = resumeRepository.findById(resumeId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 이력서는 존재하지 않습니다."));
-
+		resume.update(resumeRequest.toEntity());
 	}
 
 	@Transactional
@@ -46,14 +46,12 @@ public class ResumeService {
 		resumeRepository.delete(resume);
 	}
 
-	@Transactional(readOnly = true)
 	public ResumeResponse readById(Long resumeId) {
 		Resume resume = resumeRepository.findById(resumeId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이력서입니다."));
 		return ResumeResponse.of(resume);
 	}
 
-	@Transactional(readOnly = true)
 	public List<ResumeResponse> readAll() {
 		return resumeRepository.findAll().stream()
 			.map(ResumeResponse::new)

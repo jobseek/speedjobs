@@ -82,7 +82,6 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.readAll());
 	}
 
-	// TODO: 태그와 검색어 등으로 조회하도록 수정 예정
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
 	@GetMapping("/paging")
 	public Page<PostListResponse> readPostsByPage(final Pageable pageable) {

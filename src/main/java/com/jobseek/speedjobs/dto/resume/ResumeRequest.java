@@ -54,4 +54,9 @@ public class ResumeRequest {
 		this.scholarList = scholarList;
 		this.certificateList = certificateList;
 	}
+
+	public Resume toEntity() {
+		return Resume.createResume(open, coverLetter, address, blogUrl, githubUrl, resumeImage,
+			certificateList, scholarList, careerList);
+	}
 }
