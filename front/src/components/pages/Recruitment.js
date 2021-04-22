@@ -92,8 +92,8 @@ export default function Recruitment() {
   const mapRecruit = recruitList.map((pl) => (
     <Post
       id={pl.id}
+      tags={[...(pl.tags.POSITION ?? [])]}
       type={'recruit'}
-      tags={['backEnd']}
       title={pl.title}
       writer="아직미구현"
       date={`${pl.openDate[0]}/${pl.openDate[1]}/${pl.openDate[2]}`}
@@ -163,6 +163,7 @@ export default function Recruitment() {
                 )}
               </div>
             </div>
+            <div style={{ height: '30px' }}></div>
             {mapRecruit}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useLocation, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeartFill, ShareFill } from 'react-bootstrap-icons';
 import {
@@ -14,6 +14,7 @@ import { POST_GET_DONE, POST_GET_REQUEST } from '../../reducers/post';
 export default function PostDetail(props) {
   const history = useHistory();
   const { id } = useParams();
+  const location = useLocation();
   const post = useSelector((state) => state.post);
   const [content, setContent] = useState({
     title: '',
@@ -26,6 +27,9 @@ export default function PostDetail(props) {
       data: id,
     });
   }, [dispatch, id]);
+  useEffect(() => {
+    console.log(location.state);
+  }, []);
   useEffect(() => {
     if (post.postGetDone) {
       console.log(post.post);
@@ -73,16 +77,19 @@ export default function PostDetail(props) {
         </StyledHeaderDiv>
         {/* 작성자*/}
         <div className={'container'}>
-          <div style={{ margin: '10px 0px 20px 0px' }}>작성자 2020-01-01</div>
+          <div style={{ margin: '10px 0px 20px 0px' }}>
+            {location.state.writer} {location.state.date}
+          </div>
           {/* 태그*/}
           <div>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
+            {location.state.tags.map((t) => (
+              <TagBody grey>{t.name}</TagBody>
+            ))}
           </div>
           {/* 본문*/}
-          <div>{content.content}</div>
+          <div style={{ whiteSpace: 'pre-line', width: '100%' }}>
+            {content.content}
+          </div>
         </div>
         {/* 찜 공유*/}
         <StyledLike>

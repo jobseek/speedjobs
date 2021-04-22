@@ -13,7 +13,7 @@ const AnnounceHeader = styled.div`
   letter-spacing: 1px;
   margin: 0 0 10px;
 `;
-export default function RecruitAddContents({ onChange }) {
+export default function RecruitAddContents({ onChange, setTags }) {
   const [author, setAuthor] = useState('');
   const user = useSelector((state) => state.user);
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function RecruitAddContents({ onChange }) {
       <AnnouncementDate onChange={onChange} />
       {/* 공고정보 */}
       <AnnounceHeader>공고정보</AnnounceHeader>
-      <AnnouncementInfo onChange={onChange} />
+      <AnnouncementInfo setTags={setTags} onChange={onChange} />
     </>
   );
 }

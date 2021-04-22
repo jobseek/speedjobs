@@ -34,6 +34,7 @@ export default function RecruitAdd() {
     tagIds: [],
   });
   const recruit = useSelector((state) => state.recruit);
+  const [totalTag, setTotalTag] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
   const onChangHandler = useCallback(
@@ -70,6 +71,10 @@ export default function RecruitAdd() {
     }
   }, [recruit, history, dispatch]);
 
+  useEffect(() => {
+    setForm((p) => ({ ...p, tagIds: totalTag }));
+  }, [totalTag]);
+
   return (
     <div
       className="container text-left"
@@ -105,7 +110,7 @@ export default function RecruitAdd() {
         </StyledHeaderDiv>
 
         <div className={'container'}>
-          <RecruitAddContents onChange={onChangHandler} />
+          <RecruitAddContents setTags={setTotalTag} onChange={onChangHandler} />
         </div>
       </form>
     </div>
