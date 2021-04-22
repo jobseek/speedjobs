@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.config.auth;
 
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
+import com.jobseek.speedjobs.domain.user.UserDto;
 import java.util.Map;
 
 import com.jobseek.speedjobs.common.exception.OAuth2RegistrationException;
@@ -105,8 +106,8 @@ public class OAuthAttributes {
 			.build();
 	}
 
-	public User toEntity() {
-		User user = User.builder()
+	public Member toEntity() {
+		UserDto userDto = UserDto.builder()
 			.name(name)
 			.email(email)
 			.picture(picture)
@@ -114,7 +115,6 @@ public class OAuthAttributes {
 			.provider(provider)
 			.oauthId(oauthId)
 			.build();
-		user.setMember(Member.builder().build());
-		return user;
+		return new Member(userDto);
 	}
 }

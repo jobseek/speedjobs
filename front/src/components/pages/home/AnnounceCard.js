@@ -20,9 +20,9 @@ export default function AnnounceCard() {
       subtitle: '2021년 하반기 쿠팡 경력직을 모집합니다.',
     },
   ]);
-  const Arr = list.map((c) => {
+  const Arr = list.map((c, index) => {
     return (
-      <div className="col-md-3 mb-3 col-sm-6">
+      <div className="col-md-3 mb-3 col-sm-6" key={index}>
         <Cards title={c.title} subTitle={c.subtitle} />
       </div>
     );

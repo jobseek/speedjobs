@@ -30,7 +30,6 @@ import com.jobseek.speedjobs.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 
 @Slf4j
 @Api(tags = {"User"})
@@ -79,31 +78,31 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "개인회원 상세정보 조회", notes = "개인회원의 상세정보를 조회한다.")
-	@GetMapping("/member/{id}")
-	public ResponseEntity<MemberInfoResponse> getMemberDetail(@PathVariable("id") Long id, @LoginUser User user) {
-		return ResponseEntity.ok(userService.getMember(id, user));
+	@GetMapping("/member/{userId}")
+	public ResponseEntity<MemberInfoResponse> getMemberDetail(@PathVariable("userId") Long userId, @LoginUser User user) {
+		return ResponseEntity.ok(userService.getMemberInfo(userId, user));
 	}
 
 	@ApiOperation(value = "기업회원 상세정보 조회", notes = "기업회원의 상세정보를 조회한다.")
-	@GetMapping("/company/{id}")
-	public ResponseEntity<CompanyInfoResponse> getCompanyDetail(@PathVariable("id") Long id, @LoginUser User user) {
-		return ResponseEntity.ok(userService.getCompany(id, user));
+	@GetMapping("/company/{userId}")
+	public ResponseEntity<CompanyInfoResponse> getCompanyDetail(@PathVariable("userId") Long userId, @LoginUser User user) {
+		return ResponseEntity.ok(userService.getCompanyInfo(userId, user));
 	}
 
 	@ApiOperation(value = "개인회원 정보 수정", notes = "자신의 정보를 수정한다.")
-	@PatchMapping("/member/{id}")
+	@PatchMapping("/member/{userId}")
 	@PreAuthorize("hasRole('MEMBER')")
 	public ResponseEntity<Void> updateInfo(
-		@PathVariable("id") Long id, @RequestBody MemberUpdateRequest request) {
-		userService.update(id, request);
+		@PathVariable("userId") Long userId, @RequestBody MemberUpdateRequest request) {
+		userService.update(userId, request);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "개인회원 탈퇴", notes = "탈퇴한다.")
-	@DeleteMapping("/member/{id}")
+	@DeleteMapping("/member/{userId}")
 	@PreAuthorize("hasRole('MEMBER')")
-	public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-		userService.delete(id);
+	public ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
+		userService.delete(userId);
 		return ResponseEntity.noContent().build();
 	}
 

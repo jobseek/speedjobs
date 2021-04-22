@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function TitleCards() {
+export default function TitleCards({ title, list }) {
+  const [info, setInfo] = useState([]);
+
+  useEffect(() => {
+    if (typeof list === 'object') {
+      setInfo([...list]);
+    }
+  }, [list]);
+
+  const infoArr = info.map((item, index) => (
+    <div key={index}>
+      <li style={{ display: 'inline-block', marginRight: '10px' }}>
+        {item.title}
+      </li>
+      <span style={{ color: 'gray' }}>{item.date}</span>
+    </div>
+  ));
+
   return (
     <div className="col-sm-12 col-lg-6 p-3 mb-3">
       <div
@@ -11,39 +28,8 @@ export default function TitleCards() {
           padding: '10px 10px',
         }}
       >
-        <h3 style={{ fontWeight: 700, letterSpacing: '1px' }}>공고일정</h3>
-        <ul style={{ listStyle: 'none', padding: '0' }}>
-          <div>
-            <li style={{ display: 'inline-block', marginRight: '10px' }}>
-              네이버
-            </li>
-            <span style={{ color: 'gray' }}>2021-04-20 ~ 2021-05-10</span>
-          </div>
-          <div>
-            <li style={{ display: 'inline-block', marginRight: '10px' }}>
-              카카오
-            </li>
-            <span style={{ color: 'gray' }}>2021-04-20 ~ 2021-05-10</span>
-          </div>
-          <div>
-            <li style={{ display: 'inline-block', marginRight: '10px' }}>
-              라인
-            </li>
-            <span style={{ color: 'gray' }}>2021-04-20 ~ 2021-05-10</span>
-          </div>
-          <div>
-            <li style={{ display: 'inline-block', marginRight: '10px' }}>
-              쿠팡
-            </li>
-            <span style={{ color: 'gray' }}>2021-04-20 ~ 2021-05-10</span>
-          </div>
-          <div>
-            <li style={{ display: 'inline-block', marginRight: '10px' }}>
-              배달의 민족
-            </li>
-            <span style={{ color: 'gray' }}>2021-04-20 ~ 2021-05-10</span>
-          </div>
-        </ul>
+        <h3 style={{ fontWeight: 700, letterSpacing: '1px' }}>{title}</h3>
+        <ul style={{ listStyle: 'none', padding: '0' }}>{infoArr}</ul>
       </div>
     </div>
   );

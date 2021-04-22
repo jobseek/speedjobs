@@ -6,24 +6,28 @@ import {
   StyledButton,
   StyledHeaderDiv,
 } from '../components/Styled';
-import { RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
+import { RECRUIT_ADD_DONE, RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
 export default function RecruitAdd() {
   const [form, setForm] = useState({
     title: '',
-    position: '',
-    experience: '',
+    position: '정규직',
+    experience: '신입',
     content: '',
-    startRecruit: '',
-    finishRecruit: '',
+    openDate: '',
+    closeDate: '',
+    status: 'PROCESS',
   });
   const recruit = useSelector((state) => state.recruit);
   const dispatch = useDispatch();
   const history = useHistory();
   const onChangHandler = useCallback(
-    (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value })),
-    []
+    (e) => {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      console.log(form);
+    },
+    [form]
   );
   const onSubmitHandler = useCallback(
     (e) => {
@@ -34,13 +38,13 @@ export default function RecruitAdd() {
   );
 
   useEffect(() => {
-    console.log('effect');
     if (recruit.recruitAddDone) {
-      console.log(recruit.recruitAddDone);
-      console.log('back');
+      dispatch({
+        type: RECRUIT_ADD_DONE,
+      });
       history.goBack();
     }
-  }, [recruit, history]);
+  }, [recruit, history, dispatch]);
 
   return (
     <div

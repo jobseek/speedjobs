@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -37,6 +37,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "posts")
+@ToString(exclude = {"postLikes", "comments", "postTags"})
 public class Post extends BaseTimeEntity {
 
 	@Id
@@ -75,23 +76,15 @@ public class Post extends BaseTimeEntity {
 	}
 
 	public void increaseLikeCount() {
-		likeCount += 1;
+		this.likeCount += 1;
 	}
 
 	public void decreaseLikeCount() {
-		likeCount -= 1;
+		this.likeCount -= 1;
 	}
 
 	public void increaseViewCount() {
-		viewCount += 1;
-	}
-
-	public void increaseCommentCount() {
-		commentCount += 1;
-	}
-
-	public void decreaseCommentCount() {
-		commentCount -= 1;
+		this.viewCount += 1;
 	}
 
 	public static Post createPost(String title, String content) {
@@ -113,57 +106,8 @@ public class Post extends BaseTimeEntity {
 //		postLike.setPost(this);
 //	}
 
-	public void addComment(Comment comment) {
-		comments.add(comment);
-		increaseCommentCount();
-	}
-
-	public void removeComment(Comment comment) {
-		comments.remove(comment);
-		decreaseCommentCount();
-	}
-
 	public void updatePostTags(List<Tag> tags) {
 		postTags.clear();
 		tags.forEach(tag -> PostTag.createPostTag(this, tag));
 	}
-
-	//비즈니스 로직
-	//봤을때, 댓글을 추가/삭제했을때, 좋아요 눌렀을때, 공고찜목록에 추가했을때, 태그를 추가했을 때
-
-	/**
-	 * 포스트를 봤을 때
-	 */
-	public void showed() {
-		increaseViewCount();
-	}
-
-	/**
-	 * 댓글 달렸을 때
-	 */
-	public void addComment() {
-		increaseCommentCount();
-	}
-
-	/**
-	 * 댓글 지울 때
-	 */
-	public void deleteComment() {
-		decreaseCommentCount();
-	}
-
-	/**
-	 * 좋아요 눌렸을 때
-	 */
-	public void pushLike() {
-		increaseLikeCount();
-	}
-
-	/**
-	 * 싫어요 눌렀을 때
-	 */
-	public void pushHate() {
-		decreaseLikeCount();
-	}
-
 }

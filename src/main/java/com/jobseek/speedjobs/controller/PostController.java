@@ -1,12 +1,20 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.domain.post.Comment;
+import com.jobseek.speedjobs.config.auth.LoginUser;
+import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.CommentListResponse;
-import com.jobseek.speedjobs.dto.post.PostListResponse;
+import com.jobseek.speedjobs.dto.post.CommentRequest;
+import com.jobseek.speedjobs.dto.post.PostRequest;
+import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.service.CommentService;
+import com.jobseek.speedjobs.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.net.URI;
-
+import java.util.List;
 import javax.validation.Valid;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +27,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.jobseek.speedjobs.config.auth.LoginUser;
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.CommentRequest;
-import com.jobseek.speedjobs.dto.post.PostRequest;
-import com.jobseek.speedjobs.dto.post.PostResponse;
-import com.jobseek.speedjobs.service.CommentService;
-import com.jobseek.speedjobs.service.PostService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Api(tags = {"Post"})
@@ -47,7 +41,8 @@ public class PostController {
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록한다.")
 	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping
-	public ResponseEntity<Void> savePost(@LoginUser User user, @Valid @RequestBody PostRequest postRequest) {
+	public ResponseEntity<Void> savePost(@LoginUser User user,
+		@Valid @RequestBody PostRequest postRequest) {
 		Long id = postService.save(postRequest, user);
 		return ResponseEntity.created(URI.create("/api/post/" + id)).build();
 	}
@@ -75,37 +70,60 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.readById(postId));
 	}
 
-	// TODO: 태그와 검색어 등으로 조회하도록 수정 예정
-	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 조회한다.")
+	@ApiOperation(value = "게시글 전체 조회", notes = "게시글을 전체 조회한다")
+	@GetMapping
+	public ResponseEntity<List<PostResponse>> readAllPosts() {
+		return ResponseEntity.ok().body(postService.readAll());
+	}
+
+	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
 	@GetMapping("/paging")
-	public Page<PostListResponse> readPostsByPage(final Pageable pageable) {
+	public Page<PostResponse> readPostsByPage(final Pageable pageable) {
 		return postService.readByPage(pageable);
 	}
 
 	/**
-	 * 댓글 등록, 수정, 삭제
+	 * 기능들
+	 */
+	@ApiOperation(value = "게시글 좋아요", notes = "게시글을 좋아요 누른다.")
+	@PostMapping("/{postId}/up")
+	public ResponseEntity<Void> pushPostLike(@PathVariable Long postId) {
+		postService.like(postId);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "게시글 싫어요", notes = "게시글을 싫어요 누른다.")
+	@PostMapping("/{postId}/down")
+	public ResponseEntity<Void> pushPostHate(@PathVariable Long postId) {
+		postService.hate(postId);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 댓글 등록, 수정, 삭제, 조회
 	 */
 	@ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping("/{postId}")
-	public ResponseEntity<Void> saveComment(@LoginUser User user, @Valid @RequestBody CommentRequest commentRequest,
+	public ResponseEntity<Void> saveComment(@LoginUser User user,
+		@Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId) {
-		log.info(commentRequest.toString());
 		Long id = commentService.saveComment(commentRequest, user, postId);
 		return ResponseEntity.created(URI.create("/api/post/" + id)).build();
 	}
 
 	@ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
 	@PutMapping("/{postId}/{commentId}")
-	public ResponseEntity<Void> updateComment(@LoginUser User user, @Valid @RequestBody CommentRequest commentRequest,
+	public ResponseEntity<Void> updateComment(@LoginUser User user,
+		@Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId, @PathVariable Long commentId) {
-		commentService.updateComment(commentRequest, user);
+		commentService.updateComment(commentRequest, user, commentId);
 		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
 	}
 
 	@ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
 	@DeleteMapping("/{postId}/{commentId}")
 	public ResponseEntity<Void> deleteComment(@LoginUser User user, @PathVariable Long postId,
 		@PathVariable Long commentId) {
@@ -113,10 +131,26 @@ public class PostController {
 		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
 	}
 
+	//TODO
 	@ApiOperation(value = "댓글페이지조회", notes = "댓글을 조회한다.")
 	@GetMapping("/{postId}/paging")
-	public Page<CommentListResponse> readCommentsByPage(final Pageable pageable,@PathVariable Long postId) {
+	public Page<CommentListResponse> readCommentsByPage(final Pageable pageable,
+		@PathVariable Long postId) {
 		log.info(postId.toString());
-		return commentService.readByPage(pageable,postId);
+		return commentService.readByPage(pageable, postId);
+	}
+
+	@ApiOperation(value = "댓글 좋아요", notes = "댓글을 좋아요 누른다.")
+	@PostMapping("/{postId}/{commentId}/up")
+	public ResponseEntity<Void> pushCommentLike(@PathVariable Long postId, @PathVariable Long commentId) {
+		commentService.like(commentId);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "댓글 싫어요", notes = "댓글을 싫어요 누른다.")
+	@PostMapping("/{postId}/{commentId}/down")
+	public ResponseEntity<Void> pushCommentHate(@PathVariable Long postId, @PathVariable Long commentId) {
+		commentService.hate(commentId);
+		return ResponseEntity.noContent().build();
 	}
 }

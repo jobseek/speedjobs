@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -28,6 +29,7 @@ public class FileController {
 	private final S3Util s3Util;
 
 	@ApiOperation(value = "파일 저장", notes = "파일을 S3에 저장한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping("")
 	public ResponseEntity<FileResponses> save(@RequestPart List<MultipartFile> files) {
 		List<File> collect = files

@@ -13,16 +13,17 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.likelist.CompanyLike;
 import com.jobseek.speedjobs.domain.likelist.PostLike;
 import com.jobseek.speedjobs.domain.likelist.RecruitLike;
-import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.message.Message;
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.Post;
@@ -33,14 +34,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@ToString
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
@@ -58,24 +57,9 @@ public class User extends BaseTimeEntity {
 
 	private String picture;
 
-	private String contact;
-
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role;
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Provider provider;
-
-	@Column(name = "oauth_id")
-	private String oauthId;
-
-	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private Member member;
-
-	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private Company company;
 
 	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
 	private List<Post> postList = new ArrayList<>();
@@ -96,30 +80,17 @@ public class User extends BaseTimeEntity {
 	private List<Message> messageList = new ArrayList<>();
 
 	@Builder
-	public User(String name, String email, String password, String picture, String contact,
-		Role role, Provider provider, String oauthId) {
+	public User(String name, String email, String password, String picture, Role role) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.picture = picture;
-		this.contact = contact;
 		this.role = role;
-		this.provider = provider;
-		this.oauthId = oauthId;
 	}
 
-	public void setMember(Member member) {
-		this.member = member;
-		member.setUser(this);
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-		company.setUser(this);
-	}
-
-	public User updateOAuthUserInfo(String name, String picture) {
+	public User updateUserInfo(String name, String password, String picture) {
 		this.name = name;
+		this.password = password;
 		this.picture = picture;
 		return this;
 	}

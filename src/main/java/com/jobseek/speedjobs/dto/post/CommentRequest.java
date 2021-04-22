@@ -12,12 +12,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentRequest {
 
 	@NotBlank
 	private String content;
+
+	public CommentRequest(String content) {
+		this.content = content;
+	}
+
+	public Comment toEntity() {
+		return Comment.builder().content(content).build();
+	}
 
 	public Comment of(User user, Post post) {
 		return Comment.builder()

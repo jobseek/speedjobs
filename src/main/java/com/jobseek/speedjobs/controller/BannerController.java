@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,18 +33,21 @@ public class BannerController {
 	private final BannerService bannerService;
 
 	@ApiOperation(value = "배너 등록", notes = "배너를 등록한다.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("")
 	public ResponseEntity<BannerResponses> save(@Valid @RequestBody List<File> files) {
 		return ResponseEntity.ok().body(bannerService.save(files));
 	}
 
 	@ApiOperation(value = "배너 조회", notes = "배너를 조회한다.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("")
 	public ResponseEntity<BannerResponses> read() {
 		return ResponseEntity.ok().body(bannerService.read());
 	}
 
 	@ApiOperation(value = "배너 삭제", notes = "배너를 삭제한다.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		bannerService.delete(id);

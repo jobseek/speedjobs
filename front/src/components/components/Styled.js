@@ -710,15 +710,13 @@ export const Subtract = styled(Minus)`
   color: black;
 `;
 
-export const DataInputs = styled.input`
+export const DataInputs = styled.div`
   border: none;
   border-bottom: 1px solid #a1a1a1;
   padding: 2px 0 2px 2px;
-  &:focus {
-    outline: none;
-  }
   width: 84px;
   margin: 0 5px;
+  display: inline-block;
 `;
 
 const SearchInputInside = styled.input`

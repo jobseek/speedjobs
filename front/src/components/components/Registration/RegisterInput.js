@@ -28,7 +28,7 @@ export default function RegisterInput(props) {
   const caseMsg = useMemo(
     () => ({
       name: '2자 이상 15자 이하의 영어나 한글',
-      password: '8자 이상 20자 이하의 영어, 숫자 및 특수문자(_-#$%!.)',
+      password: '대문자, 소문자, 숫자 모두 포함하여 8자 이상 20자 이하',
       checkPassword: '비밀번호가 다릅니다.',
       email: '유효한 이메일을 입력해주세요.',
       contact: '유효한 연락처를 입력해주세요.',

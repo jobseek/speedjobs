@@ -76,12 +76,12 @@ function App() {
 
   // 태그 불러오기
   useEffect(() => {
-    if (!tag.tagGetData && user.meDone && user.me) {
+    if (!tag.tagGetData) {
       dispatch({
         type: TAG_GET_REQUEST,
       });
     }
-  }, [tag.tagGetData, user, dispatch]);
+  }, [tag.tagGetData, dispatch]);
   return (
     <div className="App">
       <BrowserRouter>

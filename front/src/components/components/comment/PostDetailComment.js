@@ -72,7 +72,7 @@ export default function PostDetailComment(props) {
         data: props.id,
       });
     }
-  }, [comment, dispatch]);
+  }, [comment, dispatch, props.id]);
 
   return (
     <>

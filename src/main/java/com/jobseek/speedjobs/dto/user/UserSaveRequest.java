@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.dto.user;
 
+import com.jobseek.speedjobs.domain.user.UserDto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,7 +37,7 @@ public class UserSaveRequest {
 	private String email;
 
 	@NotBlank(groups = UserValidateGroup.member.class)
-	@Size(min = 6, max = 20)
+	@Size(min = 8, max = 20)
 	private String password;
 
 	@NotNull(groups = UserValidateGroup.member.class)
@@ -57,33 +58,17 @@ public class UserSaveRequest {
 	@NotBlank(groups = UserValidateGroup.company.class)
 	private String homepage;
 
-	public User toEntity(PasswordEncoder passwordEncoder) {
-		User user = User.builder()
+	public UserDto getUserDto(PasswordEncoder passwordEncoder) {
+		return UserDto.builder()
 			.name(name)
 			.email(email)
 			.password(passwordEncoder.encode(password))
-			.contact(contact)
 			.provider(Provider.LOCAL)
 			.role(role)
-			.build();
-
-		if (role == Role.ROLE_MEMBER) {
-			user.setMember(createMember());
-		} else if (role == Role.ROLE_COMPANY) {
-			user.setCompany(createCompany());
-		}
-
-		return user;
-	}
-
-	private Member createMember() {
-		return Member.builder().build();
-	}
-
-	private Company createCompany() {
-		return Company.builder()
+			.contact(contact)
 			.companyName(companyName)
 			.companyDetail(CompanyDetail.from(registrationNumber, null, homepage))
 			.build();
 	}
+
 }

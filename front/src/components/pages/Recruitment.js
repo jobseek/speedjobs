@@ -49,28 +49,14 @@ export default function Recruitment() {
   const [, setLoading] = useState(false);
   const [recruitList, setRecruitList] = useState([]);
 
-  // const [tags] = useState([
-  //   { name: 'backEnd', id: 0, selected: false },
-  //   { name: 'frontEnd', id: 1, selected: false },
-  //   { name: 'machineLearning', id: 2, selected: false },
-  //   { name: 'infra', id: 3, selected: false },
-  // ]);
-
   const [taglist, setTaglist] = useState([]);
   const tagss = useSelector((state) => state.tag);
   useEffect(() => {
     if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
-      // const res = [];
-      console.log(temp);
-      // temp.forEach((item) => {
-      //   res.concat([...res, { ...item, item }]);
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      // });
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
-      console.log(tt);
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);

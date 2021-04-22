@@ -5,8 +5,8 @@ import { ArrowRight } from 'react-bootstrap-icons';
 import logo512 from '../../components/components/img/logo512.png';
 
 const StyledCard = styled.div`
-  height: ${(props) => (props.height === '0' ? '200px' : '415px')};
-  border-radius: 15px;
+  height: 180px;
+  border-radius: 10px;
   user-select: none;
 
   &:hover {
@@ -22,16 +22,15 @@ const Image = styled.img`
   left: 20px;
   margin-bottom: 15px;
   border: none;
-  //background-color: #d3d3d3;
 `;
 
 const Subtitle = styled.div`
   right: 20px;
-  //height: 80px;
   font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: justify;
+  white-space: nowrap;
   line-height: 1.2;
 `;
 
@@ -41,26 +40,15 @@ const Arrow = styled(ArrowRight)`
   right: 20px;
 `;
 
-// const StyledCardBody = styled.div``;
-
-const StyledCardTitle = styled.div``;
-
-// const StyledCardSubTitle = styled.div``;
-
-// const StyledCardText = styled.div``;
-
-// const StyledCardLink = styled.div``;
-
 export default function Cards(props) {
   return (
     <StyledCard className="card text-left" height={props.height}>
       <Image className="card-img-top" src={logo512} />
       <div className="card-body">
-        <StyledCardTitle className="card-title">{props.title}</StyledCardTitle>
+        <div className="card-title">{props.title}</div>
         <Subtitle className="card-subtitle mb-2 text-muted">
           {props.subTitle}
         </Subtitle>
-        {/* <StyledCardText className="card-test">{props.children}</StyledCardText>*/}
         <Arrow />
       </div>
     </StyledCard>
