@@ -33,12 +33,12 @@ export default function RecruitmentDetail(props) {
       type: RECRUIT_GET_REQUEST,
       data: id,
     });
-  }, [dispatch]);
+  }, [dispatch, id]);
   useEffect(() => {
     if (recruit.recruitGetDone) {
       setContent(recruit.recruit);
     }
-  }, [recruit.recruitGetDone]);
+  }, [recruit.recruitGetDone, recruit.recruit]);
   useEffect(() => {
     if (pop === 'none') {
       document.body.style.overflow = 'unset';
@@ -96,9 +96,8 @@ export default function RecruitmentDetail(props) {
             </div>
             {/* 업무소개*/}
             <div
-              style={{ whiteSpace: 'pre-line' }}
+              style={{ whiteSpace: 'pre-line', padding: '14px' }}
               className={'container'}
-              style={{ padding: '14px' }}
             >
               {content.content ?? '....'}
             </div>

@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import { ko } from 'date-fns/esm/locale';
-import moment from 'moment';
 
 const RecruitDatePicker = styled(DatePicker)`
   border: none;
