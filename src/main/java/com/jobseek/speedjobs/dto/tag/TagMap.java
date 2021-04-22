@@ -1,6 +1,7 @@
 package com.jobseek.speedjobs.dto.tag;
 
 import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.Type;
 import java.util.ArrayList;
@@ -23,9 +24,8 @@ public class TagMap {
 		return new TagMap(tag.getId(), tag.getName());
 	}
 
-	public static Map<Type, List<TagMap>> toMap(Post post) {
+	public static Map<Type, List<TagMap>> toMap(List<Tag> tags) {
 		Map<Type, List<TagMap>> result = new HashMap<>();
-		List<Tag> tags = post.getPostTags().getTags();
 		for (Tag tag : tags) {
 			result.computeIfAbsent(tag.getType(), t -> new ArrayList<>()).add(
 				TagMap.of(tag));
