@@ -26,7 +26,7 @@ export default function PostDetailComment(props) {
       writer={comment.author}
       content={comment.content}
       date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
-      onClick={() => deleteHandler(comment.id)}
+      onClick={() => deleteHandler(comment.id, props.id)}
     ></Comment>
   ));
 
@@ -42,6 +42,7 @@ export default function PostDetailComment(props) {
 
   const deleteHandler = (c, p) => {
     const idData = { commentId: c, postId: p };
+    console.log(idData);
     dispatch({
       type: COMMENT_DELETE_REQUEST,
       data: idData,
