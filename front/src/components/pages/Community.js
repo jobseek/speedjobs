@@ -56,7 +56,6 @@ export default function Community(props) {
     if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
       // const res = [];
-      console.log(temp);
       // temp.forEach((item) => {
       //   res.concat([...res, { ...item, item }]);
       //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
@@ -64,7 +63,6 @@ export default function Community(props) {
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
-      console.log(tt);
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);

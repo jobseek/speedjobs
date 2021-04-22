@@ -48,7 +48,6 @@ export default function PostAdd() {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
       const temp2 = Array.from(tagss.tagGetData.tags.SKILL);
 
-      console.log(temp);
       // temp.forEach((item) => {
       //   res.concat([...res, { ...item, item }]);
       //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
@@ -57,7 +56,6 @@ export default function PostAdd() {
         return { ...t, selected: false };
       });
       setTaglist((p) => [...p, ...tt]);
-      console.log(tt);
       const tt2 = temp2.map((t) => {
         return { ...t, selected: false };
       });

@@ -22,7 +22,6 @@ export const TAG_GET_FAIL = 'TAG_GET_FAIL';
 export const TAG_GET_DONE = 'TAG_GET_DONE';
 export const TAG_ERROR_RESOLVED = 'TAG_ERROR_RESOLVED';
 
-
 export const TAG_EDIT_REQUEST = 'TAG_EDIT_REQUEST';
 export const TAG_EDIT_SUCCESS = 'TAG_EDIT_SUCCESS';
 export const TAG_EDIT_FAIL = 'TAG_EDIT_FAIL';
