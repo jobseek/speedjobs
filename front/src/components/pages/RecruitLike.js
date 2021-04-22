@@ -107,7 +107,9 @@ export default function CommunityLike(props) {
               className={'col-12 col-lg-10'}
               style={{ paddingLeft: '30px' }}
             >
-              <Tags tagList={taglist}>직무</Tags>
+              <Tags tagList={taglist} selected={setTaglist}>
+                직무
+              </Tags>
 
               {/* {mapPost}*/}
               {dummyOut}

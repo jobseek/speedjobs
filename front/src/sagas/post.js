@@ -13,10 +13,10 @@ import {
 } from '../reducers/post';
 
 function getPostListApi(action) {
-  // const { size, page } = action.data;
+  const { size, page } = action.data;
   const get = axios
-    // .get(`/post/paging/?size=${size}&page=${page}`)
-    .get(`/post/paging`)
+    .get(`/post/paging/?size=${size}&page=${page}&sort=id,DESC`)
+    // .get(`/post/paging`)
     .then((res) => res)
     .catch((err) => {
       throw err;

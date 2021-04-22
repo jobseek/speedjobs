@@ -83,65 +83,59 @@ export default function Community(props) {
     }
   }, [post, setPostList, setLoading, page, dispatch]);
 
-  const mapPost = postList
-    .map((pl) => (
-      <Post
-        id={pl.id}
-        tags={['backEnd']}
-        title={pl.title}
-        writer={pl.author}
-        date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
-        fav="미구현"
-        key={pl.id}
-      />
-    ))
-    .reverse();
+  const mapPost = postList.map((pl) => (
+    <Post
+      type={'community'}
+      id={pl.id}
+      tags={['backEnd']}
+      title={pl.title}
+      writer={pl.author}
+      date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
+      fav="미구현"
+      key={pl.id}
+    />
+  ));
 
   return (
     <>
       <Banner />
       <div className={'container'}>
-        <div className={'row justify-content-center'}>
-          <StyledLeftLayout className={'col-12 col-lg-3 text-left'}>
-            <Tags tagList={taglist}>직무</Tags>
-          </StyledLeftLayout>
-
-          {/* 게시글*/}
-          <div ref={rootRef} className={'col-12 col-lg-9'}>
+        {/* 게시글*/}
+        <div ref={rootRef}>
+          <div
+            className={'text-right'}
+            style={{
+              position: 'relative',
+              height: '60px',
+            }}
+          >
             <div
-              className={'text-right'}
-              style={{
-                position: 'relative',
-                height: '60px',
-              }}
+              className={'row justify-content-between'}
+              style={{ padding: '10px', paddingTop: '0' }}
             >
-              <div
-                className={'row justify-content-end'}
-                style={{ padding: '10px', paddingTop: '0' }}
-              >
-                {user.me !== null ? (
-                  <TagBody
-                    style={{ marginTop: '0', border: '1px solid #f5df4d' }}
-                    onClick={() => {
-                      history.push('./community/add');
-                    }}
-                  >
-                    글쓰기
-                  </TagBody>
-                ) : (
-                  ''
-                )}
-              </div>
+              <Tags tagList={taglist}>filter</Tags>
+              {user.me !== null ? (
+                <TagBody
+                  style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                  onClick={() => {
+                    history.push('./community/add');
+                  }}
+                >
+                  글쓰기
+                </TagBody>
+              ) : (
+                ''
+              )}
             </div>
-            {mapPost}
           </div>
-          {/* 게시글 end*/}
+          {mapPost}
         </div>
-        <div
-          style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
-          ref={targetRef}
-        />{' '}
+        {/* 게시글 end*/}
       </div>
+      <div
+        style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
+        ref={targetRef}
+      ></div>
     </>
   );
 }

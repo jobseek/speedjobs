@@ -48,7 +48,6 @@ export default function Recruitment() {
 
   const [, setLoading] = useState(false);
   const [recruitList, setRecruitList] = useState([]);
-
   const [taglist, setTaglist] = useState([]);
   const tagss = useSelector((state) => state.tag);
   useEffect(() => {
@@ -92,10 +91,12 @@ export default function Recruitment() {
 
   const mapRecruit = recruitList.map((pl) => (
     <Post
+      id={pl.id}
+      type={'recruit'}
       tags={['backEnd']}
       title={pl.title}
       writer="아직미구현"
-      date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
+      date={`${pl.openDate[0]}/${pl.openDate[1]}/${pl.openDate[2]}`}
       fav="미구현"
       key={pl.id}
     />
@@ -126,10 +127,7 @@ export default function Recruitment() {
       <div className="container">
         <div className={'row justify-content-center'}>
           {' '}
-          <StyledLeftLayout className={'col-12 col-lg-3 text-left'}>
-            <Tags tagList={taglist}>직무</Tags>
-          </StyledLeftLayout>
-          <div ref={rootRef} className={'col-12 col-lg-9'}>
+          <div ref={rootRef} className={'container'}>
             <div
               className={'text-right'}
               style={{
@@ -138,9 +136,15 @@ export default function Recruitment() {
               }}
             >
               <div
-                className={'row justify-content-end'}
-                style={{ padding: '10px', paddingTop: '0' }}
+                className={'row justify-content-between'}
+                style={{
+                  padding: '10px',
+                  paddingTop: '0',
+                }}
               >
+                <Tags tagList={taglist} selected={setTaglist}>
+                  직무
+                </Tags>
                 {me[0].role === 'ROLE_COMPANY' ? (
                   <TagBody
                     style={{ marginTop: '0', border: '1px solid #f5df4d' }}

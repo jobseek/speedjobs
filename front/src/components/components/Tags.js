@@ -35,9 +35,8 @@ const TagsInDrop = styled.div`
   }
 `;
 
-export default function Tags({ tagList, children, sm }) {
+export default function Tags({ tagList, children, sm, selected }) {
   const [show, setShow] = useState(false);
-  const [update, setUpdate] = useState(0);
   const dropRef = useRef();
   const ClickHandler = (e) => {
     if (dropRef.current) {
@@ -60,8 +59,13 @@ export default function Tags({ tagList, children, sm }) {
           sm={sm}
           key={tags.id}
           onClick={() => {
-            tags.selected = false;
-            setUpdate(update + 1);
+            selected((p) => {
+              const next = [...p];
+              next[next.indexOf(tags)].selected = false;
+              return next;
+            });
+            // tags.selected = false;
+            // setUpdate(update + 1);
           }}
         >
           {tags.name}
@@ -77,8 +81,13 @@ export default function Tags({ tagList, children, sm }) {
         <span key={tags.id}>
           <TagsInDrop
             onClick={() => {
-              tags.selected = true;
-              setUpdate(update + 1);
+              selected((p) => {
+                const next = [...p];
+                next[next.indexOf(tags)].selected = true;
+                return next;
+              });
+              // tags.selected = true;
+              // setUpdate(update + 1);
             }}
           >
             {tags.name}
