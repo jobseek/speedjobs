@@ -37,6 +37,7 @@ const StyledDatePicker = styled(DatePicker)`
   &:focus {
     outline: none;
   }
+
 `;
 
 // const InputTel = styled.input`
