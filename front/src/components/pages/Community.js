@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
-import { TagBody } from '../components/Styled';
+import { StyledLeftLayout, TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 
@@ -29,8 +29,6 @@ export default function Community(props) {
   );
 
   const loadMore = () => {
-    console.log(page.current);
-    console.log(isLast);
     dispatch({
       type: POST_LIST_REQUEST,
       data: {
@@ -41,27 +39,14 @@ export default function Community(props) {
   };
   const rootRef = useRef();
   const { post, user } = useSelector((state) => state);
-  // const me = useState({ ...user.me });
 
   const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
-
-  // const [tags] = useState([
-  //   { name: 'backEnd', id: 0, selected: false },
-  //   { name: 'frontEnd', id: 1, selected: false },
-  //   { name: 'machineLearning', id: 2, selected: false },
-  //   { name: 'infra', id: 3, selected: false },
-  // ]);
   const [taglist, setTaglist] = useState([]);
   const tagss = useSelector((state) => state.tag);
   useEffect(() => {
     if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
-      // const res = [];
-      // temp.forEach((item) => {
-      //   res.concat([...res, { ...item, item }]);
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      // });
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
@@ -104,7 +89,7 @@ export default function Community(props) {
       id={pl.id}
       tags={['backEnd']}
       title={pl.title}
-      writer="아직미구현"
+      writer={pl.author}
       date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
       fav="미구현"
       key={pl.id}

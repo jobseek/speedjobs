@@ -52,9 +52,7 @@ function* getComment(action) {
 }
 
 function getCommentAPI(data) {
-  return axios.get(
-    `/post/${data}/paging?page=0&size=999&sort=createdDate,DESC`
-  );
+  return axios.get(`/post/${data}/paging`);
 }
 
 function* deleteComment(action) {
@@ -73,8 +71,8 @@ function* deleteComment(action) {
 }
 
 function deleteCommentAPI(data) {
-  const id = data;
-  return axios.delete(`/post/${id}`);
+  const { commentId, postId } = data;
+  return axios.delete(`/post/${postId}/${commentId}`);
 }
 
 function* watchCommentDelete() {

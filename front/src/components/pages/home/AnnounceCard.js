@@ -19,6 +19,22 @@ export default function AnnounceCard() {
       title: '쿠팡 경력직 모집',
       subtitle: '2021년 하반기 쿠팡 경력직을 모집합니다.',
     },
+    {
+      title: '네이버 공채 모집',
+      subtitle: '2021년 하반기 네이버 공채를 모집합니다.',
+    },
+    {
+      title: '카카오 공채 모집',
+      subtitle: '2021년 하반기 카카오 공채를 모집합니다.',
+    },
+    {
+      title: '라인 경력직 상시모집',
+      subtitle: '2021년 하반기 라인 경력직을 모집합니다.',
+    },
+    {
+      title: '쿠팡 경력직 모집',
+      subtitle: '2021년 하반기 쿠팡 경력직을 모집합니다.',
+    },
   ]);
   const Arr = list.map((c, index) => {
     return (

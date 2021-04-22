@@ -1,4 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+
+const List = styled.li`
+  display: inline-block;
+  margin-right: 10px;
+  width: 100%;
+  //border: 1px solid black;
+  //
+  //&:hover {
+  //  background-color: #d3d3d3;
+  //}
+`;
 
 export default function TitleCards({ title, list }) {
   const [info, setInfo] = useState([]);
@@ -11,10 +23,10 @@ export default function TitleCards({ title, list }) {
 
   const infoArr = info.map((item, index) => (
     <div key={index}>
-      <li style={{ display: 'inline-block', marginRight: '10px' }}>
+      <List>
         {item.title}
-      </li>
-      <span style={{ color: 'gray' }}>{item.date}</span>
+        <span style={{ color: 'gray', fontSize: '10px' }}>{item.date}</span>
+      </List>
     </div>
   ));
 
@@ -28,7 +40,15 @@ export default function TitleCards({ title, list }) {
           padding: '10px 10px',
         }}
       >
-        <h3 style={{ fontWeight: 700, letterSpacing: '1px' }}>{title}</h3>
+        <h3
+          style={{
+            fontWeight: 700,
+            letterSpacing: '1px',
+            marginBottom: '10px',
+          }}
+        >
+          {title}
+        </h3>
         <ul style={{ listStyle: 'none', padding: '0' }}>{infoArr}</ul>
       </div>
     </div>

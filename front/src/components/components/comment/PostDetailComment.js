@@ -34,17 +34,17 @@ export default function PostDetailComment(props) {
   const dispatch = useDispatch();
 
   const addComment = (newCom) => {
-    console.log('add');
     dispatch({
       type: COMMENT_ADD_REQUEST,
       data: newCom,
     });
   };
 
-  const deleteHandler = (id) => {
+  const deleteHandler = (c, p) => {
+    const idData = { commentId: c, postId: p };
     dispatch({
       type: COMMENT_DELETE_REQUEST,
-      data: id,
+      data: idData,
     });
   };
 
