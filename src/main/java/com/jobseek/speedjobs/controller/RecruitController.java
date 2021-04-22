@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -73,5 +75,11 @@ public class RecruitController {
 	@GetMapping
 	public ResponseEntity<List<RecruitResponse>> readAllRecruits() {
 		return ResponseEntity.ok().body(recruitService.readAll());
+	}
+
+	@ApiOperation(value = "공고 페이징 조회", notes = "공고를 페이징으로 조회한다")
+	@GetMapping("/paging")
+	public Page<RecruitResponse> readRecruitsByPage(final Pageable pageable) {
+		return recruitService.readByPage(pageable);
 	}
 }

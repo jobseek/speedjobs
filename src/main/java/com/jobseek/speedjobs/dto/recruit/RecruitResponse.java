@@ -4,11 +4,12 @@ import com.jobseek.speedjobs.domain.recruit.Experience;
 import com.jobseek.speedjobs.domain.recruit.Position;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.Status;
-import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.Type;
+import com.jobseek.speedjobs.dto.tag.TagMap;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class RecruitResponse {
+
 	private Long id;
 	private String title;
 	private LocalDateTime openDate;
@@ -26,8 +28,7 @@ public class RecruitResponse {
 	private Experience experience;
 	private Position position;
 	private String content;
-	private List<Tag> tagList;
-	private TagResponses tags;
+	private Map<Type, List<TagMap>> tags;
 
 	public RecruitResponse(Recruit recruit) {
 		this.id = recruit.getId();
@@ -39,13 +40,13 @@ public class RecruitResponse {
 		this.experience = recruit.getRecruitDetail().getExperience();
 		this.position = recruit.getRecruitDetail().getPosition();
 		this.content = recruit.getRecruitDetail().getContent();
-		this.tagList = recruit.getRecruitTags().getTags();
+		this.tags = TagMap.toMap(recruit.getRecruitTags().getTags());
 	}
 
 	@Builder
 	public RecruitResponse(Long id, String title, LocalDateTime openDate, LocalDateTime closeDate,
 		Status status, String thumbnail, Experience experience,
-		Position position, String content, TagResponses tags) {
+		Position position, String content, Map<Type, List<TagMap>> tags) {
 		this.id = id;
 		this.title = title;
 		this.openDate = openDate;
@@ -69,7 +70,7 @@ public class RecruitResponse {
 			.experience(recruit.getRecruitDetail().getExperience())
 			.position(recruit.getRecruitDetail().getPosition())
 			.content(recruit.getRecruitDetail().getContent())
-			.tags(tagResponses)
+			.tags(TagMap.toMap(recruit.getRecruitTags().getTags()))
 			.build();
 	}
 }

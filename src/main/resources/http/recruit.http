@@ -56,6 +56,6 @@ Accept: application/json
 GET http://{{host}}/recruit
 Accept: application/json
 
-### 6. 공고 페이징 조회 // TODO
-#GET http://{{host}}/recruit/paging?page=0&size=3&sort=id,DESC
-#Accept: application/json
+### 6. 공고 페이징 조회
+GET http://{{host}}/recruit/paging?page=0&size=3&sort=id,DESC
+Accept: application/json

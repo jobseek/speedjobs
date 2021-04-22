@@ -57,7 +57,7 @@ public class PostResponse {
 			.commentCount(post.getComments().size())
 			.likeCount(post.getLikeCount())
 			.viewCount(post.getViewCount())
-			.tags(TagMap.toMap(post))
+			.tags(TagMap.toMap(post.getPostTags().getTags()))
 			.comments(post.getComments().stream().map(CommentResponse::of).collect(Collectors.toList()))
 			.build();
 	}
