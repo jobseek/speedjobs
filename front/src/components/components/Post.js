@@ -1,6 +1,5 @@
 import { Heart, HeartFill } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
 import React, { useCallback } from 'react';
 import { TagBody } from './Styled';
 import { Blank } from '../pages/Community';
@@ -26,7 +25,7 @@ export default function Post({ title, tags, writer, date, fav, id, type }) {
         fav,
       },
     });
-  }, []);
+  }, [date, fav, history, id, tags, type, writer]);
 
   return (
     <>

@@ -37,6 +37,7 @@ const TagsInDrop = styled.div`
 
 export default function Tags({ tagList, children, sm, selected }) {
   const [show, setShow] = useState(false);
+  const [update, setUpdate] = useState(0);
   const dropRef = useRef();
   const ClickHandler = (e) => {
     if (dropRef.current) {

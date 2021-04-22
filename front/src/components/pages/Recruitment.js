@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
-import { StyledLeftLayout, TagBody } from '../components/Styled';
+import { TagBody } from '../components/Styled';
 import {
   RECRUIT_LIST_DONE,
   RECRUIT_LIST_REQUEST,

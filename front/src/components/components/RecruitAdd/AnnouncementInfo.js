@@ -29,7 +29,8 @@ export default function AnnouncementInfo({ onChange, setTags }) {
 
   useEffect(() => {
     setTags([...taglist.filter((t) => t.selected).map((t) => t.id)]);
-  }, [taglist]);
+  }, [taglist, setTags]);
+
 
   const [src, setSrc] = useState([]);
   const dropHandler = (e) => {
