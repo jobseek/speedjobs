@@ -28,6 +28,9 @@ export default function PostDetail(props) {
     });
   }, [dispatch, id]);
   useEffect(() => {
+    console.log(location.state);
+  }, []);
+  useEffect(() => {
     if (post.postGetDone) {
       console.log(post.post);
       setContent({

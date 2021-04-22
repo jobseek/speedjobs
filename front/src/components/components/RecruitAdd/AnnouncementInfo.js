@@ -31,6 +31,7 @@ export default function AnnouncementInfo({ onChange, setTags }) {
     setTags([...taglist.filter((t) => t.selected).map((t) => t.id)]);
   }, [taglist, setTags]);
 
+
   const [src, setSrc] = useState([]);
   const dropHandler = (e) => {
     e.preventDefault();
