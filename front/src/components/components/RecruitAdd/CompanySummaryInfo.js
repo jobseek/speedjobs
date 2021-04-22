@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 
+
 const Info = styled.div`
   color: #a1a1a1;
   margin-right: 5px;
