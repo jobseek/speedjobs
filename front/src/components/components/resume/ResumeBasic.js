@@ -39,30 +39,6 @@ const StyledDatePicker = styled(DatePicker)`
   }
 `;
 
-// const InputTel = styled.input`
-//   width: 100%;
-//   height: 35px;
-//   border-radius: 27px;
-//   border: 1px solid silver;
-//   padding: 0 20px 3px;
-//   margin-bottom: 5px;
-//   &:focus {
-//     outline: none;
-//   }
-// `;
-
-// const InputTel = styled.input`
-//   width: 100%;
-//   height: 35px;
-//   border-radius: 27px;
-//   border: 1px solid silver;
-//   padding: 0 20px 3px;
-//   margin-bottom: 5px;
-//   &:focus {
-//     outline: none;
-//   }
-// `;
-
 export default function ResumeBasic() {
   const [img, setImage] = useState(
     'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'

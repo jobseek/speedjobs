@@ -28,7 +28,6 @@ function* addComment(action) {
 }
 
 function addCommentAPI(data) {
-  console.log(data);
   const res = axios
     .post(`/post/${data.id}`, { content: data.content })
     .then((response) => response)

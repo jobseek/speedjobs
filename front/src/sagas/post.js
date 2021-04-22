@@ -4,6 +4,9 @@ import {
   POST_ADD_FAIL,
   POST_ADD_REQUEST,
   POST_ADD_SUCCESS,
+  POST_DELETE_FAIL,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
   POST_GET_FAIL,
   POST_GET_REQUEST,
   POST_GET_SUCCESS,
@@ -16,7 +19,6 @@ function getPostListApi(action) {
   const { size, page } = action.data;
   const get = axios
     .get(`/post/paging/?size=${size}&page=${page}&sort=id,DESC`)
-    // .get(`/post/paging`)
     .then((res) => res)
     .catch((err) => {
       throw err;
@@ -80,16 +82,45 @@ function* postGet(action) {
   }
 }
 
+function postDeleteAPI(data) {
+  const res = axios.delete(`/post/${data}`).catch((error) => {
+    throw error;
+  });
+  return res;
+}
+
+function* postDelete(action) {
+  try {
+    const result = yield call(postDeleteAPI, action.data);
+    yield put({
+      type: POST_DELETE_SUCCESS,
+      data: result,
+    });
+  } catch (error) {
+    yield put({
+      type: POST_DELETE_FAIL,
+      data: 'error' ?? action.error,
+    });
+  }
+}
+
 function* watchPostAdd() {
   yield takeLatest(POST_ADD_REQUEST, postAdd);
 }
-
 function* watchPostGet() {
   yield takeLatest(POST_GET_REQUEST, postGet);
 }
 function* watchPostList() {
   yield takeLatest(POST_LIST_REQUEST, getPostList);
 }
+function* watchPostDelete() {
+  yield takeLatest(POST_DELETE_REQUEST, postDelete);
+}
 export default function* postSaga() {
-  yield all([fork(watchPostGet), fork(watchPostList), fork(watchPostAdd)]);
+  yield all([
+    fork(watchPostGet),
+    fork(watchPostList),
+    fork(watchPostAdd),
+    fork(watchPostDelete),
+  ]);
 }

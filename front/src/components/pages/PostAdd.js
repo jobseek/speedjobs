@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import {
   PostTextArea,
   PostTitleInput,
-  PostWriterDate,
+  // PostWriterDate,
   StyledButton,
   StyledHeaderDiv,
 } from '../components/Styled';
@@ -57,10 +57,6 @@ export default function PostAdd() {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
       const temp2 = Array.from(tagss.tagGetData.tags.SKILL);
 
-      // temp.forEach((item) => {
-      //   res.concat([...res, { ...item, item }]);
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      // });
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
@@ -81,7 +77,6 @@ export default function PostAdd() {
       }}
     >
       <form>
-        {/* 헤더*/}
         <StyledHeaderDiv fix>
           <div
             className={'container row justify-content-end'}
@@ -92,6 +87,7 @@ export default function PostAdd() {
                 onChange={(e) => onChangHandler(e)}
                 name={'title'}
                 placeholder={'제목을 입력해주세요'}
+                maxLength="35"
               />
             </div>
             <div
@@ -113,11 +109,8 @@ export default function PostAdd() {
             </div>
           </div>
         </StyledHeaderDiv>
-        {/* 작성자*/}
         <div className={'container'}>
-          <PostWriterDate>작성자 2020-01-01</PostWriterDate>
-          {/* 태그*/}
-          {/* 본문*/}
+          {/* <PostWriterDate>Author 2020-01-01</PostWriterDate>*/}
           <PostTextArea
             name={'content'}
             onChange={(e) => onChangHandler(e)}

@@ -662,6 +662,7 @@ export const PostTitleInput = styled.input`
   border: none;
   font-size: 25px;
   padding-left: 15px;
+  width: 100%;
 
   &:focus {
     outline: none;
