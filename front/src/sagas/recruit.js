@@ -11,7 +11,7 @@ import {
 function getRecruitListApi(action) {
   const { size, page } = action.data;
   const get = axios
-    .get(`/post/paging/?size=${size}&page=${page}`)
+    .get(`/recruit/paging?size=${size}&page=${page}&sort=id,DESC`)
     .then((res) => res)
     .catch((err) => {
       throw err;
@@ -35,7 +35,7 @@ function* getRecruitList(action) {
 }
 
 function recruitAddApi(action) {
-  return axios.post(`/post/new`, action.data).catch((err) => {
+  return axios.post(`/recruit`, action.data).catch((err) => {
     throw err;
   });
 }

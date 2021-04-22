@@ -13,6 +13,7 @@
     "gsap": "^3.6.0",
     "hamburger-react": "^2.4.0",
     "immer": "^9.0.1",
+    "moment": "^2.29.1",
     "nivo": "^0.7.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.1",

@@ -94,7 +94,9 @@ export default function LikeList() {
 
             {/* 게시글*/}
             <ProfileDiv className={'col-12 col-lg-10'}>
-              <Tags tagList={taglist}>직무</Tags>
+              <Tags tagList={taglist} selected={setTaglist}>
+                직무
+              </Tags>
               {mapPost}
             </ProfileDiv>
             {/* 게시글 end*/}

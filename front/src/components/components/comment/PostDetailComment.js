@@ -25,7 +25,7 @@ export default function PostDetailComment(props) {
       key={comment.id}
       writer={comment.author}
       content={comment.content}
-      date={`${comment.createDate[0]}/${comment.createDate[1]}/${comment.createDate[2]}`}
+      date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
       onClick={() => deleteHandler(comment.id)}
     ></Comment>
   ));

@@ -29,6 +29,8 @@ export default function Community(props) {
   );
 
   const loadMore = () => {
+    console.log(page.current);
+    console.log(isLast);
     dispatch({
       type: POST_LIST_REQUEST,
       data: {
@@ -98,6 +100,7 @@ export default function Community(props) {
 
   const mapPost = postList.map((pl) => (
     <Post
+      type={'community'}
       id={pl.id}
       tags={['backEnd']}
       title={pl.title}
@@ -122,7 +125,7 @@ export default function Community(props) {
             }}
           >
             <div
-              className={'row justify-content-end'}
+              className={'row justify-content-between'}
               style={{ padding: '10px', paddingTop: '0' }}
             >
               <Tags tagList={taglist}>filter</Tags>

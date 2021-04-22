@@ -39,10 +39,19 @@ export default function PostAdd() {
     },
     [dispatch, form]
   );
-
-  const [taglist, setTaglist] = useState([]);
-  const [taglist2, setTaglist2] = useState([]);
+  const [totalTag, setTotalTag] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [tagList2, setTagList2] = useState([]);
   const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    setTotalTag([
+      ...tagList.filter((t) => t.selected).map((t) => t.id),
+      ...tagList2.filter((t) => t.selected).map((t) => t.id),
+    ]);
+  }, [tagList, tagList2]);
+  useEffect(() => {
+    setForm((p) => ({ ...p, tagIds: totalTag }));
+  }, [totalTag]);
   useEffect(() => {
     if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
@@ -55,12 +64,11 @@ export default function PostAdd() {
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
-      setTaglist((p) => [...p, ...tt]);
+      setTagList((p) => [...p, ...tt]);
       const tt2 = temp2.map((t) => {
         return { ...t, selected: false };
       });
-      console.log(tt2);
-      setTaglist2((p) => [...p, ...tt2]);
+      setTagList2((p) => [...p, ...tt2]);
     }
   }, [tagss.tagGetData]);
 
@@ -117,8 +125,12 @@ export default function PostAdd() {
             rows={'20'}
           />
           <div style={{ marginTop: '40px' }}>
-            <Tags tagList={taglist}>직무</Tags>
-            <Tags tagList={taglist2}>기술</Tags>
+            <Tags tagList={tagList} selected={setTagList}>
+              직무
+            </Tags>
+            <Tags tagList={tagList2} selected={setTagList2}>
+              기술
+            </Tags>
           </div>
         </div>
       </form>

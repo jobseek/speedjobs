@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   PostTitleInput,
@@ -8,23 +9,45 @@ import {
 } from '../components/Styled';
 import { RECRUIT_ADD_DONE, RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
+// {
+//   "title": "제목입니당",
+//     "openDate": "2020-01-02 00:00:00",
+//     "closeDate": "2021-12-15 00:00:00",
+//     "status": "PROCESS",
+//     "thumbnail": "Empty",
+//     "experience": "JUNIOR",
+//     "position": "PERMANENT",
+//     "content": "모집합니다아",
+//     "tagIds": [1,3]
+// }
 
 export default function RecruitAdd() {
   const [form, setForm] = useState({
     title: '',
-    position: '정규직',
-    experience: '신입',
+    position: 'TEMPORARY',
+    thumbnail: '',
+    experience: 'JUNIOR',
     content: '',
     openDate: '',
     closeDate: '',
     status: 'PROCESS',
+    tagIds: [],
   });
   const recruit = useSelector((state) => state.recruit);
   const dispatch = useDispatch();
   const history = useHistory();
   const onChangHandler = useCallback(
     (e) => {
-      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      console.log(e.target.name);
+      if (e.target.name.endsWith('Date')) {
+        console.log('hi');
+        setForm((prev) => ({
+          ...prev,
+          [e.target.name]: moment(e.target.value).format('YYYY-MM-DD 00:00:00'),
+        }));
+      } else {
+        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      }
       console.log(form);
     },
     [form]
@@ -32,6 +55,7 @@ export default function RecruitAdd() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
+      console.log(form);
       dispatch({ type: RECRUIT_ADD_REQUEST, data: form });
     },
     [form, dispatch]
