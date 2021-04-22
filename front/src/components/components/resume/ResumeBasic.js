@@ -51,7 +51,6 @@ const InputTel = styled.input`
   &:focus {
     outline: none;
   }
-
 `;
 
 // const InputTel = styled.input`

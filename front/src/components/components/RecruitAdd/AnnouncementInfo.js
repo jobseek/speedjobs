@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Tags from '../Tags';
 
-export default function AnnouncementInfo({ onChange }) {
+export default function AnnouncementInfo({ onChange, setTags }) {
   const [tags] = useState([
     { name: '신입', id: 0, selected: false },
     { name: '경력 1년이상', id: 1, selected: false },
@@ -26,6 +26,10 @@ export default function AnnouncementInfo({ onChange }) {
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);
+
+  useEffect(() => {
+    setTags([...taglist.filter((t) => t.selected).map((t) => t.id)]);
+  }, [taglist]);
 
   const [src, setSrc] = useState([]);
   const dropHandler = (e) => {
@@ -55,7 +59,9 @@ export default function AnnouncementInfo({ onChange }) {
       <div>
         <Tags tagList={tags}>경력요구사항</Tags>
         <Tags tagList={tags2}>고용형태</Tags>
-        <Tags tagList={taglist}>직무추가</Tags>
+        <Tags tagList={taglist} selected={setTaglist}>
+          직무추가
+        </Tags>
 
         <textarea
           placeholder="공고 정보를 입력해주세요."

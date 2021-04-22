@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyledButton, StyledHeaderDiv } from '../components/Styled';
 import ChatIcon from '../components/Chatting/ChatIcon';
 import ChatBox from '../components/Chatting/ChatBox';
+import { RECRUIT_GET_REQUEST } from '../../reducers/recruit';
 
 const Chatting = styled.div`
   width: 100%;
@@ -15,6 +17,10 @@ const Chatting = styled.div`
 
 export default function RecruitmentDetail(props) {
   const [pop, setPop] = useState('none');
+  const [content, setContent] = useState({});
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const recruit = useSelector((state) => state.recruit);
   const ButtonEvent = () => {
     if (pop === 'none') {
       setPop('inline-block');
@@ -22,11 +28,17 @@ export default function RecruitmentDetail(props) {
       setPop('none');
     }
   };
-
   useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
-
+    dispatch({
+      type: RECRUIT_GET_REQUEST,
+      data: id,
+    });
+  }, [dispatch]);
+  useEffect(() => {
+    if (recruit.recruitGetDone) {
+      setContent(recruit.recruit);
+    }
+  }, [recruit.recruitGetDone]);
   useEffect(() => {
     if (pop === 'none') {
       document.body.style.overflow = 'unset';
@@ -51,7 +63,7 @@ export default function RecruitmentDetail(props) {
         <StyledHeaderDiv>
           <div className={'container row justify-content-end'}>
             <div className={'col-md-8 col-4 p-0'} style={{ marginTop: '14px' }}>
-              <h5>더미제목</h5>
+              <h5>{content.title ?? '.....'}</h5>
             </div>
             <div className={'col-md-3 col-4 text-right'}>
               <StyledButton wide>지원하기</StyledButton>
@@ -83,19 +95,12 @@ export default function RecruitmentDetail(props) {
               <p>채용기간 : 상시채용</p>
             </div>
             {/* 업무소개*/}
-            <div className={'container'} style={{ padding: '14px' }}>
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-              안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
+            <div
+              style={{ whiteSpace: 'pre-line' }}
+              className={'container'}
+              style={{ padding: '14px' }}
+            >
+              {content.content ?? '....'}
             </div>
           </div>
           {/* 요약 end*/}

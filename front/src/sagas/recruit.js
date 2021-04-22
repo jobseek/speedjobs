@@ -3,6 +3,9 @@ import axios from 'axios';
 import {
   RECRUIT_ADD_REQUEST,
   RECRUIT_ADD_SUCCESS,
+  RECRUIT_GET_FAIL,
+  RECRUIT_GET_REQUEST,
+  RECRUIT_GET_SUCCESS,
   RECRUIT_LIST_FAIL,
   RECRUIT_LIST_REQUEST,
   RECRUIT_LIST_SUCCESS,
@@ -34,6 +37,31 @@ function* getRecruitList(action) {
   }
 }
 
+function getRecruitApi(action) {
+  const get = axios
+    .get(`/recruit/${action.data}`)
+    .then((res) => res)
+    .catch((err) => {
+      throw err;
+    });
+  return get;
+}
+
+function* getRecruit(action) {
+  try {
+    const recruitList = yield call(getRecruitApi, action);
+    yield put({
+      type: RECRUIT_GET_SUCCESS,
+      data: recruitList.data,
+    });
+  } catch (error) {
+    yield put({
+      type: RECRUIT_GET_FAIL,
+      error: 'error' ?? action.error,
+    });
+  }
+}
+
 function recruitAddApi(action) {
   return axios.post(`/recruit`, action.data).catch((err) => {
     throw err;
@@ -60,7 +88,7 @@ function* watchRecruitAdd() {
 }
 
 function* watchRecruitGet() {
-  // yield takeLatest(RECRUIT_GET_REQUEST, getRecruit);
+  yield takeLatest(RECRUIT_GET_REQUEST, getRecruit);
 }
 
 function* watchRecruitList() {
