@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
-import { StyledLeftLayout, TagBody } from '../components/Styled';
+import { TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 
