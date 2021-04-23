@@ -1,11 +1,6 @@
 package com.jobseek.speedjobs.domain.tag;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

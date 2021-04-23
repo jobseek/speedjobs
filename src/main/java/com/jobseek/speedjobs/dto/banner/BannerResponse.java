@@ -2,7 +2,6 @@ package com.jobseek.speedjobs.dto.banner;
 
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.domain.banner.Banner;
-
 import lombok.Builder;
 import lombok.Data;
 

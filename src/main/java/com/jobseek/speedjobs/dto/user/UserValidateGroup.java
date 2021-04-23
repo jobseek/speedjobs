@@ -6,12 +6,8 @@ public class UserValidateGroup {
 
 	}
 
-	;
-
 	public interface company {
 
 	}
-
-	;
 
 }

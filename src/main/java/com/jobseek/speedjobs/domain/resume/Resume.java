@@ -26,7 +26,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -90,7 +89,8 @@ public class Resume extends BaseTimeEntity {
 	}
 
 	public Resume(Open open, String coverLetter, String address, String blogUrl, String githubUrl,
-		String resumeImage, List<Certificate> certificates, List<Scholar> scholars, List<Career> careers) {
+		String resumeImage, List<Certificate> certificates, List<Scholar> scholars,
+		List<Career> careers) {
 		this.open = open;
 		this.coverLetter = coverLetter;
 		this.address = address;
@@ -102,15 +102,17 @@ public class Resume extends BaseTimeEntity {
 		this.careerList = careers;
 	}
 
+	public static Resume createResume(Open open, String coverLetter, String address, String blogUrl,
+		String githubUrl, String resumeImage, List<Certificate> certificates,
+		List<Scholar> scholars, List<Career> careers) {
+		return new Resume(open, coverLetter, address, blogUrl, githubUrl, resumeImage, certificates,
+			scholars, careers);
+	}
+
 	//연관관계 편의 메서드
 	public void setMember(Member member) {
 		this.member = member;
 		member.getResumeList().add(this);
-	}
-
-	public static Resume createResume(Open open, String coverLetter, String address, String blogUrl,
-		String githubUrl, String resumeImage, List<Certificate> certificates, List<Scholar> scholars, List<Career> careers) {
-		return new Resume(open, coverLetter, address, blogUrl, githubUrl, resumeImage, certificates, scholars, careers);
 	}
 
 	public void addCareer(Career career) {

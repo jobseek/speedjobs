@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
 @Transactional(readOnly = true)
+@Service
 public class UserService {
 
 	private final UserRepository userRepository;
@@ -74,7 +74,7 @@ public class UserService {
 		final String passwordReg = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$";
 		final String contactReg = "^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$";
 		final String companyNameReg = "^[a-zA-Z가-힣]{2,30}$";
-		final String homepageReg = "^(http|https)\\://[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,6}(/\\S*)?$";
+		final String homepageReg = "^(http|https)://[a-zA-Z0-9\\-.]+\\.[a-zA-Z]{2,6}(/\\S*)?$";
 		final String registrationNumReg = "^[0-9]{3}-[0-9]{2}-[0-9]{5}$";
 
 		if (!Pattern.matches(nameReg, request.getName()) ||
@@ -107,7 +107,7 @@ public class UserService {
 	public MemberInfoResponse getMemberInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_MEMBER) {
 			throw new IllegalArgumentException("개인회원이 아닙니다.");
-		} else if (userId != user.getId()) {
+		} else if (!userId.equals(user.getId())) {
 			throw new IllegalArgumentException("올바른 경로가 아닙니다.");
 		}
 		Member member = memberRepository.findById(userId)
@@ -118,7 +118,7 @@ public class UserService {
 	public CompanyInfoResponse getCompanyInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_COMPANY) {
 			throw new IllegalArgumentException("기업회원이 아닙니다.");
-		} else if (userId != user.getId()) {
+		} else if (!userId.equals(user.getId())) {
 			throw new IllegalArgumentException("올바른 경로가 아닙니다.");
 		}
 		Company company = companyRepository.findById(userId)
@@ -129,16 +129,15 @@ public class UserService {
 	@Transactional
 	public void update(Long userId, MemberUpdateRequest request) {
 		memberRepository.findById(userId)
-			.map(entity -> entity.updateCustomUserInfo(null, request.getPassword(),
-				request.getPicture(), request.getSex(), request.getBirth(), request.getNickname(),
-				request.getBio()))
+			.map(member -> member.updateCustomMemberInfo(request.getNickname(), request.getPassword(),
+					request.getPicture(), request.getContact(), request.getBirth(),
+					request.getBio(), request.getGender()))
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 	}
 
 	@Transactional
 	public void delete(Long userId) {
-		User user = userRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("없는 유저입니다."));
+		User user = findById(userId);
 		userRepository.delete(user);
 	}
 

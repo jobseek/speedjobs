@@ -9,7 +9,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.likelist.RecruitLike;
 import com.jobseek.speedjobs.domain.message.Message;
 import com.jobseek.speedjobs.domain.resume.Apply;
 import com.jobseek.speedjobs.domain.tag.RecruitTag;
@@ -28,6 +27,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,6 +44,18 @@ import lombok.NoArgsConstructor;
 @Table(name = "recruits")
 public class Recruit extends BaseTimeEntity {
 
+	@ManyToMany(mappedBy = "recruitFavorites")
+	private final List<User> favorites = new ArrayList<>();
+
+	@OneToMany(mappedBy = "recruit", cascade = ALL)
+	private final List<Apply> applies = new ArrayList<>();
+
+	@OneToMany(cascade = ALL, orphanRemoval = true)
+	private final List<Message> messages = new ArrayList<>();
+
+	@Embedded
+	private final RecruitTags recruitTags = RecruitTags.empty();
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "recruit_id")
@@ -52,18 +64,6 @@ public class Recruit extends BaseTimeEntity {
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "company_id")
 	private Company company;
-
-	@OneToMany(mappedBy = "recruit", cascade = ALL)
-	private final List<RecruitLike> recruitLikes = new ArrayList<>();
-
-	@OneToMany(mappedBy = "recruit", cascade = ALL)
-	private final List<Apply> applyList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "recruit", cascade = ALL)
-	private final List<Message> messageList = new ArrayList<>();
-
-	@Embedded
-	private final RecruitTags recruitTags = RecruitTags.empty();
 
 	private String title;
 
@@ -83,10 +83,6 @@ public class Recruit extends BaseTimeEntity {
 	@Embedded
 	private RecruitDetail recruitDetail;
 
-	public void increaseViewCount() {
-		viewCount += 1;
-	}
-
 	@Builder
 	public Recruit(String title, LocalDateTime openDate, LocalDateTime closeDate,
 		Status status, String thumbnail,
@@ -104,6 +100,10 @@ public class Recruit extends BaseTimeEntity {
 		Status status, String thumbnail, Experience experience, Position position, String content) {
 		return new Recruit(title, openDate, closeDate, status, thumbnail,
 			RecruitDetail.from(experience, position, content));
+	}
+
+	public void increaseViewCount() {
+		viewCount += 1;
 	}
 
 	public void setCompany(Company company) {

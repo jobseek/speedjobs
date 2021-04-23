@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.dto.user.member;
 
 import com.jobseek.speedjobs.domain.member.Member;
-import com.jobseek.speedjobs.domain.user.User;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ public class MemberInfoResponse {
 	private LocalDate birth;
 	private String intro;
 	private String nickname;
-	private String sex;
+	private String gender;
 
 	public static MemberInfoResponse of(Member member) {
 		return MemberInfoResponse.builder()
@@ -36,6 +35,6 @@ public class MemberInfoResponse {
 			.birth(member.getBirth())
 			.intro(member.getBio())
 			.nickname(member.getNickname())
-			.sex(member.getSex()).build();
+			.gender(member.getGender()).build();
 	}
 }

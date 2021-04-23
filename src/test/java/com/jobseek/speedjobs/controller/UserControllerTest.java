@@ -1,4 +1,5 @@
 package com.jobseek.speedjobs.controller;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 

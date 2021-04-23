@@ -1,15 +1,14 @@
 package com.jobseek.speedjobs.common.file.dto;
 
 import java.util.List;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Data
 public class FileResponses {
 
 	private int count;

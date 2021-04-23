@@ -35,19 +35,19 @@ public class AuthService {
 	private final CookieUtil cookieUtil;
 	private final PasswordEncoder passwordEncoder;
 
-	public TokenResponse login(TokenRequest request, HttpServletResponse response) {
-		Provider provider = request.getProvider();
+	public TokenResponse login(TokenRequest tokenRequest, HttpServletResponse response) {
+		Provider provider = tokenRequest.getProvider();
 		User user;
 
 		if (Provider.LOCAL.equals(provider)) {
-			user = userRepository.findByEmail(request.getEmail())
+			user = userRepository.findByEmail(tokenRequest.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("해당 이메일을 갖는 유저가 존재하지 않습니다."));
-			if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			if (!passwordEncoder.matches(tokenRequest.getPassword(), user.getPassword())) {
 				throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
 			}
 		} else if (Arrays.stream(Provider.values())
 			.anyMatch(p -> p.name().equals(provider.name()))) {
-			String oAuthId = request.getOauthId();
+			String oAuthId = tokenRequest.getOauthId();
 			user = memberRepository.findByProviderAndOauthId(provider, oAuthId)
 				.orElseThrow(() -> new IllegalArgumentException("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
 		} else {

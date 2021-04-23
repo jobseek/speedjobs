@@ -2,13 +2,11 @@ package com.jobseek.speedjobs.dto.user;
 
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Builder
@@ -22,7 +20,7 @@ public class UserInfoResponse {
 	private String picture;
 	private Role role;
 
-	public static UserInfoResponse from(User user) {
+	public static UserInfoResponse of(User user) {
 		return UserInfoResponse.builder()
 			.id(user.getId())
 			.email(user.getEmail())

@@ -1,14 +1,11 @@
 package com.jobseek.speedjobs.config.auth;
 
+import com.jobseek.speedjobs.common.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
+import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.UserDto;
 import java.util.Map;
-
-import com.jobseek.speedjobs.common.exception.OAuth2RegistrationException;
-import com.jobseek.speedjobs.domain.user.Role;
-import com.jobseek.speedjobs.domain.user.User;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +23,8 @@ public class OAuthAttributes {
 	private final Provider provider;
 
 	@Builder
-	public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email,
+	public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name,
+		String email,
 		String picture, Provider provider, String oauthId) {
 		this.attributes = attributes;
 		this.nameAttributeKey = nameAttributeKey;
@@ -45,7 +43,7 @@ public class OAuthAttributes {
 			return ofGithub(userNameAttributeName, attributes);
 		} else if ("kakao".equals(registrationId)) {
 			return ofKakao(userNameAttributeName, attributes);
-		} else if ("google".equalsIgnoreCase(registrationId)){
+		} else if ("google".equalsIgnoreCase(registrationId)) {
 			return ofGoogle(userNameAttributeName, attributes);
 		} else {
 			throw new OAuth2RegistrationException();
@@ -53,7 +51,8 @@ public class OAuthAttributes {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+	private static OAuthAttributes ofNaver(String userNameAttributeName,
+		Map<String, Object> attributes) {
 		Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 		return OAuthAttributes.builder()
 			.oauthId((String) response.get("id"))
@@ -66,13 +65,14 @@ public class OAuthAttributes {
 			.build();
 	}
 
-	private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+	private static OAuthAttributes ofGithub(String userNameAttributeName,
+		Map<String, Object> attributes) {
 		String name = attributes.get("name") == null ? "login" : "name";
 		return OAuthAttributes.builder()
 			.oauthId(attributes.get(userNameAttributeName).toString())
-			.name((String)attributes.get(name))
-			.email((String)attributes.get("email"))
-			.picture((String)attributes.get("avatar_url"))
+			.name((String) attributes.get(name))
+			.email((String) attributes.get("email"))
+			.picture((String) attributes.get("avatar_url"))
 			.provider(Provider.GITHUB)
 			.attributes(attributes)
 			.nameAttributeKey(userNameAttributeName)
@@ -80,26 +80,28 @@ public class OAuthAttributes {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
-		Map<String,Object> account = (Map<String, Object>) attributes.get("kakao_account");
+	private static OAuthAttributes ofKakao(String userNameAttributeName,
+		Map<String, Object> attributes) {
+		Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
 		Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 		return OAuthAttributes.builder()
 			.oauthId(attributes.get(userNameAttributeName).toString())
-			.name((String)profile.get("nickname"))
-			.email((String)account.get("email"))
-			.picture((String)profile.get("profile_image_url"))
+			.name((String) profile.get("nickname"))
+			.email((String) account.get("email"))
+			.picture((String) profile.get("profile_image_url"))
 			.provider(Provider.KAKAO)
 			.attributes(attributes)
 			.nameAttributeKey(userNameAttributeName)
 			.build();
 	}
 
-	private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+	private static OAuthAttributes ofGoogle(String userNameAttributeName,
+		Map<String, Object> attributes) {
 		return OAuthAttributes.builder()
-			.oauthId((String)attributes.get(userNameAttributeName))
-			.name((String)attributes.get("name"))
-			.email((String)attributes.get("email"))
-			.picture((String)attributes.get("picture"))
+			.oauthId((String) attributes.get(userNameAttributeName))
+			.name((String) attributes.get("name"))
+			.email((String) attributes.get("email"))
+			.picture((String) attributes.get("picture"))
 			.provider(Provider.GOOGLE)
 			.attributes(attributes)
 			.nameAttributeKey(userNameAttributeName)

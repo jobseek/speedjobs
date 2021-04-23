@@ -1,9 +1,9 @@
-### 멤버 로그인
+### 로그인
 POST http://{{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "{{member_email}}",
+  "email": "{{company_email}}",
   "password": "{{password}}"
 }
 
@@ -17,7 +17,12 @@ Authorization: Bearer {{accessToken}}
 {
   "title": "제목",
   "content": "내용",
-  "tagIds": [1,2,9,13]
+  "tagIds": [
+    1,
+    2,
+    9,
+    13
+  ]
 }
 
 ### 2. 게시글 수정
@@ -28,7 +33,12 @@ Authorization: Bearer {{accessToken}}
 {
   "title": "수정된 제목",
   "content": "수정된 내용",
-  "tagIds": [3,4,10,14]
+  "tagIds": [
+    3,
+    4,
+    10,
+    14
+  ]
 }
 
 ### 3. 게시글 삭제
@@ -36,30 +46,17 @@ DELETE http://{{host}}/post/3
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
-### 4. 게시글 좋아요
-POST http://{{host}}/post/1/up
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
-
-### 5. 게시글 싫어요
-POST http://{{host}}/post/1/down
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
-
-### 6. 게시글 단건 조회
+### 4. 게시글 단건 조회
 GET http://{{host}}/post/1
 Accept: application/json
 
-### 7. 게시글 전체 조회
-GET http://{{host}}/post
-Accept: application/json
-
-### 8. 게시글 페이징 조회
-GET http://{{host}}/post/paging?page=0&size=3&sort=id,DESC
+### 5. 게시글 페이징 조회
+GET http://{{host}}/post/paging?page=0&size=5&sort=id,DESC
 
 ### TODO 게시글 안의 댓글 페이징 조회
+GET http://{{host}}/post/1/paging?page=0&size=5&sort=id,DESC
 
-### 9. 댓글 등록
+### 6. 댓글 등록
 POST http://{{host}}/post/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
@@ -68,7 +65,7 @@ Authorization: Bearer {{accessToken}}
   "content": "무야호"
 }
 
-### 10. 댓글 수정
+### 7. 댓글 수정
 PUT http://{{host}}/post/1/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
@@ -77,9 +74,21 @@ Authorization: Bearer {{accessToken}}
   "content": "수정한 댓글"
 }
 
-### 11. 댓글 삭제
+### 8. 댓글 삭제
 DELETE http://{{host}}/post/1/1
 Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### 9. 찜하기
+POST http://{{host}}/post/1/favorite
+Authorization: Bearer {{accessToken}}
+
+### 10. 찜하기 취소
+DELETE http://{{host}}/post/1/favorite
+Authorization: Bearer {{accessToken}}
+
+### 11. 찜 목록 조회
+GET http://{{host}}/post/favorites
 Authorization: Bearer {{accessToken}}
 
 ### 12. 댓글 좋아요
@@ -87,7 +96,7 @@ POST http://{{host}}/post/1/1/up
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
-### 12. 댓글 싫어요
+### 13. 댓글 싫어요
 POST http://{{host}}/post/1/1/down
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}

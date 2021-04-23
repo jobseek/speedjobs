@@ -1,13 +1,7 @@
 package com.jobseek.speedjobs.domain.user;
 
-import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.member.Member;
-import java.time.LocalDate;
-
-import javax.persistence.Column;
-
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
-
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +15,7 @@ public class UserDto {
 	private String picture;
 	private Role role;
 
-	private String sex;
+	private String gender;
 	private LocalDate birth;
 	private String nickname;
 	private String bio;

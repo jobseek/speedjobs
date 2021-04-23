@@ -2,7 +2,6 @@ package com.jobseek.speedjobs.utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,11 +17,13 @@ public class CookieUtil {
 
 	public Cookie getCookie(HttpServletRequest req, String name) {
 		final Cookie[] cookies = req.getCookies();
-		if (cookies == null)
+		if (cookies == null) {
 			return null;
+		}
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals(name))
+			if (cookie.getName().equals(name)) {
 				return cookie;
+			}
 		}
 		return null;
 	}

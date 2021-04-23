@@ -9,6 +9,7 @@ import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
 import java.util.List;
@@ -39,9 +40,8 @@ public class PostService {
 
 	@Transactional
 	public void update(Long postId, User user, PostRequest postRequest) {
-		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. postId=" + postId));
-		if (post.getUser().getId() != user.getId()) {
+		Post post = findOne(postId);
+		if (post.getUser() != user) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
 		List<Tag> tags = getTagsById(postRequest.getTagIds());
@@ -50,41 +50,27 @@ public class PostService {
 
 	@Transactional
 	public void delete(Long postId, User user) {
-		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.  postId=" + postId));
-		if (user.getRole() != ROLE_ADMIN && post.getUser().getId() != user.getId()) {
+		Post post = findOne(postId);
+		if (!user.isAdmin() && post.getUser() != user) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
 		postRepository.delete(post);
 	}
 
-	@Transactional
-	public PostResponse readById(Long postId) {
-		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. postId=" + postId));
+	public PostResponse findById(Long postId) {
+		Post post = findOne(postId);
 		post.increaseViewCount();
 		return PostResponse.of(post);
 	}
 
-	public List<PostResponse> readAll() {
-		return postRepository.findAllDesc().stream()
-			.map(PostResponse::of)
-			.collect(Collectors.toList());
-	}
-
-	public Page<PostResponse> readByPage(Pageable pageable) {
+	public Page<PostListResponse> findByPage(Pageable pageable, User user) {
 		Page<Post> page = postRepository.findAll(pageable);
-		int totalElements = (int) page.getTotalElements();
 		return new PageImpl<>(page.stream()
-			.map(PostResponse::of)
-			.collect(Collectors.toList()), pageable, totalElements);
+			.map(post -> PostListResponse.of(post, user))
+			.collect(Collectors.toList()), pageable, page.getTotalElements());
 	}
 
-	private void createPostTags(Post post, List<Tag> tags) {
-		tags.forEach(tag -> PostTag.createPostTag(post, tag));
-	}
-
-	private List<Tag> getTagsById(List<Long> tagIds) {
+	public List<Tag> getTagsById(List<Long> tagIds) {
 		return tagIds.stream()
 			.map(tagId -> tagRepository.findById(tagId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
@@ -92,19 +78,34 @@ public class PostService {
 	}
 
 	/**
-	 * 기능
+	 *  찜하기
 	 */
+
 	@Transactional
-	public void like(Long postId) {
-		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-		post.increaseLikeCount();
+	public void savePostFavorite(Long postId, User user) {
+		Post post = findOne(postId);
+		post.addFavorite(user);
 	}
 
 	@Transactional
-	public void hate(Long postId) {
-		Post post = postRepository.findById(postId)
+	public void deletePostFavorite(Long postId, User user) {
+		Post post = findOne(postId);
+		post.removeFavorite(user);
+	}
+
+	public Page<PostListResponse> findPostFavorites(Pageable pageable, User user) {
+		List<Post> posts = user.getPostFavorites();
+		return new PageImpl<>(posts.stream()
+			.map(post -> PostListResponse.of(post, user))
+			.collect(Collectors.toList()), pageable, posts.size());
+	}
+
+	private Post findOne(Long postId) {
+		return postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-		post.decreaseLikeCount();
+	}
+
+	private void createPostTags(Post post, List<Tag> tags) {
+		tags.forEach(tag -> PostTag.createPostTag(post, tag));
 	}
 }

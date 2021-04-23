@@ -3,7 +3,7 @@ package com.jobseek.speedjobs.domain.post;
 import static com.jobseek.speedjobs.domain.user.Provider.LOCAL;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
@@ -16,8 +16,6 @@ import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.service.PostService;
 import java.util.Arrays;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @Commit
-@Slf4j
 class PostRepositoryTest {
 
 	@Autowired
@@ -47,7 +44,7 @@ class PostRepositoryTest {
 	@BeforeEach
 	public void before() {
 		Member member = Member.builder()
-			.sex("M")
+			.gender("M")
 			.birth("1992-05-30")
 			.nickname("잡식이")
 			.intro("hello")
@@ -78,8 +75,7 @@ class PostRepositoryTest {
 
 	@Test
 	@DisplayName(value = "검색테스트")
-	public void findUser() throws Exception
-	{
+	public void findUser() throws Exception {
 		List<Post> findPosts = postRepository.findAllByUserId(1L);
 		for (Post findPost : findPosts) {
 			log.info("포스트 : {}", findPost);

@@ -1,11 +1,18 @@
 package com.jobseek.speedjobs.utils;
 
+import com.jobseek.speedjobs.domain.user.Role;
+import com.jobseek.speedjobs.dto.user.UserTokenDto;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,17 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.jobseek.speedjobs.domain.user.Role;
-import com.jobseek.speedjobs.dto.user.UserTokenDto;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
-
 @Component
 public class JwtUtil {
 
@@ -32,10 +28,9 @@ public class JwtUtil {
 
 	public final String ACCESS_TOKEN = "ACCESS_TOKEN";
 	public final String REFRESH_TOKEN = "REFRESH_TOKEN";
-
-	private final String secretKey;
 	public final Long accessValidity;
 	public final Long refreshValidity;
+	private final String secretKey;
 
 	public JwtUtil(
 		@Value("${jwt.secret-key}") String secretKey,
