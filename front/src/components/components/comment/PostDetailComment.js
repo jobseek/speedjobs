@@ -19,17 +19,15 @@ const CommentList = styled.div``;
 
 export default function PostDetailComment(props) {
   const [dummyComment, setDummyComment] = useState([]);
-  const mapComment = dummyComment
-    .map((comment) => (
-      <Comment
-        key={comment.id}
-        writer={comment.author}
-        content={comment.content}
-        date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
-        onClick={() => deleteHandler(comment.id, props.id)}
-      />
-    ))
-    .reverse();
+  const mapComment = dummyComment.map((comment, index) => (
+    <Comment
+      key={comment.id}
+      writer={comment.author}
+      content={comment.content}
+      date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
+      onClick={() => deleteHandler(comment.id, props.id)}
+    ></Comment>
+  ));
 
   const { comment, user } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -43,6 +41,7 @@ export default function PostDetailComment(props) {
 
   const deleteHandler = (c, p) => {
     const idData = { commentId: c, postId: p };
+    console.log(idData);
     dispatch({
       type: COMMENT_DELETE_REQUEST,
       data: idData,
