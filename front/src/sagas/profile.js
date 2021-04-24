@@ -9,8 +9,9 @@ import {
   PROFILE_UPDATE_SUCCESS,
 } from '../reducers/profile';
 
-function getProfileApi() {
-  return axios.get('user/me');
+function getProfileApi(data) {
+  // const { id } = data;
+  return axios.get(`/user/member/${data}`);
 }
 
 function* getProfile(action) {
@@ -43,14 +44,15 @@ function updateProfileApi(data, me) {
 function* updateProfile(action) {
   try {
     console.log(action);
-    console.log('profile');
+    console.log('profile이이이이이이이');
     const result = yield call(updateProfileApi, action.data, action.me);
-    console.log(result);
+    console.log('결과', result);
     yield put({
       type: PROFILE_UPDATE_SUCCESS,
       data: result.data,
     });
   } catch (error) {
+    console.log('잉????');
     yield put({
       type: PROFILE_UPDATE_FAIL,
       data: '에러' ?? error.response.data,

@@ -7,6 +7,7 @@ import com.jobseek.speedjobs.domain.user.UserRepository;
 import java.util.Collections;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -48,7 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		Member member = memberRepository
 			.findByProviderAndOauthId(attributes.getProvider(), attributes.getOauthId())
 			.map(
-				entity -> entity.updateOAuthMemberInfo(attributes.getName(), attributes.getPicture()))
+				entity -> entity.updateOAuthMemberInfo(attributes.getNickname(), attributes.getPicture()))
 			.orElse(
 				userRepository.existsByEmail(attributes.getEmail()) ? null : attributes.toEntity());
 

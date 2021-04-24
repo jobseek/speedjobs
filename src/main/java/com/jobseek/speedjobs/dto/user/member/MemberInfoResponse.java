@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberInfoResponse {
 
-	private Long id;
 	private String name;
 	private String email;
 	private String contact;
@@ -22,18 +21,18 @@ public class MemberInfoResponse {
 
 	//detail
 	private LocalDate birth;
-	private String intro;
+	private String bio;
 	private String nickname;
 	private String gender;
 
 	public static MemberInfoResponse of(Member member) {
 		return MemberInfoResponse.builder()
-			.id(member.getId())
 			.name(member.getName())
 			.email(member.getEmail())
+			.contact(member.getContact())
 			.picture(member.getPicture())
 			.birth(member.getBirth())
-			.intro(member.getBio())
+			.bio(member.getBio())
 			.nickname(member.getNickname())
 			.gender(member.getGender()).build();
 	}

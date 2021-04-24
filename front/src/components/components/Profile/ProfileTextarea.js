@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { TextArea, TextAreaLength } from '../Styled';
 
 // 글자 수 표시해주는 함수
@@ -8,17 +8,25 @@ function calc() {
   ).value.length;
 }
 
-export default function ProfileContents({ onChange, name }) {
+export default function ProfileTextarea({ onChange, name, bio, disabled }) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current.innerHTML = bio !== undefined ? bio : '';
+    calc();
+  }, [bio]);
   return (
     <>
       <TextArea
+        ref={ref}
         id="content"
         cols="96"
         rows="3"
         name={name}
         onKeyDown={calc}
         onKeyUp={calc}
-        onChange={(onChange, calc)}
+        onChange={(calc, onChange)}
+        disabled={disabled}
+        defaultValue={bio}
       />
       <div style={{ textAlign: 'right' }}>
         <TextAreaLength id="result" type="number" value="0" readOnly />

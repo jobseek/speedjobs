@@ -16,7 +16,7 @@ public class UserInfoResponse {
 
 	private Long id;
 	private String email;
-	private String name;
+	private String nickname;
 	private String picture;
 	private Role role;
 
@@ -24,7 +24,7 @@ public class UserInfoResponse {
 		return UserInfoResponse.builder()
 			.id(user.getId())
 			.email(user.getEmail())
-			.name(user.getName())
+			.nickname(user.getNickname())
 			.picture(user.getPicture())
 			.role(user.getRole())
 			.build();

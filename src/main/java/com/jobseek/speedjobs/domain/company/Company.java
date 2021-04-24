@@ -49,7 +49,7 @@ public class Company extends User {
 	private CompanyDetail companyDetail;
 
 	public Company(UserDto userDto) {
-		super(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
+		super(userDto.getName(), userDto.getNickname(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
 			userDto.getContact(), userDto.getRole());
 		this.companyName = userDto.getCompanyName();
 		this.logoImage = userDto.getLogoImage();

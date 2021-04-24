@@ -17,19 +17,19 @@ public class OAuthAttributes {
 	private final Map<String, Object> attributes;
 	private final String nameAttributeKey;
 	private final String oauthId;
-	private final String name;
+	private final String nickname;
 	private final String email;
 	private final String picture;
 	private final Provider provider;
 
 	@Builder
-	public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name,
+	public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String nickname,
 		String email,
 		String picture, Provider provider, String oauthId) {
 		this.attributes = attributes;
 		this.nameAttributeKey = nameAttributeKey;
 		this.oauthId = oauthId;
-		this.name = name;
+		this.nickname = nickname;
 		this.email = email;
 		this.picture = picture;
 		this.provider = provider;
@@ -56,7 +56,7 @@ public class OAuthAttributes {
 		Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 		return OAuthAttributes.builder()
 			.oauthId((String) response.get("id"))
-			.name((String) response.get("name"))
+			.nickname((String) response.get("name"))
 			.email((String) response.get("email"))
 			.picture((String) response.get("profile_image"))
 			.provider(Provider.NAVER)
@@ -67,10 +67,10 @@ public class OAuthAttributes {
 
 	private static OAuthAttributes ofGithub(String userNameAttributeName,
 		Map<String, Object> attributes) {
-		String name = attributes.get("name") == null ? "login" : "name";
+		String nickname = attributes.get("name") == null ? "login" : "name";
 		return OAuthAttributes.builder()
 			.oauthId(attributes.get(userNameAttributeName).toString())
-			.name((String) attributes.get(name))
+			.nickname((String) attributes.get(nickname))
 			.email((String) attributes.get("email"))
 			.picture((String) attributes.get("avatar_url"))
 			.provider(Provider.GITHUB)
@@ -86,7 +86,7 @@ public class OAuthAttributes {
 		Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 		return OAuthAttributes.builder()
 			.oauthId(attributes.get(userNameAttributeName).toString())
-			.name((String) profile.get("nickname"))
+			.nickname((String) profile.get("nickname"))
 			.email((String) account.get("email"))
 			.picture((String) profile.get("profile_image_url"))
 			.provider(Provider.KAKAO)
@@ -99,7 +99,7 @@ public class OAuthAttributes {
 		Map<String, Object> attributes) {
 		return OAuthAttributes.builder()
 			.oauthId((String) attributes.get(userNameAttributeName))
-			.name((String) attributes.get("name"))
+			.nickname((String) attributes.get("name"))
 			.email((String) attributes.get("email"))
 			.picture((String) attributes.get("picture"))
 			.provider(Provider.GOOGLE)
@@ -110,7 +110,7 @@ public class OAuthAttributes {
 
 	public Member toEntity() {
 		UserDto userDto = UserDto.builder()
-			.name(name)
+			.nickname(nickname)
 			.email(email)
 			.picture(picture)
 			.role(Role.ROLE_MEMBER)

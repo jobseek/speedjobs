@@ -32,8 +32,8 @@ export default function ResumeCareer() {
   const cnt = useRef(1);
   const [items, setItems] = useState([{ id: 0 }]);
   const itemList = items.map((item, index) => (
-    <>
-      <div key={index} style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div key={index}>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <ResumeInputs item name={'회사이름'} />
         <ResumeInputs item name={'직급'} />
         <DatePickRange
@@ -46,10 +46,10 @@ export default function ResumeCareer() {
       <div style={{ paddingTop: '26px' }}>
         <Tags tagList={taglist}>직무</Tags>
       </div>
-    </>
+    </div>
   ));
   const test = () => {
-    setItems((prev) => [...items, { id: cnt.current }]);
+    setItems([...items, { id: cnt.current }]);
   };
   const test2 = () => {
     setItems((prev) => {

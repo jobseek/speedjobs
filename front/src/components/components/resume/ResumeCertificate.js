@@ -24,7 +24,7 @@ export default function ResumeCertificate() {
   });
 
   const test = () => {
-    setItems((prev) => [...items, { id: cnt, date: null }]);
+    setItems([...items, { id: cnt, date: null }]);
     cnt.current++;
     console.log(cnt.current);
   };

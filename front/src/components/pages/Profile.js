@@ -8,6 +8,7 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
+import ProfileDetails from '../components/Profile/ProfileDetails';
 
 export default function Profile() {
   return (
@@ -25,7 +26,7 @@ export default function Profile() {
               className={'col-md-3 col-4 text-right'}
               style={{ paddingRight: '0' }}
             >
-              <Link to="profile/modify">
+              <Link to="/profile/modify">
                 <StyledButton style={{ marginRight: '0' }} wide>
                   개인정보 수정
                 </StyledButton>
@@ -43,7 +44,7 @@ export default function Profile() {
             </StyledLeftLayout>
 
             <ProfileDiv className={'col-12 col-lg-10'}>
-              <div>개인정보 조회 페이지</div>
+              <ProfileDetails />
             </ProfileDiv>
           </div>
         </div>

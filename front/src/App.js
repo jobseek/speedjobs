@@ -24,7 +24,7 @@ import RecruitAdd from './components/pages/RecruitAdd';
 import ScrollToTop from './components/includes/ScrollToTop';
 import Login from './components/admin/page/Login';
 import AdminHome from './components/admin/page/AdminHome';
-import ProfileModify from './components/pages/ProfileModify';
+import ProfileMd from './components/pages/ProfileMd';
 import { TAG_GET_REQUEST } from './reducers/tag';
 
 const Container = styled.div`
@@ -94,7 +94,7 @@ function App() {
           <Route path={'/recruit/detail/:id'} component={RecruitmentDetail} />
           <Route path={'/community/post/:id'} component={PostDetail} />
           <Route exact path={'/profile'} component={Profile} />
-          <Route exact path={'/profile/modify'} component={ProfileModify} />
+          <Route exact path={'/profile/modify'} component={ProfileMd} />
           <Route exact path={'/resume'} component={Resume} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />

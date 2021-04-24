@@ -146,7 +146,7 @@ export default function Community(props) {
       <div
         style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
         ref={targetRef}
-      ></div>
+      />
     </>
   );
 }

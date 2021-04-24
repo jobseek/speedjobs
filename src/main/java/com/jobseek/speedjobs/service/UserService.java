@@ -58,6 +58,7 @@ public class UserService {
 		redisUtil.delete(key);
 		UserDto userDto = request.getUserDto(passwordEncoder);
 		if (userDto.getRole() == Role.ROLE_MEMBER) {
+			userDto.setNickname(request.getName());
 			Member member = new Member(userDto);
 			return memberRepository.save(member).getId();
 		} else if (userDto.getRole() == Role.ROLE_COMPANY) {
@@ -108,7 +109,7 @@ public class UserService {
 		if (user.getRole() != Role.ROLE_MEMBER) {
 			throw new IllegalArgumentException("개인회원이 아닙니다.");
 		} else if (!userId.equals(user.getId())) {
-			throw new IllegalArgumentException("올바른 경로가 아닙니다.");
+			throw new IllegalArgumentException("본인만 수정할 수 있습니다.");
 		}
 		Member member = memberRepository.findById(userId)
 			.orElseThrow(() -> new IllegalArgumentException("개인회원이 아닙니다."));
@@ -119,7 +120,7 @@ public class UserService {
 		if (user.getRole() != Role.ROLE_COMPANY) {
 			throw new IllegalArgumentException("기업회원이 아닙니다.");
 		} else if (!userId.equals(user.getId())) {
-			throw new IllegalArgumentException("올바른 경로가 아닙니다.");
+			throw new IllegalArgumentException("본인만 수정할 수 있습니다.");
 		}
 		Company company = companyRepository.findById(userId)
 			.orElseThrow(() -> new IllegalArgumentException("기업회원이 아닙니다."));
@@ -129,7 +130,7 @@ public class UserService {
 	@Transactional
 	public void update(Long userId, MemberUpdateRequest request) {
 		memberRepository.findById(userId)
-			.map(member -> member.updateCustomMemberInfo(request.getNickname(), request.getPassword(),
+			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(), request.getPassword(),
 					request.getPicture(), request.getContact(), request.getBirth(),
 					request.getBio(), request.getGender()))
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));

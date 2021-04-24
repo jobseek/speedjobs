@@ -20,10 +20,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -48,8 +49,8 @@ public class Member extends User {
 	private Provider provider;
 
 	public Member(UserDto userDto) {
-		super(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
-			userDto.getNickname(), userDto.getRole());
+		super(userDto.getName(), userDto.getNickname(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
+			userDto.getContact(), userDto.getRole());
 		this.gender = userDto.getGender();
 		this.birth = userDto.getBirth();
 		this.bio = userDto.getBio();
@@ -57,14 +58,14 @@ public class Member extends User {
 		this.oauthId = userDto.getOauthId();
 	}
 
-	public Member updateOAuthMemberInfo(String name, String picture) {
-		updateUserInfo(name, null, picture, null);
+	public Member updateOAuthMemberInfo(String nickname, String picture) {
+		updateOAuthUserInfo(nickname, picture);
 		return this;
 	}
 
-	public Member updateCustomMemberInfo(String nickname, String password, String picture,
+	public Member updateCustomMemberInfo(String name, String nickname, String password, String picture,
 		String contact, LocalDate birth, String bio, String gender) {
-		updateUserInfo(nickname, password, picture, contact);
+		updateCustomUserInfo(name, nickname, password, picture, contact);
 		this.birth = birth;
 		this.bio = bio;
 		this.gender = gender;

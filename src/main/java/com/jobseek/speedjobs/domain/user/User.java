@@ -79,8 +79,9 @@ public class User extends BaseTimeEntity {
 	private Role role;
 
 	@Builder
-	public User(String name, String email, String password, String picture, String contact, Role role) {
+	public User(String name, String nickname, String email, String password, String picture, String contact, Role role) {
 		this.name = name;
+		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
 		this.picture = picture;
@@ -88,8 +89,14 @@ public class User extends BaseTimeEntity {
 		this.role = role;
 	}
 
-	public User updateUserInfo(String name, String password, String picture, String contact) {
+	public void updateOAuthUserInfo(String nickname, String picture) {
+		this.nickname = nickname;
+		this.picture = picture;
+	}
+
+	public User updateCustomUserInfo(String name, String nickname, String password, String picture, String contact) {
 		this.name = name;
+		this.nickname = nickname;
 		this.password = password;
 		this.picture = picture;
 		this.contact = contact;

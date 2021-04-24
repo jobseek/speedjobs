@@ -181,7 +181,7 @@ export const StyledHeaderDivInside = styled.div`
       font-size: 18px;
     }
     @media (max-width: 768px) {
-      margin-left: 0px;
+      margin-left: 0;
     }
   }
 `;
@@ -675,7 +675,7 @@ export const PostTitleInput = styled.input`
 `;
 
 export const PostWriterDate = styled.div`
-  margin: 10px 0px 20px 0px;
+  margin: 10px 0 20px 0;
   @media (max-width: 992px) {
     font-size: 13px;
     margin-left: 3px;
@@ -736,14 +736,12 @@ const SearchInputInside = styled.input`
 export const SearchInput = ({ placeholder, onChange, value }) => {
   return (
     <>
-      <Search
-        style={{ position: 'absolute', top: '14px', left: '12px' }}
-      ></Search>
+      <Search style={{ position: 'absolute', top: '14px', left: '12px' }} />
       <SearchInputInside
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-      ></SearchInputInside>
+      />
     </>
   );
 };

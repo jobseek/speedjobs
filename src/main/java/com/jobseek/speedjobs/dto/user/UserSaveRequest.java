@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserSaveRequest {
 
 	@NotBlank(groups = UserValidateGroup.member.class)
-	@Size(min = 2, max = 10)
+	@Size(min = 2, max = 15)
 	private String name;
 
 	@NotBlank(groups = UserValidateGroup.member.class)
