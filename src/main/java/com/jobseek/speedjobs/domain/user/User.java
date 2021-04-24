@@ -1,11 +1,11 @@
 package com.jobseek.speedjobs.domain.user;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-
+import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,33 +15,46 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.likelist.CompanyLike;
-import com.jobseek.speedjobs.domain.likelist.PostLike;
-import com.jobseek.speedjobs.domain.likelist.RecruitLike;
-import com.jobseek.speedjobs.domain.message.Message;
-import com.jobseek.speedjobs.domain.post.Comment;
-import com.jobseek.speedjobs.domain.post.Post;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(name = "users")
 public class User extends BaseTimeEntity {
+
+	@ManyToMany
+	@JoinTable(name = "post_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "post_id")
+	)
+	private final List<Post> postFavorites = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "company_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "company_id")
+	)
+	private final List<Company> companyFavorites = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "recruit_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "recruit_id")
+	)
+	private final List<Recruit> recruitFavorites = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +63,8 @@ public class User extends BaseTimeEntity {
 
 	private String name;
 
+	private String nickname;
+
 	@Column(unique = true)
 	private String email;
 
@@ -57,41 +72,46 @@ public class User extends BaseTimeEntity {
 
 	private String picture;
 
+	private String contact;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role;
 
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<Post> postList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<CompanyLike> companyLikes = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<RecruitLike> recruitLikes = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<PostLike> postLikes = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<Comment> commentList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<Message> messageList = new ArrayList<>();
-
 	@Builder
-	public User(String name, String email, String password, String picture, Role role) {
+	public User(String name, String nickname, String email, String password, String picture, String contact, Role role) {
 		this.name = name;
+		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
 		this.picture = picture;
+		this.contact = contact;
 		this.role = role;
 	}
 
-	public User updateUserInfo(String name, String password, String picture) {
+	public void updateOAuthUserInfo(String nickname, String picture) {
+		this.nickname = nickname;
+		this.picture = picture;
+	}
+
+	public User updateCustomUserInfo(String name, String nickname, String password, String picture, String contact) {
 		this.name = name;
+		this.nickname = nickname;
 		this.password = password;
 		this.picture = picture;
+		this.contact = contact;
 		return this;
+	}
+
+	public boolean isMember() {
+		return role == Role.ROLE_MEMBER;
+	}
+
+	public boolean isCompany() {
+		return role == Role.ROLE_COMPANY;
+	}
+
+	public boolean isAdmin() {
+		return role == Role.ROLE_ADMIN;
 	}
 }

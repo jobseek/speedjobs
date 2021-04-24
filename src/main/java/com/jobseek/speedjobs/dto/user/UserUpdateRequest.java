@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserUpdateRequest {
+
 	//유저
 	private String password;
 	private String picture;

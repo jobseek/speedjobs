@@ -2,8 +2,9 @@ package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.CommentListResponse;
 import com.jobseek.speedjobs.dto.post.CommentRequest;
+import com.jobseek.speedjobs.dto.post.CommentResponse;
+import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
 import com.jobseek.speedjobs.service.CommentService;
@@ -39,16 +40,16 @@ public class PostController {
 	private final CommentService commentService;
 
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록한다.")
-	@PreAuthorize("hasRole('MEMBER')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@PostMapping
 	public ResponseEntity<Void> savePost(@LoginUser User user,
 		@Valid @RequestBody PostRequest postRequest) {
-		Long id = postService.save(postRequest, user);
-		return ResponseEntity.created(URI.create("/api/post/" + id)).build();
+		Long postId = postService.save(postRequest, user);
+		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
 	}
 
 	@ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@DeleteMapping("/{postId}")
 	public ResponseEntity<Void> deletePost(@PathVariable Long postId, @LoginUser User user) {
 		postService.delete(postId, user);
@@ -56,7 +57,7 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 수정", notes = "게시글을 수정한다.")
-	@PreAuthorize("hasRole('MEMBER')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@PutMapping("/{postId}")
 	public ResponseEntity<Void> updatePost(@PathVariable Long postId, @LoginUser User user,
 		@Valid @RequestBody PostRequest postRequest) {
@@ -67,36 +68,42 @@ public class PostController {
 	@ApiOperation(value = "게시글 단건 조회", notes = "게시글을 조회한다.")
 	@GetMapping("/{postId}")
 	public ResponseEntity<PostResponse> readPost(@PathVariable Long postId) {
-		return ResponseEntity.ok().body(postService.readById(postId));
-	}
-
-	@ApiOperation(value = "게시글 전체 조회", notes = "게시글을 전체 조회한다")
-	@GetMapping
-	public ResponseEntity<List<PostResponse>> readAllPosts() {
-		return ResponseEntity.ok().body(postService.readAll());
+		return ResponseEntity.ok().body(postService.findById(postId));
 	}
 
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
 	@GetMapping("/paging")
-	public Page<PostResponse> readPostsByPage(final Pageable pageable) {
-		return postService.readByPage(pageable);
+	public ResponseEntity<Page<PostListResponse>> readPostsByPage(Pageable pageable, @LoginUser User user) {
+		return ResponseEntity.ok().body(postService.findByPage(pageable, user));
 	}
 
 	/**
 	 * 기능들
 	 */
-	@ApiOperation(value = "게시글 좋아요", notes = "게시글을 좋아요 누른다.")
-	@PostMapping("/{postId}/up")
-	public ResponseEntity<Void> pushPostLike(@PathVariable Long postId) {
-		postService.like(postId);
+
+	@ApiOperation(value = "게시글 찜하기", notes = "게시글을 찜한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@PostMapping("/{postId}/favorite")
+	public ResponseEntity<Void> savePostFavorite(@PathVariable Long postId, @LoginUser User user) {
+		postService.savePostFavorite(postId, user);
 		return ResponseEntity.noContent().build();
 	}
 
-	@ApiOperation(value = "게시글 싫어요", notes = "게시글을 싫어요 누른다.")
-	@PostMapping("/{postId}/down")
-	public ResponseEntity<Void> pushPostHate(@PathVariable Long postId) {
-		postService.hate(postId);
+	@ApiOperation(value = "게시글 찜하기 취소", notes = "게시글을 찜목록에서 삭제한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@DeleteMapping("/{postId}/favorite")
+	public ResponseEntity<Void> deletePostFavorite(@PathVariable Long postId,
+		@LoginUser User user) {
+		postService.deletePostFavorite(postId, user);
 		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "게시글 찜 목록 조회하기", notes = "게시글 찜 목록을 조회한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@GetMapping("/favorites")
+	public ResponseEntity<Page<PostListResponse>> findPostFavorites(@LoginUser User user,
+		Pageable pageable) {
+		return ResponseEntity.ok().body(postService.findPostFavorites(pageable, user));
 	}
 
 	/**
@@ -113,44 +120,43 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PutMapping("/{postId}/{commentId}")
-	public ResponseEntity<Void> updateComment(@LoginUser User user,
-		@Valid @RequestBody CommentRequest commentRequest,
-		@PathVariable Long postId, @PathVariable Long commentId) {
+	public ResponseEntity<Void> updateComment(@Valid @RequestBody CommentRequest commentRequest,
+		@PathVariable Long postId, @PathVariable Long commentId, @LoginUser User user) {
 		commentService.updateComment(commentRequest, user, commentId);
 		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
 	}
 
 	@ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@DeleteMapping("/{postId}/{commentId}")
 	public ResponseEntity<Void> deleteComment(@LoginUser User user, @PathVariable Long postId,
 		@PathVariable Long commentId) {
-		commentService.deleteComment(user, postId, commentId);
+		commentService.deleteComment(user, commentId);
 		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
 	}
 
-	//TODO
-	@ApiOperation(value = "댓글페이지조회", notes = "댓글을 조회한다.")
+	@ApiOperation(value = "댓글 조회", notes = "댓글을 조회한다.")
 	@GetMapping("/{postId}/paging")
-	public Page<CommentListResponse> readCommentsByPage(final Pageable pageable,
-		@PathVariable Long postId) {
-		log.info(postId.toString());
-		return commentService.readByPage(pageable, postId);
+	public ResponseEntity<Page<CommentResponse>> readCommentsByPage(@PathVariable Long postId,
+		Pageable pageable) {
+		return ResponseEntity.ok().body(commentService.readByPage(postId, pageable));
 	}
 
-	@ApiOperation(value = "댓글 좋아요", notes = "댓글을 좋아요 누른다.")
-	@PostMapping("/{postId}/{commentId}/up")
-	public ResponseEntity<Void> pushCommentLike(@PathVariable Long postId, @PathVariable Long commentId) {
-		commentService.like(commentId);
-		return ResponseEntity.noContent().build();
-	}
-
-	@ApiOperation(value = "댓글 싫어요", notes = "댓글을 싫어요 누른다.")
-	@PostMapping("/{postId}/{commentId}/down")
-	public ResponseEntity<Void> pushCommentHate(@PathVariable Long postId, @PathVariable Long commentId) {
-		commentService.hate(commentId);
-		return ResponseEntity.noContent().build();
-	}
+//	@ApiOperation(value = "댓글 좋아요", notes = "댓글을 좋아요 누른다.")
+//	@PostMapping("/{postId}/{commentId}/up")
+//	public ResponseEntity<Void> pushCommentLike(@PathVariable Long postId,
+//		@PathVariable Long commentId) {
+//		commentService.like(commentId);
+//		return ResponseEntity.noContent().build();
+//	}
+//
+//	@ApiOperation(value = "댓글 싫어요", notes = "댓글을 싫어요 누른다.")
+//	@PostMapping("/{postId}/{commentId}/down")
+//	public ResponseEntity<Void> pushCommentHate(@PathVariable Long postId,
+//		@PathVariable Long commentId) {
+//		commentService.hate(commentId);
+//		return ResponseEntity.noContent().build();
+//	}
 }

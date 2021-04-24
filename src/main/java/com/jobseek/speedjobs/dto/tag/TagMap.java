@@ -1,7 +1,5 @@
 package com.jobseek.speedjobs.dto.tag;
 
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.Type;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import lombok.Getter;
 
 @Getter
 public class TagMap {
+
 	private final Long id;
 	private final String name;
 
@@ -26,10 +25,8 @@ public class TagMap {
 
 	public static Map<Type, List<TagMap>> toMap(List<Tag> tags) {
 		Map<Type, List<TagMap>> result = new HashMap<>();
-		for (Tag tag : tags) {
-			result.computeIfAbsent(tag.getType(), t -> new ArrayList<>()).add(
-				TagMap.of(tag));
-		}
+		tags.forEach(tag -> result.computeIfAbsent(tag.getType(), t -> new ArrayList<>())
+			.add(TagMap.of(tag)));
 		return result;
 	}
 }

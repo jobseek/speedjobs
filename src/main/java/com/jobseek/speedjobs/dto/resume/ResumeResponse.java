@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ResumeResponse {
+
 	private Long id;
 	private Open open;
 	private String coverLetter;

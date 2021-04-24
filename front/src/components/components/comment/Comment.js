@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import 'autoheight-textarea';
+import 'autoheight-textarea';
 import { ThumbUp } from '@styled-icons/material-rounded/ThumbUp';
 import { StyledButton } from '../Styled';
 

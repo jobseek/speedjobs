@@ -1,29 +1,26 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.common.exception.UnauthorizedException;
+import com.jobseek.speedjobs.domain.post.Comment;
+import com.jobseek.speedjobs.domain.post.CommentRepository;
+import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.post.PostRepository;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.post.CommentRequest;
+import com.jobseek.speedjobs.dto.post.CommentResponse;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobseek.speedjobs.domain.post.Comment;
-import com.jobseek.speedjobs.domain.post.CommentRepository;
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.post.PostRepository;
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.post.CommentListResponse;
-import com.jobseek.speedjobs.dto.post.CommentRequest;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-@Slf4j
 public class CommentService {
 
 	private final CommentRepository commentRepository;
@@ -31,8 +28,7 @@ public class CommentService {
 
 	@Transactional
 	public Long saveComment(CommentRequest commentRequest, User user, Long postId) {
-		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId=" + postId));
+		Post post = findPost(postId);
 		Comment comment = commentRequest.of(user, post);
 		comment.addComment(post);
 		return commentRepository.save(comment).getId();
@@ -40,41 +36,52 @@ public class CommentService {
 
 	@Transactional
 	public void updateComment(CommentRequest commentRequest, User user, Long commentId) {
-		Comment comment = commentRepository.findById(commentId).orElseThrow(
-			() -> new IllegalArgumentException("존재하지 않는 댓글입니다. commentId = " + commentId));
+		Comment comment = findOne(commentId);
+		validateUser(comment, user);
 		comment.updateComment(commentRequest.toEntity());
 	}
 
 	@Transactional
-	public void deleteComment(User user, Long postId, Long commentId) {
-		Comment comment = commentRepository.findById(commentId)
-			.orElseThrow(
-				() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. commentId=" + commentId));
+	public void deleteComment(User user, Long commentId) {
+		Comment comment = findOne(commentId);
+		validateUser(comment, user);
 		commentRepository.delete(comment);
 	}
 
-	public Page<CommentListResponse> readByPage(Pageable pageable, Long postId) {
-		List<Comment> list = postRepository.findById(postId).get().getComments();
-		int totalElements = list.size();
-		Page<CommentListResponse> page = new PageImpl<>(list.stream()
-			.map(comment -> CommentListResponse.builder().createdDate(comment.getCreatedDate())
-				.content(comment.getContent()).author(comment.getUser().getName())
-				.id(comment.getId()).build()).collect(Collectors.toList()), pageable,
-			totalElements);
-		return page;
+	public Page<CommentResponse> readByPage(Long postId, Pageable pageable) {
+		List<Comment> comments = findPost(postId).getComments();
+		return new PageImpl<>(comments.stream()
+			.map(CommentResponse::of)
+			.collect(Collectors.toList()), pageable, comments.size());
 	}
 
-	@Transactional
-	public void like(Long commentId) {
-		Comment comment = commentRepository.findById(commentId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
-		comment.increaseLikeCount();
+	private Post findPost(Long postId) {
+		return postRepository.findById(postId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId=" + postId));
 	}
 
-	@Transactional
-	public void hate(Long commentId) {
-		Comment comment = commentRepository.findById(commentId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
-		comment.decreaseLikeCount();
+	private Comment findOne(Long commentId) {
+		return commentRepository.findById(commentId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
 	}
+
+	private void validateUser(Comment comment, User user) {
+		if (!user.isAdmin() && user != comment.getUser()) {
+			throw new UnauthorizedException("댓글을 지울 수 있는 권한이 없습니다.");
+		}
+	}
+
+//	@Transactional
+//	public void like(Long commentId) {
+//		Comment comment = commentRepository.findById(commentId)
+//			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+//		comment.increaseLikeCount();
+//	}
+//
+//	@Transactional
+//	public void hate(Long commentId) {
+//		Comment comment = commentRepository.findById(commentId)
+//			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+//		comment.decreaseLikeCount();
+//	}
 }

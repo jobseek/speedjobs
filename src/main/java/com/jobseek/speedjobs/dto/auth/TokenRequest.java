@@ -1,9 +1,7 @@
 package com.jobseek.speedjobs.dto.auth;
 
-import javax.validation.constraints.Email;
-
 import com.jobseek.speedjobs.domain.user.Provider;
-
+import javax.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

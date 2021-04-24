@@ -1,13 +1,10 @@
 package com.jobseek.speedjobs.dto.post;
 
-import javax.validation.constraints.NotBlank;
-
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.user.User;
-
+import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

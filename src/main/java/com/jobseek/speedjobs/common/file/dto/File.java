@@ -1,12 +1,12 @@
 package com.jobseek.speedjobs.common.file.dto;
 
 import javax.validation.constraints.NotBlank;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 @Getter
 @Builder
@@ -21,6 +21,7 @@ public class File {
 	private String extension;
 
 	@NotBlank
+	@URL
 	private String url;
 
 }

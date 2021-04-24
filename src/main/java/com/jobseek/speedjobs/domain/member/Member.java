@@ -22,7 +22,9 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -31,47 +33,42 @@ import lombok.NoArgsConstructor;
 @Table(name = "members")
 public class Member extends User {
 
-	private String sex;
+	@OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
+	private final List<Resume> resumeList = new ArrayList<>();
+
+	private String gender;
 
 	private LocalDate birth;
 
-	private String nickname;
-
 	private String bio;
 
-	@OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
-	private List<Resume> resumeList = new ArrayList<>();
+	private String oauthId;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Provider provider;
 
-	@Column(name = "oauth_id")
-	private String oauthId;
-
 	public Member(UserDto userDto) {
-		super(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
-			userDto.getRole());
-		this.sex = userDto.getSex();
+		super(userDto.getName(), userDto.getNickname(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
+			userDto.getContact(), userDto.getRole());
+		this.gender = userDto.getGender();
 		this.birth = userDto.getBirth();
-		this.nickname = userDto.getNickname();
 		this.bio = userDto.getBio();
 		this.provider = userDto.getProvider();
 		this.oauthId = userDto.getOauthId();
 	}
 
-	public Member updateOAuthUserInfo(String name, String picture) {
-		updateUserInfo(name, null, picture);
+	public Member updateOAuthMemberInfo(String nickname, String picture) {
+		updateOAuthUserInfo(nickname, picture);
 		return this;
 	}
 
-	public Member updateCustomUserInfo(String name, String password, String picture, String sex,
-		LocalDate birth, String nickname, String bio) {
-		updateUserInfo(name, password, picture);
-		this.sex = sex;
+	public Member updateCustomMemberInfo(String name, String nickname, String password, String picture,
+		String contact, LocalDate birth, String bio, String gender) {
+		updateCustomUserInfo(name, nickname, password, picture, contact);
 		this.birth = birth;
-		this.nickname = nickname;
 		this.bio = bio;
+		this.gender = gender;
 		return this;
 	}
 

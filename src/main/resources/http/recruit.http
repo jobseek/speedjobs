@@ -23,7 +23,10 @@ Authorization: Bearer {{accessToken}}
   "experience": "JUNIOR",
   "position": "PERMANENT",
   "content": "모집합니다아",
-  "tagIds": [1,3]
+  "tagIds": [
+    1,
+    3
+  ]
 }
 
 ### 2. 공고 수정
@@ -40,7 +43,12 @@ Authorization: Bearer {{accessToken}}
   "experience": "JUNIOR",
   "position": "PERMANENT",
   "content": "수정입니다아",
-  "tagIds": [1,5,10,14]
+  "tagIds": [
+    1,
+    5,
+    10,
+    14
+  ]
 }
 
 ### 3. 공고 삭제

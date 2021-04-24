@@ -1,11 +1,8 @@
 package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.common.file.dto.File;
-import com.jobseek.speedjobs.domain.banner.Banner;
-import com.jobseek.speedjobs.domain.banner.BannerRepository;
 import com.jobseek.speedjobs.dto.banner.BannerResponse;
 import com.jobseek.speedjobs.dto.banner.BannerResponses;
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -49,7 +46,7 @@ public class BannerServiceTest {
 		BannerResponses responses = bannerService.read();
 		List<BannerResponse> result = responses.getBanners();
 		int length = responses.getCount();
-		Long tmp = result.get(length-1).getId();
+		Long tmp = result.get(length - 1).getId();
 
 		Assertions.assertThat(tmp).isEqualTo(id);
 	}

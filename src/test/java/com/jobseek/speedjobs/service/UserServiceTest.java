@@ -4,7 +4,6 @@ import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
-import com.jobseek.speedjobs.dto.user.UserUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;

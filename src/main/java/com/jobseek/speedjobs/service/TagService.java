@@ -1,15 +1,12 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
-import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
 import com.jobseek.speedjobs.dto.tag.TagSaveRequest;
 import com.jobseek.speedjobs.dto.tag.TagUpdateRequest;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

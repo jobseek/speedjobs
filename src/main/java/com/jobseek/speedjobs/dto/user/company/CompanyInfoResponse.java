@@ -2,7 +2,6 @@ package com.jobseek.speedjobs.dto.user.company;
 
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
-import com.jobseek.speedjobs.domain.user.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

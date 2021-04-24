@@ -6,44 +6,43 @@ import com.jobseek.speedjobs.dto.tag.TagMap;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostResponse {
 
 	private Long id;
+	private Long author_id;
 	private String title;
 	private String content;
 	private String author;
+	private int viewCount;
+	private int favoriteCount;
+	private boolean favorite;
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
-	private int commentCount;
-	private int likeCount;
-	private int viewCount;
 	private Map<Type, List<TagMap>> tags;
-	private List<CommentResponse> comments;
 
 	@Builder
-	public PostResponse(Long id, String title, String content, String author,
-		LocalDateTime createdDate, LocalDateTime modifiedDate, int commentCount, int likeCount,
-		int viewCount,
-		Map<Type, List<TagMap>> tags, List<CommentResponse> comments) {
+	public PostResponse(Long id, Long author_id, String title, String content, String author,
+		int viewCount, int favoriteCount, boolean favorite, LocalDateTime createdDate,
+		LocalDateTime modifiedDate,
+		Map<Type, List<TagMap>> tags) {
 		this.id = id;
+		this.author_id = author_id;
 		this.title = title;
 		this.content = content;
 		this.author = author;
+		this.viewCount = viewCount;
+		this.favoriteCount = favoriteCount;
+		this.favorite = favorite;
 		this.createdDate = createdDate;
 		this.modifiedDate = modifiedDate;
-		this.commentCount = commentCount;
-		this.likeCount = likeCount;
-		this.viewCount = viewCount;
 		this.tags = tags;
-		this.comments = comments;
 	}
 
 	public static PostResponse of(Post post) {
@@ -54,11 +53,8 @@ public class PostResponse {
 			.author(post.getUser().getName())
 			.createdDate(post.getCreatedDate())
 			.modifiedDate(post.getModifiedDate())
-			.commentCount(post.getComments().size())
-			.likeCount(post.getLikeCount())
 			.viewCount(post.getViewCount())
 			.tags(TagMap.toMap(post.getPostTags().getTags()))
-			.comments(post.getComments().stream().map(CommentResponse::of).collect(Collectors.toList()))
 			.build();
 	}
 }

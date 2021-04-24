@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import styled from 'styled-components';
 import Comment, { CommentsForm } from './Comment';
 import {
@@ -13,7 +12,7 @@ import {
 const BlogComment = styled.div`
   position: relative;
   overflow: auto;
-  padding: 40px 10px 0 0;
+  padding-right: 10px;
 `;
 
 const CommentList = styled.div``;

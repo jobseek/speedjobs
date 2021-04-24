@@ -31,14 +31,14 @@ public class TagController {
 
 	@ApiOperation(value = "태그 등록", notes = "태그를 등록한다.")
 	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<Void> saveTag(@Valid @RequestBody TagSaveRequest tagSaveRequest) {
 		tagService.saveTag(tagSaveRequest);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "태그 조회", notes = "태그를 조회한다.")
-	@GetMapping("")
+	@GetMapping
 	public ResponseEntity<TagResponses> findTagsByType() {
 		return ResponseEntity.ok().body(tagService.findTagsByType());
 	}

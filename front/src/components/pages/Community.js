@@ -97,6 +97,7 @@ export default function Community(props) {
       tags={[...(pl.tags.SKILL ?? []), ...(pl.tags.POSITION ?? [])]}
       title={pl.title}
       writer={pl.author}
+      viewCount={pl.viewCount}
       date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
       fav="미구현"
       key={pl.id}
@@ -145,7 +146,7 @@ export default function Community(props) {
       <div
         style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
         ref={targetRef}
-      ></div>
+      />
     </>
   );
 }

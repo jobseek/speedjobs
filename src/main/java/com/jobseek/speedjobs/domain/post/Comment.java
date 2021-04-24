@@ -39,8 +39,6 @@ public class Comment extends BaseTimeEntity {
 	@Lob
 	private String content;
 
-	private int likeCount;
-
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "post_id")
 	private Post post;
@@ -56,13 +54,4 @@ public class Comment extends BaseTimeEntity {
 	public void updateComment(Comment comment) {
 		this.content = comment.getContent();
 	}
-
-	public void increaseLikeCount() {
-		this.likeCount += 1;
-	}
-
-	public void decreaseLikeCount() {
-		this.likeCount -= 1;
-	}
-
 }

@@ -39,30 +39,6 @@ const StyledDatePicker = styled(DatePicker)`
   }
 `;
 
-// const InputTel = styled.input`
-//   width: 100%;
-//   height: 35px;
-//   border-radius: 27px;
-//   border: 1px solid silver;
-//   padding: 0 20px 3px;
-//   margin-bottom: 5px;
-//   &:focus {
-//     outline: none;
-//   }
-// `;
-
-// const InputTel = styled.input`
-//   width: 100%;
-//   height: 35px;
-//   border-radius: 27px;
-//   border: 1px solid silver;
-//   padding: 0 20px 3px;
-//   margin-bottom: 5px;
-//   &:focus {
-//     outline: none;
-//   }
-// `;
-
 export default function ResumeBasic() {
   const [img, setImage] = useState(
     'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
@@ -73,6 +49,8 @@ export default function ResumeBasic() {
     setBookmark(!bookmark);
   };
   const onChange = async (e) => {
+    const file = e.target.files[0];
+    console.log('테스트-----------', file);
     const formData = new FormData();
     formData.append('files', e.target.files[0]);
     console.log(formData);
@@ -82,11 +60,22 @@ export default function ResumeBasic() {
       .post('/file', formData)
       .then((res) => res.data.files[0].url)
       .catch(
-        (error) =>
+        () =>
           'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
       );
-    console.log(url);
-    setImage(url);
+    if (
+      file.type !== 'image/jpeg' &&
+      file.type !== 'image/png' &&
+      file.type !== 'image/gif'
+    ) {
+      alert('이미지 파일만 등록할 수 있습니다.');
+      setImage(
+        'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
+      );
+    } else {
+      console.log(url);
+      setImage(url);
+    }
   };
   const hiddenFileInput = React.useRef(null);
   const handleClick = async () => {

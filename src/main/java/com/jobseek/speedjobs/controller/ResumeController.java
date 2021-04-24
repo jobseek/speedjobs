@@ -9,7 +9,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,7 +31,7 @@ public class ResumeController {
 
 	@ApiOperation(value = "이력서 추가", notes = "이력서를 등록한다.")
 	@PreAuthorize("hasRole('MEMBER')")
-	@PostMapping()
+	@PostMapping
 	public ResponseEntity<Void> save(@LoginUser User user,
 		@RequestBody ResumeRequest resumeRequest) {
 		Long id = resumeService.save(user, resumeRequest);

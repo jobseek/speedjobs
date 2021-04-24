@@ -24,10 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Service
 public class RecruitService {
 
 	private final RecruitRepository recruitRepository;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { HeartFill, ShareFill } from 'react-bootstrap-icons';
 import {
   StyledButton,
@@ -9,7 +10,22 @@ import {
   TagBody,
 } from '../components/Styled';
 import PostDetailComment from '../components/comment/PostDetailComment';
-import { POST_GET_DONE, POST_GET_REQUEST } from '../../reducers/post';
+import {
+  POST_DELETE_DONE,
+  POST_DELETE_REQUEST,
+  POST_GET_DONE,
+  POST_GET_REQUEST,
+  POST_LIST_REQUEST,
+} from '../../reducers/post';
+
+const PostTextarea = styled.textarea`
+  margin-top: 25px;
+  width: 100%;
+  border: none;
+  resize: none;
+  outline: none;
+  overflow-y: hidden;
+`;
 
 export default function PostDetail(props) {
   const history = useHistory();
@@ -27,21 +43,39 @@ export default function PostDetail(props) {
       data: id,
     });
   }, [dispatch, id]);
-  useEffect(() => {
-    console.log(location.state);
-  }, []);
+
   useEffect(() => {
     if (post.postGetDone) {
-      console.log(post.post);
       setContent({
         title: post.post.title,
         content: post.post.content,
+        author: post.post.author,
+        createdDate: post.post.createdDate,
       });
       dispatch({
         type: POST_GET_DONE,
       });
     }
-  }, [post.postGetDone, post, dispatch]);
+  }, [post, id, dispatch]);
+
+  const DeleteHandler = () => {
+    dispatch({
+      type: POST_DELETE_REQUEST,
+      data: id,
+    });
+  };
+  useEffect(() => {
+    if (post.postDeleteDone) {
+      dispatch({
+        type: POST_DELETE_DONE,
+      });
+      history.goBack();
+    }
+    dispatch({
+      type: POST_LIST_REQUEST,
+    });
+  }, [dispatch, history, post.postDeleteDone]);
+
   return (
     <>
       <div
@@ -80,35 +114,43 @@ export default function PostDetail(props) {
           <div style={{ margin: '10px 0px 20px 0px' }}>
             {location.state.writer} {location.state.date}
           </div>
-          {/* 태그*/}
-          <div>
-            {location.state.tags.map((t) => (
-              <TagBody grey>{t.name}</TagBody>
-            ))}
-          </div>
-          {/* 본문*/}
-          <div style={{ whiteSpace: 'pre-line', width: '100%' }}>
-            {content.content}
-          </div>
         </div>
-        {/* 찜 공유*/}
-        <StyledLike>
-          <div style={{ width: '100%', textAlign: 'center' }}>
-            <span>
-              <HeartFill></HeartFill>
-            </span>
-          </div>
-          <div style={{ width: '100%', textAlign: 'center', fontSize: '10px' }}>
-            99+
-          </div>
-          <div style={{ width: '100%', textAlign: 'center' }}>
-            <span>
-              <ShareFill></ShareFill>
-            </span>
-          </div>
-        </StyledLike>
+        {/* 태그*/}
+        <div>
+          {location.state.tags.map((t) => (
+            <TagBody grey>{t.name}</TagBody>
+          ))}
+        </div>
+        {/* 본문*/}
+        <div style={{ whiteSpace: 'pre-line', width: '100%' }}>
+          <autoheight-textarea>
+            <PostTextarea value={content.content} />
+          </autoheight-textarea>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <StyledButton white>수정</StyledButton>
+          <StyledButton white onClick={() => DeleteHandler()}>
+            삭제
+          </StyledButton>
+        </div>
         <PostDetailComment id={id} />
       </div>
+      {/* 찜 공유*/}
+      <StyledLike>
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          <span>
+            <HeartFill></HeartFill>
+          </span>
+        </div>
+        <div style={{ width: '100%', textAlign: 'center', fontSize: '10px' }}>
+          99+
+        </div>
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          <span>
+            <ShareFill></ShareFill>
+          </span>
+        </div>
+      </StyledLike>
     </>
   );
 }

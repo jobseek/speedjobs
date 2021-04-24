@@ -1,25 +1,19 @@
 package com.jobseek.speedjobs.dto.user;
 
+import com.jobseek.speedjobs.domain.company.CompanyDetail;
+import com.jobseek.speedjobs.domain.user.Provider;
+import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.UserDto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.company.CompanyDetail;
-import com.jobseek.speedjobs.domain.member.Member;
-import com.jobseek.speedjobs.domain.user.Provider;
-import com.jobseek.speedjobs.domain.user.Role;
-import com.jobseek.speedjobs.domain.user.User;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Builder
@@ -28,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class UserSaveRequest {
 
 	@NotBlank(groups = UserValidateGroup.member.class)
-	@Size(min = 2, max = 10)
+	@Size(min = 2, max = 15)
 	private String name;
 
 	@NotBlank(groups = UserValidateGroup.member.class)

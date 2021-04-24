@@ -2,10 +2,12 @@ package com.jobseek.speedjobs.config.auth;
 
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserRepository;
 import java.util.Collections;
-
 import javax.transaction.Transactional;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -14,11 +16,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.domain.user.UserRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -49,9 +46,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 	@Transactional
 	public User saveOrUpdateOAuthUser(OAuthAttributes attributes) {
-		Member member = memberRepository.findByProviderAndOauthId(attributes.getProvider(), attributes.getOauthId())
-			.map(entity -> entity.updateOAuthUserInfo(attributes.getName(), attributes.getPicture()))
-			.orElse(userRepository.existsByEmail(attributes.getEmail()) ? null : attributes.toEntity());
+		Member member = memberRepository
+			.findByProviderAndOauthId(attributes.getProvider(), attributes.getOauthId())
+			.map(
+				entity -> entity.updateOAuthMemberInfo(attributes.getNickname(), attributes.getPicture()))
+			.orElse(
+				userRepository.existsByEmail(attributes.getEmail()) ? null : attributes.toEntity());
 
 		if (member == null) {
 			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");

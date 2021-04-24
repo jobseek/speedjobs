@@ -1,12 +1,13 @@
 package com.jobseek.speedjobs.domain.resume.details;
 
-import lombok.*;
-
-import javax.persistence.*;
-
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import lombok.Getter;
+import lombok.ToString;
 
 @Embeddable
 @Getter
