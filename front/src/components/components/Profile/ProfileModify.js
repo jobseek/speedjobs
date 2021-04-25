@@ -37,7 +37,7 @@ export default function ProfileModify() {
       e.preventDefault();
       dispatch({ type: PROFILE_UPDATE_REQUEST, data: form, me: user.me.id });
     },
-    [dispatch, form]
+    [dispatch, form, user.me.id]
   );
 
   //

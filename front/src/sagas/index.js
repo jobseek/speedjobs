@@ -9,6 +9,7 @@ import address from '../auth/address';
 import profileSaga from './profile';
 import tagSaga from './tag';
 import companySaga from './company';
+import likeSaga from './like';
 
 axios.defaults.baseURL = `http://${address()}:8081/api`;
 axios.defaults.withCredentials = true;
@@ -22,5 +23,6 @@ export default function* rootSaga() {
     fork(recruitSaga),
     fork(tagSaga),
     fork(companySaga),
+    fork(likeSaga),
   ]);
 }

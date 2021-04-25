@@ -1,9 +1,15 @@
 import { Heart, HeartFill } from 'react-bootstrap-icons';
 // import { EyeShow } from '@styled-icons/fluentui-system-filled/EyeShow';
 import { useHistory } from 'react-router';
-import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TagBody } from './Styled';
 import { Blank } from '../pages/Community';
+import {
+  ADD_LIKE_DONE,
+  ADD_LIKE_REQUEST,
+  UN_LIKE_REQUEST,
+} from '../../reducers/like';
 
 export default function Post({
   title,
@@ -15,7 +21,10 @@ export default function Post({
   id,
   type,
 }) {
+  const [inFav, set] = useState(fav);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const like = useSelector((state) => state.like);
   // 태그 맵
   const mapTags = tags.map((tag) => (
     <TagBody grey sm key={tag.id}>
@@ -32,11 +41,43 @@ export default function Post({
         writer,
         tags,
         date,
-        fav,
+        fav: inFav,
       },
     });
-  }, [date, fav, history, id, tags, type, writer]);
+  }, [date, history, id, tags, type, writer, inFav]);
 
+  useEffect(() => {
+    if (like.data === null) return;
+    if (!like.addLikeDone && !like.unLikeDone) return;
+    if (like.data.id !== id) return;
+    if (like.addLikeDone) {
+      set(true);
+    } else if (like.unLikeDone) {
+      set(false);
+    }
+    dispatch({
+      type: ADD_LIKE_DONE,
+    });
+  }, [like.addLikeDone, like.unLikeDone, like.data, dispatch, id]);
+  const favClick = useCallback(
+    (e) => {
+      dispatch({
+        type: ADD_LIKE_REQUEST,
+        data: { id },
+      });
+    },
+    [id, dispatch]
+  );
+
+  const unFavClick = useCallback(
+    (e) => {
+      dispatch({
+        type: UN_LIKE_REQUEST,
+        data: { id },
+      });
+    },
+    [id, dispatch]
+  );
   return (
     <>
       <div
@@ -67,7 +108,11 @@ export default function Post({
             {viewCount}
           </div>
           <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-            {fav ? <HeartFill></HeartFill> : <Heart></Heart>}
+            {inFav ? (
+              <HeartFill onClick={unFavClick}></HeartFill>
+            ) : (
+              <Heart onClick={favClick}></Heart>
+            )}
           </div>
         </div>
       </div>

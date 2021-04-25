@@ -88,7 +88,9 @@ const StyledButtonInside = styled.div`
     css`
       position: absolute;
       right: 0;
-    `} &:hover {
+    `} 
+  
+  &:hover {
     background-color: #f2d411;
   }
 
@@ -105,6 +107,20 @@ const StyledButtonInside = styled.div`
         background-color: #7c7c7c;
       }
     `}
+
+  ${(props) =>
+    props.grey &&
+    css`
+      color: white;
+      background-color: #7c7c7c;
+      border: 1px solid #7c7c7c;
+
+      &:hover {
+        color: #7c7c7c;
+        background-color: white;
+      }
+    `}
+  
   ${(props) =>
     props.mid &&
     css`
@@ -204,6 +220,7 @@ export const StyledButton = ({
   hcenter,
   last,
   white,
+  grey,
   mid,
   wide,
   sm,
@@ -224,6 +241,7 @@ export const StyledButton = ({
     first={first}
     style={style}
     onClick={onClick}
+    grey={grey}
   >
     {children}
   </StyledButtonInside>

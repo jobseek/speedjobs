@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { HeartFill, ShareFill } from 'react-bootstrap-icons';
+import { Heart, HeartFill, ShareFill } from 'react-bootstrap-icons';
 import {
   StyledButton,
   StyledHeaderDiv,
@@ -17,6 +17,11 @@ import {
   POST_GET_REQUEST,
   POST_LIST_REQUEST,
 } from '../../reducers/post';
+import {
+  ADD_LIKE_DONE,
+  ADD_LIKE_REQUEST,
+  UN_LIKE_REQUEST,
+} from '../../reducers/like';
 
 const PostTextarea = styled.textarea`
   margin-top: 25px;
@@ -30,8 +35,10 @@ const PostTextarea = styled.textarea`
 export default function PostDetail(props) {
   const history = useHistory();
   const { id } = useParams();
+  const [fav, setFav] = useState(false);
   const location = useLocation();
   const post = useSelector((state) => state.post);
+  const like = useSelector((state) => state.like);
   const [content, setContent] = useState({
     title: '',
     content: '',
@@ -75,6 +82,44 @@ export default function PostDetail(props) {
       type: POST_LIST_REQUEST,
     });
   }, [dispatch, history, post.postDeleteDone]);
+  useEffect(() => {
+    if (location.state.fav) setFav(true);
+    else setFav(false);
+  }, [location.state.fav]);
+
+  useEffect(() => {
+    if (like.data === null) return;
+    if (!like.addLikeDone && !like.unLikeDone) return;
+    if (like.data.id !== id) return;
+    if (like.addLikeDone) {
+      setFav(true);
+    } else if (like.unLikeDone) {
+      setFav(false);
+    }
+    dispatch({
+      type: ADD_LIKE_DONE,
+    });
+  }, [like.addLikeDone, like.unLikeDone, like.data, dispatch, id]);
+
+  const favClick = useCallback(
+    (e) => {
+      dispatch({
+        type: ADD_LIKE_REQUEST,
+        data: { id },
+      });
+    },
+    [id, dispatch]
+  );
+
+  const unFavClick = useCallback(
+    (e) => {
+      dispatch({
+        type: UN_LIKE_REQUEST,
+        data: { id },
+      });
+    },
+    [id, dispatch]
+  );
 
   return (
     <>
@@ -105,7 +150,16 @@ export default function PostDetail(props) {
               >
                 목록
               </StyledButton>
-              <StyledButton white>찜하기</StyledButton>
+              <StyledButton
+                white={!fav}
+                grey={fav}
+                onClick={(e) => {
+                  if (fav) unFavClick(e);
+                  else favClick(e);
+                }}
+              >
+                찜하기
+              </StyledButton>
             </div>
           </div>
         </StyledHeaderDiv>
@@ -122,7 +176,10 @@ export default function PostDetail(props) {
           ))}
         </div>
         {/* 본문*/}
-        <div style={{ whiteSpace: 'pre-line', width: '100%' }}>
+        <div
+          className={'container'}
+          style={{ whiteSpace: 'pre-line', width: '100%' }}
+        >
           <autoheight-textarea>
             <PostTextarea value={content.content} />
           </autoheight-textarea>
@@ -139,11 +196,16 @@ export default function PostDetail(props) {
       <StyledLike>
         <div style={{ width: '100%', textAlign: 'center' }}>
           <span>
-            <HeartFill></HeartFill>
+            {fav ? (
+              <HeartFill onClick={unFavClick}></HeartFill>
+            ) : (
+              <Heart onClick={favClick}></Heart>
+            )}
           </span>
         </div>
         <div style={{ width: '100%', textAlign: 'center', fontSize: '10px' }}>
-          99+
+          {/* 찜수 */}
+          <div style={{ height: '10px' }}></div>
         </div>
         <div style={{ width: '100%', textAlign: 'center' }}>
           <span>

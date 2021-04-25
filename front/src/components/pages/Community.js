@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
@@ -50,10 +51,11 @@ export default function Community(props) {
   const [, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
   const [taglist, setTaglist] = useState([]);
+  const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
   const tagss = useSelector((state) => state.tag);
   useEffect(() => {
     if (tagss.tagGetData) {
-      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      const temp = Array.from(tagss.tagGetData.tags.POSITION ?? []);
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
@@ -64,15 +66,17 @@ export default function Community(props) {
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
-    if (divElm) {
-      currentObserver.observe(divElm);
+    if (refresh['REFRESH_TOKEN'] === undefined || user.meDone) {
+      if (divElm) {
+        currentObserver.observe(divElm);
+      }
     }
     return () => {
       if (divElm) {
         currentObserver.unobserve(divElm);
       }
     };
-  }, []);
+  }, [user.meDone, refresh]);
 
   useEffect(() => {
     if (post.postListLoading) {
@@ -99,7 +103,7 @@ export default function Community(props) {
       writer={pl.author}
       viewCount={pl.viewCount}
       date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
-      fav="미구현"
+      fav={pl.favorite}
       key={pl.id}
     />
   ));
