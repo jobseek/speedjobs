@@ -133,12 +133,14 @@ export default function Profile() {
             />
 
             {/* 비밀번호 */}
-            <ProfileInputs name={'비밀번호'} />
-            <InputText
-              onChange={(e) => onChangeHandler(e)}
-              name={'password'}
-              type="password"
-            />
+            {/* <ProfileInputs name={'비밀번호'} />*/}
+            {/* <InputText*/}
+            {/*  onChange={(e) => onChangeHandler(e)}*/}
+            {/*  name={'password'}*/}
+            {/*  type="password"*/}
+            {/*  value={form.password}*/}
+            {/* />*/}
+            {/* {console.log('비밀본호-------', form.password)}*/}
 
             {/* <ProfileInputs name={'비밀번호 확인'} />*/}
             {/* <InputText onChange={(e) => onChangeHandler(e)} type="password" />*/}

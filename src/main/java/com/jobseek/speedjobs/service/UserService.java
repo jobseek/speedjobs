@@ -130,7 +130,7 @@ public class UserService {
 	@Transactional
 	public void update(Long userId, MemberUpdateRequest request) {
 		memberRepository.findById(userId)
-			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(), request.getPassword(),
+			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(),
 					request.getPicture(), request.getContact(), request.getBirth(),
 					request.getBio(), request.getGender()))
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
