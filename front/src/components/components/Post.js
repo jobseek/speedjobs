@@ -1,7 +1,8 @@
 import { ChatSquareQuote, Heart, HeartFill } from 'react-bootstrap-icons';
 import { EyeShow } from '@styled-icons/fluentui-system-filled/EyeShow';
 import { useHistory } from 'react-router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { TagBody } from './Styled';
 import { Blank } from '../pages/Community';
 import {
@@ -51,6 +52,7 @@ export default function Post({
     if (like.data === null) return;
     if (!like.addLikeDone && !like.unLikeDone) return;
     if (like.data.id !== id) return;
+    console.log('setting');
     if (like.addLikeDone) {
       set(true);
     } else if (like.unLikeDone) {
@@ -111,7 +113,11 @@ export default function Post({
             <EyeShow style={{ width: '25px' }} /> {viewCount}
           </div>
           <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-            {fav ? <HeartFill></HeartFill> : <Heart></Heart>}
+            {inFav ? (
+              <HeartFill onClick={unFavClick}></HeartFill>
+            ) : (
+              <Heart onClick={favClick}></Heart>
+            )}
           </div>
         </div>
       </div>

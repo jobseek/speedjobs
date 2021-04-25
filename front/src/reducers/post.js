@@ -93,6 +93,7 @@ const reducer = (state = initialState, action) =>
         draft.postGetError = null;
         draft.commentGetDone = false;
         draft.commentGetError = null;
+        draft.post = null;
         break;
       case POST_LIST_DONE:
         draft.postListDone = false;

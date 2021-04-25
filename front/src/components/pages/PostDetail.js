@@ -3,6 +3,7 @@ import { useHistory, useLocation, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Heart, HeartFill, ShareFill } from 'react-bootstrap-icons';
+import { useCookies } from 'react-cookie';
 import {
   StyledButton,
   StyledHeaderDiv,
@@ -36,22 +37,39 @@ export default function PostDetail(props) {
   const history = useHistory();
   const { id } = useParams();
   const [fav, setFav] = useState(false);
+  const [myPost, setMyPost] = useState(false);
   const location = useLocation();
   const post = useSelector((state) => state.post);
   const like = useSelector((state) => state.like);
+  const user = useSelector((state) => state.user);
+  const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
   const [content, setContent] = useState({
     title: '',
     content: '',
   });
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setMyPost(false);
+  }, []);
+
+  useEffect(() => {
+    if (user.meDone && post.post) {
+      console.log('Set');
+      console.log(user.me.id);
+      console.log(post.post.authorId);
+      if (user.me.id === post.post.authorId) setMyPost(true);
+    }
+  }, [user.meDone, post.post, user.me]);
+
   // 게시글 내용 불러오기
   useEffect(() => {
-    dispatch({
-      type: POST_GET_REQUEST,
-      data: id,
-    });
-  }, [dispatch, id]);
+    if (refresh['REFRESH_TOKEN'] === undefined || user.meDone)
+      dispatch({
+        type: POST_GET_REQUEST,
+        data: id,
+      });
+  }, [dispatch, id, user.meDone, refresh]);
   useEffect(() => {
     if (post.postGetDone) {
       setContent({
@@ -60,6 +78,8 @@ export default function PostDetail(props) {
         author: post.post.author,
         createdDate: post.post.createdDate,
       });
+      console.log(post.post.favorite);
+      setFav(post.post.favorite);
       dispatch({
         type: POST_GET_DONE,
       });
@@ -84,10 +104,10 @@ export default function PostDetail(props) {
       });
     }
   }, [dispatch, history, post.postDeleteDone]);
-  useEffect(() => {
-    if (location.state.fav) setFav(true);
-    else setFav(false);
-  }, [location.state.fav]);
+  // useEffect(() => {
+  //   if (post.favorite) setFav(true);
+  //   else setFav(false);
+  // }, [post.favorite]);
 
   useEffect(() => {
     if (like.data === null) return;
@@ -186,14 +206,16 @@ export default function PostDetail(props) {
             <PostTextarea value={content.content} />
           </autoheight-textarea>
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <StyledButton white onClick={() => history.push(`../modify/${id}`)}>
-            수정
-          </StyledButton>
-          <StyledButton white onClick={() => DeleteHandler()}>
-            삭제
-          </StyledButton>
-        </div>
+        {myPost && (
+          <div style={{ textAlign: 'right' }}>
+            <StyledButton white onClick={() => history.push(`../modify/${id}`)}>
+              수정
+            </StyledButton>
+            <StyledButton white onClick={() => DeleteHandler()}>
+              삭제
+            </StyledButton>
+          </div>
+        )}
         <PostDetailComment id={id} />
       </div>
       {/* 찜 공유*/}
