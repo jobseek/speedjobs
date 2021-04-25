@@ -22,9 +22,7 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@ToString
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -56,11 +54,6 @@ public class Member extends User {
 		this.bio = userDto.getBio();
 		this.provider = userDto.getProvider();
 		this.oauthId = userDto.getOauthId();
-	}
-
-	public Member updateOAuthMemberInfo(String nickname, String picture) {
-		updateOAuthUserInfo(nickname, picture);
-		return this;
 	}
 
 	public Member updateCustomMemberInfo(String name, String nickname, String password, String picture,

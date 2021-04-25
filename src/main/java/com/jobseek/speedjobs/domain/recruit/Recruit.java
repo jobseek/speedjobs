@@ -76,8 +76,6 @@ public class Recruit extends BaseTimeEntity {
 
 	private String thumbnail;
 
-	private int likeCount;
-
 	private int viewCount;
 
 	@Embedded
@@ -123,5 +121,29 @@ public class Recruit extends BaseTimeEntity {
 	public void updateRecruitTags(List<Tag> tags) {
 		recruitTags.clear();
 		tags.forEach(tag -> RecruitTag.createRecruitTag(this, tag));
+	}
+
+	public void addFavorite(User user) {
+		if (favoriteOf(user)) {
+			throw new IllegalArgumentException("이미 찜한 공고입니다.");
+		}
+		favorites.add(user);
+		user.getRecruitFavorites().add(this);
+	}
+
+	public void removeFavorite(User user) {
+		if (!favoriteOf(user)) {
+			throw new IllegalArgumentException("찜 목록에 존재하지 않는 공고입니다.");
+		}
+		favorites.remove(user);
+		user.getRecruitFavorites().remove(this);
+	}
+
+	public boolean favoriteOf(User user) {
+		return favorites.contains(user);
+	}
+
+	public int getFavoriteCount() {
+		return favorites.size();
 	}
 }

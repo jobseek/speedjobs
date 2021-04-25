@@ -57,10 +57,10 @@ public class PostService {
 		postRepository.delete(post);
 	}
 
-	public PostResponse findById(Long postId) {
+	public PostResponse findById(Long postId, User user) {
 		Post post = findOne(postId);
 		post.increaseViewCount();
-		return PostResponse.of(post);
+		return PostResponse.of(post, user);
 	}
 
 	public Page<PostListResponse> findByPage(Pageable pageable, User user) {

@@ -67,8 +67,8 @@ public class PostController {
 
 	@ApiOperation(value = "게시글 단건 조회", notes = "게시글을 조회한다.")
 	@GetMapping("/{postId}")
-	public ResponseEntity<PostResponse> readPost(@PathVariable Long postId) {
-		return ResponseEntity.ok().body(postService.findById(postId));
+	public ResponseEntity<PostResponse> readPost(@PathVariable Long postId, @LoginUser User user) {
+		return ResponseEntity.ok().body(postService.findById(postId, user));
 	}
 
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
@@ -78,7 +78,7 @@ public class PostController {
 	}
 
 	/**
-	 * 기능들
+	 * 찜하기
 	 */
 
 	@ApiOperation(value = "게시글 찜하기", notes = "게시글을 찜한다.")

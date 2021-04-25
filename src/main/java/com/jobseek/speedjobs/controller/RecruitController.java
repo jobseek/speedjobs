@@ -2,13 +2,13 @@ package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
 import com.jobseek.speedjobs.service.RecruitService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,19 +61,43 @@ public class RecruitController {
 
 	@ApiOperation(value = "공고 단건 조회", notes = "공고를 1개 조회한다.")
 	@GetMapping("/{recruitId}")
-	public ResponseEntity<RecruitResponse> readRecruit(@PathVariable Long recruitId) {
-		return ResponseEntity.ok().body(recruitService.readById(recruitId));
-	}
-
-	@ApiOperation(value = "공고 전체 조회", notes = "공고를 전체 조회한다")
-	@GetMapping
-	public ResponseEntity<List<RecruitResponse>> readAllRecruits() {
-		return ResponseEntity.ok().body(recruitService.readAll());
+	public ResponseEntity<RecruitResponse> findRecruit(@PathVariable Long recruitId,
+		@LoginUser User user) {
+		return ResponseEntity.ok().body(recruitService.findById(recruitId, user));
 	}
 
 	@ApiOperation(value = "공고 페이징 조회", notes = "공고를 페이징으로 조회한다")
 	@GetMapping("/paging")
-	public Page<RecruitResponse> readRecruitsByPage(final Pageable pageable) {
-		return recruitService.readByPage(pageable);
+	public Page<RecruitResponse> findRecruitsByPage(Pageable pageable, @LoginUser User user) {
+		return recruitService.findByPage(pageable, user);
+	}
+
+	/**
+	 * 찜하기
+	 */
+	@ApiOperation(value = "공고 찜하기", notes = "공고를 찜한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@PostMapping("/{recruitId}/favorite")
+	public ResponseEntity<Void> saveRecruitFavorite(@PathVariable Long recruitId,
+		@LoginUser User user) {
+		recruitService.saveRecruitFavorite(recruitId, user);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "공고 찜하기 취소", notes = "공고를 찜목록에서 삭제한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@DeleteMapping("/{recruitId}/favorite")
+	public ResponseEntity<Void> deleteRecruitFavorite(@PathVariable Long recruitId,
+		@LoginUser User user) {
+		recruitService.deleteRecruitFavorite(recruitId, user);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "공고 찜 목록 조회하기", notes = "공고 찜 목록을 조회한다.")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@GetMapping("/favorites")
+	public ResponseEntity<Page<RecruitListResponse>> findRecruitFavorites(@LoginUser User user,
+		Pageable pageable) {
+		return ResponseEntity.ok().body(recruitService.findRecruitFavorites(pageable, user));
 	}
 }
