@@ -60,15 +60,14 @@ export default function RegisterContents(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     if (
-      check.email *
-        check.password *
-        check.confirmBoolean *
-        check.name *
-        check.companyName *
-        check.homepage *
-        check.registrationNumber *
-        check.contact >
-      0
+      check.email > 0 &&
+      check.password > 0 &&
+      check.confirmBoolean > 0 &&
+      check.name > 0 &&
+      check.companyName > 0 &&
+      check.homepage > 0 &&
+      check.registrationNumber > 0 &&
+      check.contact > 0
     ) {
       dispatch({
         type: SIGN_UP_REQUEST,

@@ -13,6 +13,9 @@ import {
   POST_LIST_FAIL,
   POST_LIST_REQUEST,
   POST_LIST_SUCCESS,
+  POST_MODIFY_FAIL,
+  POST_MODIFY_REQUEST,
+  POST_MODIFY_SUCCESS,
 } from '../reducers/post';
 
 function getPostListApi(action) {
@@ -104,6 +107,28 @@ function* postDelete(action) {
   }
 }
 
+function postModifyAPI(action) {
+  const res = axios.put(`/post/${action.id}`, action.data).catch((error) => {
+    throw error;
+  });
+  return res;
+}
+
+function* postModify(action) {
+  try {
+    const result = yield call(postModifyAPI, action);
+    yield put({
+      type: POST_MODIFY_SUCCESS,
+      data: result,
+    });
+  } catch (error) {
+    yield put({
+      type: POST_MODIFY_FAIL,
+      data: 'error' ?? action.error,
+    });
+  }
+}
+
 function* watchPostAdd() {
   yield takeLatest(POST_ADD_REQUEST, postAdd);
 }
@@ -116,11 +141,17 @@ function* watchPostList() {
 function* watchPostDelete() {
   yield takeLatest(POST_DELETE_REQUEST, postDelete);
 }
+
+function* watchPostModify() {
+  yield takeLatest(POST_MODIFY_REQUEST, postModify);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchPostGet),
     fork(watchPostList),
     fork(watchPostAdd),
     fork(watchPostDelete),
+    fork(watchPostModify),
   ]);
 }

@@ -35,7 +35,6 @@ export default function Home() {
         </div>
         {/* 공고*/}
         <AnnounceCard />
-        <AnnounceCard />
       </div>
     </>
   );

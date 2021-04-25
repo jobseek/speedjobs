@@ -23,6 +23,11 @@ export const initialState = {
   postDeleteDone: false,
   postDeleteError: null,
   postDelete: null,
+
+  postModifyLoading: false,
+  postModifyDone: false,
+  postModifyError: null,
+  postModify: null,
 };
 
 export const POST_GET_REQUEST = 'POST_GET_REQUEST';
@@ -44,6 +49,11 @@ export const POST_DELETE_REQUEST = 'POST_DELETE_REQUEST';
 export const POST_DELETE_SUCCESS = 'POST_DELETE_SUCCESS';
 export const POST_DELETE_FAIL = 'POST_DELETE_FAIL';
 export const POST_DELETE_DONE = 'POST_DELETE_DONE';
+
+export const POST_MODIFY_REQUEST = 'POST_MODIFY_REQUEST';
+export const POST_MODIFY_SUCCESS = 'POST_MODIFY_SUCCESS';
+export const POST_MODIFY_FAIL = 'POST_MODIFY_FAIL';
+export const POST_MODIFY_DONE = 'POST_MODIFY_DONE';
 
 export const COMMENT_GET_SUCCESS = 'COMMENT_GET_SUCCESS';
 export const COMMENT_GET_FAIL = 'COMMENT_GET_FAIL';
@@ -141,10 +151,30 @@ const reducer = (state = initialState, action) =>
         draft.postDeleteError = action.error;
         break;
       case POST_DELETE_DONE:
-        draft.postDeleteLoading = true;
         draft.postDeleteDone = false;
         draft.postDeleteError = null;
         draft.postDelete = null;
+        break;
+
+      case POST_MODIFY_REQUEST:
+        draft.postModifyLoading = true;
+        draft.postModifyDone = false;
+        draft.postModifyError = null;
+        draft.postModify = null;
+        break;
+      case POST_MODIFY_SUCCESS:
+        draft.postModifyLoading = false;
+        draft.postModifyDone = true;
+        draft.postModify = action.data;
+        break;
+      case POST_MODIFY_FAIL:
+        draft.postModifyLoading = false;
+        draft.postModifyError = action.error;
+        break;
+      case POST_MODIFY_DONE:
+        draft.postModifyDone = false;
+        draft.postModify = null;
+        draft.postModifyError = null;
         break;
       default:
         break;

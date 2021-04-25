@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PROTECTED;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class RecruitDetail {
 	@Enumerated(EnumType.STRING)
 	private Position position;
 
+	@Lob
 	private String content;
 
 	@Builder

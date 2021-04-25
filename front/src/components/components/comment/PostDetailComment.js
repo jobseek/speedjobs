@@ -19,19 +19,20 @@ const CommentList = styled.div``;
 
 export default function PostDetailComment(props) {
   const [dummyComment, setDummyComment] = useState([]);
-  const mapComment = dummyComment.map((comment, index) => (
+  const mapComment = dummyComment.map((comment) => (
     <Comment
       key={comment.id}
       writer={comment.author}
       content={comment.content}
       date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
+      img={comment.picture}
       onClick={() => deleteHandler(comment.id, props.id)}
-    ></Comment>
+    />
   ));
 
+  // 새댓글 내보내기
   const { comment, user } = useSelector((state) => state);
   const dispatch = useDispatch();
-
   const addComment = (newCom) => {
     dispatch({
       type: COMMENT_ADD_REQUEST,
@@ -39,16 +40,16 @@ export default function PostDetailComment(props) {
     });
   };
 
+  // 댓글 삭제하기
   const deleteHandler = (c, p) => {
     const idData = { commentId: c, postId: p };
-    console.log(idData);
     dispatch({
       type: COMMENT_DELETE_REQUEST,
       data: idData,
     });
   };
 
-  // 화면 변환시 최초 실행
+  // 댓글 정보 불러오기
   useEffect(() => {
     dispatch({
       type: COMMENT_GET_REQUEST,

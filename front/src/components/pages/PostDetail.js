@@ -44,13 +44,14 @@ export default function PostDetail(props) {
     content: '',
   });
   const dispatch = useDispatch();
+
+  // 게시글 내용 불러오기
   useEffect(() => {
     dispatch({
       type: POST_GET_REQUEST,
       data: id,
     });
   }, [dispatch, id]);
-
   useEffect(() => {
     if (post.postGetDone) {
       setContent({
@@ -65,6 +66,7 @@ export default function PostDetail(props) {
     }
   }, [post, id, dispatch]);
 
+  // 게시글 삭제
   const DeleteHandler = () => {
     dispatch({
       type: POST_DELETE_REQUEST,
@@ -77,10 +79,10 @@ export default function PostDetail(props) {
         type: POST_DELETE_DONE,
       });
       history.goBack();
+      dispatch({
+        type: POST_LIST_REQUEST,
+      });
     }
-    dispatch({
-      type: POST_LIST_REQUEST,
-    });
   }, [dispatch, history, post.postDeleteDone]);
   useEffect(() => {
     if (location.state.fav) setFav(true);
@@ -166,7 +168,7 @@ export default function PostDetail(props) {
         {/* 작성자*/}
         <div className={'container'}>
           <div style={{ margin: '10px 0px 20px 0px' }}>
-            {location.state.writer} {location.state.date}
+            {content.author} {content.createdDate}
           </div>
         </div>
         {/* 태그*/}
@@ -185,7 +187,9 @@ export default function PostDetail(props) {
           </autoheight-textarea>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <StyledButton white>수정</StyledButton>
+          <StyledButton white onClick={() => history.push(`../modify/${id}`)}>
+            수정
+          </StyledButton>
           <StyledButton white onClick={() => DeleteHandler()}>
             삭제
           </StyledButton>

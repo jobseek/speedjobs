@@ -29,7 +29,9 @@ function* addComment(action) {
 
 function addCommentAPI(data) {
   const res = axios
-    .post(`/post/${data.id}`, { content: data.content })
+    .post(`/post/${data.id}`, {
+      content: data.content,
+    })
     .then((response) => response)
     .catch((error) => new Error(error));
   return res;
@@ -51,7 +53,7 @@ function* getComment(action) {
 }
 
 function getCommentAPI(data) {
-  return axios.get(`/post/${data}/paging`);
+  return axios.get(`/post/${data}/paging?size=1&page=99&sort=id,DESC`);
 }
 
 function* deleteComment(action) {

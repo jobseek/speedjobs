@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import 'autoheight-textarea';
@@ -15,7 +15,7 @@ const ClearFix = styled.div`
   padding-bottom: 0.5rem;
 `;
 
-const BlogCommentAvatar = styled.div`
+const BlogCommentAvatar = styled.img`
   position: relative;
   float: left;
   margin-left: 0;
@@ -115,11 +115,20 @@ const TextLength = styled.input`
   user-select: none;
 `;
 
-export default function Comment({ writer, content, date, onClick }) {
+export default function Comment({ writer, content, date, img, onClick }) {
   const user = useSelector((state) => state.user);
+  const [image, setImage] = useState(
+    'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+  );
+  useEffect(() => {
+    if (img !== null) {
+      setImage(img);
+    }
+  }, [img]);
+
   return (
     <ClearFix>
-      <BlogCommentAvatar />
+      <BlogCommentAvatar src={image} />
       <PostComment>
         <MetaP>
           <div>
@@ -145,6 +154,10 @@ export default function Comment({ writer, content, date, onClick }) {
 }
 
 export function CommentsForm(props) {
+  const user = useSelector((state) => state.user);
+  const [img, setImg] = useState(
+    'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+  );
   const [result, setResult] = useState('0/300');
   const [comForm, setComForm] = useState({
     id: props.id,
@@ -160,9 +173,15 @@ export function CommentsForm(props) {
     setResult(comForm.content.length.toString() + '/300');
   };
 
+  useEffect(() => {
+    if (user.me.picture !== null) {
+      setImg(user.me.picture);
+    }
+  }, [user.me.picture]);
+
   return (
     <CommentForm>
-      <BlogCommentAvatar />
+      <BlogCommentAvatar src={img} />
       <PostComment>
         <autoheight-textarea>
           <CmtInput

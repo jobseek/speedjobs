@@ -101,7 +101,9 @@ export default function Community(props) {
       tags={[...(pl.tags.SKILL ?? []), ...(pl.tags.POSITION ?? [])]}
       title={pl.title}
       writer={pl.author}
+      commentCount={pl.commentCount}
       viewCount={pl.viewCount}
+      favoriteCount={pl.favoriteCount}
       date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
       fav={pl.favorite}
       key={pl.id}

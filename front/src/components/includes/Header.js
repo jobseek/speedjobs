@@ -83,7 +83,6 @@ export default function Header(props) {
   // 팝업 동작 인식
   useEffect(() => {
     // 회원가입
-
     if (state.user.signUpDone) {
       setPopModal(true);
       dispatch({ type: SIGN_UP_DONE });
@@ -145,7 +144,10 @@ export default function Header(props) {
         <PopUpBox>{mapPop}</PopUpBox>
         {popModal && (
           <>
-            <ModalAlert setPopModal={setPopModal}></ModalAlert>
+            <ModalAlert
+              setPopModal={setPopModal}
+              text="등록하신 이메일을 확인해주세요."
+            ></ModalAlert>
             <Background onClick={() => setPopModal(false)}></Background>
           </>
         )}

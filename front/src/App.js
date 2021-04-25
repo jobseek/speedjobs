@@ -26,6 +26,7 @@ import Login from './components/admin/page/Login';
 import AdminHome from './components/admin/page/AdminHome';
 import ProfileMd from './components/pages/ProfileMd';
 import { TAG_GET_REQUEST } from './reducers/tag';
+import PostModify from './components/pages/PostModify';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -100,6 +101,7 @@ function App() {
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />
           <Route exact path={'/community/add'} component={PostAdd} />
+          <Route exact path={'/community/modify/:id'} component={PostModify} />
           <Route exact path={'/recruitment/add'} component={RecruitAdd} />
           <Route exact path={'/admin/login'} component={Login} />
           <Route exact path={'/admin/home'} component={AdminHome} />
