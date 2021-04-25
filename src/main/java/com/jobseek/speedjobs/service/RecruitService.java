@@ -11,9 +11,9 @@ import com.jobseek.speedjobs.domain.tag.RecruitTag;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
-import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +47,7 @@ public class RecruitService {
 
 	@Transactional
 	public void update(Long recruitId, User user, RecruitRequest recruitRequest) {
-		Recruit recruit = recruitRepository.findById(recruitId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 공고가 없습니다."));
-		Company company = companyRepository.findById(user.getId())
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업회원입니다."));
+		Recruit recruit = findOne(recruitId);
 		if (recruit.getCompany().getId() != user.getId()) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
@@ -58,28 +55,49 @@ public class RecruitService {
 		recruit.update(recruitRequest.toEntity(), tags);
 	}
 
+
 	@Transactional
 	public void delete(Long recruitId, User user) {
-		Recruit recruit = recruitRepository.findById(recruitId)
-			.orElseThrow(
-				() -> new IllegalArgumentException("해당 게시글이 없습니다.  recruitId=" + recruitId));
+		Recruit recruit = findOne(recruitId);
 		if (user.getRole() != ROLE_ADMIN && recruit.getCompany().getId() != user.getId()) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
 		recruitRepository.delete(recruit);
 	}
 
-	public RecruitResponse readById(Long recruitId) {
-		Recruit recruit = recruitRepository.findById(recruitId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 공고가 존재하지 않습니다."));
-		List<Tag> tags = recruit.getRecruitTags().getTags();
-		return RecruitResponse.of(recruit, TagResponses.mappedByType(tags));
+	public RecruitResponse findById(Long recruitId, User user) {
+		Recruit recruit = findOne(recruitId);
+		recruit.increaseViewCount();
+		return RecruitResponse.of(recruit, user);
 	}
 
-	public List<RecruitResponse> readAll() {
-		return recruitRepository.findAllDesc().stream()
-			.map(RecruitResponse::new)
-			.collect(Collectors.toList());
+	public Page<RecruitResponse> findByPage(Pageable pageable, User user) {
+		Page<Recruit> page = recruitRepository.findAll(pageable);
+		return new PageImpl<>(page.stream()
+			.map(recruit -> RecruitResponse.of(recruit, user))
+			.collect(Collectors.toList()), pageable, page.getTotalElements());
+	}
+
+	/**
+	 * 찜하기
+	 */
+	@Transactional
+	public void saveRecruitFavorite(Long recruitId, User user) {
+		Recruit recruit = findOne(recruitId);
+		recruit.addFavorite(user);
+	}
+
+	@Transactional
+	public void deleteRecruitFavorite(Long recruitId, User user) {
+		Recruit recruit = findOne(recruitId);
+		recruit.removeFavorite(user);
+	}
+
+	public Page<RecruitListResponse> findRecruitFavorites(Pageable pageable, User user) {
+		List<Recruit> recruits = user.getRecruitFavorites();
+		return new PageImpl<>(recruits.stream()
+			.map(recruit -> RecruitListResponse.of(recruit, user))
+			.collect(Collectors.toList()), pageable, recruits.size());
 	}
 
 	private void createRecruitTags(Recruit recruit, List<Tag> tags) {
@@ -93,12 +111,8 @@ public class RecruitService {
 			.collect(Collectors.toList());
 	}
 
-	public Page<RecruitResponse> readByPage(Pageable pageable) {
-		Page<Recruit> page = recruitRepository.findAll(pageable);
-		int totalElements = (int) page.getTotalElements();
-		return new PageImpl<>(page.stream()
-			.map(recruit -> RecruitResponse
-				.of(recruit, TagResponses.mappedByType(recruit.getRecruitTags().getTags())))
-			.collect(Collectors.toList()), pageable, totalElements);
+	private Recruit findOne(Long recruitId) {
+		return recruitRepository.findById(recruitId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 공고가 존재하지 않습니다."));
 	}
 }

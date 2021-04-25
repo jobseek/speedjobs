@@ -8,7 +8,6 @@ import com.jobseek.speedjobs.domain.recruit.Status;
 import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.tag.TagMap;
-import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RecruitResponse {
+public class RecruitListResponse {
 
 	private Long id;
 	private String title;
@@ -32,8 +31,9 @@ public class RecruitResponse {
 	private String thumbnail;
 	private Experience experience;
 	private Position position;
-	private String content;
 	private Map<Type, List<TagMap>> tags;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
 	private int viewCount;
 	private int favoriteCount;
 	private boolean favorite;
@@ -41,13 +41,10 @@ public class RecruitResponse {
 	private Long companyId;
 	private String companyName;
 	private String logoImage;
-	private int scale;
-	private String description;
-	private String homepage;
 
-	public static RecruitResponse of(Recruit recruit, User user) {
+	public static RecruitListResponse of(Recruit recruit, User user) {
 		Company company = recruit.getCompany();
-		return RecruitResponse.builder()
+		return RecruitListResponse.builder()
 			.id(recruit.getId())
 			.title(recruit.getTitle())
 			.openDate(recruit.getOpenDate())
@@ -56,17 +53,15 @@ public class RecruitResponse {
 			.thumbnail(recruit.getThumbnail())
 			.experience(recruit.getRecruitDetail().getExperience())
 			.position(recruit.getRecruitDetail().getPosition())
-			.content(recruit.getRecruitDetail().getContent())
 			.tags(TagMap.toMap(recruit.getRecruitTags().getTags()))
+			.createdDate(recruit.getCreatedDate())
+			.modifiedDate(recruit.getModifiedDate())
 			.viewCount(recruit.getViewCount())
 			.favoriteCount(recruit.getFavoriteCount())
 			.favorite(recruit.favoriteOf(user))
 			.companyId(company.getId())
 			.companyName(company.getCompanyName())
 			.logoImage(company.getLogoImage())
-			.scale(company.getScale())
-			.description(company.getCompanyDetail().getDescription())
-			.homepage(company.getCompanyDetail().getHomepage())
 			.build();
 	}
 }
