@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { MyImage, ProfileImg } from '../Styled';
 
-export default function ProfileImage({ onChange }) {
+export default function ProfileImage({ onChange, value }) {
   const [img, setImage] = useState(
     'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   );
+
+  console.log('사진 시바ㅏ라라라', value);
+  console.log(value.url);
 
   const onChange2 = async (e) => {
     const file = e.target.files[0];
@@ -43,8 +46,8 @@ export default function ProfileImage({ onChange }) {
       alert('이미지 파일만 등록할 수 있습니다.');
       console.log('=== 이미지 업로드 실패(잘못된 파일 형식) ===');
       setImage(img);
-    } else if (file.size > 1024 * 1024 * 10) {
-      alert('10MB 이하 이미지만 가능합니다.');
+    } else if (file.size > 1024 * 1024) {
+      alert('1MB 이하 이미지만 가능합니다.');
       console.log('=== 이미지 업로드 실패(용량 초과) ===');
       setImage(img);
     } else {
@@ -66,7 +69,7 @@ export default function ProfileImage({ onChange }) {
         <MyImage
           onClick={handleClick}
           onChange={onChange}
-          src={img}
+          src={value}
           alt="profile"
           style={{
             cursor: 'pointer',
