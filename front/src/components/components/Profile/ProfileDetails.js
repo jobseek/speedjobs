@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { PROFILE_GET_REQUEST } from '../../../reducers/profile';
 import ProfileInputs from './ProfileInputs';
-import { InputText, MyImage, ProfileImg } from '../Styled';
-import ProfileTextarea from './ProfileTextarea';
+import { InputText, MyImage, ProfileImg, TextArea } from '../Styled';
 
 const StyledInputText = styled(InputText)`
+  border: none;
+`;
+
+const StyledTextarea = styled(TextArea)`
   border: none;
 `;
 
@@ -22,6 +25,7 @@ export default function ProfileDetails() {
     contact: '',
     bio: '',
     picture: '',
+    birth: '',
   });
 
   useEffect(() => {
@@ -66,6 +70,13 @@ export default function ProfileDetails() {
         value={item.email || ''}
         disabled
       />
+      <ProfileInputs name={'생년월일'} />
+      <StyledInputText
+        name={'birth'}
+        type="text"
+        value={item.birth || ''}
+        disabled
+      />
       <ProfileInputs name={'성별'} />
       <StyledInputText
         name={'gender'}
@@ -82,7 +93,13 @@ export default function ProfileDetails() {
         disabled
       />
       <ProfileInputs name={'한 줄 소개'} />
-      <ProfileTextarea bio={item.bio} disabled />
+      <StyledTextarea
+        name={'bio'}
+        value={item.bio || ''}
+        cols="96"
+        rows="3"
+        disabled
+      />
     </div>
   );
 }

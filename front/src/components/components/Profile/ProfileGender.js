@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProfileGender({ onChange, name }) {
+export default function ProfileGender({ onChange, name, value }) {
   // const [formData, setFormData] = useState({
   //   gender: '',
   // });
@@ -26,7 +26,7 @@ export default function ProfileGender({ onChange, name }) {
           name={name}
           value="male"
           onChange={onChange}
-          // checked={formData.sex === 'male'}
+          checked={value === 'male'}
         />
         <label>&nbsp;&nbsp;남</label>
       </div>
@@ -37,7 +37,7 @@ export default function ProfileGender({ onChange, name }) {
           name={name}
           value="female"
           onChange={onChange}
-          // checked={formData.gender === 'female'}
+          checked={value === 'female'}
         />
         <label>&nbsp;&nbsp;여</label>
       </div>
