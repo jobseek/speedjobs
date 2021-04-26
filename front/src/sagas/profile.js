@@ -1,6 +1,9 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  PROFILE_DELETE_FAIL,
+  PROFILE_DELETE_REQUEST,
+  PROFILE_DELETE_SUCCESS,
   PROFILE_GET_FAIL,
   PROFILE_GET_REQUEST,
   PROFILE_GET_SUCCESS,
@@ -11,7 +14,14 @@ import {
 
 function getProfileApi(data) {
   // const { id } = data;
-  return axios.get(`/user/member/${data}`);
+  console.log('data값 확인===', data);
+  console.log('이게 멀까요??', data.id);
+  console.log(data.role);
+  if (data.role === 'ROLE_COMPANY') {
+    return axios.get(`/user/company/${data.id}`);
+  } else {
+    return axios.get(`/user/member/${data.id}`);
+  }
 }
 
 function* getProfile(action) {
@@ -30,7 +40,7 @@ function* getProfile(action) {
 }
 
 function updateProfileApi(data, me) {
-  console.log(me);
+  console.log('me===>', me);
   const res = axios
     .patch(`/user/member/${me}`, data)
     .then((response) => {
@@ -58,6 +68,27 @@ function* updateProfile(action) {
   }
 }
 
+function deleteProfileApi(data) {
+  console.log('이게 멀까요?========????', data);
+  console.log('이게 멀까요?========????', data.id);
+  return axios.delete(`/user/company/${data.id}`);
+}
+
+function* deleteProfile(action) {
+  try {
+    const result = yield call(deleteProfileApi, action.data);
+    yield put({
+      type: PROFILE_DELETE_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: PROFILE_DELETE_FAIL,
+      data: '에러' ?? error.response.data,
+    });
+  }
+}
+
 function* watchProfileGet() {
   yield takeLatest(PROFILE_GET_REQUEST, getProfile);
 }
@@ -66,6 +97,14 @@ function* watchProfileUpdate() {
   yield takeLatest(PROFILE_UPDATE_REQUEST, updateProfile);
 }
 
+function* watchProfileDelete() {
+  yield takeLatest(PROFILE_DELETE_REQUEST, deleteProfile);
+}
+
 export default function* profileSaga() {
-  yield all([fork(watchProfileGet), fork(watchProfileUpdate)]);
+  yield all([
+    fork(watchProfileGet),
+    fork(watchProfileUpdate),
+    fork(watchProfileDelete),
+  ]);
 }

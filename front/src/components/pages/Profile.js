@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   ProfileDiv,
   StyledButton,
@@ -9,8 +10,23 @@ import {
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
 import ProfileDetails from '../components/Profile/ProfileDetails';
+import ProfileDetails2 from '../components/Profile/ProfileDetails2';
+import { PROFILE_GET_REQUEST } from '../../reducers/profile';
 
 export default function Profile() {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [role, setRole] = useState('');
+
+  useEffect(() => {
+    if (user.me === null) return;
+    dispatch({
+      type: PROFILE_GET_REQUEST,
+      data: user.me,
+    });
+    setRole(user.me.role);
+  }, [user.me, dispatch]);
+
   return (
     <form>
       <div className="container text-left">
@@ -43,8 +59,14 @@ export default function Profile() {
               <SideMenu />
             </StyledLeftLayout>
 
+            {console.log('잉????: ', role)}
+
             <ProfileDiv className={'col-12 col-lg-10'}>
-              <ProfileDetails />
+              {role === 'ROLE_MEMBER' ? (
+                <ProfileDetails />
+              ) : (
+                <ProfileDetails2 />
+              )}
             </ProfileDiv>
           </div>
         </div>

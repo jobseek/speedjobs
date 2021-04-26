@@ -47,9 +47,9 @@ export default function Profile() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch({ type: PROFILE_UPDATE_REQUEST, data: form, me: user.me.id });
+      dispatch({ type: PROFILE_UPDATE_REQUEST, data: form, me: user.me?.id });
     },
-    [dispatch, user.me.id, form]
+    [dispatch, form, user.me?.id]
   );
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (user.me === null) return;
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me.id });
+    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
   }, [user.me, dispatch]);
 
   return (
@@ -102,7 +102,7 @@ export default function Profile() {
             {/* <ProfileModify />*/}
             <ProfileImage
               onChange={(e) => onChangeHandler(e)}
-              value={form.picture}
+              value={form.picture || ''}
             />
 
             {/* 이름 */}
@@ -111,7 +111,7 @@ export default function Profile() {
               onChange={(e) => onChangeHandler(e)}
               name={'name'}
               type="text"
-              value={form.name}
+              value={form.name || ''}
             />
             {/* 닉네임 */}
             <ProfileInputs name={'닉네임'} />
@@ -119,7 +119,7 @@ export default function Profile() {
               onChange={(e) => onChangeHandler(e)}
               name={'nickname'}
               type="text"
-              value={form.nickname}
+              value={form.nickname || ''}
             />
             {/* 생년월일 */}
             <ProfileInputs name={'생년월일'} />
@@ -127,7 +127,7 @@ export default function Profile() {
               onChange={(e) => onChangeHandler(e)}
               name={'birth'}
               type="text"
-              value={form.birth}
+              value={form.birth || ''}
             />
 
             {/* 비밀번호 */}
@@ -148,7 +148,7 @@ export default function Profile() {
             <ProfileGender
               onChange={(e) => onChangeHandler(e)}
               name={'gender'}
-              value={form.gender}
+              value={form.gender || ''}
             />
 
             {/* 연락처: 집 or 핸드폰 */}
@@ -158,14 +158,14 @@ export default function Profile() {
               name={'contact'}
               type="tel"
               maxLength="13"
-              value={form.contact}
+              value={form.contact || ''}
             />
             {/* 한 줄 소개 */}
             <ProfileInputs name={'한 줄 소개'} />
             <ProfileTextarea
               onChange={(e) => onChangeHandler(e)}
               name={'bio'}
-              value={form.bio}
+              value={form.bio || ''}
             />
           </ProfileDiv>
         </div>
