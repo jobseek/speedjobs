@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PersonCircle, Search } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import { v4 } from 'uuid';
 import NavDrop, { Background } from '../components/Nav/NavDrop';
@@ -56,6 +57,7 @@ const PopUpBox = styled.div`
 export default function Header(props) {
   const state = useSelector((s) => s);
   const history = useHistory();
+  const [, , remove] = useCookies('REFRESH_TOKEN');
   const ref = useRef(0);
   const dispatch = useDispatch();
   // 팝업창 배열
@@ -114,6 +116,7 @@ export default function Header(props) {
       dispatch({
         type: LOG_OUT_DONE,
       });
+      remove('REFRESH_TOKEN');
       history.push('/');
     } else if (state.post.postAddDone) {
       addPop({ type: 'green', id: v4(), text: '게시글이 등록되었습니다' });
@@ -126,7 +129,7 @@ export default function Header(props) {
         type: POST_ADD_DONE,
       });
     }
-  }, [state, dispatch, history]);
+  }, [state, dispatch, history, remove]);
 
   return (
     <>
