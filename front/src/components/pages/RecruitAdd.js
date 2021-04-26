@@ -9,17 +9,6 @@ import {
 } from '../components/Styled';
 import { RECRUIT_ADD_DONE, RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
-// {
-//   "title": "제목입니당",
-//     "openDate": "2020-01-02 00:00:00",
-//     "closeDate": "2021-12-15 00:00:00",
-//     "status": "PROCESS",
-//     "thumbnail": "Empty",
-//     "experience": "JUNIOR",
-//     "position": "PERMANENT",
-//     "content": "모집합니다아",
-//     "tagIds": [1,3]
-// }
 
 export default function RecruitAdd() {
   const [form, setForm] = useState({

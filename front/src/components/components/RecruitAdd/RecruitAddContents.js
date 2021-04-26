@@ -5,6 +5,7 @@ import AnnouncementDate from './AnnouncementDate';
 import CompanySummaryInfo from './CompanySummaryInfo';
 import AnnouncementInfo from './AnnouncementInfo';
 import { PostWriterDate } from '../Styled';
+import AnnounceLocation from './AnnounceLocation';
 
 const AnnounceHeader = styled.div`
   font-size: 20px;
@@ -34,6 +35,9 @@ export default function RecruitAddContents({ onChange, setTags }) {
       <AnnouncementDate onChange={onChange} />
       {/* 공고정보 */}
       <AnnounceHeader>공고정보</AnnounceHeader>
+      <AnnounceHeader>위치</AnnounceHeader>
+      <AnnounceLocation></AnnounceLocation>
+      <AnnounceHeader>정보</AnnounceHeader>
       <AnnouncementInfo setTags={setTags} onChange={onChange} />
     </>
   );

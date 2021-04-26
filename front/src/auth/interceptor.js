@@ -11,6 +11,8 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
   const requestInterceptorConfig = (config) => {
     if (config.url === '/auth/logout' && !config.headers._Retry) {
       config.headers['Authorization'] = `Bearer ${refresh['REFRESH_TOKEN']}`;
+      console.log('hello');
+      console.log(refresh['REFRESH_TOKEN']);
       removeRefresh('REFRESH_TOKEN');
       removeRefresh('ACCESS_TOKEN');
       return config;
@@ -28,7 +30,8 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
       if (
-        (error.response.status === 403 || error.response.status === 500) &&
+        error.response.status === 403 &&
+        error.response.status === 500 &&
         error.config &&
         !error.config.__isRetryRequest
       ) {

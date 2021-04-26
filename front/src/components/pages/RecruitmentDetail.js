@@ -12,6 +12,7 @@ import {
   ADD_LIKE_REQUEST,
   UN_LIKE_REQUEST,
 } from '../../reducers/like';
+import KakaoMap from '../data/KakaoMap';
 
 const Chatting = styled.div`
   width: 100%;
@@ -168,6 +169,7 @@ export default function RecruitmentDetail(props) {
               <ChatBox pop={pop} button={ButtonEvent} />
               <ChatIcon onclick={ButtonEvent} />
             </Chatting>
+            <KakaoMap></KakaoMap>
           </div>
         </div>
         {/* <StyledButton hcenter wide>*/}
