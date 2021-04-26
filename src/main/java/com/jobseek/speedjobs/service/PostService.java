@@ -57,6 +57,7 @@ public class PostService {
 		postRepository.delete(post);
 	}
 
+	@Transactional
 	public PostResponse findById(Long postId, User user) {
 		Post post = findOne(postId);
 		post.increaseViewCount();

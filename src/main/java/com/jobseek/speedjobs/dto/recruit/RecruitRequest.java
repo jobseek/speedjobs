@@ -45,8 +45,9 @@ public class RecruitRequest {
 
 	public Recruit toEntity() {
 		return Recruit
-			.createRecruit(title, openDate, closeDate, status, thumbnail, experience, position,
-				content);
+			.createRecruit(title, openDate,
+				closeDate, status, thumbnail,
+				experience, position, content);
 	}
 
 }

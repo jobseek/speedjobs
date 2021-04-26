@@ -17,7 +17,7 @@ values  (1, '2021-02-06 17:23:02', null, '010-1342-3433', 'member@member.com', '
 (13, '2021-01-26 17:24:16', '2021-02-22 17:25:01', '010-3333-8888', 'member13@member.com', '김승현', '복불러', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
 (14, '2021-01-29 17:24:22', null, '010-8695-9484', 'member14@member.com', '한보라', '지배자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
 (15, '2021-02-06 17:24:28', null, '010-3422-0393', 'member15@member.com', '김영현', '월급루팡', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(16, '2021-04-02 17:46:39', null, '010-5378-5628', 'company16@company.com', '(주)잡식', '(주)잡식', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png', 'ROLE_COMPANY'),
+(16, '2021-04-02 17:46:39', null, '010-5378-5628', 'company@company.com', '(주)잡식', '(주)잡식', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png', 'ROLE_COMPANY'),
 (17, '2021-04-06 17:46:46', null, '010-2816-4677', 'company17@company.com', '네이버', '네이버', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
 (18, '2021-03-24 17:46:49', null, '010-4462-1155', 'company18@company.com', '카카오', '카카오', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
 (19, '2021-02-22 17:46:53', null, '010-9758-2918', 'company19@company.com', '라인', '라인', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),

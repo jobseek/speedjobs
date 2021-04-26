@@ -45,7 +45,6 @@ public class RecruitController {
 	@PreAuthorize("hasAnyRole('COMPANY', 'ADMIN')")
 	@DeleteMapping("/{recruitId}")
 	public ResponseEntity<Void> deleteRecruit(@PathVariable Long recruitId, @LoginUser User user) {
-		System.out.println("서비스 = " + recruitId);
 		recruitService.delete(recruitId, user);
 		return ResponseEntity.noContent().build();
 	}
@@ -68,8 +67,8 @@ public class RecruitController {
 
 	@ApiOperation(value = "공고 페이징 조회", notes = "공고를 페이징으로 조회한다")
 	@GetMapping("/paging")
-	public Page<RecruitResponse> findRecruitsByPage(Pageable pageable, @LoginUser User user) {
-		return recruitService.findByPage(pageable, user);
+	public ResponseEntity<Page<RecruitResponse>> findRecruitsByPage(Pageable pageable, @LoginUser User user) {
+		return ResponseEntity.ok().body(recruitService.findByPage(pageable, user));
 	}
 
 	/**
@@ -87,8 +86,7 @@ public class RecruitController {
 	@ApiOperation(value = "공고 찜하기 취소", notes = "공고를 찜목록에서 삭제한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@DeleteMapping("/{recruitId}/favorite")
-	public ResponseEntity<Void> deleteRecruitFavorite(@PathVariable Long recruitId,
-		@LoginUser User user) {
+	public ResponseEntity<Void> deleteRecruitFavorite(@PathVariable Long recruitId, @LoginUser User user) {
 		recruitService.deleteRecruitFavorite(recruitId, user);
 		return ResponseEntity.noContent().build();
 	}

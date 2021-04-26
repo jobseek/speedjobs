@@ -1,8 +1,7 @@
 package com.jobseek.speedjobs.controller;
 
+import com.jobseek.speedjobs.dto.tag.TagRequest;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
-import com.jobseek.speedjobs.dto.tag.TagSaveRequest;
-import com.jobseek.speedjobs.dto.tag.TagUpdateRequest;
 import com.jobseek.speedjobs.service.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,8 +31,8 @@ public class TagController {
 	@ApiOperation(value = "태그 등록", notes = "태그를 등록한다.")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Void> saveTag(@Valid @RequestBody TagSaveRequest tagSaveRequest) {
-		tagService.saveTag(tagSaveRequest);
+	public ResponseEntity<Void> saveTag(@Valid @RequestBody TagRequest tagRequest) {
+		tagService.saveTag(tagRequest);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -55,8 +54,8 @@ public class TagController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{tagId}")
 	public ResponseEntity<Void> updateTag(@PathVariable Long tagId,
-		@Valid @RequestBody TagUpdateRequest tagUpdateRequest) {
-		tagService.updateTag(tagId, tagUpdateRequest);
+		@Valid @RequestBody TagRequest tagRequest) {
+		tagService.updateTag(tagId, tagRequest);
 		return ResponseEntity.noContent().build();
 	}
 }

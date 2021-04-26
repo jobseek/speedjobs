@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
@@ -41,13 +42,19 @@ public class ResumeService {
 	public void update(Long resumeId, User user, ResumeRequest resumeRequest) {
 		Resume resume = resumeRepository.findById(resumeId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 이력서는 존재하지 않습니다."));
+		if (!resume.getMember().getId().equals(user.getId())) {
+			throw new UnauthorizedException("권한이 없습니다.");
+		}
 		resume.update(resumeRequest.toEntity());
 	}
 
 	@Transactional
-	public void delete(Long id) {
+	public void delete(Long id, User user) {
 		Resume resume = resumeRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이력서입니다."));
+		if (!resume.getMember().getId().equals(user.getId())) {
+			throw new UnauthorizedException("권한이 없습니다.");
+		}
 		resumeRepository.delete(resume);
 	}
 
