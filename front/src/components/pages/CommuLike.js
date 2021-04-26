@@ -43,7 +43,11 @@ export default function LikeList() {
             </div>
           </StyledHeaderMargin>
         </StyledHeaderDiv>
-        <div className="container-fluid" style={{ marginTop: '70px' }}>
+        <div
+          className="container-fluid"
+          style={{ marginTop: '70px' }}
+          ref={rootRef}
+        >
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone
