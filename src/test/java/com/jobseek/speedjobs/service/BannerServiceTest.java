@@ -43,7 +43,7 @@ public class BannerServiceTest {
 	@Test
 	@DisplayName("배너 이미지 가져오기")
 	void readTest() {
-		BannerResponses responses = bannerService.read();
+		BannerResponses responses = bannerService.find();
 		List<BannerResponse> result = responses.getBanners();
 		int length = responses.getCount();
 		Long tmp = result.get(length - 1).getId();

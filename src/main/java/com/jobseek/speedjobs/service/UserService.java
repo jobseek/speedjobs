@@ -37,7 +37,7 @@ public class UserService {
 	private final RedisUtil redisUtil;
 	private final MailUtil mailUtil;
 
-	public User findById(Long userId) {
+	public User findOne(Long userId) {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다. id=" + userId));
 	}
@@ -45,7 +45,6 @@ public class UserService {
 	public String sendEmail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
-		System.out.println("UUIDkey = " + key);
 		redisUtil.set(key, request, 30 * 60 * 1000);
 		mailUtil.sendEmail(request.getEmail(), key);
 		return key;
@@ -105,7 +104,7 @@ public class UserService {
 		}
 	}
 
-	public MemberInfoResponse getMemberInfo(Long userId, User user) {
+	public MemberInfoResponse findMemberInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_MEMBER) {
 			throw new IllegalArgumentException("개인회원이 아닙니다.");
 		} else if (!userId.equals(user.getId())) {
@@ -116,7 +115,7 @@ public class UserService {
 		return MemberInfoResponse.of(member);
 	}
 
-	public CompanyInfoResponse getCompanyInfo(Long userId, User user) {
+	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_COMPANY) {
 			throw new IllegalArgumentException("기업회원이 아닙니다.");
 		} else if (!userId.equals(user.getId())) {
@@ -138,7 +137,7 @@ public class UserService {
 
 	@Transactional
 	public void delete(Long userId) {
-		User user = findById(userId);
+		User user = findOne(userId);
 		userRepository.delete(user);
 	}
 

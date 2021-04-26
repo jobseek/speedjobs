@@ -30,7 +30,7 @@ public class BannerService {
 		return BannerResponses.of(banners);
 	}
 
-	public BannerResponses read() {
+	public BannerResponses find() {
 		return BannerResponses.of(new ArrayList<>(bannerRepository.findAll()));
 	}
 

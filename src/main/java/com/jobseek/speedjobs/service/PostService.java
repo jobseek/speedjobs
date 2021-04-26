@@ -1,7 +1,5 @@
 package com.jobseek.speedjobs.service;
 
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
-
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostRepository;
@@ -33,7 +31,7 @@ public class PostService {
 	public Long save(PostRequest postRequest, User user) {
 		Post post = postRequest.toEntity();
 		post.setUser(user);
-		List<Tag> tags = getTagsById(postRequest.getTagIds());
+		List<Tag> tags = findTagsById(postRequest.getTagIds());
 		createPostTags(post, tags);
 		return postRepository.save(post).getId();
 	}
@@ -44,7 +42,7 @@ public class PostService {
 		if (post.getUser() != user) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
-		List<Tag> tags = getTagsById(postRequest.getTagIds());
+		List<Tag> tags = findTagsById(postRequest.getTagIds());
 		post.update(postRequest.toEntity(), tags);
 	}
 
@@ -71,7 +69,7 @@ public class PostService {
 			.collect(Collectors.toList()), pageable, page.getTotalElements());
 	}
 
-	public List<Tag> getTagsById(List<Long> tagIds) {
+	public List<Tag> findTagsById(List<Long> tagIds) {
 		return tagIds.stream()
 			.map(tagId -> tagRepository.findById(tagId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))

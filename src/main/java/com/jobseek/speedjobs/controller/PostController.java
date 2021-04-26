@@ -12,7 +12,6 @@ import com.jobseek.speedjobs.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,20 +66,19 @@ public class PostController {
 
 	@ApiOperation(value = "게시글 단건 조회", notes = "게시글을 조회한다.")
 	@GetMapping("/{postId}")
-	public ResponseEntity<PostResponse> readPost(@PathVariable Long postId, @LoginUser User user) {
+	public ResponseEntity<PostResponse> findPost(@PathVariable Long postId, @LoginUser User user) {
 		return ResponseEntity.ok().body(postService.findById(postId, user));
 	}
 
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
 	@GetMapping("/paging")
-	public ResponseEntity<Page<PostListResponse>> readPostsByPage(Pageable pageable, @LoginUser User user) {
+	public ResponseEntity<Page<PostListResponse>> findPostsByPage(Pageable pageable, @LoginUser User user) {
 		return ResponseEntity.ok().body(postService.findByPage(pageable, user));
 	}
 
 	/**
 	 * 찜하기
 	 */
-
 	@ApiOperation(value = "게시글 찜하기", notes = "게시글을 찜한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@PostMapping("/{postId}/favorite")
@@ -139,9 +137,9 @@ public class PostController {
 
 	@ApiOperation(value = "댓글 조회", notes = "댓글을 조회한다.")
 	@GetMapping("/{postId}/paging")
-	public ResponseEntity<Page<CommentResponse>> readCommentsByPage(@PathVariable Long postId,
+	public ResponseEntity<Page<CommentResponse>> findCommentsByPage(@PathVariable Long postId,
 		Pageable pageable) {
-		return ResponseEntity.ok().body(commentService.readByPage(postId, pageable));
+		return ResponseEntity.ok().body(commentService.findByPage(postId, pageable));
 	}
 
 //	@ApiOperation(value = "댓글 좋아요", notes = "댓글을 좋아요 누른다.")

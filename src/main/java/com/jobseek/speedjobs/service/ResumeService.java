@@ -58,13 +58,13 @@ public class ResumeService {
 		resumeRepository.delete(resume);
 	}
 
-	public ResumeResponse readById(Long resumeId) {
+	public ResumeResponse findById(Long resumeId) {
 		Resume resume = resumeRepository.findById(resumeId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이력서입니다."));
 		return ResumeResponse.of(resume);
 	}
 
-	public List<ResumeResponse> readAll() {
+	public List<ResumeResponse> findAll() {
 		return resumeRepository.findAll().stream()
 			.map(ResumeResponse::new)
 			.collect(Collectors.toList());

@@ -48,7 +48,7 @@ public class CommentService {
 		commentRepository.delete(comment);
 	}
 
-	public Page<CommentResponse> readByPage(Long postId, Pageable pageable) {
+	public Page<CommentResponse> findByPage(Long postId, Pageable pageable) {
 		List<Comment> comments = findPost(postId).getComments();
 		return new PageImpl<>(comments.stream()
 			.map(CommentResponse::of)

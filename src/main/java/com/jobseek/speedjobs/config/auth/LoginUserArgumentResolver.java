@@ -1,6 +1,5 @@
 package com.jobseek.speedjobs.config.auth;
 
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -31,6 +30,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		if (principal == null || principal.getClass() == String.class) {
 			return null;
 		}
-		return userService.findById((Long) principal);
+		return userService.findOne((Long) principal);
 	}
 }
