@@ -30,7 +30,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 2. 공고 수정
-PUT http://{{host}}/recruit/1
+PUT http://{{host}}/recruit/15
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -52,7 +52,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 3. 공고 삭제
-DELETE http://{{host}}/recruit/1
+DELETE http://{{host}}/recruit/15
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 

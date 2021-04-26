@@ -48,7 +48,7 @@ public class RecruitService {
 	@Transactional
 	public void update(Long recruitId, User user, RecruitRequest recruitRequest) {
 		Recruit recruit = findOne(recruitId);
-		if (recruit.getCompany().getId() != user.getId()) {
+		if (!recruit.getCompany().getId().equals(user.getId())) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
 		List<Tag> tags = getTagsById(recruitRequest.getTagIds());
@@ -65,6 +65,7 @@ public class RecruitService {
 		recruitRepository.delete(recruit);
 	}
 
+	@Transactional
 	public RecruitResponse findById(Long recruitId, User user) {
 		Recruit recruit = findOne(recruitId);
 		recruit.increaseViewCount();

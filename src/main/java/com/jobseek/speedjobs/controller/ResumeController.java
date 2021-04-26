@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.controller;
 
+import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +35,7 @@ public class ResumeController {
 	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping
 	public ResponseEntity<Void> save(@LoginUser User user,
-		@RequestBody ResumeRequest resumeRequest) {
+		@Valid @RequestBody ResumeRequest resumeRequest) {
 		Long id = resumeService.save(user, resumeRequest);
 		return ResponseEntity.created(URI.create("/api/resume/" + id)).build();
 	}
@@ -50,18 +52,20 @@ public class ResumeController {
 	@ApiOperation(value = "이력서 삭제", notes = "이력서를 삭제한다.")
 	@PreAuthorize("hasRole('MEMBER')")
 	@DeleteMapping("/{resumeId}")
-	public ResponseEntity<Void> delete(@PathVariable Long resumeId) {
-		resumeService.delete(resumeId);
+	public ResponseEntity<Void> delete(@PathVariable Long resumeId, @LoginUser User user) {
+		resumeService.delete(resumeId, user);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "이력서 단건 조회", notes = "이력서를 조회한다.")
+	@PreAuthorize("hasRole('MEMBER')")
 	@GetMapping("/{resumeId}")
 	public ResponseEntity<ResumeResponse> readResume(@PathVariable Long resumeId) {
 		return ResponseEntity.ok().body(resumeService.readById(resumeId));
 	}
 
 	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")
+	@PreAuthorize("hasRole('MEMBER')")
 	@GetMapping
 	public ResponseEntity<List<ResumeResponse>> readAllResumes() {
 		return ResponseEntity.ok().body(resumeService.readAll());

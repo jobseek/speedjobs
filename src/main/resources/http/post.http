@@ -91,12 +91,12 @@ Authorization: Bearer {{accessToken}}
 GET http://{{host}}/post/favorites
 Authorization: Bearer {{accessToken}}
 
-### 12. 댓글 좋아요
-POST http://{{host}}/post/1/1/up
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
-
-### 13. 댓글 싫어요
-POST http://{{host}}/post/1/1/down
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
+#### 12. 댓글 좋아요
+#POST http://{{host}}/post/1/1/up
+#Content-Type: application/json
+#Authorization: Bearer {{accessToken}}
+#
+#### 13. 댓글 싫어요
+#POST http://{{host}}/post/1/1/down
+#Content-Type: application/json
+#Authorization: Bearer {{accessToken}}

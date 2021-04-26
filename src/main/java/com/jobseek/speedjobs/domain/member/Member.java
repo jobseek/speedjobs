@@ -56,9 +56,9 @@ public class Member extends User {
 		this.oauthId = userDto.getOauthId();
 	}
 
-	public Member updateCustomMemberInfo(String name, String nickname, String password, String picture,
+	public Member updateCustomMemberInfo(String name, String nickname, String picture,
 		String contact, LocalDate birth, String bio, String gender) {
-		updateCustomUserInfo(name, nickname, password, picture, contact);
+		updateCustomUserInfo(name, nickname, picture, contact);
 		this.birth = birth;
 		this.bio = bio;
 		this.gender = gender;

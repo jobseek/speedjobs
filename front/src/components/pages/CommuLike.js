@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   ProfileDiv,
@@ -43,7 +43,10 @@ export default function LikeList() {
             </div>
           </StyledHeaderMargin>
         </StyledHeaderDiv>
-        <div className="container-fluid" style={{ marginTop: '70px' }}>
+        <div
+          className="container-fluid"
+          style={{ marginTop: '70px' }}
+        >
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone

@@ -44,7 +44,6 @@ function updateProfileApi(data, me) {
 function* updateProfile(action) {
   try {
     console.log(action);
-    console.log('profile이이이이이이이');
     const result = yield call(updateProfileApi, action.data, action.me);
     console.log('결과', result);
     yield put({
@@ -52,7 +51,6 @@ function* updateProfile(action) {
       data: result.data,
     });
   } catch (error) {
-    console.log('잉????');
     yield put({
       type: PROFILE_UPDATE_FAIL,
       data: '에러' ?? error.response.data,

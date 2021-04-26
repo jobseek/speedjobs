@@ -1,19 +1,41 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextArea, TextAreaLength } from '../Styled';
 
-// 글자 수 표시해주는 함수
-function calc() {
-  document.getElementById('result').value = document.getElementById(
-    'content'
-  ).value.length;
-}
+export default function ProfileTextarea({
+  onChange,
+  name,
+  bio,
+  disabled,
+  value,
+}) {
+  const [textLength, setTextLength] = useState('');
+  const [result, setResult] = useState(0);
 
-export default function ProfileTextarea({ onChange, name, bio, disabled }) {
+  console.log(value);
+  // console.log(value.length);
+
+  function calc() {
+    if (value !== null) {
+      setResult(value.length);
+    } else {
+      setResult(textLength.length);
+    }
+  }
+
   const ref = useRef();
   useEffect(() => {
     ref.current.innerHTML = bio !== undefined ? bio : '';
-    calc();
   }, [bio]);
+
+  const onChangeHandler = (e) => {
+    if (e.target.value.length <= 100) {
+      setTextLength(e.target.value);
+      calc();
+    } else {
+      alert('100자 이내로 작성해주세요');
+    }
+  };
+
   return (
     <>
       <TextArea
@@ -22,14 +44,16 @@ export default function ProfileTextarea({ onChange, name, bio, disabled }) {
         cols="96"
         rows="3"
         name={name}
-        onKeyDown={calc}
-        onKeyUp={calc}
-        onChange={(calc, onChange)}
+        onChange={onChange}
+        onKeyPress={(e) => onChangeHandler(e)}
+        onKeyDown={(e) => onChangeHandler(e)}
+        onKeyUp={(e) => onChangeHandler(e)}
         disabled={disabled}
         defaultValue={bio}
+        value={value}
       />
       <div style={{ textAlign: 'right' }}>
-        <TextAreaLength id="result" type="number" value="0" readOnly />
+        <TextAreaLength id="result" type="number" value={result} readOnly />
       </div>
     </>
   );

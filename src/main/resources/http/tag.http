@@ -1,0 +1,39 @@
+### Admin 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{admin_email}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 1. 태그 등록
+POST http://{{host}}/tag
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "tagName": "스프링의 정석",
+  "tagType": "SKILL"
+}
+
+### 2. 태그 조회
+GET http://{{host}}/tag
+Accept: application/json
+
+### 3. 태그 수정
+PUT http://{{host}}/tag/55
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "tagName": "자바의 정석",
+  "tagType": "SKILL"
+}
+
+### 4. 태그 삭제
+DELETE http://{{host}}/tag/55
+Accept: application/json
+Authorization: Bearer {{accessToken}}

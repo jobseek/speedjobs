@@ -14,7 +14,7 @@ public class TagMap {
 	private final Long id;
 	private final String name;
 
-	private TagMap(Long id, String name) {
+	public TagMap(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}

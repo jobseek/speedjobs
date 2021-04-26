@@ -64,7 +64,6 @@ export default function Community(props) {
   }, [tagss.tagGetData]);
 
   useEffect(() => {
-    console.log();
     const currentObserver = observe.current;
     const divElm = targetRef.current;
     if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {

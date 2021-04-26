@@ -8,6 +8,8 @@ import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +17,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PRIVATE)
 public class ResumeRequest {
 
+	@NotNull
 	private Open open;
 
+	@NotBlank
 	private String coverLetter;
 
 	private String address;

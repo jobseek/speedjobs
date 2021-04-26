@@ -4,9 +4,8 @@ import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
+import com.jobseek.speedjobs.dto.tag.TagRequest;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
-import com.jobseek.speedjobs.dto.tag.TagSaveRequest;
-import com.jobseek.speedjobs.dto.tag.TagUpdateRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,7 @@ public class TagService {
 	private final PostTagRepository postTagRepository;
 
 	@Transactional
-	public void saveTag(TagSaveRequest request) {
+	public void saveTag(TagRequest request) {
 		tagRepository.save(request.toEntity());
 	}
 
@@ -40,9 +39,9 @@ public class TagService {
 	}
 
 	@Transactional
-	public void updateTag(Long tagId, TagUpdateRequest request) {
+	public void updateTag(Long tagId, TagRequest request) {
 		Tag tag = tagRepository.findById(tagId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
-		tag.changeTag(request.getType(), request.getName());
+		tag.changeTag(request.getTagType(), request.getTagName());
 	}
 }
