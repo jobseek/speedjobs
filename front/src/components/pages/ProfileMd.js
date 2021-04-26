@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
 import {
   InputText,
   ProfileDiv,
@@ -10,7 +9,6 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import ProfileModify from '../components/Profile/ProfileModify';
 import ProfileImage from '../components/Profile/ProfileImage';
 import ProfileInputs from '../components/Profile/ProfileInputs';
 import ProfileGender from '../components/Profile/ProfileGender';
@@ -21,7 +19,6 @@ import {
 } from '../../reducers/profile';
 
 export default function Profile() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
@@ -45,14 +42,14 @@ export default function Profile() {
       // history.push('/profile');
       window.location.replace('/profile');
     }
-  }, [profile, history]);
+  }, [profile]);
 
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
       dispatch({ type: PROFILE_UPDATE_REQUEST, data: form, me: user.me.id });
     },
-    [dispatch, form]
+    [dispatch, user.me.id, form]
   );
 
   useEffect(() => {
@@ -71,6 +68,7 @@ export default function Profile() {
     if (user.me === null) return;
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me.id });
   }, [user.me, dispatch]);
+
   return (
     <div className="container text-left">
       <StyledHeaderDiv padding style={{ position: 'relative' }}>
@@ -79,7 +77,7 @@ export default function Profile() {
             className={'col-md-9 col-8'}
             style={{ marginTop: '10px', paddingTop: '5px' }}
           >
-            <h5>계정 관리</h5>
+            <h5>계정 수정</h5>
           </div>
           <div
             className={'col-md-3 col-4 text-right'}

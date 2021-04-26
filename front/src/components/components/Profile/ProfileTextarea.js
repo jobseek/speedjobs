@@ -25,7 +25,6 @@ export default function ProfileTextarea({
   const ref = useRef();
   useEffect(() => {
     ref.current.innerHTML = bio !== undefined ? bio : '';
-    calc();
   }, [bio]);
 
   const onChangeHandler = (e) => {

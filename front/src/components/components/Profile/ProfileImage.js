@@ -7,7 +7,6 @@ export default function ProfileImage({ onChange, value }) {
     'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   );
 
-  console.log('사진 시바ㅏ라라라', value);
   console.log(value.url);
 
   const onChange2 = async (e) => {
@@ -19,7 +18,7 @@ export default function ProfileImage({ onChange, value }) {
     formData.append('files', e.target.files[0]);
     console.log('=== formData ===', formData);
 
-    // s3 서버의 file API 호출
+    // s3 API 호출
     const url = await axios
       .post('/file', formData)
       .then((res) => res.data.files[0].url)

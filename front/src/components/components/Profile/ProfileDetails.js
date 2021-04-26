@@ -44,6 +44,7 @@ export default function ProfileDetails() {
     if (user.me === null) return;
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me.id });
   }, [user.me, dispatch]);
+
   return (
     <div className="container">
       <ProfileImg>
