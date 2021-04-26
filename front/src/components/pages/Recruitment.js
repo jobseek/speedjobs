@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useCookies } from 'react-cookie';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
 import { TagBody } from '../components/Styled';
@@ -18,6 +19,7 @@ export default function Recruitment() {
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const targetRef = useRef();
+  const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
   const observe = useRef(
     new IntersectionObserver(
       (entries) => {
@@ -63,15 +65,17 @@ export default function Recruitment() {
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
-    if (divElm) {
-      currentObserver.observe(divElm);
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
+      if (divElm) {
+        currentObserver.observe(divElm);
+      }
     }
     return () => {
       if (divElm) {
         currentObserver.unobserve(divElm);
       }
     };
-  }, []);
+  }, [user.me, refresh]);
 
   useEffect(() => {
     if (recruit.recruitListLoading) {
@@ -97,29 +101,12 @@ export default function Recruitment() {
       title={pl.title}
       writer="아직미구현"
       date={`${pl.openDate[0]}/${pl.openDate[1]}/${pl.openDate[2]}`}
-      fav="미구현"
+      fav={pl.favorite}
       key={pl.id}
+      viewCount={pl.viewCount}
+      favoriteCount={pl.favoriteCount}
     />
   ));
-
-  // const dummyOut = dummyData.map((temp) => {
-  //   return (
-  //     <div key={v4()}>
-  //       <RecruitCard
-  //         title={temp.title}
-  //         date={temp.date}
-  //         job={temp.job}
-  //         tags={temp.tag}
-  //         favorite={temp.favorite}
-  //         setFav={(fav) => {
-  //           temp.favorite = fav;
-  //           setUpdate(update + 1);
-  //         }}
-  //       ></RecruitCard>
-  //       <Line margin={'20px'} />
-  //     </div>
-  //   );
-  // });
 
   return (
     <>

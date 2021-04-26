@@ -52,7 +52,6 @@ export default function Post({
     if (like.data === null) return;
     if (!like.addLikeDone && !like.unLikeDone) return;
     if (like.data.id !== id) return;
-    console.log('setting');
     if (like.addLikeDone) {
       set(true);
     } else if (like.unLikeDone) {
@@ -66,20 +65,20 @@ export default function Post({
     (e) => {
       dispatch({
         type: ADD_LIKE_REQUEST,
-        data: { id },
+        data: { id, type },
       });
     },
-    [id, dispatch]
+    [id, dispatch, type]
   );
 
   const unFavClick = useCallback(
     (e) => {
       dispatch({
         type: UN_LIKE_REQUEST,
-        data: { id },
+        data: { id, type },
       });
     },
-    [id, dispatch]
+    [id, dispatch, type]
   );
   return (
     <>
@@ -106,9 +105,11 @@ export default function Post({
         >
           <div>{writer}</div>
           <div style={{ marginBottom: '20px' }}>{date}</div>
-          <div style={{ display: 'inline-block' }}>
-            <ChatSquareQuote style={{ width: '25px' }} /> {commentCount}
-          </div>
+          {type === 'community' && (
+            <div style={{ display: 'inline-block' }}>
+              <ChatSquareQuote style={{ width: '25px' }} /> {commentCount}
+            </div>
+          )}
           <div style={{ display: 'inline-block', marginLeft: '10px' }}>
             <EyeShow style={{ width: '25px' }} /> {viewCount}
           </div>
@@ -118,6 +119,8 @@ export default function Post({
             ) : (
               <Heart onClick={favClick}></Heart>
             )}
+            <span style={{ width: '1px', marginRight: '5px' }}></span>
+            {favoriteCount}
           </div>
         </div>
       </div>

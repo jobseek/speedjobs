@@ -14,7 +14,6 @@ import { GET_LIKE_DONE, GET_LIKE_REQUEST } from '../../reducers/like';
 
 export default function LikeList() {
   const [taglist, setTaglist] = useState([]);
-  const rootRef = useRef();
   const targetRef = useRef();
   const tagss = useSelector((state) => state.tag);
   const like = useSelector((state) => state.like);
@@ -44,11 +43,7 @@ export default function LikeList() {
             </div>
           </StyledHeaderMargin>
         </StyledHeaderDiv>
-        <div
-          className="container-fluid"
-          style={{ marginTop: '70px' }}
-          ref={rootRef}
-        >
+        <div className="container-fluid" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone
@@ -64,7 +59,7 @@ export default function LikeList() {
                 직무
               </Tags>
               <PostList
-                type={'POST_LIKE'}
+                type={'community'}
                 targetRef={targetRef}
                 listLoading={like.getLikeLoading}
                 done={like.getLikeDone}

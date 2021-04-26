@@ -64,9 +64,10 @@ export default function Community(props) {
   }, [tagss.tagGetData]);
 
   useEffect(() => {
+    console.log();
     const currentObserver = observe.current;
     const divElm = targetRef.current;
-    if (refresh['REFRESH_TOKEN'] === undefined || user.meDone) {
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
       if (divElm) {
         currentObserver.observe(divElm);
       }
@@ -76,7 +77,7 @@ export default function Community(props) {
         currentObserver.unobserve(divElm);
       }
     };
-  }, [user.meDone, refresh]);
+  }, [user.me, refresh]);
 
   useEffect(() => {
     if (post.postListLoading) {

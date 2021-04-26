@@ -16,6 +16,7 @@ export default function PostList({
   typeDone,
   listLoading,
   done,
+  type,
   list,
 }) {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ export default function PostList({
       data: {
         size: 10,
         page: page.current,
+        type,
       },
     });
   };
@@ -55,7 +57,7 @@ export default function PostList({
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
-    if (refresh['REFRESH_TOKEN'] === undefined || user.meDone) {
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
       if (divElm) {
         currentObserver.observe(divElm);
       }
@@ -65,7 +67,7 @@ export default function PostList({
         currentObserver.unobserve(divElm);
       }
     };
-  }, [user.meDone, refresh, targetRef]);
+  }, [user.me, refresh, targetRef]);
 
   useEffect(() => {
     console.log(list);
@@ -96,7 +98,7 @@ export default function PostList({
 
   const mapPost = postList.map((pl) => (
     <Post
-      type={'community'}
+      type
       id={pl.id}
       tags={[...(pl.tags.SKILL ?? []), ...(pl.tags.POSITION ?? [])]}
       title={pl.title}

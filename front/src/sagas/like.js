@@ -13,7 +13,14 @@ import {
 } from '../reducers/like';
 
 function addLikeApi(action) {
-  return axios.post(`/post/${action.data.id}/favorite`, { data: action.data });
+  if (action.data.type === 'community')
+    return axios.post(`/post/${action.data.id}/favorite`, {
+      data: action.data,
+    });
+  else
+    return axios.post(`/recruit/${action.data.id}/favorite`, {
+      data: action.data,
+    });
 }
 
 function* addLike(action) {
@@ -31,10 +38,14 @@ function* addLike(action) {
 }
 
 function unLikeApi(action) {
-  const { size, page } = action.data;
-  return axios.delete(
-    `/post/${action.data.id}/favorite/?size=${size}&page=${page}&sort=id,DESC`
-  );
+  if (action.data.type === 'community')
+    return axios.delete(`/post/${action.data.id}/favorite`, {
+      data: action.data,
+    });
+  else
+    return axios.delete(`/recruit/${action.data.id}/favorite`, {
+      data: action.data,
+    });
 }
 
 function* unLike(action) {
@@ -51,7 +62,14 @@ function* unLike(action) {
   }
 }
 function getLikeApi(action) {
-  return axios.get(`/post/favorites`);
+  if (action.data.type === 'community')
+    return axios.get(
+      `/post/favorites?size=${action.data.size}&page=${action.data.page}&sort=id,DESC`
+    );
+  else
+    return axios.get(
+      `recruit/favorites?size=${action.data.size}&page=${action.data.page}&sort=id,DESC`
+    );
 }
 
 function* getLike(action) {

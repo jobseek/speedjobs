@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   ProfileDiv,
@@ -8,58 +8,13 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import RecruitCard from '../components/RecruitCard';
-import Line from '../components/Line';
 import Tags from '../components/Tags';
+import PostList from '../components/Post/PostList';
+import { GET_LIKE_DONE, GET_LIKE_REQUEST } from '../../reducers/like';
 
 export default function CommunityLike(props) {
-  const [update, setUpdate] = useState(0);
-  // const [tags] = useState([
-  //   { name: 'backEnd', id: 0, selected: false },
-  //   { name: 'frontEnd', id: 1, selected: false },
-  //   { name: 'machineLearning', id: 2, selected: false },
-  //   { name: 'infra', id: 3, selected: false },
-  // ]);
-
-  const dummy = useCallback(() => {
-    const dummyData = [];
-
-    for (let i = 0; i < 10; i++) {
-      dummyData[i] = {};
-      dummyData[i].title = i + '번 더미 데이터';
-      dummyData[i].job = i + '번 더미 데이터 JOB';
-      dummyData[i].date = '1999.01.01~2021.06.01';
-      dummyData[i].tag = ['backEnd', 'frontEnd', 'java'];
-      dummyData[i].key = i;
-      dummyData[i].favorite = i % 2 === 1 && true;
-    }
-    dummyData.push({ title: 'hello' });
-    dummyData.shift();
-    dummyData.shift();
-    return dummyData;
-  }, []);
-
-  const [dummyData] = useState(dummy);
-
-  const dummyOut = dummyData.map((temp) => {
-    return (
-      <div key={temp.key}>
-        <RecruitCard
-          title={temp.title}
-          date={temp.date}
-          job={temp.job}
-          tags={temp.tag}
-          favorite={temp.favorite}
-          setFav={(fav) => {
-            temp.favorite = fav;
-            setUpdate(update + 1);
-          }}
-        />
-        <Line margin={'20px'} />
-      </div>
-    );
-  });
-
+  const targetRef = useRef();
+  const { like } = useSelector((state) => state);
   const [taglist, setTaglist] = useState([]);
   const tagss = useSelector((state) => state.tag);
   useEffect(() => {
@@ -110,9 +65,17 @@ export default function CommunityLike(props) {
               <Tags tagList={taglist} selected={setTaglist}>
                 직무
               </Tags>
-
+              <PostList
+                type={'recruit'}
+                targetRef={targetRef}
+                listLoading={like.getLikeLoading}
+                done={like.getLikeDone}
+                list={like.list}
+                typeRequest={GET_LIKE_REQUEST}
+                typeDone={GET_LIKE_DONE}
+              ></PostList>
+              <div ref={targetRef}></div>
               {/* {mapPost}*/}
-              {dummyOut}
             </ProfileDiv>
           </div>
         </div>
