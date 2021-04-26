@@ -12,6 +12,7 @@ import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
+import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.utils.MailUtil;
@@ -56,8 +57,8 @@ public class UserService {
 			.orElseThrow(() -> new NotExistException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
 		UserDto userDto = request.getUserDto(passwordEncoder);
+		userDto.setNickname(request.getName());
 		if (userDto.getRole() == Role.ROLE_MEMBER) {
-			userDto.setNickname(request.getName());
 			Member member = new Member(userDto);
 			return memberRepository.save(member).getId();
 		} else if (userDto.getRole() == Role.ROLE_COMPANY) {
@@ -127,7 +128,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void update(Long userId, MemberUpdateRequest request) {
+	public void updateMemberInfo(Long userId, MemberUpdateRequest request) {
 		memberRepository.findById(userId)
 			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(),
 					request.getPicture(), request.getContact(), request.getBirth(),
@@ -136,9 +137,17 @@ public class UserService {
 	}
 
 	@Transactional
+	public void updateCompanyInfo(Long userId, CompanyUpdateRequest request) {
+		companyRepository.findById(userId)
+			.map(company -> company.updateCompanyInfo(request.getName(), request.getNickname(),
+				request.getPicture(), request.getContact(), request.getCompanyName(),
+				request.getScale(), request.toCompanyDetail()))
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+	}
+
+	@Transactional
 	public void delete(Long userId) {
 		User user = findOne(userId);
 		userRepository.delete(user);
 	}
-
 }

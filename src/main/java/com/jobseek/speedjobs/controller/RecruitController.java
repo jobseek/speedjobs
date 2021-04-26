@@ -66,7 +66,7 @@ public class RecruitController {
 	}
 
 	@ApiOperation(value = "공고 페이징 조회", notes = "공고를 페이징으로 조회한다")
-	@GetMapping("/paging")
+	@GetMapping
 	public ResponseEntity<Page<RecruitResponse>> findRecruitsByPage(Pageable pageable, @LoginUser User user) {
 		return ResponseEntity.ok().body(recruitService.findByPage(pageable, user));
 	}

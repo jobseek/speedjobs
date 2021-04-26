@@ -105,7 +105,7 @@ class UserServiceTest {
 			.role(Role.ROLE_MEMBER).build();
 		MemberUpdateRequest request = new MemberUpdateRequest();
 		request.setNickname("테스트닉네임");
-		userService.update(userId, request);
+		userService.updateMemberInfo(userId, request);
 		Assertions.assertThat(userService.getMember(userId, user).getNickname()).isEqualTo("테스트닉네임");
 	}
 }

@@ -53,7 +53,7 @@ public class RecruitListResponse {
 			.thumbnail(recruit.getThumbnail())
 			.experience(recruit.getRecruitDetail().getExperience())
 			.position(recruit.getRecruitDetail().getPosition())
-			.tags(TagMap.toMap(recruit.getRecruitTags().getTags()))
+			.tags(TagMap.toMap(recruit.getTags()))
 			.createdDate(recruit.getCreatedDate())
 			.modifiedDate(recruit.getModifiedDate())
 			.viewCount(recruit.getViewCount())

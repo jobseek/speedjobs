@@ -7,6 +7,7 @@ import com.jobseek.speedjobs.dto.user.UserInfoResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.UserValidateGroup;
 import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
+import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.service.UserService;
@@ -94,9 +95,18 @@ public class UserController {
 	@ApiOperation(value = "개인회원 정보 수정", notes = "자신의 정보를 수정한다.")
 	@PatchMapping("/member/{userId}")
 	@PreAuthorize("hasRole('MEMBER')")
-	public ResponseEntity<Void> updateInfo(@PathVariable Long userId,
+	public ResponseEntity<Void> updateMemberInfo(@PathVariable Long userId,
 		@RequestBody MemberUpdateRequest memberUpdateRequest) {
-		userService.update(userId, memberUpdateRequest);
+		userService.updateMemberInfo(userId, memberUpdateRequest);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "기업회원 정보 수정", notes = "자신의 정보를 수정한다.")
+	@PatchMapping("/company/{userId}")
+	@PreAuthorize("hasRole('COMPANY')")
+	public ResponseEntity<Void> updateCompanyInfo(@PathVariable Long userId,
+		@RequestBody CompanyUpdateRequest companyUpdateRequest) {
+		userService.updateCompanyInfo(userId, companyUpdateRequest);
 		return ResponseEntity.noContent().build();
 	}
 

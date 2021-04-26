@@ -1,7 +1,5 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.domain.tag.PostTag;
-import com.jobseek.speedjobs.domain.tag.PostTagRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.dto.tag.TagRequest;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagService {
 
 	private final TagRepository tagRepository;
-	private final PostTagRepository postTagRepository;
 
 	@Transactional
 	public void saveTag(TagRequest request) {
@@ -33,15 +30,20 @@ public class TagService {
 
 	@Transactional
 	public void deleteTag(Long tagId) {
-		List<PostTag> postTags = postTagRepository.findByTagId(tagId);
-		postTags.forEach(PostTag::deletePostTag);
+		Tag tag = findOne(tagId);
+		tag.getPosts().forEach(post -> post.getTags().remove(tag));
+		tag.getRecruits().forEach(recruit -> recruit.getTags().remove(tag));
 		tagRepository.deleteById(tagId);
 	}
 
 	@Transactional
 	public void updateTag(Long tagId, TagRequest request) {
-		Tag tag = tagRepository.findById(tagId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
+		Tag tag = findOne(tagId);
 		tag.changeTag(request.getTagType(), request.getTagName());
+	}
+
+	private Tag findOne(Long tagId) {
+		return tagRepository.findById(tagId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
 	}
 }

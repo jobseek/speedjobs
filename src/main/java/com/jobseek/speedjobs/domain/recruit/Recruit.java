@@ -11,8 +11,6 @@ import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.message.Message;
 import com.jobseek.speedjobs.domain.resume.Apply;
-import com.jobseek.speedjobs.domain.tag.RecruitTag;
-import com.jobseek.speedjobs.domain.tag.RecruitTags;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.user.User;
 import java.time.LocalDateTime;
@@ -27,6 +25,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -44,6 +43,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "recruits")
 public class Recruit extends BaseTimeEntity {
 
+	@ManyToMany
+	@JoinTable(name = "recruit_tags",
+		joinColumns = @JoinColumn(name = "recruit_id"),
+		inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private final List<Tag> tags = new ArrayList<>();
+
 	@ManyToMany(mappedBy = "recruitFavorites")
 	private final List<User> favorites = new ArrayList<>();
 
@@ -52,9 +58,6 @@ public class Recruit extends BaseTimeEntity {
 
 	@OneToMany(cascade = ALL, orphanRemoval = true)
 	private final List<Message> messages = new ArrayList<>();
-
-	@Embedded
-	private final RecruitTags recruitTags = RecruitTags.empty();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,7 +112,8 @@ public class Recruit extends BaseTimeEntity {
 	}
 
 	public void update(Recruit recruit, List<Tag> tags) {
-		updateRecruitTags(tags);
+		removeTags();
+		addTags(tags);
 		this.title = recruit.getTitle();
 		this.openDate = recruit.getOpenDate();
 		this.closeDate = recruit.getCloseDate();
@@ -118,9 +122,16 @@ public class Recruit extends BaseTimeEntity {
 		this.recruitDetail = recruit.getRecruitDetail();
 	}
 
-	public void updateRecruitTags(List<Tag> tags) {
-		recruitTags.clear();
-		tags.forEach(tag -> RecruitTag.createRecruitTag(this, tag));
+	public void addTags(List<Tag> tags) {
+		for (Tag tag : tags) {
+			this.tags.add(tag);
+			tag.getRecruits().add(this);
+		}
+	}
+
+	public void removeTags() {
+		tags.forEach(tag -> tag.getRecruits().remove(this));
+		tags.clear();
 	}
 
 	public void addFavorite(User user) {

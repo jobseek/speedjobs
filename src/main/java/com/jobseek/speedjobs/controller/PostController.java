@@ -71,8 +71,8 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
-	@GetMapping("/paging")
-	public ResponseEntity<Page<PostListResponse>> findPostsByPage(Pageable pageable, @LoginUser User user) {
+	@GetMapping
+	public ResponseEntity<Page<PostListResponse>> findPostsByPage(final Pageable pageable, @LoginUser User user) {
 		return ResponseEntity.ok().body(postService.findByPage(pageable, user));
 	}
 
@@ -100,7 +100,7 @@ public class PostController {
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@GetMapping("/favorites")
 	public ResponseEntity<Page<PostListResponse>> findPostFavorites(@LoginUser User user,
-		Pageable pageable) {
+		final Pageable pageable) {
 		return ResponseEntity.ok().body(postService.findPostFavorites(pageable, user));
 	}
 
@@ -109,7 +109,7 @@ public class PostController {
 	 */
 	@ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
-	@PostMapping("/{postId}")
+	@PostMapping("/{postId}/comment")
 	public ResponseEntity<Void> saveComment(@LoginUser User user,
 		@Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId) {
@@ -119,7 +119,7 @@ public class PostController {
 
 	@ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
-	@PutMapping("/{postId}/{commentId}")
+	@PutMapping("/{postId}/comment/{commentId}")
 	public ResponseEntity<Void> updateComment(@Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId, @PathVariable Long commentId, @LoginUser User user) {
 		commentService.updateComment(commentRequest, user, commentId);
@@ -128,7 +128,7 @@ public class PostController {
 
 	@ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
-	@DeleteMapping("/{postId}/{commentId}")
+	@DeleteMapping("/{postId}/comment/{commentId}")
 	public ResponseEntity<Void> deleteComment(@LoginUser User user, @PathVariable Long postId,
 		@PathVariable Long commentId) {
 		commentService.deleteComment(user, commentId);
@@ -136,7 +136,7 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "댓글 조회", notes = "댓글을 조회한다.")
-	@GetMapping("/{postId}/paging")
+	@GetMapping("/{postId}/comments")
 	public ResponseEntity<Page<CommentResponse>> findCommentsByPage(@PathVariable Long postId,
 		Pageable pageable) {
 		return ResponseEntity.ok().body(commentService.findByPage(postId, pageable));

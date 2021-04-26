@@ -44,7 +44,7 @@ public class PostListResponse {
 			.favorite(post.favoriteOf(user))
 			.createdDate(post.getCreatedDate())
 			.modifiedDate(post.getModifiedDate())
-			.tags(TagMap.toMap(post.getPostTags().getTags()))
+			.tags(TagMap.toMap(post.getTags()))
 			.build();
 	}
 }
