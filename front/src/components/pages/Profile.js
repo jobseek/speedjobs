@@ -42,11 +42,19 @@ export default function Profile() {
               className={'col-md-3 col-4 text-right'}
               style={{ paddingRight: '0' }}
             >
-              <Link to="/profile/modify">
-                <StyledButton style={{ marginRight: '0' }} wide>
-                  개인정보 수정
-                </StyledButton>
-              </Link>
+              {role === 'ROLE_MEMBER' ? (
+                <Link to="/profile/modify">
+                  <StyledButton style={{ marginRight: '0' }} wide>
+                    개인정보 수정
+                  </StyledButton>
+                </Link>
+              ) : (
+                <Link to="/profile/modify2">
+                  <StyledButton style={{ marginRight: '0' }} wide>
+                    기업정보 수정
+                  </StyledButton>
+                </Link>
+              )}
             </div>
           </StyledHeaderMargin>
         </StyledHeaderDiv>

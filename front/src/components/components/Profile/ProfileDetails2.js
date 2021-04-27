@@ -52,7 +52,6 @@ export default function ProfileDetails() {
 
   return (
     <div className="container">
-      <h2>기업회원 조회 페이지</h2>
       <ProfileImg>
         <MyImage src={item.picture} alt="profile" />
       </ProfileImg>
@@ -70,6 +69,15 @@ export default function ProfileDetails() {
         value={item.name || ''}
         disabled
       />
+
+      <ProfileInputs name={'담당자 닉네임'} />
+      <StyledInputText
+        name={'nickname'}
+        type="text"
+        value={item.name || ''}
+        disabled
+      />
+
       <ProfileInputs name={'담당자 연락처'} />
       <StyledInputText
         name={'contact'}
@@ -77,13 +85,7 @@ export default function ProfileDetails() {
         value={item.contact || ''}
         disabled
       />
-      {/* <ProfileInputs name={'닉네임'} />*/}
-      {/* <StyledInputText*/}
-      {/*  name={'nickname'}*/}
-      {/*  type="text"*/}
-      {/*  value={item.nickname || ''}*/}
-      {/*  disabled*/}
-      {/* />*/}
+
       <ProfileInputs name={'담당자 이메일'} />
       <StyledInputText
         name={'email'}

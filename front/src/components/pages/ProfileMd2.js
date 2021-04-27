@@ -11,26 +11,27 @@ import {
 import SideMenu from '../components/SideMenu';
 import ProfileImage from '../components/Profile/ProfileImage';
 import ProfileInputs from '../components/Profile/ProfileInputs';
-import ProfileGender from '../components/Profile/ProfileGender';
 import ProfileTextarea from '../components/Profile/ProfileTextarea';
 import {
   PROFILE_GET_REQUEST,
   PROFILE_UPDATE_REQUEST,
 } from '../../reducers/profile';
 
-export default function ProfileMd() {
+export default function ProfileMd2() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
   const [form, setForm] = useState({
+    companyName: '',
     name: '',
     nickname: '',
-    password: '',
-    gender: '',
+    registrationNumber: '',
     contact: '',
-    bio: '',
     picture: '',
-    birth: '',
+    description: '',
+    scale: '',
+    homepage: '',
+    address: '',
   });
 
   const onChangeHandler = useCallback((e) => {
@@ -110,67 +111,86 @@ export default function ProfileMd() {
               value={form.picture || ''}
             />
 
-            {/* 이름 */}
-            <ProfileInputs name={'이름'} />
+            <ProfileInputs name={'기업이름'} />
+            <InputText
+              onChange={(e) => onChangeHandler(e)}
+              name={'companyName'}
+              type="text"
+              value={form.companyName || ''}
+              disabled
+            />
+
+            <ProfileInputs name={'담당자 이름'} />
             <InputText
               onChange={(e) => onChangeHandler(e)}
               name={'name'}
               type="text"
               value={form.name || ''}
             />
-            {/* 닉네임 */}
-            <ProfileInputs name={'닉네임'} />
+
+            <ProfileInputs name={'담당자 닉네임'} />
             <InputText
               onChange={(e) => onChangeHandler(e)}
               name={'nickname'}
               type="text"
-              value={form.nickname || ''}
-            />
-            {/* 생년월일 */}
-            <ProfileInputs name={'생년월일'} />
-            <InputText
-              onChange={(e) => onChangeHandler(e)}
-              name={'birth'}
-              type="text"
-              value={form.birth || ''}
+              value={(form.nickname = form.name || '')}
+              readonly
             />
 
-            {/* 비밀번호 */}
-            {/* <ProfileInputs name={'비밀번호'} />*/}
-            {/* <InputText*/}
-            {/*  onChange={(e) => onChangeHandler(e)}*/}
-            {/*  name={'password'}*/}
-            {/*  type="password"*/}
-            {/*  value={form.password}*/}
-            {/* />*/}
-            {/* {console.log('비밀본호-------', form.password)}*/}
-
-            {/* <ProfileInputs name={'비밀번호 확인'} />*/}
-            {/* <InputText onChange={(e) => onChangeHandler(e)} type="password" />*/}
-
-            {/* 성별: 남, 여 체크 */}
-            <ProfileInputs name={'성별'} />
-            <ProfileGender
-              onChange={(e) => onChangeHandler(e)}
-              name={'gender'}
-              value={form.gender || ''}
-            />
-
-            {/* 연락처: 집 or 핸드폰 */}
-            <ProfileInputs name={'연락처'} />
+            <ProfileInputs name={'담장자 연락처'} />
             <InputText
               onChange={(e) => onChangeHandler(e)}
               name={'contact'}
-              type="tel"
-              maxLength="13"
+              type="text"
               value={form.contact || ''}
             />
-            {/* 한 줄 소개 */}
-            <ProfileInputs name={'한 줄 소개'} />
+
+            <ProfileInputs name={'담장자 이메일'} />
+            <InputText
+              onChange={(e) => onChangeHandler(e)}
+              name={'email'}
+              type="email"
+              value={form.email || ''}
+            />
+
+            <ProfileInputs name={'대표 홈페이지'} />
+            <InputText
+              onChange={(e) => onChangeHandler(e)}
+              name={'homepage'}
+              type="text"
+              value={form.homepage || ''}
+            />
+
+            <ProfileInputs name={'사업자 등록번호'} />
+            <InputText
+              onChange={(e) => onChangeHandler(e)}
+              name={'registrationNumber'}
+              type="text"
+              value={form.registrationNumber || ''}
+              disabled
+            />
+
+            <ProfileInputs name={'회사 규모'} />
+            <InputText
+              onChange={(e) => onChangeHandler(e)}
+              name={'scale'}
+              type="text"
+              value={form.scale || ''}
+            />
+
+            <ProfileInputs name={'회사 주소'} />
+            <InputText
+              onChange={(e) => onChangeHandler(e)}
+              name={'address'}
+              type="text"
+              value={form.address || ''}
+            />
+
+            <ProfileInputs name={'회사 소개'} />
             <ProfileTextarea
               onChange={(e) => onChangeHandler(e)}
-              name={'bio'}
-              value={form.bio || ''}
+              name={'description'}
+              value={form.description || ''}
             />
           </ProfileDiv>
         </div>

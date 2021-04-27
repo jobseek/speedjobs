@@ -25,6 +25,7 @@ import ScrollToTop from './components/includes/ScrollToTop';
 import Login from './components/admin/page/Login';
 import AdminHome from './components/admin/page/AdminHome';
 import ProfileMd from './components/pages/ProfileMd';
+import ProfileMd2 from './components/pages/ProfileMd2';
 import { TAG_GET_REQUEST } from './reducers/tag';
 import PostModify from './components/pages/PostModify';
 
@@ -96,6 +97,7 @@ function App() {
           <Route path={'/community/post/:id'} component={PostDetail} />
           <Route exact path={'/profile'} component={Profile} />
           <Route exact path={'/profile/modify'} component={ProfileMd} />
+          <Route exact path={'/profile/modify2'} component={ProfileMd2} />
           <Route exact path={'/resume'} component={Resume} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />

@@ -39,23 +39,37 @@ function* getProfile(action) {
   }
 }
 
-function updateProfileApi(data, me) {
-  console.log('me===>', me);
-  const res = axios
-    .patch(`/user/member/${me}`, data)
-    .then((response) => {
-      console.log(response);
-      return response;
-    })
-    .catch((error) => new Error(error));
-  return res;
+function updateProfileApi(data, data2, me) {
+  console.log('me?', me);
+  console.log('data2', data2.role);
+  if (data2.role === 'ROLE_COMPANY') {
+    const res = axios
+      .patch(`/user/company/${me}`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => new Error(err));
+    return res;
+  } else {
+    const res = axios
+      .patch(`/user/member/${me}`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => new Error(error));
+    return res;
+  }
 }
 
 function* updateProfile(action) {
   try {
-    console.log(action);
-    const result = yield call(updateProfileApi, action.data, action.me);
-    console.log('결과', result);
+    console.log('머지 인건?', action);
+    const result = yield call(
+      updateProfileApi,
+      action.data,
+      action.data2,
+      action.me
+    );
     yield put({
       type: PROFILE_UPDATE_SUCCESS,
       data: result.data,
