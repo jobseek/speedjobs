@@ -39,7 +39,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
 
-	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "post", fetch = LAZY, cascade = ALL, orphanRemoval = true)
 	private final List<Comment> comments = new ArrayList<>();
 
 	@ManyToMany
