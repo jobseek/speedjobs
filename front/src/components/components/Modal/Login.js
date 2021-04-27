@@ -73,12 +73,16 @@ export default function Login(props) {
 
   const submitHandle = async (e) => {
     e.preventDefault();
-    dispatch({
-      type: LOG_IN_REQUEST,
-      data: loginForm,
-    });
-    // props.setClose(false);
-    props.setSns(true);
+    if (loginForm.email === 'admin@admin.com') {
+      alert('관리자는 관리자페이지에서 로그인해주세요.');
+    } else {
+      dispatch({
+        type: LOG_IN_REQUEST,
+        data: loginForm,
+      });
+      // props.setClose(false);
+      props.setSns(true);
+    }
   };
 
   useEffect(() => {

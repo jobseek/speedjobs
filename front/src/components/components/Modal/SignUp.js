@@ -166,8 +166,7 @@ export default function SignUp(props) {
             type="PASSWORD"
           />
           <br />
-          <input type="checkbox" />
-          Accept all conditions
+          <input type="checkbox" /> Accept all conditions
           <div>
             <Button type="submit" name="SING UP" />
           </div>
