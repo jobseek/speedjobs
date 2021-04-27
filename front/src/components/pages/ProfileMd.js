@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   InputText,
@@ -20,6 +21,7 @@ import {
 
 export default function ProfileMd() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
   const [form, setForm] = useState({
@@ -37,24 +39,27 @@ export default function ProfileMd() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
-  useEffect(() => {
-    if (profile.profileUpdateDone) {
-      // history.push('/profile');
-      window.location.replace('/profile');
-    }
-  }, [profile]);
+  // useEffect(() => {
+  //   if (profile.profileUpdateDone) {
+  //     // history.push('/profile');
+  //     window.location.replace('/profile');
+  //   }
+  // }, [profile, history]);
 
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
+      if (user.me.id === null) return;
       dispatch({
         type: PROFILE_UPDATE_REQUEST,
         data: form,
         data2: user.me,
-        me: user.me?.id,
+        me: user.me.id,
       });
+      history.push('/profile');
     },
-    [dispatch, form, user.me]
+
+    [dispatch, form, user.me, history]
   );
 
   useEffect(() => {

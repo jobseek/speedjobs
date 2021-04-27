@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ProfileDiv,
@@ -12,8 +13,10 @@ import {
   PROFILE_DELETE_REQUEST,
   PROFILE_GET_REQUEST,
 } from '../../reducers/profile';
+import { LOG_OUT_REQUEST } from '../../reducers/user';
 
 export default function Profile() {
+  const history = useHistory();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [role, setRole] = useState('');
@@ -29,10 +32,10 @@ export default function Profile() {
   }, [user.me, dispatch]);
 
   useEffect(() => {
-    if (profile.profileDeleteDone) {
-      window.location.replace('/');
+    if (profile.profileGetData) {
+      console.log('엥엥엥', user.me);
     }
-  }, [profile]);
+  });
 
   const deleteHandler = useCallback(
     (e) => {
@@ -41,8 +44,13 @@ export default function Profile() {
         type: PROFILE_DELETE_REQUEST,
         data: user.me,
       });
+      dispatch({
+        type: LOG_OUT_REQUEST,
+        data: user.me,
+      });
+      history.push('/');
     },
-    [dispatch, user.me]
+    [dispatch, user.me, history]
   );
 
   return (
@@ -79,6 +87,7 @@ export default function Profile() {
               >
                 <h2>경고: 정말로 탈퇴 하시겠습니까?</h2>
                 <p>회원탈퇴 버튼을 클릭하면 모든 정보가 지워집니다.</p>
+
                 <StyledButton
                   red
                   style={{ marginRight: '0' }}

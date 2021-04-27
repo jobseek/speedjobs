@@ -84,8 +84,18 @@ function* updateProfile(action) {
 
 function deleteProfileApi(data) {
   console.log('이게 멀까요?========????', data);
-  console.log('이게 멀까요?========????', data.id);
-  return axios.delete(`/user/member/${data.id}`);
+  console.log('=== data.role ===', data.role);
+  if (data.role === 'ROLE_MEMBER') {
+    return axios.delete(`/user/member/${data.id}`);
+  } else {
+    return axios.delete(`/user/company/${data.id}`);
+  }
+
+  // if (data.role === 'ROLE_MEMBER') {
+  //   return axios.delete(`/user/member/${data.id}`);
+  // } else {
+  //   return axios.delete(`/user/company/${data.id}`);
+  // }
 }
 
 function* deleteProfile(action) {
