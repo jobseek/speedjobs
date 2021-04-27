@@ -5,7 +5,7 @@ export default function SideMenu() {
   return (
     <MySideMenu>
       <MyButton>
-        <MyLink to={'/resume'}>이력서</MyLink>
+        <MyLink to={'/resume/list'}>이력서</MyLink>
       </MyButton>
       <MyHr />
       <MyButton>
@@ -18,6 +18,10 @@ export default function SideMenu() {
       <MyHr />
       <MyButton>
         <MyLink to={'/profile'}>계정관리</MyLink>
+      </MyButton>
+      <MyHr />
+      <MyButton>
+        <MyLink to={'/profile/delete'}>회원탈퇴</MyLink>
       </MyButton>
     </MySideMenu>
   );

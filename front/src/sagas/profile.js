@@ -85,7 +85,7 @@ function* updateProfile(action) {
 function deleteProfileApi(data) {
   console.log('이게 멀까요?========????', data);
   console.log('이게 멀까요?========????', data.id);
-  return axios.delete(`/user/company/${data.id}`);
+  return axios.delete(`/user/member/${data.id}`);
 }
 
 function* deleteProfile(action) {
