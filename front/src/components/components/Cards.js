@@ -8,10 +8,34 @@ const StyledCard = styled.div`
   height: 180px;
   border-radius: 10px;
   user-select: none;
+  position: relative;
 
   &:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
+
+  &:before {
+    position: absolute;
+    content: ' ';
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
+
+  &:hover:before {
+    animation: back 1s ease;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes back {
+    0% {
+      background-color: #eee;
+      width: 0;
+    }
+    100% {
+      background-color: #eee;
+      width: 100%;
+    }
 `;
 
 const Image = styled.img`
@@ -38,13 +62,14 @@ const Arrow = styled(ArrowRight)`
   position: absolute;
   bottom: 20px;
   right: 20px;
+  color: black;
 `;
 
 export default function Cards(props) {
   return (
     <StyledCard className="card text-left" height={props.height}>
       <Image className="card-img-top" src={logo512} />
-      <div className="card-body">
+      <div className="card-body" style={{ zIndex: '1' }}>
         <div className="card-title">{props.title}</div>
         <Subtitle className="card-subtitle mb-2 text-muted">
           {props.subTitle}

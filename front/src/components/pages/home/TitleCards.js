@@ -5,11 +5,11 @@ const List = styled.li`
   display: inline-block;
   margin-right: 10px;
   width: 100%;
-  //border: 1px solid black;
-  //
-  //&:hover {
-  //  background-color: #d3d3d3;
-  //}
+  transition: background-color 1s linear;
+
+  &:hover {
+    background-color: #eee;
+  }
 `;
 
 export default function TitleCards({ title, list }) {
@@ -24,7 +24,7 @@ export default function TitleCards({ title, list }) {
   const infoArr = info.map((item, index) => (
     <div key={index}>
       <List>
-        {item.title}
+        {item.title}{' '}
         <span style={{ color: 'gray', fontSize: '10px' }}>{item.date}</span>
       </List>
     </div>
