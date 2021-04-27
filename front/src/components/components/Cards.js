@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import * as PropTypes from 'prop-types';
-import { ArrowRight } from 'react-bootstrap-icons';
+
 import logo512 from '../../components/components/img/logo512.png';
 
 const StyledCard = styled.div`
-  height: 180px;
+  height: 170px;
   border-radius: 10px;
   user-select: none;
   position: relative;
+  border: none;
 
   &:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -41,11 +42,12 @@ const StyledCard = styled.div`
 const Image = styled.img`
   width: 45px;
   height: 45px;
-  position: relative;
-  top: 25px;
+  top: 20px;
   left: 20px;
+  position: relative;
   margin-bottom: 15px;
   border: none;
+  z-index: 1;
 `;
 
 const Subtitle = styled.div`
@@ -58,13 +60,6 @@ const Subtitle = styled.div`
   line-height: 1.2;
 `;
 
-const Arrow = styled(ArrowRight)`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  color: black;
-`;
-
 export default function Cards(props) {
   return (
     <StyledCard className="card text-left" height={props.height}>
@@ -74,7 +69,10 @@ export default function Cards(props) {
         <Subtitle className="card-subtitle mb-2 text-muted">
           {props.subTitle}
         </Subtitle>
-        <Arrow />
+        <Subtitle className="card-subtitle mb-2 text-muted">
+          {props.content}
+        </Subtitle>
+        {/* <div className="card-subtitle mb-2 text-muted">{props.content}</div>*/}
       </div>
     </StyledCard>
   );

@@ -29,9 +29,23 @@ export default function Home() {
       <Banner />
       <div className="container">
         {/* 타이틀*/}
-        <div className="row">
-          <TitleCards title="공고일정" list={info} />
-          <TitleCards title="최신글목록" list={newest} />
+        <div
+          // className="row"
+          style={{
+            width: '100%',
+            textAlign: 'center',
+            margin: '60px 0',
+          }}
+        >
+          {/* <TitleCards title="공고일정" list={info} />*/}
+          {/* <TitleCards title="최신글목록" list={newest} />*/}
+          <b>
+            <i style={{ fontSize: '45 px' }}>글이 작품이 되는 공간, 브런치</i>
+          </b>
+          <br />
+          브런치에 담긴 아름다운 작품을 감상해 보세요. 그리고 다시 꺼내 보세요.{' '}
+          <br />
+          서랍 속 간직하고 있는 글과 감성을. <br />
         </div>
         {/* 공고*/}
         <AnnounceCard />
