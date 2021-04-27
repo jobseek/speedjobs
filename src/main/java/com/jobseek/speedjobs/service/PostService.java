@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.post.PostQueryRepository;
 import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
@@ -9,6 +10,8 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.dto.post.PostSearchCondition;
+import com.querydsl.core.QueryFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PostService {
 
+	private final PostQueryRepository postQueryRepository;
 	private final PostRepository postRepository;
 	private final TagRepository tagRepository;
 
@@ -104,5 +108,10 @@ public class PostService {
 	private Post findOne(Long postId) {
 		return postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+	}
+
+	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable, User user) {
+		return postQueryRepository.findAll(condition, pageable)
+			.map(post -> new PostListResponse(post, user));
 	}
 }

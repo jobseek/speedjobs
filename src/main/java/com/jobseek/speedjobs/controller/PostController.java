@@ -7,6 +7,7 @@ import com.jobseek.speedjobs.dto.post.CommentResponse;
 import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.dto.post.PostSearchCondition;
 import com.jobseek.speedjobs.service.CommentService;
 import com.jobseek.speedjobs.service.PostService;
 import io.swagger.annotations.Api;
@@ -70,10 +71,11 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.findById(postId, user));
 	}
 
-	@ApiOperation(value = "게시글 페이징 조회", notes = "게시글을 페이징 조회한다.")
+	@ApiOperation(value = "게시글 전체 조회", notes = "게시글을 전체 조회한다.")
 	@GetMapping
-	public ResponseEntity<Page<PostListResponse>> findPostsByPage(final Pageable pageable, @LoginUser User user) {
-		return ResponseEntity.ok().body(postService.findByPage(pageable, user));
+	public ResponseEntity<Page<PostListResponse>> findAll(Pageable pageable, @LoginUser User user,
+		PostSearchCondition condition) {
+		return ResponseEntity.ok().body(postService.findAll(condition, pageable, user));
 	}
 
 	/**
