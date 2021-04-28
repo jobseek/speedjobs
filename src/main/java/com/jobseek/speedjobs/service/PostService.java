@@ -11,7 +11,6 @@ import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
 import com.jobseek.speedjobs.dto.post.PostSearchCondition;
-import com.querydsl.core.QueryFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -63,15 +62,10 @@ public class PostService {
 	@Transactional
 	public PostResponse findById(Long postId, User user) {
 		Post post = findOne(postId);
-		post.increaseViewCount();
+		if (user != post.getUser()) {
+			post.increaseViewCount();
+		}
 		return PostResponse.of(post, user);
-	}
-
-	public Page<PostListResponse> findByPage(final Pageable pageable, User user) {
-		Page<Post> page = postRepository.findAll(pageable);
-		return new PageImpl<>(page.stream()
-			.map(post -> PostListResponse.of(post, user))
-			.collect(Collectors.toList()), pageable, page.getTotalElements());
 	}
 
 	private List<Tag> findTagsById(List<Long> tagIds) {
@@ -110,7 +104,8 @@ public class PostService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 	}
 
-	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable, User user) {
+	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable,
+		User user) {
 		return postQueryRepository.findAll(condition, pageable)
 			.map(post -> PostListResponse.of(post, user));
 	}
