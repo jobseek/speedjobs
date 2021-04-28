@@ -110,11 +110,12 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@ApiOperation(value = "개인회원 탈퇴", notes = "탈퇴한다.")
-	@DeleteMapping("/member/{userId}")
-	@PreAuthorize("hasRole('MEMBER')")
-	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-		userService.delete(userId);
+	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴한다.")
+	@DeleteMapping("/{userId}")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long userId,
+		@Valid @RequestBody UserCheckRequest userCheckRequest, @LoginUser User user) {
+		userService.delete(userCheckRequest, userId, user);
 		return ResponseEntity.noContent().build();
 	}
 

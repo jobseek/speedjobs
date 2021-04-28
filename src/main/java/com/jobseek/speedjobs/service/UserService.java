@@ -146,8 +146,12 @@ public class UserService {
 	}
 
 	@Transactional
-	public void delete(Long userId) {
-		User user = findOne(userId);
-		userRepository.delete(user);
+	public void delete(UserCheckRequest userCheckRequest, Long targetId, User user) {
+		user.validateMe(targetId);
+		User target = findOne(targetId);
+		if (!passwordEncoder.matches(userCheckRequest.getPassword(), target.getPassword())) {
+			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+		}
+		userRepository.delete(target);
 	}
 }

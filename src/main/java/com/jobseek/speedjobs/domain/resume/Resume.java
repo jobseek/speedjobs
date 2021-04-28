@@ -75,7 +75,7 @@ public class Resume extends BaseTimeEntity {
 	@CollectionTable(name = "career", joinColumns = @JoinColumn(name = "resume_id"))
 	private List<Career> careerList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "resume", fetch = LAZY, cascade = ALL)
+	@OneToMany(mappedBy = "resume", cascade = ALL, orphanRemoval = true)
 	private List<Apply> applies = new ArrayList<>();
 
 	public Resume(Open open, String coverLetter, String address, String blogUrl, String githubUrl,

@@ -17,7 +17,6 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,17 +27,17 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-class PostServiceTest {
-
-	@Autowired
-	private
-
-	@Test
-	public void queryFavorites() {
-
-	}
+//@ExtendWith(SpringExtension.class)
+//@SpringBootTest
+//class PostServiceTest {
+//
+//	@Autowired
+//	private
+//
+//	@Test
+//	public void queryFavorites() {
+//
+//	}
 
 //	@Autowired
 //	PostService postService;
@@ -131,4 +130,4 @@ class PostServiceTest {
 //	}
 
 
-}
+//}

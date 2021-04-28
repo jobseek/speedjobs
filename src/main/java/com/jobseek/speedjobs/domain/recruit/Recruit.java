@@ -53,7 +53,7 @@ public class Recruit extends BaseTimeEntity {
 	@ManyToMany(mappedBy = "recruitFavorites")
 	private final List<User> favorites = new ArrayList<>();
 
-	@OneToMany(mappedBy = "recruit", cascade = ALL)
+	@OneToMany(mappedBy = "recruit", cascade = ALL, orphanRemoval = true)
 	private final List<Apply> applies = new ArrayList<>();
 
 	@OneToMany(cascade = ALL, orphanRemoval = true)

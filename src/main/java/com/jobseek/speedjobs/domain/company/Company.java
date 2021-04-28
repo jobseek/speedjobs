@@ -32,8 +32,10 @@ public class Company extends User {
 
 	@ManyToMany(mappedBy = "companyFavorites")
 	private final List<User> favorites = new ArrayList<>();
-	@OneToMany(mappedBy = "company", fetch = LAZY, cascade = ALL)
+
+	@OneToMany(mappedBy = "company", cascade = ALL, orphanRemoval = true)
 	private List<Recruit> recruitList = new ArrayList<>();
+
 	private String companyName;
 
 	private String logoImage;

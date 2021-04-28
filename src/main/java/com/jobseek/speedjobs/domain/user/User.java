@@ -1,7 +1,12 @@
 package com.jobseek.speedjobs.domain.user;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import java.util.ArrayList;
@@ -18,6 +23,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -56,6 +62,12 @@ public class User extends BaseTimeEntity {
 	)
 	private final List<Recruit> recruitFavorites = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+	private List<Post> posts;
+
+	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+	private List<Comment> comments;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
@@ -79,7 +91,8 @@ public class User extends BaseTimeEntity {
 	private Role role;
 
 	@Builder
-	public User(String name, String nickname, String email, String password, String picture, String contact, Role role) {
+	public User(String name, String nickname, String email, String password, String picture,
+		String contact, Role role) {
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;
@@ -87,11 +100,6 @@ public class User extends BaseTimeEntity {
 		this.picture = picture;
 		this.contact = contact;
 		this.role = role;
-	}
-
-	public void updateOAuthUserInfo(String nickname, String picture) {
-		this.nickname = nickname;
-		this.picture = picture;
 	}
 
 	public User updateCustomUserInfo(String name, String nickname, String picture, String contact) {
@@ -112,5 +120,11 @@ public class User extends BaseTimeEntity {
 
 	public boolean isAdmin() {
 		return role == Role.ROLE_ADMIN;
+	}
+
+	public void validateMe(Long id) {
+		if (!this.id.equals(id)) {
+			throw new IllegalArgumentException("본인이 아닙니다.");
+		}
 	}
 }

@@ -26,7 +26,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 2. 게시글 수정
-PUT http://{{host}}/post/2
+PUT http://{{host}}/post/9
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -42,12 +42,12 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 3. 게시글 삭제
-DELETE http://{{host}}/post/3
+DELETE http://{{host}}/post/9
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 4. 게시글 단건 조회
-GET http://{{host}}/post/1
+GET http://{{host}}/post/9
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -62,7 +62,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 6. 댓글 등록
-POST http://{{host}}/post/1/comment
+POST http://{{host}}/post/9/comment
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -85,15 +85,15 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 9. 찜하기
-POST http://{{host}}/post/11/favorite
+POST http://{{host}}/post/9/favorite
 Authorization: Bearer {{accessToken}}
 
 ### 10. 찜하기 취소
-DELETE http://{{host}}/post/1/favorite
+DELETE http://{{host}}/post/9/favorite
 Authorization: Bearer {{accessToken}}
 
 ### 11. 찜 목록 조회
-GET http://{{host}}/post/favorites?page=2&size=1&sort=id,DESC
+GET http://{{host}}/post/favorites?page=0&size=5&sort=id,DESC
 Authorization: Bearer {{accessToken}}
 
 #### 12. 댓글 좋아요

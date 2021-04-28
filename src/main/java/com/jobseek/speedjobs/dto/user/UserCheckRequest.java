@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class UserCheckRequest {
 
 	@NotBlank
-	@Size(min = 6, max = 20)
+	@Size(min = 8, max = 20)
 	private String password;
 }

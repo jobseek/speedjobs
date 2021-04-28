@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
 
 @Entity
 @Getter
@@ -31,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "members")
 public class Member extends User {
 
-	@OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
+	@OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
 	private final List<Resume> resumeList = new ArrayList<>();
 
 	private String gender;

@@ -40,8 +40,8 @@ POST http://localhost:8081/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "123@123.com",
-  "password": "a12341234!",
+  "email": "{{member_email}}",
+  "password": "{{password}}",
   "provider": "LOCAL"
 }
 
@@ -60,3 +60,10 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 5.회원탈퇴
+DELETE http://{{host}}/user/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "password": "jobseek2021!"
+}
