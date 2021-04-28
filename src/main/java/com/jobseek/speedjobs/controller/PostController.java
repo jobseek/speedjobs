@@ -144,19 +144,20 @@ public class PostController {
 		return ResponseEntity.ok().body(commentService.findByPage(postId, pageable));
 	}
 
-//	@ApiOperation(value = "댓글 좋아요", notes = "댓글을 좋아요 누른다.")
-//	@PostMapping("/{postId}/{commentId}/up")
-//	public ResponseEntity<Void> pushCommentLike(@PathVariable Long postId,
-//		@PathVariable Long commentId) {
-//		commentService.like(commentId);
-//		return ResponseEntity.noContent().build();
-//	}
-//
-//	@ApiOperation(value = "댓글 싫어요", notes = "댓글을 싫어요 누른다.")
-//	@PostMapping("/{postId}/{commentId}/down")
-//	public ResponseEntity<Void> pushCommentHate(@PathVariable Long postId,
-//		@PathVariable Long commentId) {
-//		commentService.hate(commentId);
-//		return ResponseEntity.noContent().build();
-//	}
+	@ApiOperation(value = "댓글 좋아요", notes = "댓글 추천")
+	@PostMapping("/{postId}/comment/{commentId}/favorite")
+	public ResponseEntity<Void> saveCommentFavorite(@PathVariable Long postId,
+		@PathVariable Long commentId, @LoginUser User user) {
+		commentService.saveCommentFavorite(commentId, user);
+		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
+	}
+
+	@ApiOperation(value = "댓글 싫어요", notes = "댓글 추천 취소")
+	@DeleteMapping("/{postId}/comment/{commentId}/favorite")
+	public ResponseEntity<Void> deleteCommentFavorite(@PathVariable Long postId,
+		@PathVariable Long commentId, @LoginUser User user) {
+		commentService.deleteCommentFavorite(commentId, user);
+		return ResponseEntity.created(URI.create("/api/post/" + postId)).build();
+	}
+
 }

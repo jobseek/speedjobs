@@ -55,6 +55,18 @@ public class CommentService {
 			.collect(Collectors.toList()), pageable, comments.size());
 	}
 
+	@Transactional
+    public void saveCommentFavorite(Long commentId, User user) {
+		Comment comment = findOne(commentId);
+		comment.addFavorite(user);
+    }
+
+	@Transactional
+	public void deleteCommentFavorite(Long commentId, User user) {
+		Comment comment = findOne(commentId);
+		comment.removeFavorite(user);
+	}
+
 	private Post findPost(Long postId) {
 		return postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId=" + postId));
@@ -71,17 +83,4 @@ public class CommentService {
 		}
 	}
 
-//	@Transactional
-//	public void like(Long commentId) {
-//		Comment comment = commentRepository.findById(commentId)
-//			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
-//		comment.increaseLikeCount();
-//	}
-//
-//	@Transactional
-//	public void hate(Long commentId) {
-//		Comment comment = commentRepository.findById(commentId)
-//			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
-//		comment.decreaseLikeCount();
-//	}
 }

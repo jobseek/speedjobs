@@ -49,11 +49,11 @@ public class User extends BaseTimeEntity {
 	private final List<Post> postFavorites = new ArrayList<>();
 
 	@ManyToMany
-	@JoinTable(name = "company_favorites",
+	@JoinTable(name = "comment_favorites",
 		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "company_id")
+		inverseJoinColumns = @JoinColumn(name = "comment_id")
 	)
-	private final List<Company> companyFavorites = new ArrayList<>();
+	private final List<Comment> commentFavorites = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "recruit_favorites",
