@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 import hangul from '../../data/hangul';
 import { SearchInput } from '../Styled';
+import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../../reducers/post';
 
 const SearchHeader = styled.div`
   position: sticky;
@@ -68,24 +71,109 @@ const ContentWrap = styled.div`
   }
 `;
 
-export default function SearchArea({ typed, setTyped }) {
+export default function SearchArea({ typed, setTyped, setToggle }) {
   const [searchText, setSearchText] = useState('');
+  const history = useHistory();
   const [, setHangulString] = useState('');
-  const onChangHandler = useCallback((e) => {
-    setSearchText((prev) => e.target.value);
-    setHangulString((prev) =>
-      e.target.value.split('').reduce((x, y) => {
-        return x + hangul(y);
-      }, '')
-    );
-  }, []);
+  const [loading, setLoading] = useState(false);
+  const [postList, setPostList] = useState([]);
+  const time = useRef(0);
+  const { post } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const onChangHandler = useCallback(
+    (e) => {
+      console.log('로딩 트루');
+      setLoading(true);
+      setSearchText((prev) => e.target.value);
+      setHangulString((prev) =>
+        e.target.value.split('').reduce((x, y) => {
+          return x + hangul(y);
+        }, '')
+      );
+      clearTimeout(time.current);
+      if (e.target.value !== '') {
+        time.current = setTimeout(() => {
+          dispatch({
+            type: POST_LIST_REQUEST,
+            data: {
+              size: 20,
+              page: 0,
+              content: e.target.value,
+              // title: e.target.value,
+            },
+          });
+        }, 1500);
+      }
+    },
+    [dispatch, setLoading, setSearchText, setHangulString]
+  );
+
   useEffect(() => {
     if (searchText !== '') {
-      setTyped((prev) => true);
+      setTyped(true);
+      if (post.postListDone) {
+        console.log('로딩꺼짐');
+        setLoading(false);
+        setPostList(post.postList.content);
+        dispatch({
+          type: POST_LIST_DONE,
+        });
+      }
     } else {
-      setTyped((prev) => false);
+      setTyped(false);
     }
-  }, [searchText, typed, setTyped]);
+  }, [
+    dispatch,
+    searchText,
+    typed,
+    setTyped,
+    post.postListLoading,
+    post.postListDone,
+    post.postList,
+  ]);
+
+  const onClickHandler = ({ author, tags, date, fav, id, target }) => {
+    if (target === 'community')
+      history.push({
+        pathname: `/community/post/${id}`,
+        state: {
+          author,
+          tags,
+          date,
+          fav,
+        },
+      });
+    setToggle('none');
+  };
+
+  const mapPostList = postList.map((pl) => (
+    <SearchContent
+      onClick={() =>
+        onClickHandler({
+          fav: pl.favorite,
+          data: pl.createdDate,
+          tags: [...(pl.tags.POSITION ?? []), ...(pl.tags.SKILL ?? [])],
+          author: pl.author,
+          id: pl.id,
+          target: 'community',
+        })
+      }
+    >
+      <SearchTitle>{pl.title}</SearchTitle>
+      <SearchContentSubTitle>{pl.author}</SearchContentSubTitle>
+      <SearchContentSubTitle>
+        {pl.createdDate.slice(0, 3).join('/')}
+      </SearchContentSubTitle>
+    </SearchContent>
+  ));
+
+  // 뒷정리
+  useEffect(() => {
+    return () => {
+      setPostList([]);
+    };
+  }, []);
   return (
     <>
       <SearchInput
@@ -95,94 +183,24 @@ export default function SearchArea({ typed, setTyped }) {
       ></SearchInput>
 
       <ContentWrap typed={typed}>
-        <SearchHeader>질문</SearchHeader>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <hr style={{ margin: '0', marginTop: '5px' }} />
-        <SearchHeader>공고</SearchHeader>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
-        <SearchContent>
-          <SearchTitle>안녕하세요 저는 배상휘 라고 합니다</SearchTitle>
-          <SearchContentSubTitle>작성자</SearchContentSubTitle>
-          <SearchContentSubTitle>2020/99/99</SearchContentSubTitle>
-        </SearchContent>
+        {loading ? (
+          '로딩중'
+        ) : (
+          <>
+            {postList.length === 0 ? (
+              '검색결과가 없습니다'
+            ) : (
+              <>
+                {postList.length !== 0 && <SearchHeader>질문</SearchHeader>}
+                {mapPostList}
+                {postList.length !== 0 && (
+                  <hr style={{ margin: '0', marginTop: '5px' }} />
+                )}
+                <SearchHeader>공고</SearchHeader>
+              </>
+            )}
+          </>
+        )}
       </ContentWrap>
     </>
   );

@@ -55,7 +55,7 @@ export default function ProfileMd2() {
         me: user.me?.id,
       });
     },
-    [dispatch, form, user.me, user.me?.id]
+    [dispatch, form, user.me]
   );
 
   useEffect(() => {
