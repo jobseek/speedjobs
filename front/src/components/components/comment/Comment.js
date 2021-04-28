@@ -199,7 +199,7 @@ export default function Comment({
           />
         </autoheight-textarea>
 
-        {user.me.id === authorId ? (
+        {user.me?.id === authorId ? (
           <Meta>
             <StyledButton white onClick={(e) => modifyHandler(e)}>
               수정

@@ -34,8 +34,7 @@ export const loginInterceptor = (
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
       if (
-        error.response.status === 403 &&
-        error.response.status === 500 &&
+        (error.response.status === 403 || error.response.status === 500) &&
         error.config &&
         !error.config.__isRetryRequest
       ) {
