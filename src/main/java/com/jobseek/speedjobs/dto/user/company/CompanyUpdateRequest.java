@@ -28,8 +28,14 @@ public class CompanyUpdateRequest {
 	private String registrationNumber;
 	private String description;
 	private String homepage;
+	private String address;
+	private Integer avgSalary; // 단위: 만원
+	private Double latitude; // 위도
+	private Double longitude; // 경도
+	private Double rating; // 평가점수
 
 	public CompanyDetail toCompanyDetail() {
-		return CompanyDetail.from(registrationNumber, description, homepage);
+		return CompanyDetail.from(registrationNumber, description, homepage, address, avgSalary,
+			latitude, longitude, rating);
 	}
 }

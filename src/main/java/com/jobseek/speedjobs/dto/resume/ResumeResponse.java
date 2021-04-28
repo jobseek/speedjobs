@@ -5,6 +5,7 @@ import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,11 @@ public class ResumeResponse {
 	private Long id;
 	private Open open;
 	private String coverLetter;
+	private String title;
+	private String name;
+	private String gender;
+	private String contact;
+	private LocalDate birth;
 	private String address;
 	private String blogUrl;
 	private String githubUrl;
@@ -29,6 +35,11 @@ public class ResumeResponse {
 		this.id = resume.getId();
 		this.open = resume.getOpen();
 		this.coverLetter = resume.getCoverLetter();
+		this.title = resume.getTitle();
+		this.name = resume.getName();
+		this.gender = resume.getGender();
+		this.contact = resume.getContact();
+		this.birth = resume.getBirth();
 		this.address = resume.getAddress();
 		this.blogUrl = resume.getBlogUrl();
 		this.githubUrl = resume.getGithubUrl();
@@ -39,7 +50,8 @@ public class ResumeResponse {
 	}
 
 	@Builder
-	public ResumeResponse(Long id, Open open, String coverLetter, String address,
+	public ResumeResponse(Long id, Open open, String coverLetter, String title,
+		String name, String gender, String contact, LocalDate birth, String address,
 		String blogUrl, String githubUrl, String resumeImage,
 		List<Certificate> certificateList,
 		List<Scholar> scholarList,
@@ -47,6 +59,11 @@ public class ResumeResponse {
 		this.id = id;
 		this.open = open;
 		this.coverLetter = coverLetter;
+		this.title = title;
+		this.name = name;
+		this.gender = gender;
+		this.contact = contact;
+		this.birth = birth;
 		this.address = address;
 		this.blogUrl = blogUrl;
 		this.githubUrl = githubUrl;
@@ -61,6 +78,11 @@ public class ResumeResponse {
 			.id(resume.getId())
 			.open(resume.getOpen())
 			.coverLetter(resume.getCoverLetter())
+			.title(resume.getTitle())
+			.name(resume.getName())
+			.gender(resume.getGender())
+			.contact(resume.getContact())
+			.birth(resume.getBirth())
 			.address(resume.getAddress())
 			.blogUrl(resume.getBlogUrl())
 			.githubUrl(resume.getGithubUrl())

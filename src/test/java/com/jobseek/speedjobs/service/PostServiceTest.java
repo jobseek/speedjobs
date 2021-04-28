@@ -1,31 +1,32 @@
-package com.jobseek.speedjobs.service;
-
-import static com.jobseek.speedjobs.domain.user.Provider.LOCAL;
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.jobseek.speedjobs.common.exception.NotExistException;
-import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.company.CompanyDetail;
-import com.jobseek.speedjobs.domain.company.CompanyRepository;
-import com.jobseek.speedjobs.domain.member.Member;
-import com.jobseek.speedjobs.domain.member.MemberRepository;
-import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.post.PostRepository;
-import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.domain.user.UserRepository;
-import com.jobseek.speedjobs.dto.post.PostRequest;
-import java.util.Arrays;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
+//package com.jobseek.speedjobs.service;
+//
+//import static com.jobseek.speedjobs.domain.user.Provider.LOCAL;
+//import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
+//import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
+//import static org.assertj.core.api.Assertions.assertThat;
+//
+//import com.jobseek.speedjobs.common.exception.NotExistException;
+//import com.jobseek.speedjobs.domain.company.Company;
+//import com.jobseek.speedjobs.domain.company.CompanyDetail;
+//import com.jobseek.speedjobs.domain.company.CompanyRepository;
+//import com.jobseek.speedjobs.domain.member.Member;
+//import com.jobseek.speedjobs.domain.member.MemberRepository;
+//import com.jobseek.speedjobs.domain.post.Post;
+//import com.jobseek.speedjobs.domain.post.PostRepository;
+//import com.jobseek.speedjobs.domain.user.User;
+//import com.jobseek.speedjobs.domain.user.UserRepository;
+//import com.jobseek.speedjobs.dto.post.PostRequest;
+//import java.util.Arrays;
+//import lombok.extern.slf4j.Slf4j;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.DisplayName;
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.annotation.Rollback;
+//import org.springframework.test.context.junit.jupiter.SpringExtension;
+//import org.springframework.transaction.annotation.Transactional;
 
 //@ExtendWith(SpringExtension.class)
 //@SpringBootTest

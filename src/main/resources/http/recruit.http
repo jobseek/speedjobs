@@ -25,7 +25,9 @@ Authorization: Bearer {{accessToken}}
   "content": "모집합니다아",
   "tagIds": [
     1,
-    3
+    2,
+    3,
+    9
   ]
 }
 
@@ -61,8 +63,18 @@ GET http://{{host}}/recruit/16
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
-### 5. 공고 페이징 조회
-GET http://{{host}}/recruit?page=0&size=3&sort=id,DESC
+### 5. 공고 전체 조회
+#GET http://{{host}}/recruit
+#GET http://{{host}}/recruit?page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?tagIds=1,2,3,10&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?title=엔지니어&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?experience=TWO&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?content=국내&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?companyName=삼&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?companyName=삼&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?address=강남&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?avgSalary=5000&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?rating=2&page=0&size=3&sort=id,DESC
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 

@@ -5,6 +5,7 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
+import com.jobseek.speedjobs.dto.recruit.RecruitSearchCondition;
 import com.jobseek.speedjobs.service.RecruitService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,17 +59,18 @@ public class RecruitController {
 		return ResponseEntity.created(URI.create("/api/recruit/" + recruitId)).build();
 	}
 
-	@ApiOperation(value = "공고 단건 조회", notes = "공고를 1개 조회한다.")
+	@ApiOperation(value = "공고 단건 조회", notes = "공고를 조회한다.")
 	@GetMapping("/{recruitId}")
 	public ResponseEntity<RecruitResponse> findRecruit(@PathVariable Long recruitId,
 		@LoginUser User user) {
 		return ResponseEntity.ok().body(recruitService.findById(recruitId, user));
 	}
 
-	@ApiOperation(value = "공고 페이징 조회", notes = "공고를 페이징으로 조회한다")
+	@ApiOperation(value = "공고 전체 조회", notes = "공고를 전체 조회한다")
 	@GetMapping
-	public ResponseEntity<Page<RecruitResponse>> findRecruitsByPage(Pageable pageable, @LoginUser User user) {
-		return ResponseEntity.ok().body(recruitService.findByPage(pageable, user));
+	public ResponseEntity<Page<RecruitResponse>> findAll(Pageable pageable, @LoginUser User user,
+		RecruitSearchCondition condition) {
+		return ResponseEntity.ok().body(recruitService.findAll(condition, pageable, user));
 	}
 
 	/**
@@ -86,7 +88,8 @@ public class RecruitController {
 	@ApiOperation(value = "공고 찜하기 취소", notes = "공고를 찜목록에서 삭제한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@DeleteMapping("/{recruitId}/favorite")
-	public ResponseEntity<Void> deleteRecruitFavorite(@PathVariable Long recruitId, @LoginUser User user) {
+	public ResponseEntity<Void> deleteRecruitFavorite(@PathVariable Long recruitId,
+		@LoginUser User user) {
 		recruitService.deleteRecruitFavorite(recruitId, user);
 		return ResponseEntity.noContent().build();
 	}

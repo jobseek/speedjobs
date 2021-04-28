@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,21 @@ public class RecruitRequest {
 	private String content;
 
 	private List<Long> tagIds;
+
+	@Builder
+	public RecruitRequest(String title, LocalDateTime openDate, LocalDateTime closeDate,
+		Status status, String thumbnail, Experience experience,
+		Position position, String content, List<Long> tagIds) {
+		this.title = title;
+		this.openDate = openDate;
+		this.closeDate = closeDate;
+		this.status = status;
+		this.thumbnail = thumbnail;
+		this.experience = experience;
+		this.position = position;
+		this.content = content;
+		this.tagIds = tagIds;
+	}
 
 	public Recruit toEntity() {
 		return Recruit

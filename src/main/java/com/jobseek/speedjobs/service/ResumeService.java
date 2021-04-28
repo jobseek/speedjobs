@@ -25,16 +25,16 @@ public class ResumeService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public Long save(User user, ResumeRequest request) {
-		Resume resume = new Resume(request.getOpen(), request.getCoverLetter(),
-			request.getAddress(), request.getBlogUrl(), request.getGithubUrl(),
-			request.getResumeImage());
+	public Long save(User user, ResumeRequest resumeRequest) {
+		Resume resume = resumeRequest.toEntity();
 		Member member = memberRepository.findById(user.getId())
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 		resume.setMember(member);
-		request.getCareerList().forEach(resume::addCareer);
-		request.getScholarList().forEach(resume::addScholar);
-		request.getCertificateList().forEach(resume::addCertificate);
+		resume.addMoreInfo(
+			resumeRequest.getCareerList(),
+			resumeRequest.getScholarList(),
+			resumeRequest.getCertificateList()
+		);
 		return resumeRepository.save(resume).getId();
 	}
 
@@ -46,6 +46,11 @@ public class ResumeService {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
 		resume.update(resumeRequest.toEntity());
+		resume.updateInfo(
+			resumeRequest.getCareerList(),
+			resumeRequest.getScholarList(),
+			resumeRequest.getCertificateList()
+			);
 	}
 
 	@Transactional

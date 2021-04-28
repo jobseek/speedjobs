@@ -32,6 +32,8 @@ values  (1, '2021-02-06 17:23:02', null, '010-1342-3433', 'member@member.com', '
 (28, '2021-04-02 17:47:34', '2021-04-11 17:49:03', '010-4990-9073', 'company28@company.com', 'KT', 'KT', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
 (29, '2021-02-28 17:47:38', null, '010-7531-6008', 'company29@company.com', 'NC SOFT', 'NC SOFT', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
 (30, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-6919-8734', 'company30@company.com', 'NHN', 'NHN', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY');
+# (31, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-3134-8734', 'company31@company.com', 'KB Bank', 'KB Bank', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY');
+# (32, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-7373-8734', 'company32@company.com', 'Hana Bank', 'Hana Bank', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY');
 insert into members (bio, birth, gender, oauth_id, provider, user_id)
 values  ('안녕하세요. 반갑습니다', '1992-05-30', 'M', null, 'LOCAL', 1),
 ('안녕하세요. 짱우진입니다', '1994-02-18', 'M', null, 'LOCAL', 2),
@@ -65,8 +67,12 @@ values  ('잡식컴퍼니입니다.', null, '123-45-67890', '(주)잡식', 'http
 ('KT입니다', null, '123-45-67906', 'KT', null, 29, 28),
 ('NC 소프트입니다', null, '123-45-67907', 'NC SOFT', null, 32, 29),
 ('NHN입니다', null, '123-45-67908', 'NHN', null, 1000, 30);
--- insert into users(email, password, name, role, contact, nickname)
--- values ('company17@company.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', '네이버', 'ROLE_COMPANY', '02-832-2345', '(주)네이버'); -- 16
+# insert into companies (address, avg_salary, description, homepage, latitude, longitude, rating, registration_number, company_name, logo_image, scale, user_id)
+# values ('서울시 강남구 서초1동', 4000, '국민은행입니다.', null, 30.5, 20.3, 4.0, '123-46-23213', 'KB Bank', null, 40, 31);
+# insert into companies (address, avg_salary, description, homepage, latitude, longitude, rating, registration_number, company_name, logo_image, scale, user_id)
+# values ('서울시 강남구 방배2동', 3800, '하나은행입니다.', null, 20.8, 23.3, 4.0, '123-46-23218', 'Hana Bank', null, 30, 32);
+# insert into users(email, password, name, role, contact, nickname)
+# values ('company17@company.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', '네이버', 'ROLE_COMPANY', '02-832-2345', '(주)네이버'); -- 16
 
 
 -- insert into companies(user_id, company_name, homepage, registration_number, description, logo_image, scale)

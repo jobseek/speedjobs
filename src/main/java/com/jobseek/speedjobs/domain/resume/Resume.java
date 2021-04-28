@@ -11,6 +11,7 @@ import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
@@ -35,7 +36,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "resumes")
@@ -50,6 +50,16 @@ public class Resume extends BaseTimeEntity {
 	private Open open;
 
 	private String coverLetter;
+
+	private String title;
+
+	private String name;
+
+	private String gender;
+
+	private String contact;
+
+	private LocalDate birth;
 
 	private String address;
 
@@ -78,35 +88,28 @@ public class Resume extends BaseTimeEntity {
 	@OneToMany(mappedBy = "resume", cascade = ALL, orphanRemoval = true)
 	private List<Apply> applies = new ArrayList<>();
 
-	public Resume(Open open, String coverLetter, String address, String blogUrl, String githubUrl,
+	@Builder
+	public Resume(Open open, String coverLetter, String title, String name, String gender,
+		String contact, LocalDate birth, String address, String blogUrl, String githubUrl,
 		String resumeImage) {
 		this.open = open;
 		this.coverLetter = coverLetter;
+		this.title = title;
+		this.name = name;
+		this.gender = gender;
+		this.contact = contact;
+		this.birth = birth;
 		this.address = address;
 		this.blogUrl = blogUrl;
 		this.githubUrl = githubUrl;
 		this.resumeImage = resumeImage;
 	}
 
-	public Resume(Open open, String coverLetter, String address, String blogUrl, String githubUrl,
-		String resumeImage, List<Certificate> certificates, List<Scholar> scholars,
-		List<Career> careers) {
-		this.open = open;
-		this.coverLetter = coverLetter;
-		this.address = address;
-		this.blogUrl = blogUrl;
-		this.githubUrl = githubUrl;
-		this.resumeImage = resumeImage;
-		this.certificateList = certificates;
-		this.scholarList = scholars;
-		this.careerList = careers;
-	}
-
-	public static Resume createResume(Open open, String coverLetter, String address, String blogUrl,
-		String githubUrl, String resumeImage, List<Certificate> certificates,
-		List<Scholar> scholars, List<Career> careers) {
-		return new Resume(open, coverLetter, address, blogUrl, githubUrl, resumeImage, certificates,
-			scholars, careers);
+	public static Resume createResume(Open open, String coverLetter, String title, String name, String gender,
+		String contact, LocalDate birth, String address, String blogUrl, String githubUrl,
+		String resumeImage) {
+		return new Resume(open, coverLetter, title, name, gender, contact, birth, address, blogUrl,
+			githubUrl, resumeImage);
 	}
 
 	//연관관계 편의 메서드
@@ -115,16 +118,17 @@ public class Resume extends BaseTimeEntity {
 		member.getResumeList().add(this);
 	}
 
-	public void addCareer(Career career) {
-		careerList.add(career);
+	public void addMoreInfo(List<Career> careers, List<Scholar> scholars, List<Certificate> certificates) {
+		this.careerList.addAll(careers);
+		this.scholarList.addAll(scholars);
+		this.certificateList.addAll(certificates);
 	}
 
-	public void addScholar(Scholar scholar) {
-		scholarList.add(scholar);
-	}
-
-	public void addCertificate(Certificate certificate) {
-		certificateList.add(certificate);
+	public void updateInfo(List<Career> careers, List<Scholar> scholars, List<Certificate> certificates) {
+		this.careerList.clear();
+		this.scholarList.clear();
+		this.certificateList.clear();
+		addMoreInfo(careers,scholars,certificates);
 	}
 
 	public void update(Resume resume) {

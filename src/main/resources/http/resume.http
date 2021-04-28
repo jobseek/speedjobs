@@ -16,6 +16,10 @@ Authorization: Bearer {{accessToken}}
 
 {
   "open": "NO",
+  "title": "잡스피드 이력서",
+  "name": "잡식이",
+  "gender": "M",
+  "contact": "010-1234-5678",
   "coverLetter": "소개입니당",
   "address": "서울시 강북구 번동",
   "blogUrl": "https://www.naver.com",
@@ -89,12 +93,6 @@ Authorization: Bearer {{accessToken}}
       "position": "사장",
       "inDate": "2020-01-02 00:00:00",
       "outDate": "2021-12-15 00:00:00"
-    },
-    {
-      "companyName": "스피드잡식",
-      "position": "CTO",
-      "inDate": "2020-01-05 00:00:00",
-      "outDate": "2021-11-15 00:00:00"
     }
   ],
   "scholarList": [
@@ -128,6 +126,14 @@ Authorization: Bearer {{accessToken}}
       "institute": "토익컴퍼니",
       "certDate": "2018-05-30 13:25:08",
       "score": 900,
+      "degree": null
+    },
+    {
+      "certName": "정보처리기사",
+      "certNumber": "333-32-22222",
+      "institute": "Q-net",
+      "certDate": "2020-05-30 13:25:08",
+      "score": null,
       "degree": null
     }
   ]

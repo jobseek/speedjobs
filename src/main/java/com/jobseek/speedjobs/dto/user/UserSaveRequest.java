@@ -61,7 +61,8 @@ public class UserSaveRequest {
 			.role(role)
 			.contact(contact)
 			.companyName(companyName)
-			.companyDetail(CompanyDetail.from(registrationNumber, null, homepage))
+			.companyDetail(CompanyDetail.from(registrationNumber, null, homepage,
+				null, null, null, null, null))
 			.build();
 	}
 

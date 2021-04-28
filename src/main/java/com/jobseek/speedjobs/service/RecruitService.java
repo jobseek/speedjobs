@@ -6,6 +6,7 @@ import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
+import com.jobseek.speedjobs.domain.recruit.RecruitQueryRepository;
 import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
@@ -13,6 +14,7 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
+import com.jobseek.speedjobs.dto.recruit.RecruitSearchCondition;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ public class RecruitService {
 	private final RecruitRepository recruitRepository;
 	private final CompanyRepository companyRepository;
 	private final TagRepository tagRepository;
+	private final RecruitQueryRepository recruitQueryRepository;
 
 	@Transactional
 	public Long save(RecruitRequest recruitRequest, User user) {
@@ -40,6 +43,7 @@ public class RecruitService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업회원입니다."));
 		recruit.setCompany(company);
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
+		recruit.addTags(tags);
 		return recruitRepository.save(recruit).getId();
 	}
 
@@ -75,6 +79,11 @@ public class RecruitService {
 		return new PageImpl<>(page.stream()
 			.map(recruit -> RecruitResponse.of(recruit, user))
 			.collect(Collectors.toList()), pageable, page.getTotalElements());
+	}
+
+	public Page<RecruitResponse> findAll(RecruitSearchCondition condition, Pageable pageable, User user) {
+		return recruitQueryRepository.findAll(condition, pageable)
+			.map(recruit -> RecruitResponse.of(recruit, user));
 	}
 
 	/**

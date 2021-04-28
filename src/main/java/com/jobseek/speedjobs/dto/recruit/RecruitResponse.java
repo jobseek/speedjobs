@@ -43,6 +43,11 @@ public class RecruitResponse {
 	private int scale;
 	private String description;
 	private String homepage;
+	private String address;
+	private Integer avgSalary; // 단위: 만원
+	private Double latitude; // 위도
+	private Double longitude; // 경도
+	private Double rating; // 평가점수
 
 	public static RecruitResponse of(Recruit recruit, User user) {
 		Company company = recruit.getCompany();
@@ -66,6 +71,11 @@ public class RecruitResponse {
 			.scale(company.getScale())
 			.description(company.getCompanyDetail().getDescription())
 			.homepage(company.getCompanyDetail().getHomepage())
+			.address(company.getCompanyDetail().getAddress())
+			.avgSalary(company.getCompanyDetail().getAvgSalary())
+			.latitude(company.getCompanyDetail().getLatitude())
+			.longitude(company.getCompanyDetail().getLongitude())
+			.rating(company.getCompanyDetail().getRating())
 			.build();
 	}
 }
