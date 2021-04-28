@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Heart, HeartFill, ShareFill } from 'react-bootstrap-icons';
@@ -38,7 +38,6 @@ export default function PostDetail(props) {
   const { id } = useParams();
   const [fav, setFav] = useState(false);
   const [myPost, setMyPost] = useState(false);
-  const location = useLocation();
   const post = useSelector((state) => state.post);
   const like = useSelector((state) => state.like);
   const user = useSelector((state) => state.user);
@@ -46,6 +45,7 @@ export default function PostDetail(props) {
   const [content, setContent] = useState({
     title: '',
     content: '',
+    tags: [],
   });
   const dispatch = useDispatch();
 
@@ -77,6 +77,10 @@ export default function PostDetail(props) {
         content: post.post.content,
         author: post.post.author,
         createdDate: post.post.createdDate,
+        tags: [
+          ...(post.post.tags.POSITION ?? []),
+          ...(post.post.tags.SKILL ?? []),
+        ],
       });
       console.log(post.post.favorite);
       setFav(post.post.favorite);
@@ -104,10 +108,6 @@ export default function PostDetail(props) {
       });
     }
   }, [dispatch, history, post.postDeleteDone]);
-  // useEffect(() => {
-  //   if (post.favorite) setFav(true);
-  //   else setFav(false);
-  // }, [post.favorite]);
 
   useEffect(() => {
     if (like.data === null) return;
@@ -192,30 +192,35 @@ export default function PostDetail(props) {
           </div>
         </div>
         {/* 태그*/}
-        <div>
-          {location.state.tags.map((t) => (
-            <TagBody grey>{t.name}</TagBody>
-          ))}
-        </div>
-        {/* 본문*/}
-        <div
-          className={'container'}
-          style={{ whiteSpace: 'pre-line', width: '100%' }}
-        >
-          <autoheight-textarea>
-            <PostTextarea value={content.content} />
-          </autoheight-textarea>
-        </div>
-        {myPost && (
-          <div style={{ textAlign: 'right' }}>
-            <StyledButton white onClick={() => history.push(`../modify/${id}`)}>
-              수정
-            </StyledButton>
-            <StyledButton white onClick={() => DeleteHandler()}>
-              삭제
-            </StyledButton>
+        <div className={'container'}>
+          <div>
+            {content.tags.map((t) => (
+              <TagBody grey>{t.name}</TagBody>
+            ))}
           </div>
-        )}
+          {/* 본문*/}
+          <div
+            className={'container'}
+            style={{ whiteSpace: 'pre-line', width: '100%' }}
+          >
+            <autoheight-textarea>
+              <PostTextarea value={content.content} />
+            </autoheight-textarea>
+          </div>
+          {myPost && (
+            <div style={{ textAlign: 'right' }}>
+              <StyledButton
+                white
+                onClick={() => history.push(`../modify/${id}`)}
+              >
+                수정
+              </StyledButton>
+              <StyledButton white onClick={() => DeleteHandler()}>
+                삭제
+              </StyledButton>
+            </div>
+          )}
+        </div>
         <PostDetailComment id={id} />
       </div>
       {/* 찜 공유*/}

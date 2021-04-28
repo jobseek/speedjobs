@@ -108,9 +108,12 @@ function* postDelete(action) {
 }
 
 function postModifyAPI(action) {
-  const res = axios.put(`/post/${action.id}`, action.data).catch((error) => {
-    throw error;
-  });
+  console.log(action);
+  const res = axios
+    .put(`/post/${action.postId}`, action.data)
+    .catch((error) => {
+      throw error;
+    });
   return res;
 }
 

@@ -37,6 +37,7 @@ export default function Post({
   type,
 }) {
   const [inFav, set] = useState(fav);
+  const [inFavCnt, setCnt] = useState(favoriteCount);
   const history = useHistory();
   const dispatch = useDispatch();
   const like = useSelector((state) => state.like);
@@ -67,8 +68,10 @@ export default function Post({
     if (like.data.id !== id) return;
     if (like.addLikeDone) {
       set(true);
+      setCnt((p) => p + 1);
     } else if (like.unLikeDone) {
       set(false);
+      setCnt((p) => p - 1);
     }
     dispatch({
       type: ADD_LIKE_DONE,
@@ -131,7 +134,7 @@ export default function Post({
               <Heart onClick={favClick}></Heart>
             )}
             <span style={{ width: '1px', marginRight: '5px' }}></span>
-            {favoriteCount}
+            {inFavCnt}
           </div>
         </div>
       </div>

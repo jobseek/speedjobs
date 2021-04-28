@@ -23,9 +23,25 @@ export default function PostModify() {
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const history = useHistory();
+  // 태그 정보 불러오기
+  const [tagList, setTagList] = useState([]);
+  const [tagList2, setTagList2] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+
   const onChangHandler = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
+
+  // 태그 폼에 세팅
+  useEffect(() => {
+    setForm((p) => ({
+      ...p,
+      tagIds: [
+        ...tagList.filter((t) => t.selected).map((t) => t.id),
+        ...tagList2.filter((t) => t.selected).map((t) => t.id),
+      ],
+    }));
+  }, [tagList2, tagList]);
 
   // 이전 정보 가져오기
   useEffect(() => {
@@ -40,13 +56,10 @@ export default function PostModify() {
         ...prev,
         title: post.post.title,
         content: post.post.content,
-        tags: post.post.tags.POSITON,
+        tagIds: post.post.tagIds,
       }));
-      dispatch({
-        type: POST_GET_DONE,
-      });
     }
-  }, [dispatch, post.postGetDone, post.post]);
+  }, [dispatch, post.postGetDone, post.post, tagList, tagList2]);
 
   // 수정 정보 내보내기
   const onSubmitHandler = useCallback(
@@ -74,27 +87,32 @@ export default function PostModify() {
     }
   }, [post, history, dispatch]);
 
-  // 태그 정보 불러오기
-  const [tagList, setTagList] = useState([]);
-  const [tagList2, setTagList2] = useState([]);
-  const tagss = useSelector((state) => state.tag);
-
   useEffect(() => {
-    if (tagss.tagGetData) {
-      const temp = Array.from(tagss.tagGetData.tags.POSITION);
-      const temp2 = Array.from(tagss.tagGetData.tags.SKILL);
-
-      const tt = temp.map((t) => {
-        return { ...t, selected: false };
-      });
-      setTagList((p) => [...p, ...tt]);
-      const tt2 = temp2.map((t) => {
-        return { ...t, selected: false };
-      });
-      setTagList2((p) => [...p, ...tt2]);
+    if (post.postGetDone) {
+      if (tagss.tagGetData) {
+        console.log('tag');
+        const temp = Array.from(tagss.tagGetData.tags.POSITION);
+        const temp2 = Array.from(tagss.tagGetData.tags.SKILL);
+        const tempFromPost = [
+          ...(post.post.tags.POSITION ?? []).map((t) => t.id),
+          ...(post.post.tags.SKILL ?? []).map((t) => t.id),
+        ];
+        const tt = temp.map((t) => {
+          if (tempFromPost.indexOf(t.id) >= 0) return { ...t, selected: true };
+          return { ...t, selected: false };
+        });
+        setTagList((p) => [...p, ...tt]);
+        const tt2 = temp2.map((t) => {
+          if (tempFromPost.indexOf(t.id) >= 0) return { ...t, selected: true };
+          return { ...t, selected: false };
+        });
+        setTagList2((p) => [...p, ...tt2]);
+        dispatch({
+          type: POST_GET_DONE,
+        });
+      }
     }
-    console.log('tags=', form.tags);
-  }, [tagss.tagGetData, form.tags]);
+  }, [tagss.tagGetData, post.postGetDone, dispatch, post.post?.tags]);
 
   return (
     <div
