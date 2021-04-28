@@ -59,7 +59,7 @@ export default function InputLine({ type, value, name, handleChange, test }) {
   const caseSel = useMemo(
     () => ({
       NAME: '2자이상 15자 이하의 영어나 한글',
-      PASSWORD: '8자 이상 20자 이하의 영어 숫자 _-#$%!.',
+      PASSWORD: '대문자, 소문자, 숫자 모두 포함하여 8자 이상 20자 이하',
       'REPEAT PASSWORD': '비밀번호가 다릅니다',
       EMAIL: '이메일을 입력해주세요',
     }),

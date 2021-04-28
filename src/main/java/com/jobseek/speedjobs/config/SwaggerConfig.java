@@ -2,7 +2,6 @@ package com.jobseek.speedjobs.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -18,7 +17,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket swaggerApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-			.apis(RequestHandlerSelectors.basePackage("com.jobseek.speedjobs.controller"))
+			// .apis(RequestHandlerSelectors.basePackage("com.jobseek.speedjobs.controller"))
 			.paths(PathSelectors.any())
 			.build()
 			.useDefaultResponseMessages(false);

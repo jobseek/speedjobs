@@ -8,7 +8,7 @@ export default function AdminMain(props) {
     <>
       <div className={'row'} style={{ height: '100%' }}>
         <div className={'col-6'}>
-          <InfoCard index={0}>
+          <InfoCard index={1}>
             <Header>통계</Header>
             <Content>
               사이트의 전체적인 동향을 알수있습니다
@@ -20,13 +20,13 @@ export default function AdminMain(props) {
         </div>
         <div className={'col-6'}>
           <InfoCard
-            index={1}
+            index={2}
             height={'48%'}
             styleProps={{ marginBottom: '4%' }}
           >
             <UserChart></UserChart>
           </InfoCard>
-          <InfoCard index={2} height={'48%'}>
+          <InfoCard index={3} height={'48%'}>
             <UserChart></UserChart>
           </InfoCard>
         </div>

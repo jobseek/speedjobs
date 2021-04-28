@@ -12,7 +12,7 @@ export default function registerCheck(company, check) {
 
   const nameReg = /^[a-zA-Z가-힣]{2,15}$/;
   const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-  const pwdReg = /^[a-zA-Z0-9_\-!#$%.]{8,20}$/;
+  const pwdReg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$/;
   const contactReg = /^\d{2,3}-\d{3,4}-\d{4}$/;
   const companyNameReg = /^[a-zA-Z가-힣]{2,30}$/;
   const homepageReg = /^(http||https):\/\//;

@@ -133,7 +133,7 @@ export default function NavMenu(props) {
     if ((user.meDone || user.logInWelcomed) && !user.logOutDone) {
       setIsLogin((prev) => true);
       setMapPropsUserLogin((prev) => {
-        prev[0].name = user.me.name;
+        prev[0].name = user.me.nickname;
         return prev;
       });
     } else {

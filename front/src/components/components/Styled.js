@@ -4,6 +4,23 @@ import { Link } from 'react-router-dom';
 import { Plus } from '@styled-icons/octicons';
 import { Minus } from '@styled-icons/entypo/Minus';
 import { Search } from 'react-bootstrap-icons';
+
+export const ProfileDiv = styled.div`
+  padding: 0 60px 0 30px;
+  @media (max-width: 992px) {
+    padding: 0 20px;
+  }
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+`;
+
+export const StyledHeaderMargin = styled.div`
+  @media (max-width: 992px) {
+    margin: 0;
+  }
+`;
+
 // 버튼 컬러로 노란색 흰색 지정가능
 const StyledButtonInside = styled.div`
   color: #7c7c7c;
@@ -25,12 +42,12 @@ const StyledButtonInside = styled.div`
   }
   @media (max-width: 992px) {
     width: 70px;
-    font-size: 13px;
+    font-size: 11px;
   }
-  @media (max-width: 576px) {
-    width: 60px;
-    font-size: 10px;
-  }
+  //@media (max-width: 576px) {
+  //  width: 60px;
+  //  font-size: 10px;
+  //}
 
   ${(props) =>
     props.sm &&
@@ -71,7 +88,9 @@ const StyledButtonInside = styled.div`
     css`
       position: absolute;
       right: 0;
-    `} &:hover {
+    `} 
+  
+  &:hover {
     background-color: #f2d411;
   }
 
@@ -88,6 +107,33 @@ const StyledButtonInside = styled.div`
         background-color: #7c7c7c;
       }
     `}
+
+  ${(props) =>
+    props.grey &&
+    css`
+      color: white;
+      background-color: #7c7c7c;
+      border: 1px solid #7c7c7c;
+
+      &:hover {
+        color: #7c7c7c;
+        background-color: white;
+      }
+    `}
+
+  ${(props) =>
+    props.red &&
+    css`
+      color: white;
+      background-color: #e14040;
+      border: 1px solid #e14040;
+
+      &:hover {
+        color: white;
+        background-color: #ff5454;
+      }
+    `}
+  
   ${(props) =>
     props.mid &&
     css`
@@ -107,10 +153,11 @@ const StyledButtonInside = styled.div`
       @media (max-width: 1200px) {
         width: 150px;
       }
+      //@media (max-width: 992px) {
+      //  width: 100px;
+      //  font-size: 11px;
+      //}
       @media (max-width: 992px) {
-        width: 120px;
-      }
-      @media (max-width: 576px) {
         width: 100px;
         font-size: 11px;
       }
@@ -124,7 +171,7 @@ export const StyledHeaderDivInside = styled.div`
   //border-bottom: 1px solid #eee;
   padding: 20px 0 5px 0;
   background-color: white;
-  z-index: 1;
+  z-index: 5;
   margin-bottom: 50px;
   position: sticky;
   top: 60px;
@@ -144,7 +191,7 @@ export const StyledHeaderDivInside = styled.div`
   ${(props) =>
     props.padding &&
     css`
-      padding: 40px 0 0 230px;
+      padding: 40px 0 0 190px;
       @media (max-width: 992px) {
         padding-left: 0;
       }
@@ -156,6 +203,16 @@ export const StyledHeaderDivInside = styled.div`
       position: relative;
       top: 30px;
     `}
+  & h5 {
+    font-size: 25px;
+    margin-left: 10px;
+    @media (max-width: 992px) {
+      font-size: 18px;
+    }
+    @media (max-width: 768px) {
+      margin-left: 0;
+    }
+  }
 `;
 
 export const StyledHeaderDiv = ({ children, padding, fix }) => (
@@ -176,6 +233,8 @@ export const StyledButton = ({
   hcenter,
   last,
   white,
+  grey,
+  red,
   mid,
   wide,
   sm,
@@ -196,6 +255,8 @@ export const StyledButton = ({
     first={first}
     style={style}
     onClick={onClick}
+    grey={grey}
+    red={red}
   >
     {children}
   </StyledButtonInside>
@@ -215,6 +276,7 @@ const TagBodyInside = styled.div`
       background-color: #7c7c7c;
       color: white;
     `}
+
   ${(props) =>
     props.tagType &&
     css`
@@ -491,7 +553,6 @@ export const CenterContainer = styled.div`
   margin-top: 100px;
 `;
 export const StyledArticle = styled.div`
-  padding-left: 60px;
   @media (max-width: 992px) {
     padding: 0;
   }
@@ -517,21 +578,17 @@ export const Warning = styled.span`
 `;
 
 export const Private = styled.span`
-  position: relative;
   margin-top: 10px;
-  float: right;
   font-size: 14px;
   font-weight: bold;
-  @media (max-width: 992px) {
-    top: -65px;
-  }
+  margin-right: 10px;
 `;
 
 export const ResumeImg = styled.img`
   display: inline-block;
   border: 1px solid black;
-  width: 180px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   text-align: center;
   line-height: 200px;
   margin-top: 12px;
@@ -571,7 +628,8 @@ export const ResumeTitles = styled.div`
 export const InputTextResume = styled.input`
   width: 100%;
   height: 35px;
-  border-radius: 27px;
+  border-radius: 5px;
+  background-color: #fdfdfd;
   border: 1px solid silver;
   padding: 0 20px 3px;
   margin-bottom: 5px;
@@ -583,6 +641,13 @@ export const InputTextResume = styled.input`
 export const Wrapper = styled.div`
   display: inline-block;
   color: gray;
+  flex: ${(props) => props.flex};
+  ${(props) =>
+    props.margin &&
+    css`
+      margin-top: 15px;
+      margin-right: 10px;
+    `}
 
   ${(props) =>
     props.basic &&
@@ -631,6 +696,7 @@ export const PostTitleInput = styled.input`
   border: none;
   font-size: 25px;
   padding-left: 15px;
+  width: 100%;
 
   &:focus {
     outline: none;
@@ -643,7 +709,7 @@ export const PostTitleInput = styled.input`
 `;
 
 export const PostWriterDate = styled.div`
-  margin: 10px 0px 20px 0px;
+  margin: 10px 0 20px 0;
   @media (max-width: 992px) {
     font-size: 13px;
     margin-left: 3px;
@@ -679,12 +745,13 @@ export const Subtract = styled(Minus)`
   color: black;
 `;
 
-export const DataInputs = styled.input`
-  border-radius: 10px;
-  padding: 2px 0 2px 10px;
-  &:focus {
-    outline: none;
-  }
+export const DataInputs = styled.div`
+  border: none;
+  border-bottom: 1px solid #a1a1a1;
+  padding: 2px 0 2px 2px;
+  width: 84px;
+  margin: 0 5px;
+  display: inline-block;
 `;
 
 const SearchInputInside = styled.input`
@@ -703,14 +770,12 @@ const SearchInputInside = styled.input`
 export const SearchInput = ({ placeholder, onChange, value }) => {
   return (
     <>
-      <Search
-        style={{ position: 'absolute', top: '14px', left: '12px' }}
-      ></Search>
+      <Search style={{ position: 'absolute', top: '14px', left: '12px' }} />
       <SearchInputInside
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-      ></SearchInputInside>
+      />
     </>
   );
 };

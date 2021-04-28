@@ -7,9 +7,9 @@ import DatePickRange from '../DatePickRange';
 export default function ResumeEducation() {
   const [items, setItems] = useState([{ id: 0 }]);
   const itemList = items.map((item, index) => (
-    <div key={index}>
-      <ResumeInputs item name={'학교이름'} />
-      <ResumeInputs item name={'전공'} />
+    <div key={index} style={{ display: 'flex', flexFlow: 'wrap' }}>
+      <ResumeInputs name={'학교이름'} />
+      <ResumeInputs name={'전공'} />
       <DatePickRange
         start={'입학날짜'}
         end={'졸업날짜'}
@@ -25,14 +25,12 @@ export default function ResumeEducation() {
         <Warning>
           최종 학력만 입력하세요 (편입한 경우 편입한 대학을 기입하세요)
         </Warning>
-        <div style={{ marginLeft: '15px' }}>
-          <MyEducation>고등학교</MyEducation>
-          <div>{itemList}</div>
-          <MyEducation>대학교</MyEducation>
-          <div>{itemList}</div>
-          <MyEducation>대학원</MyEducation>
-          <div>{itemList}</div>
-        </div>
+        <MyEducation>고등학교</MyEducation>
+        <div>{itemList}</div>
+        <MyEducation>대학교</MyEducation>
+        <div>{itemList}</div>
+        <MyEducation>대학원</MyEducation>
+        <div>{itemList}</div>
       </div>
     </>
   );

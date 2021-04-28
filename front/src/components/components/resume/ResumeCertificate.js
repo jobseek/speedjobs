@@ -12,7 +12,7 @@ export default function ResumeCertificate() {
   const [items, setItems] = useState([{ id: 1, date: null }]);
   const itemList = items.map((item, index) => {
     return (
-      <div key={index} style={{ marginLeft: '15px' }}>
+      <div key={index} style={{ display: 'flex', flexWrap: 'wrap' }}>
         <ResumeInputs item name={'이름'} />
         <ResumeInputs item name={'발급기관'} />
         <ResumeInputs item name={'발급번호'} />
@@ -24,7 +24,7 @@ export default function ResumeCertificate() {
   });
 
   const test = () => {
-    setItems((prev) => [...items, { id: cnt, date: null }]);
+    setItems([...items, { id: cnt, date: null }]);
     cnt.current++;
     console.log(cnt.current);
   };

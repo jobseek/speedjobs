@@ -9,6 +9,7 @@ export const initialState = {
   commentGetError: null,
   post: null,
   comment: null,
+
   postListLoading: false,
   postListDone: false,
   postListError: null,
@@ -17,6 +18,16 @@ export const initialState = {
   postAddDone: false,
   postAddError: null,
   postAdd: null,
+
+  postDeleteLoading: false,
+  postDeleteDone: false,
+  postDeleteError: null,
+  postDelete: null,
+
+  postModifyLoading: false,
+  postModifyDone: false,
+  postModifyError: null,
+  postModify: null,
 };
 
 export const POST_GET_REQUEST = 'POST_GET_REQUEST';
@@ -29,15 +40,20 @@ export const POST_ADD_SUCCESS = 'POST_ADD_SUCCESS';
 export const POST_ADD_FAIL = 'POST_ADD_FAIL';
 export const POST_ADD_DONE = 'POST_ADD_DONE';
 
-// export const POST_ADD_REQUEST = 'POST_ADD_REQUEST';
-// export const POST_ADD_FAIL = 'POST_ADD_FAIL';
-// export const POST_ADD_SUCCESS = 'POST_ADD_SUCCESS';
-// export const POST_ADD_DONE = 'POST_ADD_DONE';
-
 export const POST_LIST_REQUEST = 'POST_LIST_REQUEST';
 export const POST_LIST_FAIL = 'POST_LIST_FAIL';
 export const POST_LIST_SUCCESS = 'POST_LIST_SUCCESS';
 export const POST_LIST_DONE = 'POST_LIST_DONE';
+
+export const POST_DELETE_REQUEST = 'POST_DELETE_REQUEST';
+export const POST_DELETE_SUCCESS = 'POST_DELETE_SUCCESS';
+export const POST_DELETE_FAIL = 'POST_DELETE_FAIL';
+export const POST_DELETE_DONE = 'POST_DELETE_DONE';
+
+export const POST_MODIFY_REQUEST = 'POST_MODIFY_REQUEST';
+export const POST_MODIFY_SUCCESS = 'POST_MODIFY_SUCCESS';
+export const POST_MODIFY_FAIL = 'POST_MODIFY_FAIL';
+export const POST_MODIFY_DONE = 'POST_MODIFY_DONE';
 
 export const COMMENT_GET_SUCCESS = 'COMMENT_GET_SUCCESS';
 export const COMMENT_GET_FAIL = 'COMMENT_GET_FAIL';
@@ -77,6 +93,7 @@ const reducer = (state = initialState, action) =>
         draft.postGetError = null;
         draft.commentGetDone = false;
         draft.commentGetError = null;
+        draft.post = null;
         break;
       case POST_LIST_DONE:
         draft.postListDone = false;
@@ -96,6 +113,7 @@ const reducer = (state = initialState, action) =>
         draft.postListDone = true;
         draft.postList = action.data;
         break;
+
       case POST_ADD_REQUEST:
         draft.postAddLoading = true;
         draft.postAdd = null;
@@ -116,6 +134,48 @@ const reducer = (state = initialState, action) =>
         draft.postAdd = null;
         draft.postAddError = null;
         draft.postAddDone = false;
+        break;
+
+      case POST_DELETE_REQUEST:
+        draft.postDeleteLoading = true;
+        draft.postDeleteDone = false;
+        draft.postDeleteError = null;
+        draft.postDelete = null;
+        break;
+      case POST_DELETE_SUCCESS:
+        draft.postDeleteLoading = false;
+        draft.postDeleteDone = true;
+        draft.postDelete = action.data;
+        break;
+      case POST_DELETE_FAIL:
+        draft.postDeleteLoading = false;
+        draft.postDeleteError = action.error;
+        break;
+      case POST_DELETE_DONE:
+        draft.postDeleteDone = false;
+        draft.postDeleteError = null;
+        draft.postDelete = null;
+        break;
+
+      case POST_MODIFY_REQUEST:
+        draft.postModifyLoading = true;
+        draft.postModifyDone = false;
+        draft.postModifyError = null;
+        draft.postModify = null;
+        break;
+      case POST_MODIFY_SUCCESS:
+        draft.postModifyLoading = false;
+        draft.postModifyDone = true;
+        draft.postModify = action.data;
+        break;
+      case POST_MODIFY_FAIL:
+        draft.postModifyLoading = false;
+        draft.postModifyError = action.error;
+        break;
+      case POST_MODIFY_DONE:
+        draft.postModifyDone = false;
+        draft.postModify = null;
+        draft.postModifyError = null;
         break;
       default:
         break;

@@ -1,40 +1,58 @@
 package com.jobseek.speedjobs.domain.post;
 
-import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.*;
-
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-@Entity @Getter @Setter @Builder
+import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.user.User;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "comments")
 public class Comment extends BaseTimeEntity {
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "comment_id")
 	private Long id;
 
 	@Lob
 	private String content;
 
-	@ColumnDefault("0")
-	private int likeCount;
-
-	private String commentImage;
-
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	public void addComment(Post post) {
+		post.getComments().add(this);
+	}
+
+	public void updateComment(Comment comment) {
+		this.content = comment.getContent();
+	}
 }

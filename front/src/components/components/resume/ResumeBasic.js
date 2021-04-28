@@ -8,52 +8,32 @@ import { ToggleOff } from '@styled-icons/bootstrap/ToggleOff';
 import { ToggleOn } from '@styled-icons/bootstrap/ToggleOn';
 import {
   Private,
-  ProfileImg,
   ResumeImg,
   ResumeTitles,
+  StyledHeaderMargin,
   Warning,
 } from '../Styled';
 import ResumeInputs from './ResumeInputs';
 
 const Toggle1 = styled(ToggleOff)`
   width: 30px;
-  float: right;
   color: gray;
-  margin-top: 5px;
 `;
 
 const Toggle2 = styled(ToggleOn)`
   width: 30px;
-  float: right;
   color: #f5df4d;
-  padding-top: 5px;
 `;
 
 const StyledDatePicker = styled(DatePicker)`
-  //display: inline-block;
-  width: 255px;
+  width: 200px;
   height: 35px;
-  border-radius: 27px;
+  border-radius: 5px;
+  background-color: #fdfdfd;
   border: 1px solid silver;
   margin-bottom: 5px;
   padding-left: 15px;
 
-  &:focus {
-    outline: none;
-  }
-
-  @media (max-width: 960px) {
-    width: 100%;
-  }
-`;
-
-const InputTel = styled.input`
-  width: 100%;
-  height: 35px;
-  border-radius: 27px;
-  border: 1px solid silver;
-  padding: 0 20px 3px;
-  margin-bottom: 5px;
   &:focus {
     outline: none;
   }
@@ -69,6 +49,8 @@ export default function ResumeBasic() {
     setBookmark(!bookmark);
   };
   const onChange = async (e) => {
+    const file = e.target.files[0];
+    console.log('테스트-----------', file);
     const formData = new FormData();
     formData.append('files', e.target.files[0]);
     console.log(formData);
@@ -78,11 +60,22 @@ export default function ResumeBasic() {
       .post('/file', formData)
       .then((res) => res.data.files[0].url)
       .catch(
-        (error) =>
+        () =>
           'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
       );
-    console.log(url);
-    setImage(url);
+    if (
+      file.type !== 'image/jpeg' &&
+      file.type !== 'image/png' &&
+      file.type !== 'image/gif'
+    ) {
+      alert('이미지 파일만 등록할 수 있습니다.');
+      setImage(
+        'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
+      );
+    } else {
+      console.log(url);
+      setImage(url);
+    }
   };
   const hiddenFileInput = React.useRef(null);
   const handleClick = async () => {
@@ -98,94 +91,69 @@ export default function ResumeBasic() {
         <span onClick={handleBookmark}>
           <div
             style={{
-              float: 'right',
-              marginLeft: '10px',
+              position: 'absolute',
               border: 'none',
               background: 'none',
               cursor: 'pointer',
+              right: '9px',
+              top: '9px',
             }}
           >
+            {bookmark ? <Private>공개</Private> : <Private>비공개</Private>}
             {bookmark ? <Toggle2 /> : <Toggle1 />}
           </div>
         </span>
-        {bookmark ? <Private>공개</Private> : <Private>비공개</Private>}
         <div
-          className={'row w-100'}
           style={{
-            margin: '0px 1px 10px 1px',
+            width: '200px',
+            height: '230px',
+            margin: '25px auto',
           }}
         >
-          <div className={'col-12 col-lg-4 pr-0'}>
-            <div
-              style={{
-                width: '200px',
-                height: '200px',
-              }}
-            >
-              <div>
-                <ResumeImg
-                  onClick={handleClick}
-                  src={img}
-                  alt="resumeImg"
-                  style={{ cursor: 'pointer' }}
-                />
-                <input
-                  type="file"
-                  ref={hiddenFileInput}
-                  onChange={onChange}
-                  style={{ display: 'none' }}
-                />
-              </div>
-            </div>
-          </div>
-          <div className={'col-12 col-lg-8 row w-100 p-0 m-0'}>
-            <div className={'col-12 col-lg-6 pl-0'}>
-              <ResumeInputs basic name={'이름'} />
-              <div
-                style={{
-                  marginBottom: '5px',
-                }}
-              >
-                <ResumeTitles>&nbsp;생년월일</ResumeTitles>
-                <div>
-                  <StyledDatePicker
-                    locale={ko}
-                    dateFormat="yyyy-MM-dd"
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    peekMonthDropdown
-                    showYearDropdown
-                  />
-                </div>
-              </div>
-            </div>
-            <div className={'col-12 col-lg-6 pl-0'}>
-              <ResumeInputs basic name={'성별'} />
-              <ResumeInputs basic name={'연락처'} />
-            </div>
-            <div className={'row w-100'} style={{ padding: '0 0 0 15px' }}>
-              <div className={'col-12'} style={{ padding: '0' }}>
-                <ResumeInputs basic name={'주소'} />
-              </div>
-            </div>
-          </div>
+          <ResumeImg
+            onClick={handleClick}
+            src={img}
+            alt="resumeImg"
+            style={{ cursor: 'pointer' }}
+          />
+          <input
+            type="file"
+            ref={hiddenFileInput}
+            onChange={onChange}
+            style={{ display: 'none' }}
+          />
         </div>
-        <div
-          className={'col-12'}
-          style={{
-            width: '100%',
-            padding: '0',
-          }}
-        >
+
+        <div style={{ marginTop: '20px' }}>
+          <StyledHeaderMargin style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <ResumeInputs name={'이름'} flex={'1 0 200px'} />
+            <ResumeInputs name={'성별'} flex={'0 0 205px'} />
+          </StyledHeaderMargin>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <ResumeInputs basic name={'연락처'} />
           <div
             style={{
-              padding: '0 15px 0 15px',
+              marginRight: '5px',
+              flex: '0 0 200px',
             }}
           >
-            <ResumeInputs sns name={'GitHub'} />
-            <ResumeInputs sns name={'기술 블로그'} />
+            <ResumeTitles>&nbsp;생년월일</ResumeTitles>
+            <StyledDatePicker
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              peekMonthDropdown
+              showYearDropdown
+            />
           </div>
         </div>
+        <div style={{ display: 'flex' }}>
+          <ResumeInputs basic name={'주소'} />
+        </div>
+        <ResumeInputs sns name={'GitHub'} />
+        <ResumeInputs sns name={'기술 블로그'} />
       </div>
     </>
   );

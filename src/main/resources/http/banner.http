@@ -1,0 +1,38 @@
+### Admin 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{admin_email}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 1. 배너 등록
+POST http://{{host}}/banner
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+[
+  {
+      "baseName": "img",
+      "extension": "png",
+      "url": "https://abcd.com"
+  },
+  {
+    "baseName": "imgs",
+    "extension": "jpg",
+    "url": "https://KFC.com"
+  }
+]
+
+### 2. 배너 전체 조회
+GET http://{{host}}/banner
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### 3. 배너 삭제
+DELETE http://{{host}}/banner/1
+Accept: application/json
+Authorization: Bearer {{accessToken}}

@@ -1,6 +1,11 @@
+import styled from 'styled-components';
 import React from 'react';
-import { DataInputs } from '../Styled';
 
+const Info = styled.div`
+  color: #a1a1a1;
+  margin-right: 5px;
+`;
+// 이름 규모 연락처
 export default function CompanySummaryInfo({ onChange }) {
   return (
     <>
@@ -9,66 +14,19 @@ export default function CompanySummaryInfo({ onChange }) {
           marginBottom: '30px',
         }}
       >
-        <div
-          style={{
-            fontSize: '20px',
-            marginBottom: '10px',
-          }}
-        >
-          회사 요약정보
-        </div>
-        <div
-          style={{
-            marginBottom: '10px',
-          }}
-        >
-          <span
-            style={{
-              display: 'inline-block',
-              marginRight: '40px',
-            }}
-          >
-            <span
-              style={{
-                marginRight: '10px',
-              }}
-            >
-              회사이름 :
-            </span>
-            <DataInputs type="text" />
-          </span>
-          <span
-            style={{
-              display: 'inline-block',
-              marginRight: '40px',
-            }}
-          >
-            <span
-              style={{
-                marginRight: '10px',
-              }}
-            >
-              회사규모 :
-            </span>
-            <DataInputs type="text" />
-          </span>
-          <span>
-            <span
-              style={{
-                marginRight: '10px',
-              }}
-            >
-              연락처 :
-            </span>
-            <DataInputs type="text" />
-          </span>
-        </div>
+        <Info>회사이름 : (주)어쩌구저쩌구</Info>
+        <Info>회사규모 : 조금큼</Info>
+        <Info>연락처 : 010-0000-0000</Info>
         <textarea
           placeholder="내용을 입력하세요"
           style={{
             width: '100%',
             height: '200px',
             resize: 'none',
+            border: '1px solid #a1a1a1',
+            borderRadius: '15px',
+            padding: '5px 10px',
+            marginTop: '20px',
           }}
           onChange={onChange}
         />

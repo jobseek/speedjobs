@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 import ResumeInputs from './ResumeInputs';
 import { Add, MyPlus, Subtract, Warning } from '../Styled';
@@ -10,29 +11,45 @@ export default function ResumeCareer() {
   const forceUp = () => {
     setForce((prev) => !prev);
   };
-  const [tags] = useState([
-    { name: 'Backend', id: 0, selected: false },
-    { name: 'Frontend', id: 1, selected: false },
-    { name: 'Fullstack', id: 2, selected: false },
-    { name: 'Infra', id: 3, selected: false },
-  ]);
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      // const res = [];
+      console.log(temp);
+      // temp.forEach((item) => {
+      //   res.concat([...res, { ...item, item }]);
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      // });
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      console.log(tt);
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
   const cnt = useRef(1);
   const [items, setItems] = useState([{ id: 0 }]);
   const itemList = items.map((item, index) => (
     <div key={index}>
-      <ResumeInputs item name={'회사이름'} />
-      <ResumeInputs item name={'직급'} />
-      <DatePickRange
-        start={'입사날짜'}
-        end={'퇴사날짜'}
-        item={item}
-        setItems={setItems}
-      />
-      <Tags tagList={tags}>직무</Tags>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <ResumeInputs item name={'회사이름'} />
+        <ResumeInputs item name={'직급'} />
+        <DatePickRange
+          start={'입사날짜'}
+          end={'퇴사날짜'}
+          item={item}
+          setItems={setItems}
+        />
+      </div>
+      <div style={{ paddingTop: '26px' }}>
+        <Tags tagList={taglist}>직무</Tags>
+      </div>
     </div>
   ));
   const test = () => {
-    setItems((prev) => [...items, { id: cnt.current }]);
+    setItems([...items, { id: cnt.current }]);
   };
   const test2 = () => {
     setItems((prev) => {
@@ -57,9 +74,7 @@ export default function ResumeCareer() {
             &nbsp;&nbsp;버튼을 누르면 추가할 수 있습니다.
           </Warning>
         </h5>
-        <div style={{ display: 'inline-block', marginLeft: '15px' }}>
-          {itemList}
-        </div>
+        <div style={{ display: 'inline-block' }}>{itemList}</div>
       </div>
     </>
   );

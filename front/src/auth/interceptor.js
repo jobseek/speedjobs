@@ -5,30 +5,37 @@ export default function hello() {
   return null;
 }
 
-export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
+export const loginInterceptor = (
+  refresh,
+  removeRefresh,
+  prevIDS,
+  dispatch,
+  needLogin
+) => {
   axios.interceptors.request.eject(prevIDS.request);
   axios.interceptors.response.eject(prevIDS.response);
   const requestInterceptorConfig = (config) => {
     if (config.url === '/auth/logout' && !config.headers._Retry) {
       config.headers['Authorization'] = `Bearer ${refresh['REFRESH_TOKEN']}`;
+      console.log('hello');
+      console.log(refresh['REFRESH_TOKEN']);
       removeRefresh('REFRESH_TOKEN');
       removeRefresh('ACCESS_TOKEN');
       return config;
     }
-    if (
-      config.headers['Authorization'] === undefined &&
-      refresh['ACCESS_TOKEN']
-    ) {
-      config.headers['Authorization'] = `Bearer ${refresh['ACCESS_TOKEN']}`;
-      return config;
-    }
+    // if (config.headers['Authorization'] === undefined && !needLogin) {
+    //   console.log('?');
+    //   config.headers['Authorization'] = `Bearer ${refresh['ACCESS_TOKEN']}`;
+    //   return config;
+    // }
     return config;
   };
   const responseInterceptorError = (error) => {
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
       if (
-        (error.response.status === 403 || error.response.status === 500) &&
+        error.response.status === 403 &&
+        error.response.status === 500 &&
         error.config &&
         !error.config.__isRetryRequest
       ) {
@@ -45,7 +52,6 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS, dispatch) => {
             if (response.status === 403 || response.status === 500) {
               throw new Error(response.status);
             }
-            console.log(response);
             originalReq.headers[
               'Authorization'
             ] = `Bearer ${response.accessToken}`;

@@ -61,7 +61,8 @@ export default function SideBar({ toggle, setToggle, set }) {
         <SideSpan>유저수,등록수를 차트로 보고 관리 </SideSpan>
         <SideDiv onClick={() => set('Banner')}>배너관리</SideDiv>
         <SideSpan>메인홈화면 배너 변경 </SideSpan>
-        <SideDiv>게시글 관리</SideDiv>
+        <SideDiv onClick={() => set('Company')}>기업회원승인</SideDiv>
+        <SideSpan>기업회원 회원가입 승인</SideSpan>
         <SideDiv>게시글 관리</SideDiv>
         <SideDiv>게시글 관리</SideDiv>
       </SideBarBody>

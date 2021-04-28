@@ -5,9 +5,13 @@ import userSaga from './user';
 import commentSaga from './comment';
 import postSage from './post';
 import recruitSaga from './recruit';
+import address from '../auth/address';
 import profileSaga from './profile';
+import tagSaga from './tag';
+import companySaga from './company';
+import likeSaga from './like';
 
-axios.defaults.baseURL = 'http://localhost:8081/api';
+axios.defaults.baseURL = `http://${address()}:8081/api`;
 axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
@@ -17,5 +21,8 @@ export default function* rootSaga() {
     fork(profileSaga),
     fork(commentSaga),
     fork(recruitSaga),
+    fork(tagSaga),
+    fork(companySaga),
+    fork(likeSaga),
   ]);
 }

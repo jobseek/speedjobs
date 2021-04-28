@@ -1,22 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useCookies } from 'react-cookie';
 import Banner from '../components/banner/Banner';
 import Tags from '../components/Tags';
-import { StyledLeftLayout, TagBody } from '../components/Styled';
+import { TagBody } from '../components/Styled';
 import {
   RECRUIT_LIST_DONE,
   RECRUIT_LIST_REQUEST,
 } from '../../reducers/recruit';
 import Post from '../components/Post';
+import { COMPANY_GET_REQUEST } from '../../reducers/company';
 
-export default function Recruitment(props) {
+export default function Recruitment() {
   const history = useHistory();
   const dispatch = useDispatch();
   const page = useRef(0);
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const targetRef = useRef();
+  const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
   const observe = useRef(
     new IntersectionObserver(
       (entries) => {
@@ -42,30 +45,37 @@ export default function Recruitment(props) {
   };
 
   const rootRef = useRef();
-  const recruit = useSelector((state) => state.recruit);
+  const { user, recruit } = useSelector((state) => state);
+  const me = useState({ ...user.me });
 
   const [, setLoading] = useState(false);
   const [recruitList, setRecruitList] = useState([]);
-
-  const [tags] = useState([
-    { name: 'backEnd', id: 0, selected: false },
-    { name: 'frontEnd', id: 1, selected: false },
-    { name: 'machineLearning', id: 2, selected: false },
-    { name: 'infra', id: 3, selected: false },
-  ]);
+  const [taglist, setTaglist] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      setTaglist((p) => [...p, ...tt]);
+    }
+  }, [tagss.tagGetData]);
 
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
-    if (divElm) {
-      currentObserver.observe(divElm);
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
+      if (divElm) {
+        currentObserver.observe(divElm);
+      }
     }
     return () => {
       if (divElm) {
         currentObserver.unobserve(divElm);
       }
     };
-  }, []);
+  }, [user.me, refresh]);
 
   useEffect(() => {
     if (recruit.recruitListLoading) {
@@ -85,52 +95,18 @@ export default function Recruitment(props) {
 
   const mapRecruit = recruitList.map((pl) => (
     <Post
-      tags={['backEnd']}
+      id={pl.id}
+      tags={[...(pl.tags.POSITION ?? [])]}
+      type={'recruit'}
       title={pl.title}
       writer="아직미구현"
-      date={`${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`}
-      fav="미구현"
+      date={`${pl.openDate[0]}/${pl.openDate[1]}/${pl.openDate[2]}`}
+      fav={pl.favorite}
       key={pl.id}
+      viewCount={pl.viewCount}
+      favoriteCount={pl.favoriteCount}
     />
   ));
-
-  // const dummy = useCallback(() => {
-  //   const dummyData = [];
-  //
-  //   for (let i = 0; i < 10; i++) {
-  //     dummyData[i] = {};
-  //     dummyData[i].title = i + '번 더미 데이터';
-  //     dummyData[i].job = i + '번 더미 데이터 JOB';
-  //     dummyData[i].date = '1999.01.01~2021.06.01';
-  //     dummyData[i].tag = ['backEnd', 'frontEnd', 'java'];
-  //     dummyData[i].favorite = i % 2 === 1 && true;
-  //   }
-  //   dummyData.push({ title: 'hello' });
-  //   dummyData.shift();
-  //   dummyData.shift();
-  //   return dummyData;
-  // }, []);
-
-  // const [dummyData] = useState(dummy);
-
-  // const dummyOut = dummyData.map((temp) => {
-  //   return (
-  //     <div key={v4()}>
-  //       <RecruitCard
-  //         title={temp.title}
-  //         date={temp.date}
-  //         job={temp.job}
-  //         tags={temp.tag}
-  //         favorite={temp.favorite}
-  //         setFav={(fav) => {
-  //           temp.favorite = fav;
-  //           setUpdate(update + 1);
-  //         }}
-  //       ></RecruitCard>
-  //       <Line margin={'20px'} />
-  //     </div>
-  //   );
-  // });
 
   return (
     <>
@@ -138,10 +114,7 @@ export default function Recruitment(props) {
       <div className="container">
         <div className={'row justify-content-center'}>
           {' '}
-          <StyledLeftLayout className={'col-12 col-lg-3 text-left'}>
-            <Tags tagList={tags}>filter</Tags>
-          </StyledLeftLayout>
-          <div ref={rootRef} className={'col-12 col-lg-9'}>
+          <div ref={rootRef} className={'container'}>
             <div
               className={'text-right'}
               style={{
@@ -150,26 +123,41 @@ export default function Recruitment(props) {
               }}
             >
               <div
-                className={'row justify-content-end'}
-                style={{ padding: '10px', paddingTop: '0' }}
+                className={'row justify-content-between'}
+                style={{
+                  padding: '10px',
+                  paddingTop: '0',
+                }}
               >
-                <TagBody
-                  style={{ marginTop: '0', border: '1px solid #f5df4d' }}
-                  onClick={() => {
-                    history.push('./recruitment/add');
-                  }}
-                >
-                  글쓰기
-                </TagBody>
+                <Tags tagList={taglist} selected={setTaglist}>
+                  직무
+                </Tags>
+                {me[0].role === 'ROLE_COMPANY' ? (
+                  <TagBody
+                    style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                    onClick={() => {
+                      history.push('./recruitment/add');
+                      dispatch({
+                        type: COMPANY_GET_REQUEST,
+                        data: user.me,
+                      });
+                    }}
+                  >
+                    글쓰기
+                  </TagBody>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
+            <div style={{ height: '30px' }}></div>
             {mapRecruit}
           </div>
         </div>
         <div
           style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
           ref={targetRef}
-        ></div>
+        />
       </div>
     </>
   );

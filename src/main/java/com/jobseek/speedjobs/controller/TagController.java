@@ -1,8 +1,7 @@
 package com.jobseek.speedjobs.controller;
 
+import com.jobseek.speedjobs.dto.tag.TagRequest;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
-import com.jobseek.speedjobs.dto.tag.TagSaveRequest;
-import com.jobseek.speedjobs.dto.tag.TagUpdateRequest;
 import com.jobseek.speedjobs.service.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,29 +30,32 @@ public class TagController {
 
 	@ApiOperation(value = "태그 등록", notes = "태그를 등록한다.")
 	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("")
-	public ResponseEntity<Void> save(@Valid @RequestBody TagSaveRequest tagSaveRequest) {
-		tagService.save(tagSaveRequest);
+	@PostMapping
+	public ResponseEntity<Void> saveTag(@Valid @RequestBody TagRequest tagRequest) {
+		tagService.saveTag(tagRequest);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "태그 조회", notes = "태그를 조회한다.")
-	@GetMapping("")
-	public ResponseEntity<TagResponses> read() {
-		return ResponseEntity.ok().body(tagService.readByTagType());
+	@GetMapping
+	public ResponseEntity<TagResponses> findTagsByType() {
+		return ResponseEntity.ok().body(tagService.findTagsByType());
 	}
 
 	@ApiOperation(value = "태그 삭제", notes = "태그를 삭제한다.")
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		tagService.delete(id);
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping("/{tagId}")
+	public ResponseEntity<Void> deleteTag(@PathVariable Long tagId) {
+		tagService.deleteTag(tagId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "태그 수정", notes = "태그를 수정한다.")
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody TagUpdateRequest tagUpdateRequest) {
-		tagService.update(id, tagUpdateRequest);
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/{tagId}")
+	public ResponseEntity<Void> updateTag(@PathVariable Long tagId,
+		@Valid @RequestBody TagRequest tagRequest) {
+		tagService.updateTag(tagId, tagRequest);
 		return ResponseEntity.noContent().build();
 	}
 }

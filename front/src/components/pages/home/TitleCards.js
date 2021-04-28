@@ -1,18 +1,55 @@
-import React from 'react';
-// import Cards from '../../components/Cards';
-import TitleCardsSm from './TitleCardsSm';
-import Cards from '../../components/Cards';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-export default function TitleCards(props) {
+const List = styled.li`
+  display: inline-block;
+  margin-right: 10px;
+  width: 100%;
+  //border: 1px solid black;
+  //
+  //&:hover {
+  //  background-color: #d3d3d3;
+  //}
+`;
+
+export default function TitleCards({ title, list }) {
+  const [info, setInfo] = useState([]);
+
+  useEffect(() => {
+    if (typeof list === 'object') {
+      setInfo([...list]);
+    }
+  }, [list]);
+
+  const infoArr = info.map((item, index) => (
+    <div key={index}>
+      <List>
+        {item.title}
+        <span style={{ color: 'gray', fontSize: '10px' }}>{item.date}</span>
+      </List>
+    </div>
+  ));
+
   return (
-    <div className="row">
-      <div className="col-sm-12 col-lg-6 p-3 mb-3">
-        <Cards title="title" subTitle="subtitle" height="1">
-          hello
-        </Cards>
-      </div>
-      <div className="col-sm-12 col-lg-6 p-3">
-        <TitleCardsSm></TitleCardsSm>
+    <div className="col-sm-12 col-lg-6 p-3 mb-3">
+      <div
+        style={{
+          border: '1px solid rgba(0,0,0,.125)',
+          height: '100%',
+          borderRadius: '15px',
+          padding: '10px 10px',
+        }}
+      >
+        <h3
+          style={{
+            fontWeight: 700,
+            letterSpacing: '1px',
+            marginBottom: '10px',
+          }}
+        >
+          {title}
+        </h3>
+        <ul style={{ listStyle: 'none', padding: '0' }}>{infoArr}</ul>
       </div>
     </div>
   );

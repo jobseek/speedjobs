@@ -24,10 +24,10 @@ export default function Banner(props) {
   const [cnt, setCnt] = useState(0);
   const bannerList = useMemo(
     () => [
-      { src: Img, key: 1, order: 0 },
-      { src: Img2, key: 2, order: 1 },
-      { src: Img3, key: 3, order: 2 },
-      { src: Img4, key: 4, order: 3 },
+      { src: Img, key: 1, order: 1 },
+      { src: Img2, key: 2, order: 2 },
+      { src: Img3, key: 3, order: 3 },
+      { src: Img4, key: 4, order: 0 },
     ],
     []
   );
@@ -35,7 +35,7 @@ export default function Banner(props) {
 
   const mapImg = list.map((i) => (
     <BannerImg
-      now={i.order - cnt}
+      now={i.order}
       src={i.src}
       key={i.key}
       zIndex={list.indexOf(i)}
@@ -46,24 +46,26 @@ export default function Banner(props) {
     const time = setTimeout(() => {
       setCnt((prev) => prev + 1);
     }, 10000);
-    setList((prev) => [
-      ...prev,
-      {
-        src: bannerList[cnt % 4].src,
-        key: v4(),
-        order: cnt + 4,
-      },
-    ]);
+    setList((prev) =>
+      [
+        ...prev,
+        {
+          src:
+            bannerList[bannerList.length - 1 - (cnt % bannerList.length)].src,
+          key: v4(),
+          order: bannerList.length - 1,
+        },
+      ].map((p) => ({ ...p, order: p.order-- }))
+    );
     return () => {
       clearTimeout(time);
     };
   }, [cnt, bannerList]);
 
   useEffect(() => {
-    if (list.length > 5) {
+    if (list.length > 6) {
       setList((prev) => {
-        prev.shift();
-        return prev;
+        return prev.slice(1);
       });
     }
   }, [list.length]);

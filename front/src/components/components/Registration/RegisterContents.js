@@ -60,15 +60,14 @@ export default function RegisterContents(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     if (
-      check.email *
-        check.password *
-        check.confirmBoolean *
-        check.name *
-        check.companyName *
-        check.homepage *
-        check.registrationNumber *
-        check.contact >
-      0
+      check.email > 0 &&
+      check.password > 0 &&
+      check.confirmBoolean > 0 &&
+      check.name > 0 &&
+      check.companyName > 0 &&
+      check.homepage > 0 &&
+      check.registrationNumber > 0 &&
+      check.contact > 0
     ) {
       dispatch({
         type: SIGN_UP_REQUEST,
@@ -76,91 +75,6 @@ export default function RegisterContents(props) {
       });
     }
   };
-
-  const autoHyphen = (com, input) => {
-    const str = com.contact;
-    let tmp = '';
-
-    if (str.substring(0, 2) === '02') {
-      if (str.length === 2) {
-        tmp = str + '-';
-        input((prev) => {
-          return {
-            ...prev,
-            contact: tmp,
-          };
-        });
-      } else if (str.length === 6) {
-        tmp = str + '-';
-        input((prev) => {
-          return {
-            ...prev,
-            contact: tmp,
-          };
-        });
-      } else if (str.length === 12 && str[7] !== '-') {
-        tmp = str.substring(0, 6) + str[7] + '-' + str.substring(8, 12);
-        input((prev) => {
-          return {
-            ...prev,
-            contact: tmp,
-          };
-        });
-      }
-    } else if (str.substring(0, 2) !== '02') {
-      if (str.length === 3) {
-        tmp = str + '-';
-        input((prev) => {
-          return {
-            ...prev,
-            contact: tmp,
-          };
-        });
-      } else if (str.length === 7) {
-        tmp += str + '-';
-        input((prev) => {
-          return {
-            ...prev,
-            contact: tmp,
-          };
-        });
-      } else if (str.length === 13 && str[8] !== '-') {
-        tmp += str.substring(0, 7) + str[8] + '-' + str.substring(9);
-        input((prev) => {
-          return {
-            ...prev,
-            contact: tmp,
-          };
-        });
-      }
-    }
-  };
-
-  useEffect(() => autoHyphen(company, setCompany), [company]);
-  useEffect(() => {
-    const str = company.registrationNumber;
-    let tmp = '';
-
-    if (str.length === 3) {
-      tmp += str;
-      tmp += '-';
-      setCompany((prev) => {
-        return {
-          ...prev,
-          registrationNumber: tmp,
-        };
-      });
-    } else if (str.length === 6) {
-      tmp += str;
-      tmp += '-';
-      setCompany((prev) => {
-        return {
-          ...prev,
-          registrationNumber: tmp,
-        };
-      });
-    }
-  }, [company.registrationNumber]);
 
   useEffect(() => {
     if (user.signUpDone) {

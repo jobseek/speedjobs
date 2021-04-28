@@ -1,40 +1,27 @@
 package com.jobseek.speedjobs.domain.resume.details;
 
-import com.jobseek.speedjobs.domain.resume.Resume;
-import lombok.*;
-
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import javax.persistence.Embeddable;
+import lombok.Getter;
+import lombok.ToString;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
-
-@Entity @Getter @Setter @Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
-@Table(name = "certificates")
+@Embeddable
+@Getter
+@ToString
 public class Certificate {
-
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cert_id")
-	private Long id;
 
 	private String certName;
 
-	@Column(unique = true)
 	private String certNumber;
 
 	private String institute;
 
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime certDate;
 
 	private int score;
 
 	private int degree;
 
-	@ManyToOne(fetch = LAZY, cascade = ALL)
-	@JoinColumn(name = "resume_id")
-	private Resume resume;
 }

@@ -70,8 +70,10 @@ export default function SignUp(props) {
     (e) => {
       e.preventDefault();
       if (
-        check.email * check.password * check.confirmBoolean * check.name >
-        0
+        check.email > 0 &&
+        check.password > 0 &&
+        check.confirmBoolean > 0 &&
+        check.name > 0
       ) {
         dispatch({
           type: SIGN_UP_REQUEST,

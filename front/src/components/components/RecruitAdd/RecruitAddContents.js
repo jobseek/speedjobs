@@ -1,33 +1,44 @@
-import React, { useState } from 'react';
-import Tags from '../Tags';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import AnnouncementDate from './AnnouncementDate';
 import CompanySummaryInfo from './CompanySummaryInfo';
 import AnnouncementInfo from './AnnouncementInfo';
+import { PostWriterDate } from '../Styled';
+import AnnounceLocation from './AnnounceLocation';
 
-export default function RecruitAddContents({ onChange }) {
-  const [tags] = useState([
-    { name: 'Backend', id: 0, selected: false },
-    { name: 'Frontend', id: 1, selected: false },
-    { name: 'Fullstack', id: 2, selected: false },
-  ]);
+const AnnounceHeader = styled.div`
+  font-size: 20px;
+  color: #373737;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+`;
+export default function RecruitAddContents({ onChange, setTags }) {
+  const [author, setAuthor] = useState('');
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user.me !== null) {
+      setAuthor(user.me.name);
+    }
+  }, [user.me]);
   return (
     <>
       {/* 작성자 */}
-      <div style={{ margin: '10px 0px 20px 0px' }}>작성자 2020-01-01</div>
-      {/* 공고 날짜 */}
-      <AnnouncementDate />
+      <PostWriterDate>{author} 2020-01-01</PostWriterDate>
+
       {/* 회사 요약정보 */}
-      <CompanySummaryInfo onChange={onChange} />
+      <AnnounceHeader>회사요약정보</AnnounceHeader>
+      <CompanySummaryInfo />
+      {/* 공고 날짜 */}
+      <AnnounceHeader>공고기간</AnnounceHeader>
+      <AnnouncementDate onChange={onChange} />
       {/* 공고정보 */}
-      <AnnouncementInfo />
-      {/* 태그*/}
-      <div
-        style={{
-          marginTop: '20px',
-        }}
-      >
-        <Tags tagList={tags}>직무추가</Tags>
-      </div>
+      <AnnounceHeader>공고정보</AnnounceHeader>
+      <AnnounceHeader>위치</AnnounceHeader>
+      <AnnounceLocation></AnnounceLocation>
+      <AnnounceHeader>정보</AnnounceHeader>
+      <AnnouncementInfo setTags={setTags} onChange={onChange} />
     </>
   );
 }

@@ -1,7 +1,35 @@
-import React from 'react';
-import { DataInputs } from '../Styled';
+import React, { useCallback, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import styled from 'styled-components';
+import { ko } from 'date-fns/esm/locale';
 
-export default function AnnouncementDate() {
+const RecruitDatePicker = styled(DatePicker)`
+  border: none;
+  width: 84px;
+  border-bottom: 1px solid #a1a1a1;
+  padding: 2px 0 2px 0;
+  margin: 0 5px;
+  display: inline-block;
+`;
+
+export default function AnnouncementDate({ onChange }) {
+  const [startDate, setStartDate] = useState('');
+  const [finishDate, setFinishDate] = useState('');
+  const StartDateHandler = useCallback(
+    (e) => {
+      const event = { target: { name: 'openDate', value: e } };
+      onChange(event);
+    },
+    [onChange]
+  );
+  const FinishDateHandler = useCallback(
+    (e) => {
+      const event = { target: { name: 'closeDate', value: e } };
+      onChange(event);
+    },
+    [onChange]
+  );
+
   return (
     <>
       <div
@@ -9,35 +37,29 @@ export default function AnnouncementDate() {
           marginBottom: '30px',
         }}
       >
-        <span
-          style={{
-            display: 'inline-block',
-          }}
-        >
-          <div
-            style={{
-              marginBottom: '5px',
-            }}
-          >
-            공고시작일자
-          </div>
-          <DataInputs type="text" />
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span
-          style={{
-            display: 'inline-block',
-          }}
-        >
-          <div
-            style={{
-              marginBottom: '5px',
-            }}
-          >
-            공고마감일자
-          </div>
-          <DataInputs type="text" />
-        </span>
+        <div style={{ display: 'inline-block' }}>
+          <RecruitDatePicker
+            locale={ko}
+            dateFormat="yyyy-MM-dd"
+            peekMonthDropdown
+            showYearDropdown
+            selected={startDate}
+            onSelect={(e) => setStartDate(e)}
+            onChange={(e) => StartDateHandler(e)}
+          />
+        </div>
+        ~
+        <div style={{ display: 'inline-block' }}>
+          <RecruitDatePicker
+            locale={ko}
+            dateFormat="yyyy-MM-dd"
+            peekMonthDropdown
+            showYearDropdown
+            selected={finishDate}
+            onSelect={(e) => setFinishDate(e)}
+            onChange={(e) => FinishDateHandler(e)}
+          />
+        </div>
       </div>
     </>
   );

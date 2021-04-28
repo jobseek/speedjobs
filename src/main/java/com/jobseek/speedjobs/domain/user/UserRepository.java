@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.domain.user;
 
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByEmail(String email);
-
-	Optional<User> findByProviderAndOauthId(Provider provider, String oauthId);
 
 	Boolean existsByEmail(String email);
 }

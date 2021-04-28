@@ -1,5 +1,7 @@
 package com.jobseek.speedjobs.config.auth;
 
+import com.jobseek.speedjobs.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,11 +10,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
-import com.jobseek.speedjobs.service.UserService;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
@@ -31,8 +28,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = authentication.getPrincipal();
 		if (principal == null || principal.getClass() == String.class) {
-			throw new UnauthorizedException("접근하려면 로그인해야 합니다.");
+			return null;
 		}
-		return userService.findById((Long)principal);
+		return userService.findOne((Long) principal);
 	}
 }

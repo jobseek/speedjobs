@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PersonCircle, Search } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import { useHistory } from 'react-router';
 import { v4 } from 'uuid';
 import NavDrop, { Background } from '../components/Nav/NavDrop';
 import NavSearch from '../components/Nav/NavSearch';
@@ -54,6 +56,8 @@ const PopUpBox = styled.div`
 
 export default function Header(props) {
   const state = useSelector((s) => s);
+  const history = useHistory();
+  const [, , remove] = useCookies('REFRESH_TOKEN');
   const ref = useRef(0);
   const dispatch = useDispatch();
   // 팝업창 배열
@@ -81,7 +85,6 @@ export default function Header(props) {
   // 팝업 동작 인식
   useEffect(() => {
     // 회원가입
-
     if (state.user.signUpDone) {
       setPopModal(true);
       dispatch({ type: SIGN_UP_DONE });
@@ -92,7 +95,7 @@ export default function Header(props) {
     } else if (state.user.logInDone && !state.user.logInWelcomed) {
       // v4 는 아이디를 자동으로 넣어줍니다
       // 확실한 아이디가 있을경우 비추입니다
-      addPop({ type: 'login', id: v4(), text: state.user.me.name });
+      addPop({ type: 'login', id: v4(), text: state.user.me.nickname });
       dispatch({ type: LOG_IN_WELCOMED });
     } else if (state.user.signUpError !== null) {
       // 회원가입오류
@@ -113,6 +116,8 @@ export default function Header(props) {
       dispatch({
         type: LOG_OUT_DONE,
       });
+      remove('REFRESH_TOKEN');
+      history.push('/');
     } else if (state.post.postAddDone) {
       addPop({ type: 'green', id: v4(), text: '게시글이 등록되었습니다' });
       dispatch({
@@ -124,7 +129,7 @@ export default function Header(props) {
         type: POST_ADD_DONE,
       });
     }
-  }, [state, dispatch]);
+  }, [state, dispatch, history, remove]);
 
   return (
     <>
@@ -142,7 +147,10 @@ export default function Header(props) {
         <PopUpBox>{mapPop}</PopUpBox>
         {popModal && (
           <>
-            <ModalAlert setPopModal={setPopModal}></ModalAlert>
+            <ModalAlert
+              setPopModal={setPopModal}
+              text="등록하신 이메일을 확인해주세요."
+            ></ModalAlert>
             <Background onClick={() => setPopModal(false)}></Background>
           </>
         )}

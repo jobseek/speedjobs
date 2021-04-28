@@ -2,12 +2,22 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Content, Header } from '../component/adminStyled';
 import InfoCard from '../component/InfoCard';
+import TagList from '../component/TagList';
 
 const Img = styled.img`
   background-color: white;
   width: 100%;
   height: 120px;
   margin: 20px 0 0;
+`;
+
+const ImgContainer = styled.div`
+  margin-top: 20px;
+  text-align: center;
+  padding-top: 120px;
+  width: 100%;
+  height: 300px;
+  border: 1px dashed gray;
 `;
 
 export default function BannerSetting(props) {
@@ -59,7 +69,9 @@ export default function BannerSetting(props) {
                 4장미만의 사진으론 배너를 구성할수없습니다
                 <br />
                 3:1혹은 4:1 비율의 사진이 배너로쓰기에 적합합니다
-                {src.length === 0 && '사진이없습니다'}
+                {src.length === 0 && (
+                  <ImgContainer>사진이없습니다</ImgContainer>
+                )}
                 {src.map((s) => (
                   <Img src={s} alt={'hello'} />
                 ))}
@@ -68,8 +80,9 @@ export default function BannerSetting(props) {
           </InfoCard>
         </div>
         <div className={'col-6'}>
-          <InfoCard index={0}>
+          <InfoCard index={2}>
             <Header>태그관리</Header>
+            <TagList></TagList>
           </InfoCard>
         </div>
       </div>

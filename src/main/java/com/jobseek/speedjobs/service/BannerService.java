@@ -1,18 +1,15 @@
 package com.jobseek.speedjobs.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.domain.banner.Banner;
 import com.jobseek.speedjobs.domain.banner.BannerRepository;
 import com.jobseek.speedjobs.dto.banner.BannerResponses;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -33,7 +30,7 @@ public class BannerService {
 		return BannerResponses.of(banners);
 	}
 
-	public BannerResponses read() {
+	public BannerResponses find() {
 		return BannerResponses.of(new ArrayList<>(bannerRepository.findAll()));
 	}
 

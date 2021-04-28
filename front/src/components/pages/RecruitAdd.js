@@ -1,47 +1,68 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   PostTitleInput,
   StyledButton,
   StyledHeaderDiv,
 } from '../components/Styled';
-import { RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
+import { RECRUIT_ADD_DONE, RECRUIT_ADD_REQUEST } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
 export default function RecruitAdd() {
-  const [form, setForm] = useState({ content: '', title: '' });
+  const [form, setForm] = useState({
+    title: '',
+    position: 'TEMPORARY',
+    thumbnail: '',
+    experience: 'JUNIOR',
+    content: '',
+    openDate: '',
+    closeDate: '',
+    status: 'PROCESS',
+    tagIds: [],
+  });
   const recruit = useSelector((state) => state.recruit);
+  const [totalTag, setTotalTag] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onChangHandler = useCallback((e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
-  useEffect(() => {
-    console.log('effect');
-    if (recruit.recruitAddDone) {
-      console.log(recruit.recruitAddDone);
-      console.log('back');
-      history.goBack();
-    }
-  }, [recruit, history]);
+  const onChangHandler = useCallback(
+    (e) => {
+      console.log(e.target.name);
+      if (e.target.name.endsWith('Date')) {
+        console.log('hi');
+        setForm((prev) => ({
+          ...prev,
+          [e.target.name]: moment(e.target.value).format('YYYY-MM-DD 00:00:00'),
+        }));
+      } else {
+        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      }
+      console.log(form);
+    },
+    [form]
+  );
   const onSubmitHandler = useCallback(
     (e) => {
-      console.log('handler');
       e.preventDefault();
-      if (recruit.title === '' || recruit.content === '') {
-        if (recruit.title === '') {
-          alert('제목을 입력하세요');
-        } else if (recruit.content === '') {
-          alert('내용을 입력하세요');
-        }
-      } else {
-        dispatch({ type: RECRUIT_ADD_REQUEST, data: form });
-        setForm({ content: '', title: '' });
-      }
+      console.log(form);
+      dispatch({ type: RECRUIT_ADD_REQUEST, data: form });
     },
-    [dispatch, form, recruit.content, recruit.title]
+    [form, dispatch]
   );
+
+  useEffect(() => {
+    if (recruit.recruitAddDone) {
+      dispatch({
+        type: RECRUIT_ADD_DONE,
+      });
+      history.goBack();
+    }
+  }, [recruit, history, dispatch]);
+
+  useEffect(() => {
+    setForm((p) => ({ ...p, tagIds: totalTag }));
+  }, [totalTag]);
 
   return (
     <div
@@ -56,16 +77,16 @@ export default function RecruitAdd() {
         <StyledHeaderDiv fix>
           <div
             className={'container row justify-content-end'}
-            style={{ paddingTop: '15px' }}
+            style={{ padding: '15px 0 0 15px' }}
           >
-            <div className={'col-md-9 col-4 p-0'} style={{ marginTop: '14px' }}>
+            <div className={'col-9 p-0'} style={{ marginTop: '14px' }}>
               <PostTitleInput
                 onChange={(e) => onChangHandler(e)}
                 name={'title'}
                 placeholder={'제목을 입력해주세요'}
               />
             </div>
-            <div className={'col-md-3 col-3 text-right'}>
+            <div className={'col-3 text-right'}>
               <StyledButton
                 wide
                 style={{ letterSpacing: '10px', paddingLeft: '20px' }}
@@ -78,13 +99,7 @@ export default function RecruitAdd() {
         </StyledHeaderDiv>
 
         <div className={'container'}>
-          {/* <PostTextArea*/}
-          {/*  name={'content'}*/}
-          {/*  onChange={(e) => onChangHandler(e)}*/}
-          {/*  placeholder="내용을 입력하세요"*/}
-          {/*  rows={'20'}*/}
-          {/* />*/}
-          <RecruitAddContents onChange={(e) => onChangHandler(e)} />
+          <RecruitAddContents setTags={setTotalTag} onChange={onChangHandler} />
         </div>
       </form>
     </div>

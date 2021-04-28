@@ -4,15 +4,15 @@ import { useHistory } from 'react-router';
 import {
   PostTextArea,
   PostTitleInput,
-  PostWriterDate,
+  // PostWriterDate,
   StyledButton,
   StyledHeaderDiv,
-  TagBody,
 } from '../components/Styled';
 import { POST_ADD_REQUEST } from '../../reducers/post';
+import Tags from '../components/Tags';
 
-export default function PostAdd(props) {
-  const [form, setForm] = useState({ title: '', content: '' });
+export default function PostAdd() {
+  const [form, setForm] = useState({ title: '', content: '', tagIds: [] });
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -39,6 +39,34 @@ export default function PostAdd(props) {
     },
     [dispatch, form]
   );
+  const [totalTag, setTotalTag] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [tagList2, setTagList2] = useState([]);
+  const tagss = useSelector((state) => state.tag);
+  useEffect(() => {
+    setTotalTag([
+      ...tagList.filter((t) => t.selected).map((t) => t.id),
+      ...tagList2.filter((t) => t.selected).map((t) => t.id),
+    ]);
+  }, [tagList, tagList2]);
+  useEffect(() => {
+    setForm((p) => ({ ...p, tagIds: totalTag }));
+  }, [totalTag]);
+  useEffect(() => {
+    if (tagss.tagGetData) {
+      const temp = Array.from(tagss.tagGetData.tags.POSITION);
+      const temp2 = Array.from(tagss.tagGetData.tags.SKILL);
+
+      const tt = temp.map((t) => {
+        return { ...t, selected: false };
+      });
+      setTagList((p) => [...p, ...tt]);
+      const tt2 = temp2.map((t) => {
+        return { ...t, selected: false };
+      });
+      setTagList2((p) => [...p, ...tt2]);
+    }
+  }, [tagss.tagGetData]);
 
   return (
     <div
@@ -49,17 +77,17 @@ export default function PostAdd(props) {
       }}
     >
       <form>
-        {/* 헤더*/}
         <StyledHeaderDiv fix>
           <div
             className={'container row justify-content-end'}
-            style={{ paddingTop: '15px' }}
+            style={{ paddingTop: '15px', paddingRight: 0 }}
           >
             <div className={'col-md-8 col-6 p-0'} style={{ marginTop: '14px' }}>
               <PostTitleInput
                 onChange={(e) => onChangHandler(e)}
                 name={'title'}
                 placeholder={'제목을 입력해주세요'}
+                maxLength="20"
               />
             </div>
             <div
@@ -81,11 +109,8 @@ export default function PostAdd(props) {
             </div>
           </div>
         </StyledHeaderDiv>
-        {/* 작성자*/}
         <div className={'container'}>
-          <PostWriterDate>작성자 2020-01-01</PostWriterDate>
-          {/* 태그*/}
-          {/* 본문*/}
+          {/* <PostWriterDate>Author 2020-01-01</PostWriterDate>*/}
           <PostTextArea
             name={'content'}
             onChange={(e) => onChangHandler(e)}
@@ -93,10 +118,12 @@ export default function PostAdd(props) {
             rows={'20'}
           />
           <div style={{ marginTop: '40px' }}>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
-            <TagBody grey>백엔드</TagBody>
+            <Tags tagList={tagList} selected={setTagList}>
+              직무
+            </Tags>
+            <Tags tagList={tagList2} selected={setTagList2}>
+              기술
+            </Tags>
           </div>
         </div>
       </form>

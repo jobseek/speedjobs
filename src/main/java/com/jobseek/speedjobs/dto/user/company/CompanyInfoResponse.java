@@ -2,7 +2,6 @@ package com.jobseek.speedjobs.dto.user.company;
 
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
-import com.jobseek.speedjobs.domain.user.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,16 +30,15 @@ public class CompanyInfoResponse {
 	private String homepage;
 	private String description;
 
-	public static CompanyInfoResponse of(User user) {
-		Company company = user.getCompany();
+	public static CompanyInfoResponse of(Company company) {
 		CompanyDetail detail = company.getCompanyDetail();
 
 		return CompanyInfoResponse.builder()
-			.id(user.getId())
-			.name(user.getName())
-			.email(user.getEmail())
-			.contact(user.getContact())
-			.picture(user.getPicture())
+			.id(company.getId())
+			.name(company.getName())
+			.email(company.getEmail())
+			.contact(company.getContact())
+			.picture(company.getPicture())
 			.companyName(company.getCompanyName())
 			.logoImage(company.getLogoImage())
 			.scale(company.getScale())

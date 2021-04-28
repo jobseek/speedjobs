@@ -3,7 +3,9 @@ package com.jobseek.speedjobs.domain.recruit;
 import static lombok.AccessLevel.PROTECTED;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +17,13 @@ import lombok.Setter;
 @NoArgsConstructor(access = PROTECTED)
 public class RecruitDetail {
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Experience experience;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Position position;
 
+	@Lob
 	private String content;
 
 	@Builder
@@ -30,7 +33,7 @@ public class RecruitDetail {
 		this.content = content;
 	}
 
-	RecruitDetail from(Experience experience, Position position, String content) {
+	public static RecruitDetail from(Experience experience, Position position, String content) {
 		return RecruitDetail.builder()
 			.experience(experience)
 			.position(position)

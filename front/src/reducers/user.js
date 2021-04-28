@@ -14,6 +14,7 @@ export const initialState = {
   me: null,
   meDone: false,
   meError: null,
+  needLogin: false,
 };
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
@@ -59,6 +60,7 @@ const reducer = (state = initialState, action) =>
         draft.me = action.data;
         draft.logInLoading = false;
         draft.logInDone = true;
+        draft.needLogin = false;
         break;
       case LOG_IN_WELCOMED:
         draft.logInWelcomed = true;
@@ -87,6 +89,7 @@ const reducer = (state = initialState, action) =>
       case LOG_OUT_DONE:
         draft.logOutError = null;
         draft.logOutDone = false;
+        draft.needLogin = true;
         break;
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;

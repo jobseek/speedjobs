@@ -1,0 +1,79 @@
+### 기업 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{company_email}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 1. 공고 등록
+POST http://{{host}}/recruit
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "제목입니당",
+  "openDate": "2020-01-02 00:00:00",
+  "closeDate": "2021-12-15 00:00:00",
+  "status": "PROCESS",
+  "thumbnail": "Empty",
+  "experience": "JUNIOR",
+  "position": "PERMANENT",
+  "content": "모집합니다아",
+  "tagIds": [
+    1,
+    3
+  ]
+}
+
+### 2. 공고 수정
+PUT http://{{host}}/recruit/16
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "수정입니당",
+  "openDate": "2020-02-05 00:00:00",
+  "closeDate": "2021-10-15 00:00:00",
+  "status": "END",
+  "thumbnail": "Empty",
+  "experience": "JUNIOR",
+  "position": "PERMANENT",
+  "content": "수정입니다아",
+  "tagIds": [
+    1,
+    5,
+    10,
+    14
+  ]
+}
+
+### 3. 공고 삭제
+DELETE http://{{host}}/recruit/15
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 4. 공고 단건 조회
+GET http://{{host}}/recruit/16
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### 5. 공고 페이징 조회
+GET http://{{host}}/recruit?page=0&size=3&sort=id,DESC
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### 6. 공고 찜하기
+POST http://{{host}}/recruit/1/favorite
+Authorization: Bearer {{accessToken}}
+
+### 7. 공고 찜하기 취소
+DELETE http://{{host}}/recruit/1/favorite
+Authorization: Bearer {{accessToken}}
+
+### 8. 찜 목록 조회
+GET http://{{host}}/recruit/favorites?page=0&size=2&sort=id,DESC
+Authorization: Bearer {{accessToken}}

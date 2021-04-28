@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  StyledArticle,
+  ProfileDiv,
   StyledButton,
   StyledHeaderDiv,
+  StyledHeaderMargin,
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
@@ -13,7 +14,7 @@ export default function Profile() {
     <form>
       <div className="container text-left">
         <StyledHeaderDiv padding style={{ position: 'relative' }}>
-          <div className={'container row justify-content-end'}>
+          <StyledHeaderMargin className={'container row justify-content-end'}>
             <div
               className={'col-md-9 col-8'}
               style={{ marginTop: '10px', paddingTop: '5px' }}
@@ -28,9 +29,9 @@ export default function Profile() {
                 개인정보 저장
               </StyledButton>
             </div>
-          </div>
+          </StyledHeaderMargin>
         </StyledHeaderDiv>
-        <div style={{ marginTop: '100px' }}>
+        <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone
@@ -38,11 +39,9 @@ export default function Profile() {
             >
               <SideMenu />
             </StyledLeftLayout>
-            <StyledArticle className={'col-12 col-lg-10'}>
-              <div className={'container-fluid'}>
-                <ProfileModify />
-              </div>
-            </StyledArticle>
+            <ProfileDiv className={'col-12 col-lg-10'}>
+              <ProfileModify />
+            </ProfileDiv>
           </div>
         </div>
       </div>

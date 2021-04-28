@@ -1,11 +1,11 @@
 package com.jobseek.speedjobs.domain.user;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-
+import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,34 +13,48 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.likelist.CompanyLikeList;
-import com.jobseek.speedjobs.domain.likelist.PostLikeList;
-import com.jobseek.speedjobs.domain.likelist.RecruitLikeList;
-import com.jobseek.speedjobs.domain.member.Member;
-import com.jobseek.speedjobs.domain.message.Message;
-import com.jobseek.speedjobs.domain.post.Comment;
-import com.jobseek.speedjobs.domain.post.Post;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.JOINED)
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(name = "users")
 public class User extends BaseTimeEntity {
+
+	@ManyToMany
+	@JoinTable(name = "post_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "post_id")
+	)
+	private final List<Post> postFavorites = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "company_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "company_id")
+	)
+	private final List<Company> companyFavorites = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "recruit_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "recruit_id")
+	)
+	private final List<Recruit> recruitFavorites = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +62,8 @@ public class User extends BaseTimeEntity {
 	private Long id;
 
 	private String name;
+
+	private String nickname;
 
 	@Column(unique = true)
 	private String email;
@@ -62,63 +78,39 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Role role;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Provider provider;
-
-	@Column(name = "oauth_id")
-	private String oauthId;
-
-	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private Member member;
-
-	@OneToOne(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private Company company;
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<Post> postList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<CompanyLikeList> companyLikeLists = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<RecruitLikeList> recruitLikeLists = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<PostLikeList> postLikeLists = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<Comment> commentList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL)
-	private List<Message> messageList = new ArrayList<>();
-
 	@Builder
-	public User(String name, String email, String password, String picture, String contact,
-		Role role, Provider provider, String oauthId) {
+	public User(String name, String nickname, String email, String password, String picture, String contact, Role role) {
 		this.name = name;
+		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
 		this.picture = picture;
 		this.contact = contact;
 		this.role = role;
-		this.provider = provider;
-		this.oauthId = oauthId;
 	}
 
-	public void setMember(Member member) {
-		this.member = member;
-		member.setUser(this);
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-		company.setUser(this);
-	}
-
-	public User updateOAuthUserInfo(String name, String picture) {
-		this.name = name;
+	public void updateOAuthUserInfo(String nickname, String picture) {
+		this.nickname = nickname;
 		this.picture = picture;
+	}
+
+	public User updateCustomUserInfo(String name, String nickname, String picture, String contact) {
+		this.name = name;
+		this.nickname = nickname;
+		this.picture = picture;
+		this.contact = contact;
 		return this;
+	}
+
+	public boolean isMember() {
+		return role == Role.ROLE_MEMBER;
+	}
+
+	public boolean isCompany() {
+		return role == Role.ROLE_COMPANY;
+	}
+
+	public boolean isAdmin() {
+		return role == Role.ROLE_ADMIN;
 	}
 }

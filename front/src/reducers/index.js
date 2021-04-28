@@ -4,7 +4,19 @@ import comment from './comment';
 import post from './post';
 import recruit from './recruit';
 import profile from './profile';
+import tag from './tag';
+import company from './company';
+import like from './like';
 
-const rootReducer = combineReducers({ user, post, comment, recruit, profile });
+const rootReducer = combineReducers({
+  user,
+  post,
+  comment,
+  recruit,
+  profile,
+  tag,
+  company,
+  like,
+});
 
 export default rootReducer;

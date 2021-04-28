@@ -1,24 +1,39 @@
 package com.jobseek.speedjobs.domain.message;
 
-import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.recruit.Recruit;
-import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-
-import javax.persistence.*;
-
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-@Entity @Getter @Setter @Builder
+import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
+import com.jobseek.speedjobs.domain.user.User;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "messages")
 public class Message extends BaseTimeEntity {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "message_id")
 	private Long id;
 
@@ -28,9 +43,5 @@ public class Message extends BaseTimeEntity {
 	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
-
-	@ManyToOne(fetch = LAZY, cascade = ALL)
-	@JoinColumn(name = "recruit_id")
-	private Recruit recruit;
 
 }

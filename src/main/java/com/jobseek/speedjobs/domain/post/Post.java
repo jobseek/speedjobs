@@ -1,149 +1,135 @@
 package com.jobseek.speedjobs.domain.post;
 
-import javax.persistence.*;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-
-import com.jobseek.speedjobs.domain.likelist.PostLikeList;
-import com.jobseek.speedjobs.domain.tag.PostTag;
+import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.user.User;
-import lombok.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
-import static lombok.AccessLevel.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
+
+	@OneToMany(mappedBy = "post", fetch = LAZY, cascade = ALL, orphanRemoval = true)
+	private final List<Comment> comments = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "post_tags",
+		joinColumns = @JoinColumn(name = "post_id"),
+		inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private final List<Tag> tags = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "postFavorites")
+	private final List<User> favorites = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
 	private Long id;
 
-	private String title;
-
-	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	private int likeCount;
-
-	private int viewCount;
-
-	private int commentCount;
+	private String title;
 
 	@Embedded
 	private PostDetail postDetail;
 
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<PostLikeList> postLikeLists = new ArrayList<>();
+	private int viewCount;
 
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private List<Comment> commentList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post", cascade = ALL)
-	private Set<PostTag> postTags = new HashSet<>();
-
-	public void increaseLikeCount() {
-		likeCount += 1;
+	@Builder
+	public Post(String title, PostDetail postDetail) {
+		this.title = title;
+		this.postDetail = postDetail;
 	}
 
-	public void decreaseLikeCount() {
-		likeCount -= 1;
+	public static Post createPost(String title, String content) {
+		return new Post(title, PostDetail.from(content));
 	}
 
 	public void increaseViewCount() {
-		viewCount += 1;
+		this.viewCount += 1;
 	}
 
-	public void increaseCommentCount() {
-		commentCount += 1;
-	}
-
-	public void decreaseCommentCount() {
-		commentCount -= 1;
-	}
-
-	public void update(String title, String content) {
-		this.title = title;
-		this.postDetail = PostDetail.from(content);
-	}
-
-	//연관관계 편의 메서드
 	public void setUser(User user) {
 		this.user = user;
-		user.getPostList().add(this);
 	}
 
-	public void addPostLike(PostLikeList postLikeList) {
-		postLikeLists.add(postLikeList);
-		postLikeList.setPost(this);
+	public void update(Post post, List<Tag> tags) {
+		removeTags();
+		addTags(tags);
+		title = post.getTitle();
+		postDetail = post.getPostDetail();
 	}
 
-	public void addComment(Comment comment) {
-		commentList.add(comment);
-		comment.setPost(this);
+	public int getCommentCount() {
+		return comments.size();
 	}
 
-	public void addPostTag(PostTag postTag) {
-		postTags.add(postTag);
-		postTag.setPost(this);
+	public void addTags(List<Tag> tags) {
+		for (Tag tag : tags) {
+			this.tags.add(tag);
+			tag.getPosts().add(this);
+		}
 	}
 
-	//생성 메서드
-	public void initCount() {
-		this.likeCount = 0;
-		this.viewCount = 0;
-		this.commentCount = 0;
+	public void removeTags() {
+		tags.forEach(tag -> tag.getPosts().remove(this));
+		tags.clear();
 	}
 
-	//비즈니스 로직
-	//봤을때, 댓글을 추가/삭제했을때, 좋아요 눌렀을때, 공고찜목록에 추가했을때, 태그를 추가했을 때
-	/**
-	* 포스트를 봤을 때
-	*/
-	public void showed() {
-		increaseViewCount();
+	public void addFavorite(User user) {
+		if (favoriteOf(user)) {
+			throw new IllegalArgumentException("이미 찜한 게시글입니다.");
+		}
+		favorites.add(user);
+		user.getPostFavorites().add(this);
 	}
 
-	/**
-	* 댓글 달렸을 때
-	*/
-	public void addComment() {
-		increaseCommentCount();
+	public void removeFavorite(User user) {
+		if (!favoriteOf(user)) {
+			throw new IllegalArgumentException("찜 목록에 존재하지 않는 게시글입니다.");
+		}
+		favorites.remove(user);
+		user.getPostFavorites().remove(this);
 	}
 
-	/**
-	* 댓글 지울 때
-	*/
-	public void deleteComment() {
-		decreaseCommentCount();
+	public boolean favoriteOf(User user) {
+		return favorites.contains(user);
 	}
 
-	/**
-	* 좋아요 눌렸을 때
-	*/
-	public void pushLike() {
-		increaseLikeCount();
+	public int getFavoriteCount() {
+		return favorites.size();
 	}
-
-	/**
-	* 싫어요 눌렀을 때
-	*/
-	public void pushHate() {
-		decreaseLikeCount();
-	}
-
 }
