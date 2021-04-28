@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PRIVATE)
 public class ResumeRequest {
 
-	@NotNull
+//	@NotNull
 	private Open open;
 
-	@NotBlank
+//	@NotBlank
 	private String coverLetter;
 
 	private String title;

@@ -7,6 +7,7 @@ import profile from './profile';
 import tag from './tag';
 import company from './company';
 import like from './like';
+import resume from './resume';
 
 const rootReducer = combineReducers({
   user,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   comment,
   recruit,
   profile,
+  resume,
   tag,
   company,
   like,

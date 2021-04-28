@@ -7,6 +7,7 @@ import postSage from './post';
 import recruitSaga from './recruit';
 import address from '../auth/address';
 import profileSaga from './profile';
+import resumeSaga from './resume';
 import tagSaga from './tag';
 import companySaga from './company';
 import likeSaga from './like';
@@ -24,5 +25,6 @@ export default function* rootSaga() {
     fork(tagSaga),
     fork(companySaga),
     fork(likeSaga),
+    fork(resumeSaga),
   ]);
 }

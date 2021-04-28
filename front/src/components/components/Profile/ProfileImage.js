@@ -7,8 +7,6 @@ export default function ProfileImage({ onChange, value }) {
     'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   );
 
-  console.log(value.url);
-
   const onChange2 = async (e) => {
     const file = e.target.files[0];
     console.log('=== 이미지 파일 정보 ===', file);

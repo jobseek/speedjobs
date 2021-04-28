@@ -71,9 +71,9 @@ export default function Profile() {
 
             <ProfileDiv className={'col-12 col-lg-10'}>
               {role === 'ROLE_MEMBER' ? (
-                <ProfileDetails />
+                <ProfileDetails /> // 개인회원 정보
               ) : (
-                <ProfileDetails2 />
+                <ProfileDetails2 /> // 기업회원 정보
               )}
             </ProfileDiv>
           </div>

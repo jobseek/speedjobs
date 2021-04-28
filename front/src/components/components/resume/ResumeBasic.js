@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -10,19 +11,23 @@ import {
   Private,
   ResumeImg,
   ResumeTitles,
+  StyledButton,
   StyledHeaderMargin,
   Warning,
 } from '../Styled';
 import ResumeInputs from './ResumeInputs';
+import { RESUME_ADD_REQUEST } from '../../../reducers/resume';
 
 const Toggle1 = styled(ToggleOff)`
   width: 30px;
   color: gray;
+  cursor: pointer;
 `;
 
 const Toggle2 = styled(ToggleOn)`
   width: 30px;
   color: #f5df4d;
+  cursor: pointer;
 `;
 
 const StyledDatePicker = styled(DatePicker)`
@@ -40,6 +45,11 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 export default function ResumeBasic() {
+  const [form, setForm] = useState({
+    open: '',
+  });
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const [img, setImage] = useState(
     'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
   );
@@ -47,14 +57,36 @@ export default function ResumeBasic() {
   const [startDate, setStartDate] = useState(null);
   const handleBookmark = () => {
     setBookmark(!bookmark);
+    if (bookmark) {
+      form.open = 'YES';
+    } else {
+      form.open = 'NO';
+    }
   };
+
+  const onChangeHandler = useCallback((e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+
+  const onSubmitHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (user.me.id === null) return;
+      dispatch({
+        type: RESUME_ADD_REQUEST,
+        data: form,
+      });
+      // history.push('/resume');
+      console.log('변경사항', form);
+    },
+
+    [dispatch, form, user.me.id]
+  );
+
   const onChange = async (e) => {
     const file = e.target.files[0];
-    console.log('테스트-----------', file);
     const formData = new FormData();
     formData.append('files', e.target.files[0]);
-    console.log(formData);
-    console.log(e.target.files[0]);
 
     const url = await axios
       .post('/file', formData)
@@ -63,18 +95,25 @@ export default function ResumeBasic() {
         () =>
           'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
       );
-    if (
+    if (file === undefined) {
+      console.log('=== 이미지 업로드 실패(파일 미선택) ===');
+      setImage(img);
+    } else if (
       file.type !== 'image/jpeg' &&
       file.type !== 'image/png' &&
       file.type !== 'image/gif'
     ) {
       alert('이미지 파일만 등록할 수 있습니다.');
-      setImage(
-        'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
-      );
+      console.log('=== 이미지 업로드 실패(잘못된 파일 형식) ===');
+      setImage(img);
+    } else if (file.size > 1024 * 1024) {
+      alert('1MB 이하 이미지만 가능합니다.');
+      console.log('=== 이미지 업로드 실패(용량 초과) ===');
+      setImage(img);
     } else {
-      console.log(url);
+      console.log('=== 이미지 업로드 성공 ===');
       setImage(url);
+      form.resume_image = url;
     }
   };
   const hiddenFileInput = React.useRef(null);
@@ -88,19 +127,31 @@ export default function ResumeBasic() {
         <Warning>
           입력하신 정보는 절대 사용자 동의 없이 외부로 유출, 공개되지 않습니다.
         </Warning>
-        <span onClick={handleBookmark}>
+        <span>
           <div
             style={{
               position: 'absolute',
               border: 'none',
               background: 'none',
-              cursor: 'pointer',
               right: '9px',
               top: '9px',
             }}
           >
+            {console.log('form.open', form.open)}
             {bookmark ? <Private>공개</Private> : <Private>비공개</Private>}
-            {bookmark ? <Toggle2 /> : <Toggle1 />}
+            {bookmark ? (
+              <Toggle2
+                onClick={handleBookmark}
+                onChange={(e) => onChangeHandler(e)}
+                name={'open'}
+              />
+            ) : (
+              <Toggle1
+                onClick={handleBookmark}
+                onChange={(e) => onChangeHandler(e)}
+                name={'open'}
+              />
+            )}
           </div>
         </span>
         <div
@@ -126,12 +177,12 @@ export default function ResumeBasic() {
 
         <div style={{ marginTop: '20px' }}>
           <StyledHeaderMargin style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <ResumeInputs name={'이름'} flex={'1 0 200px'} />
-            <ResumeInputs name={'성별'} flex={'0 0 205px'} />
+            <ResumeInputs flex={'1 0 200px'} />
+            <ResumeInputs flex={'0 0 205px'} />
           </StyledHeaderMargin>
         </div>
         <div style={{ display: 'flex' }}>
-          <ResumeInputs basic name={'연락처'} />
+          <ResumeInputs basic />
           <div
             style={{
               marginRight: '5px',
@@ -150,11 +201,18 @@ export default function ResumeBasic() {
           </div>
         </div>
         <div style={{ display: 'flex' }}>
-          <ResumeInputs basic name={'주소'} />
+          <ResumeInputs basic />
         </div>
-        <ResumeInputs sns name={'GitHub'} />
-        <ResumeInputs sns name={'기술 블로그'} />
+        <ResumeInputs sns />
+        <ResumeInputs sns />
       </div>
+      <StyledButton
+        style={{ marginRight: '0' }}
+        wide
+        onClick={(e) => onSubmitHandler(e)}
+      >
+        변경 사항 저장
+      </StyledButton>
     </>
   );
 }

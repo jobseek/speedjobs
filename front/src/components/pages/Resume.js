@@ -22,7 +22,7 @@ export default function Resume() {
               <h5>이력서</h5>
             </div>
             <div className={'col-md-3 col-4 text-right pr-0'}>
-              <StyledButton wide>수정</StyledButton>
+              <StyledButton wide>등록</StyledButton>
             </div>
           </StyledHeaderMargin>
         </StyledHeaderDiv>
