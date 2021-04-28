@@ -18,15 +18,17 @@ import {
   POST_MODIFY_SUCCESS,
 } from '../reducers/post';
 
-function getPostListApi(action) {
-  const { size, page } = action.data;
-  const get = axios
-    .get(`/post/?size=${size}&page=${page}&sort=id,DESC`)
-    .then((res) => res)
-    .catch((err) => {
-      throw err;
-    });
-  return get;
+async function getPostListApi(action) {
+  const { content, title, size, page } = action.data;
+  const search = [];
+  if (content !== undefined) search.push('content=' + content);
+  if (title !== undefined) search.push('title=' + title);
+  const searchText = await search.join('&');
+  return axios.get(
+    `/post?${searchText}${
+      searchText !== '' ? '&' : ''
+    }size=${size}&page=${page}&sort=id,DESC`
+  );
 }
 
 function* getPostList(action) {

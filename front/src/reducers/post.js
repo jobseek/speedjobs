@@ -111,6 +111,7 @@ const reducer = (state = initialState, action) =>
         break;
       case POST_LIST_SUCCESS:
         draft.postListDone = true;
+        draft.postListLoading = false;
         draft.postList = action.data;
         break;
 

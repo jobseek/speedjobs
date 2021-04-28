@@ -165,7 +165,11 @@ export default function NavSearch(props) {
         {toggle === 'block' && (
           <>
             <StyledSearchArea typed={typed}>
-              <SearchArea setTyped={setTyped} typed={typed}></SearchArea>
+              <SearchArea
+                setToggle={setToggle}
+                setTyped={setTyped}
+                typed={typed}
+              ></SearchArea>
             </StyledSearchArea>
           </>
         )}
