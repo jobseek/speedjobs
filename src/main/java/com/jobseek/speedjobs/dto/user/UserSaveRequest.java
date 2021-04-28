@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
@@ -25,9 +26,8 @@ public class UserSaveRequest {
 	@Size(min = 2, max = 15)
 	private String name;
 
-	@NotBlank(groups = UserValidateGroup.member.class)
 	@Size(max = 40)
-	@Email
+	@Email(groups = UserValidateGroup.member.class)
 	private String email;
 
 	@NotBlank(groups = UserValidateGroup.member.class)
@@ -49,7 +49,7 @@ public class UserSaveRequest {
 	@Size(max = 12)
 	private String registrationNumber;
 
-	@NotBlank(groups = UserValidateGroup.company.class)
+	@URL(groups = UserValidateGroup.company.class)
 	private String homepage;
 
 	public UserDto getUserDto(PasswordEncoder passwordEncoder) {
