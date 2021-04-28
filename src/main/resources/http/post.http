@@ -55,12 +55,12 @@ Authorization: Bearer {{accessToken}}
 #GET http://{{host}}/post?content=톰캣&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/post?page=0&size=3&sort=viewCount,DESC
 #GET http://{{host}}/post?title=rest&page=0&size=3&sort=id,DESC
-GET http://{{host}}/post?page=0&size=3&sort=id,DESC
+GET http://{{host}}/post?page=0&size=3&sort=favoriteCount,DESC&sort=id,DESC&sort=viewCount,DESC&sort=commentCount,DESC
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### TODO 게시글 안의 댓글 페이징 조회
-GET http://{{host}}/post/1/comments?page=0&size=5&sort=id,DESC
+GET http://{{host}}/post/6/comments?page=0&size=5&sort=id,DESC
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 

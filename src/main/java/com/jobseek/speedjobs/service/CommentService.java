@@ -45,13 +45,14 @@ public class CommentService {
 	public void deleteComment(User user, Long commentId) {
 		Comment comment = findOne(commentId);
 		validateUser(comment, user);
+		comment.getPost().decreaseCommentCount();
 		commentRepository.delete(comment);
 	}
 
-	public Page<CommentResponse> findByPage(Long postId, Pageable pageable) {
+	public Page<CommentResponse> findByPage(Long postId, User user, Pageable pageable) {
 		List<Comment> comments = findPost(postId).getComments();
 		return new PageImpl<>(comments.stream()
-			.map(CommentResponse::of)
+			.map(comment -> CommentResponse.of(comment, user))
 			.collect(Collectors.toList()), pageable, comments.size());
 	}
 

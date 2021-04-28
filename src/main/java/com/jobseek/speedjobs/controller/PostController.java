@@ -140,8 +140,8 @@ public class PostController {
 	@ApiOperation(value = "댓글 조회", notes = "댓글을 조회한다.")
 	@GetMapping("/{postId}/comments")
 	public ResponseEntity<Page<CommentResponse>> findCommentsByPage(@PathVariable Long postId,
-		Pageable pageable) {
-		return ResponseEntity.ok().body(commentService.findByPage(postId, pageable));
+		Pageable pageable, @LoginUser User user) {
+		return ResponseEntity.ok().body(commentService.findByPage(postId, user, pageable));
 	}
 
 	@ApiOperation(value = "댓글 좋아요", notes = "댓글 추천")

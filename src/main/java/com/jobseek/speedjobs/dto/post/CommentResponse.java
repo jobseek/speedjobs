@@ -20,10 +20,12 @@ public class CommentResponse {
 	private String author;
 	private String picture;
 	private String content;
+	private int favoriteCount;
+	private boolean favorite;
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
 
-	public static CommentResponse of(Comment comment) {
+	public static CommentResponse of(Comment comment, User user) {
 		User author = comment.getUser();
 		return CommentResponse.builder()
 			.id(comment.getId())
@@ -31,6 +33,8 @@ public class CommentResponse {
 			.author(author.getNickname())
 			.picture(author.getPicture())
 			.content(comment.getContent())
+			.favoriteCount(comment.getFavoriteCount())
+			.favorite(comment.favoriteOf(user))
 			.createdDate(comment.getCreatedDate())
 			.modifiedDate(comment.getModifiedDate())
 			.build();

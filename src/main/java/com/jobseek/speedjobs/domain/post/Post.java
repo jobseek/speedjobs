@@ -68,6 +68,10 @@ public class Post extends BaseTimeEntity {
 
 	private int viewCount;
 
+	private int favoriteCount;
+
+	private int commentCount;
+
 	@Builder
 	public Post(String title, PostDetail postDetail) {
 		this.title = title;
@@ -82,6 +86,14 @@ public class Post extends BaseTimeEntity {
 		this.viewCount += 1;
 	}
 
+	public void increaseCommentCount() {
+		this.commentCount += 1;
+	}
+
+	public void decreaseCommentCount() {
+		this.commentCount -= 1;
+	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -91,10 +103,6 @@ public class Post extends BaseTimeEntity {
 		addTags(tags);
 		title = post.getTitle();
 		postDetail = post.getPostDetail();
-	}
-
-	public int getCommentCount() {
-		return comments.size();
 	}
 
 	public void addTags(List<Tag> tags) {
@@ -115,6 +123,7 @@ public class Post extends BaseTimeEntity {
 		}
 		favorites.add(user);
 		user.getPostFavorites().add(this);
+		favoriteCount += 1;
 	}
 
 	public void removeFavorite(User user) {
@@ -123,13 +132,10 @@ public class Post extends BaseTimeEntity {
 		}
 		favorites.remove(user);
 		user.getPostFavorites().remove(this);
+		favoriteCount -= 1;
 	}
 
 	public boolean favoriteOf(User user) {
 		return favorites.contains(user);
-	}
-
-	public int getFavoriteCount() {
-		return favorites.size();
 	}
 }
