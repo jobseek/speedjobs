@@ -12,6 +12,7 @@ import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
+import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.utils.MailUtil;
@@ -37,7 +38,7 @@ public class UserService {
 	private final RedisUtil redisUtil;
 	private final MailUtil mailUtil;
 
-	public User findById(Long userId) {
+	public User findOne(Long userId) {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다. id=" + userId));
 	}
@@ -45,7 +46,6 @@ public class UserService {
 	public String sendEmail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
-		System.out.println("UUIDkey = " + key);
 		redisUtil.set(key, request, 30 * 60 * 1000);
 		mailUtil.sendEmail(request.getEmail(), key);
 		return key;
@@ -57,8 +57,8 @@ public class UserService {
 			.orElseThrow(() -> new NotExistException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
 		UserDto userDto = request.getUserDto(passwordEncoder);
+		userDto.setNickname(request.getName());
 		if (userDto.getRole() == Role.ROLE_MEMBER) {
-			userDto.setNickname(request.getName());
 			Member member = new Member(userDto);
 			return memberRepository.save(member).getId();
 		} else if (userDto.getRole() == Role.ROLE_COMPANY) {
@@ -105,7 +105,7 @@ public class UserService {
 		}
 	}
 
-	public MemberInfoResponse getMemberInfo(Long userId, User user) {
+	public MemberInfoResponse findMemberInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_MEMBER) {
 			throw new IllegalArgumentException("개인회원이 아닙니다.");
 		} else if (!userId.equals(user.getId())) {
@@ -116,7 +116,7 @@ public class UserService {
 		return MemberInfoResponse.of(member);
 	}
 
-	public CompanyInfoResponse getCompanyInfo(Long userId, User user) {
+	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
 		if (user.getRole() != Role.ROLE_COMPANY) {
 			throw new IllegalArgumentException("기업회원이 아닙니다.");
 		} else if (!userId.equals(user.getId())) {
@@ -128,7 +128,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void update(Long userId, MemberUpdateRequest request) {
+	public void updateMemberInfo(Long userId, MemberUpdateRequest request) {
 		memberRepository.findById(userId)
 			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(),
 					request.getPicture(), request.getContact(), request.getBirth(),
@@ -137,9 +137,17 @@ public class UserService {
 	}
 
 	@Transactional
-	public void delete(Long userId) {
-		User user = findById(userId);
-		userRepository.delete(user);
+	public void updateCompanyInfo(Long userId, CompanyUpdateRequest request) {
+		companyRepository.findById(userId)
+			.map(company -> company.updateCompanyInfo(request.getName(), request.getNickname(),
+				request.getPicture(), request.getContact(), request.getCompanyName(),
+				request.getScale(), request.toCompanyDetail()))
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 	}
 
+	@Transactional
+	public void delete(Long userId) {
+		User user = findOne(userId);
+		userRepository.delete(user);
+	}
 }

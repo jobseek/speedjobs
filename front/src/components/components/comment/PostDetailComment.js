@@ -22,6 +22,9 @@ export default function PostDetailComment(props) {
   const mapComment = dummyComment.map((comment) => (
     <Comment
       key={comment.id}
+      postId={props.id}
+      commentId={comment.id}
+      authorId={comment.authorId}
       writer={comment.author}
       content={comment.content}
       date={`${comment.createdDate[0]}/${comment.createdDate[1]}/${comment.createdDate[2]}`}
@@ -31,7 +34,7 @@ export default function PostDetailComment(props) {
   ));
 
   // 새댓글 내보내기
-  const { comment, user } = useSelector((state) => state);
+  const { comment, post, user } = useSelector((state) => state);
   const dispatch = useDispatch();
   const addComment = (newCom) => {
     dispatch({
@@ -51,11 +54,13 @@ export default function PostDetailComment(props) {
 
   // 댓글 정보 불러오기
   useEffect(() => {
-    dispatch({
-      type: COMMENT_GET_REQUEST,
-      data: props.id,
-    });
-  }, [dispatch, props.id]);
+    if (post.postGetDone) {
+      dispatch({
+        type: COMMENT_GET_REQUEST,
+        data: props.id,
+      });
+    }
+  }, [dispatch, props.id, post.postGetDone]);
 
   useEffect(() => {
     if (comment.commentGetDone) {

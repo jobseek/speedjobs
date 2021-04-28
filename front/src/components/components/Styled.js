@@ -120,6 +120,19 @@ const StyledButtonInside = styled.div`
         background-color: white;
       }
     `}
+
+  ${(props) =>
+    props.red &&
+    css`
+      color: white;
+      background-color: #e14040;
+      border: 1px solid #e14040;
+
+      &:hover {
+        color: white;
+        background-color: #ff5454;
+      }
+    `}
   
   ${(props) =>
     props.mid &&
@@ -221,6 +234,7 @@ export const StyledButton = ({
   last,
   white,
   grey,
+  red,
   mid,
   wide,
   sm,
@@ -242,6 +256,7 @@ export const StyledButton = ({
     style={style}
     onClick={onClick}
     grey={grey}
+    red={red}
   >
     {children}
   </StyledButtonInside>
@@ -261,6 +276,7 @@ const TagBodyInside = styled.div`
       background-color: #7c7c7c;
       color: white;
     `}
+
   ${(props) =>
     props.tagType &&
     css`

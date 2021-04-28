@@ -87,7 +87,7 @@ export default function PostAdd() {
                 onChange={(e) => onChangHandler(e)}
                 name={'title'}
                 placeholder={'제목을 입력해주세요'}
-                maxLength="35"
+                maxLength="20"
               />
             </div>
             <div

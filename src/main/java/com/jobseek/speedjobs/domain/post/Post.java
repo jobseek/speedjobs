@@ -8,8 +8,6 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.tag.PostTag;
-import com.jobseek.speedjobs.domain.tag.PostTags;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.user.User;
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,14 +35,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
 
-	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "post", fetch = LAZY, cascade = ALL, orphanRemoval = true)
 	private final List<Comment> comments = new ArrayList<>();
 
-	@Embedded
-	private final PostTags postTags = PostTags.empty();
+	@ManyToMany
+	@JoinTable(name = "post_tags",
+		joinColumns = @JoinColumn(name = "post_id"),
+		inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private final List<Tag> tags = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "postFavorites")
 	private final List<User> favorites = new ArrayList<>();
@@ -83,14 +87,26 @@ public class Post extends BaseTimeEntity {
 	}
 
 	public void update(Post post, List<Tag> tags) {
-		postTags.clear();
-		tags.forEach(tag -> PostTag.createPostTag(this, tag));
+		removeTags();
+		addTags(tags);
 		title = post.getTitle();
 		postDetail = post.getPostDetail();
 	}
 
 	public int getCommentCount() {
 		return comments.size();
+	}
+
+	public void addTags(List<Tag> tags) {
+		for (Tag tag : tags) {
+			this.tags.add(tag);
+			tag.getPosts().add(this);
+		}
+	}
+
+	public void removeTags() {
+		tags.forEach(tag -> tag.getPosts().remove(this));
+		tags.clear();
 	}
 
 	public void addFavorite(User user) {

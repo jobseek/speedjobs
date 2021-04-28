@@ -18,14 +18,16 @@ export default function ProfileDetails() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [item, setItem] = useState({
+    companyName: '',
     name: '',
     nickname: '',
-    password: '',
-    gender: '',
+    registrationNumber: '',
     contact: '',
-    bio: '',
     picture: '',
-    birth: '',
+    description: '',
+    scale: '',
+    homepage: '',
+    address: '',
   });
 
   useEffect(() => {
@@ -53,53 +55,76 @@ export default function ProfileDetails() {
       <ProfileImg>
         <MyImage src={item.picture} alt="profile" />
       </ProfileImg>
-      <ProfileInputs name={'이름'} />
+      <ProfileInputs name={'기업이름'} />
+      <StyledInputText
+        name={'companyName'}
+        type="text"
+        value={item.companyName || ''}
+        disabled
+      />
+      <ProfileInputs name={'담당자 이름'} />
       <StyledInputText
         name={'name'}
         type="text"
         value={item.name || ''}
         disabled
       />
-      <ProfileInputs name={'닉네임'} />
+
+      <ProfileInputs name={'담당자 닉네임'} />
       <StyledInputText
         name={'nickname'}
         type="text"
-        value={item.nickname || ''}
+        value={item.name || ''}
         disabled
       />
-      <ProfileInputs name={'이메일'} />
+
+      <ProfileInputs name={'담당자 연락처'} />
+      <StyledInputText
+        name={'contact'}
+        type="text"
+        value={item.contact || ''}
+        disabled
+      />
+
+      <ProfileInputs name={'담당자 이메일'} />
       <StyledInputText
         name={'email'}
         type="text"
         value={item.email || ''}
         disabled
       />
-      <ProfileInputs name={'생년월일'} />
+      <ProfileInputs name={'대표 홈페이지'} />
       <StyledInputText
-        name={'birth'}
+        name={'homepage'}
         type="text"
-        value={item.birth || ''}
+        value={item.homepage || ''}
         disabled
       />
-      <ProfileInputs name={'성별'} />
+      <ProfileInputs name={'사업자 등록번호'} />
       <StyledInputText
-        name={'gender'}
+        name={'registrationNumber'}
         type="text"
-        value={item.gender || ''}
+        value={item.registrationNumber || ''}
         disabled
       />
-      <ProfileInputs name={'연락처'} />
+      <ProfileInputs name={'회사 규모'} />
       <StyledInputText
-        name={'contact'}
-        type="text"
-        maxLength="13"
-        value={item.contact || ''}
+        name={'scale'}
+        type="number"
+        value={item.scale || ''}
         disabled
       />
-      <ProfileInputs name={'한 줄 소개'} />
+      <ProfileInputs name={'회사 주소'} />
+      <StyledInputText
+        name={'address'}
+        type="number"
+        value={item.address || ''}
+        disabled
+      />
+      <ProfileInputs name={'회사 소개'} />
       <StyledTextarea
-        name={'bio'}
-        value={item.bio || ''}
+        name={'description'}
+        value={item.description || ''}
         cols="96"
         rows="3"
         disabled

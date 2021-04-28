@@ -8,7 +8,6 @@ import com.jobseek.speedjobs.domain.recruit.Status;
 import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.tag.TagMap;
-import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class RecruitResponse {
 			.experience(recruit.getRecruitDetail().getExperience())
 			.position(recruit.getRecruitDetail().getPosition())
 			.content(recruit.getRecruitDetail().getContent())
-			.tags(TagMap.toMap(recruit.getRecruitTags().getTags()))
+			.tags(TagMap.toMap(recruit.getTags()))
 			.viewCount(recruit.getViewCount())
 			.favoriteCount(recruit.getFavoriteCount())
 			.favorite(recruit.favoriteOf(user))

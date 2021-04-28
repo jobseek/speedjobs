@@ -116,6 +116,7 @@ export default function Header(props) {
       dispatch({
         type: LOG_OUT_DONE,
       });
+      remove('REFRESH_TOKEN');
       history.push('/');
     } else if (state.post.postAddDone) {
       addPop({ type: 'green', id: v4(), text: '게시글이 등록되었습니다' });

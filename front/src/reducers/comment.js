@@ -15,6 +15,11 @@ export const initialState = {
   commentDeleteDone: false,
   commentDeleteData: null,
   commentDeleteError: null,
+
+  commentModifyLoading: false,
+  commentModifyDone: false,
+  commentModifyData: null,
+  commentModifyError: null,
 };
 
 export const COMMENT_ADD_REQUEST = 'COMMENT_ADD_REQUEST';
@@ -30,6 +35,10 @@ export const COMMENT_GET_DONE = 'COMMENT_GET_DONE';
 export const COMMENT_DELETE_REQUEST = 'COMMENT_DELETE_REQUEST';
 export const COMMENT_DELETE_SUCCESS = 'COMMENT_DELETE_SUCCESS';
 export const COMMENT_DELETE_FAIL = 'COMMENT_DELETE_FAIL';
+
+export const COMMENT_MODIFY_REQUEST = 'COMMENT_MODIFY_REQUEST';
+export const COMMENT_MODIFY_SUCCESS = 'COMMENT_MODIFY_SUCCESS';
+export const COMMENT_MODIFY_FAIL = 'COMMENT_MODIFY_FAIL';
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -73,6 +82,8 @@ const reducer = (state = initialState, action) =>
         draft.commentGetData = null;
         draft.commentDeleteDone = false;
         draft.commentDeleteData = null;
+        draft.commentModifyDone = false;
+        draft.commentModifyData = null;
         break;
 
       case COMMENT_DELETE_REQUEST:
@@ -89,6 +100,22 @@ const reducer = (state = initialState, action) =>
       case COMMENT_DELETE_FAIL:
         draft.commentDeleteLoading = false;
         draft.commentDeleteError = action.error;
+        break;
+
+      case COMMENT_MODIFY_REQUEST:
+        draft.commentModifyLoading = true;
+        draft.commentModifyDone = false;
+        draft.commentModifyData = null;
+        draft.commentModifyError = null;
+        break;
+      case COMMENT_MODIFY_SUCCESS:
+        draft.commentModifyLoading = false;
+        draft.commentModifyDone = true;
+        draft.commentModifyData = action.data;
+        break;
+      case COMMENT_MODIFY_FAIL:
+        draft.commentModifyLoading = false;
+        draft.commentModifyError = action.error;
         break;
 
       case COMMENT_ERROR_RESOLVED:

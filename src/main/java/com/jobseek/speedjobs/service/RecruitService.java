@@ -7,7 +7,6 @@ import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
-import com.jobseek.speedjobs.domain.tag.RecruitTag;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
@@ -40,8 +39,7 @@ public class RecruitService {
 		Company company = companyRepository.findById(user.getId())
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업회원입니다."));
 		recruit.setCompany(company);
-		List<Tag> tags = getTagsById(recruitRequest.getTagIds());
-		createRecruitTags(recruit, tags);
+		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		return recruitRepository.save(recruit).getId();
 	}
 
@@ -51,7 +49,7 @@ public class RecruitService {
 		if (!recruit.getCompany().getId().equals(user.getId())) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
-		List<Tag> tags = getTagsById(recruitRequest.getTagIds());
+		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.update(recruitRequest.toEntity(), tags);
 	}
 
@@ -101,11 +99,7 @@ public class RecruitService {
 			.collect(Collectors.toList()), pageable, recruits.size());
 	}
 
-	private void createRecruitTags(Recruit recruit, List<Tag> tags) {
-		tags.forEach(tag -> RecruitTag.createRecruitTag(recruit, tag));
-	}
-
-	private List<Tag> getTagsById(List<Long> tagIds) {
+	private List<Tag> findTagsById(List<Long> tagIds) {
 		return tagIds.stream()
 			.map(tagId -> tagRepository.findById(tagId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))

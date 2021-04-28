@@ -173,14 +173,6 @@ values  (1, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '안녕하세요.
 -- insert into posts (created_date, modified_date, comment_count, like_count, content, title, user_id, view_count) values ('2020-01-03 11:13:00', '2020-01-20 11:15:00', 0, 0, '현재 톰캣으로 90 포트로 돌고 있는 서비스가 있는데요~ 이번에 ssl로 변경 하게 되었습니다.\n 그래서 server.xml의 <Connector port> 부분에서  redirectPort="443" 으로 해줬는데요. 기준의 윈도우 방화벽 인바운드가 90 포트로 되어있는데 이거에 443포트를 추가 해줘야 하는건가요?\n 아니면 인바운드에  90 포트는 지우고 443 포트만 추가 해줘야 하는건가요?','초보개발자 ssl 질문이 있습니다.', 13, 3);
 -- insert into posts (created_date, modified_date, comment_count, like_count, content, title, user_id, view_count) values ('2020-01-03 11:13:00', '2020-01-20 11:15:00', 0, 0, '자바 정규식에 대해 알고싶어요.', '자바 정규식', 14, 3);
 
--- -- POST_TAGS
-
-insert into post_tags (post_tag_id, created_date, modified_date, post_id, tag_id)
-values  (2, '2021-04-22 11:13:00', '2021-04-22 11:13:00', 1, 1),
-(3, '2021-04-22 11:13:00', '2021-04-22 11:13:00', 1, 2),
-(4, '2021-04-22 11:13:00', '2021-04-22 11:13:00', 2, 5),
-(5, '2021-04-22 11:13:00', '2021-04-22 11:13:00', 2, 8);
-
 -- -- COMMENT
 INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (1, '2020-04-22 15:01:40', '2020-04-22 15:01:40', '언어랑 DB랑은 연동여부는 관련 없습니다. (아주 없는건 아니지만요...)
  해당 언어에서 DB와 연결할 수 있는 Driver만 제공되면 어느 언어든 연동 가능합니다.

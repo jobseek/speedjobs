@@ -10,8 +10,12 @@ import {
   COMMENT_GET_FAIL,
   COMMENT_GET_REQUEST,
   COMMENT_GET_SUCCESS,
+  COMMENT_MODIFY_FAIL,
+  COMMENT_MODIFY_REQUEST,
+  COMMENT_MODIFY_SUCCESS,
 } from '../reducers/comment';
 
+// 댓글 추가
 function* addComment(action) {
   try {
     const result = yield call(addCommentAPI, action.data);
@@ -29,7 +33,7 @@ function* addComment(action) {
 
 function addCommentAPI(data) {
   const res = axios
-    .post(`/post/${data.id}`, {
+    .post(`/post/${data.id}/comment`, {
       content: data.content,
     })
     .then((response) => response)
@@ -37,6 +41,7 @@ function addCommentAPI(data) {
   return res;
 }
 
+// 댓글 목록
 function* getComment(action) {
   try {
     const result = yield call(getCommentAPI, action.data);
@@ -53,9 +58,10 @@ function* getComment(action) {
 }
 
 function getCommentAPI(data) {
-  return axios.get(`/post/${data}/paging?size=1&page=99&sort=id,DESC`);
+  return axios.get(`/post/${data}/comments`);
 }
 
+// 댓글 삭제
 function* deleteComment(action) {
   try {
     const result = yield call(deleteCommentAPI, action.data);
@@ -73,7 +79,32 @@ function* deleteComment(action) {
 
 function deleteCommentAPI(data) {
   const { commentId, postId } = data;
-  return axios.delete(`/post/${postId}/${commentId}`);
+  return axios.delete(`/post/${postId}/comment/${commentId}`);
+}
+
+function* modifyComment(action) {
+  try {
+    console.log('action=', action.data);
+    const result = yield call(modifyCommentAPI, action.data);
+    yield put({
+      type: COMMENT_MODIFY_SUCCESS,
+      data: result,
+    });
+  } catch (error) {
+    yield put({
+      type: COMMENT_MODIFY_FAIL,
+      data: '에러' ?? error.response.data,
+    });
+  }
+}
+
+function modifyCommentAPI(data) {
+  const { post, comment } = data;
+  return axios.put(`/post/${post}/comment/${comment}`, { content: data.diff });
+}
+
+function* watchCommentModify() {
+  yield takeLatest(COMMENT_MODIFY_REQUEST, modifyComment);
 }
 
 function* watchCommentDelete() {
@@ -93,5 +124,6 @@ export default function* commentSaga() {
     fork(watchCommentAdd),
     fork(watchCommentGet),
     fork(watchCommentDelete),
+    fork(watchCommentModify),
   ]);
 }

@@ -4,11 +4,14 @@ import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.user.User;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentResponse {
 
@@ -19,18 +22,6 @@ public class CommentResponse {
 	private String content;
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
-
-	@Builder
-	public CommentResponse(Long id, Long authorId, String author, String picture,
-		String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-		this.id = id;
-		this.authorId = authorId;
-		this.author = author;
-		this.picture = picture;
-		this.content = content;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
-	}
 
 	public static CommentResponse of(Comment comment) {
 		User author = comment.getUser();

@@ -20,13 +20,12 @@ import lombok.Setter;
 @AllArgsConstructor(access = PRIVATE)
 public class CompanyDetail {
 
-	@Column(unique = true, length = 60)
+	@Column(unique = true, length = 12)
 	private String registrationNumber;
 
 	@Lob
 	private String description;
 
-	@Column(length = 60)
 	private String homepage;
 
 	public static CompanyDetail from(String registrationNumber, String description,

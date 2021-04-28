@@ -7,6 +7,7 @@ import com.jobseek.speedjobs.dto.user.UserInfoResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.UserValidateGroup;
 import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
+import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.service.UserService;
@@ -64,7 +65,7 @@ public class UserController {
 
 	@ApiOperation(value = "회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다.")
 	@GetMapping("/me")
-	public ResponseEntity<UserInfoResponse> getLoginUserInfo(@LoginUser User user) {
+	public ResponseEntity<UserInfoResponse> findLoginUserInfo(@LoginUser User user) {
 		return ResponseEntity.ok(UserInfoResponse.of(user));
 	}
 
@@ -79,24 +80,33 @@ public class UserController {
 
 	@ApiOperation(value = "개인회원 상세정보 조회", notes = "개인회원의 상세정보를 조회한다.")
 	@GetMapping("/member/{userId}")
-	public ResponseEntity<MemberInfoResponse> getMemberDetail(@PathVariable Long userId,
+	public ResponseEntity<MemberInfoResponse> findMemberDetail(@PathVariable Long userId,
 		@LoginUser User user) {
-		return ResponseEntity.ok(userService.getMemberInfo(userId, user));
+		return ResponseEntity.ok(userService.findMemberInfo(userId, user));
 	}
 
 	@ApiOperation(value = "기업회원 상세정보 조회", notes = "기업회원의 상세정보를 조회한다.")
 	@GetMapping("/company/{userId}")
-	public ResponseEntity<CompanyInfoResponse> getCompanyDetail(@PathVariable Long userId,
+	public ResponseEntity<CompanyInfoResponse> findCompanyDetail(@PathVariable Long userId,
 		@LoginUser User user) {
-		return ResponseEntity.ok(userService.getCompanyInfo(userId, user));
+		return ResponseEntity.ok(userService.findCompanyInfo(userId, user));
 	}
 
 	@ApiOperation(value = "개인회원 정보 수정", notes = "자신의 정보를 수정한다.")
 	@PatchMapping("/member/{userId}")
 	@PreAuthorize("hasRole('MEMBER')")
-	public ResponseEntity<Void> updateInfo(@PathVariable Long userId,
+	public ResponseEntity<Void> updateMemberInfo(@PathVariable Long userId,
 		@RequestBody MemberUpdateRequest memberUpdateRequest) {
-		userService.update(userId, memberUpdateRequest);
+		userService.updateMemberInfo(userId, memberUpdateRequest);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "기업회원 정보 수정", notes = "자신의 정보를 수정한다.")
+	@PatchMapping("/company/{userId}")
+	@PreAuthorize("hasRole('COMPANY')")
+	public ResponseEntity<Void> updateCompanyInfo(@PathVariable Long userId,
+		@RequestBody CompanyUpdateRequest companyUpdateRequest) {
+		userService.updateCompanyInfo(userId, companyUpdateRequest);
 		return ResponseEntity.noContent().build();
 	}
 

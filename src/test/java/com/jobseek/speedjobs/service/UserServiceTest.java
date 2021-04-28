@@ -22,25 +22,25 @@ class UserServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 
-	private Long Id;
+	private Long userId;
 
 	@BeforeEach
 	void SetUp() {
-		UserSaveRequest user = UserSaveRequest.builder().name("테스트").email("test@test.com")
-			.password("testPassword").role(Role.ROLE_MEMBER).build();
+		UserSaveRequest user = UserSaveRequest.builder().name("테스터").email("test@test.com")
+			.password("testerA123").role(Role.ROLE_MEMBER).build();
 		String key = userService.sendEmail(user);
-		Id = userService.saveCustomUser(key);
+		userId = userService.saveCustomUser(key);
 	}
 
 	@AfterEach
 	void After() {
-		userService.delete(Id);
+		userService.delete(userId);
 	}
 
 	@Test
 	@DisplayName("아이디로 찾기")
 	void findByIdTest() {
-		User user = userService.findById(Id);
+		User user = userService.findOne(userId);
 		Assertions.assertThat(user.getName()).isEqualTo("테스트");
 	}
 
@@ -60,7 +60,7 @@ class UserServiceTest {
 
 		Assertions.assertThatThrownBy(() -> {
 			String key = userService.sendEmail(user);
-			Id = userService.saveCustomUser(key);
+			userId = userService.saveCustomUser(key);
 		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -72,7 +72,7 @@ class UserServiceTest {
 
 		Assertions.assertThatThrownBy(() -> {
 			String key = userService.sendEmail(user);
-			Id = userService.saveCustomUser(key);
+			userId = userService.saveCustomUser(key);
 		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -82,7 +82,7 @@ class UserServiceTest {
 		//id를 세팅할수없어서 테스트불가
 		User user = User.builder().name("테스트").password("testPassword").email("test@test.com")
 			.role(Role.ROLE_MEMBER).build();
-		Assertions.assertThat(userService.getMember(Id, user).getName()).isEqualTo("테스트");
+		Assertions.assertThat(userService.getMember(userId, user).getName()).isEqualTo("테스트");
 	}
 
 	@Test
@@ -93,7 +93,7 @@ class UserServiceTest {
 		User user = User.builder().name("테스트").password("testPassword").email("test@test.com")
 			.role(Role.ROLE_MEMBER).build();
 		Assertions.assertThatThrownBy(() -> {
-			userService.getCompany(Id, user);
+			userService.getCompany(userId, user);
 		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -105,8 +105,8 @@ class UserServiceTest {
 			.role(Role.ROLE_MEMBER).build();
 		MemberUpdateRequest request = new MemberUpdateRequest();
 		request.setNickname("테스트닉네임");
-		userService.update(Id, request);
-		Assertions.assertThat(userService.getMember(Id, user).getNickname()).isEqualTo("테스트닉네임");
+		userService.updateMemberInfo(userId, request);
+		Assertions.assertThat(userService.getMember(userId, user).getNickname()).isEqualTo("테스트닉네임");
 	}
 }
 

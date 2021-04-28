@@ -21,7 +21,7 @@ import {
 function getPostListApi(action) {
   const { size, page } = action.data;
   const get = axios
-    .get(`/post/paging/?size=${size}&page=${page}&sort=id,DESC`)
+    .get(`/post/?size=${size}&page=${page}&sort=id,DESC`)
     .then((res) => res)
     .catch((err) => {
       throw err;

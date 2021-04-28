@@ -31,6 +31,21 @@ public class PostListResponse {
 	private LocalDateTime modifiedDate;
 	private Map<Type, List<TagMap>> tags;
 
+	public PostListResponse(Post post, User user) {
+		User author = post.getUser();
+		this.id = post.getId();
+		this.authorId = author.getId();
+		this.title = post.getTitle();
+		this.author = author.getNickname();
+		this.commentCount = post.getCommentCount();
+		this.viewCount = post.getViewCount();
+		this.favoriteCount = post.getFavoriteCount();
+		this.favorite = post.favoriteOf(user);
+		this.createdDate = post.getCreatedDate();
+		this.modifiedDate = post.getModifiedDate();
+		this.tags = TagMap.toMap(post.getTags());
+	}
+
 	public static PostListResponse of(Post post, User user) {
 		User author = post.getUser();
 		return PostListResponse.builder()
@@ -44,7 +59,7 @@ public class PostListResponse {
 			.favorite(post.favoriteOf(user))
 			.createdDate(post.getCreatedDate())
 			.modifiedDate(post.getModifiedDate())
-			.tags(TagMap.toMap(post.getPostTags().getTags()))
+			.tags(TagMap.toMap(post.getTags()))
 			.build();
 	}
 }

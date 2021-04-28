@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ProfileDiv,
@@ -9,14 +8,16 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import ProfileDetails from '../components/Profile/ProfileDetails';
-import ProfileDetails2 from '../components/Profile/ProfileDetails2';
-import { PROFILE_GET_REQUEST } from '../../reducers/profile';
+import {
+  PROFILE_DELETE_REQUEST,
+  PROFILE_GET_REQUEST,
+} from '../../reducers/profile';
 
 export default function Profile() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [role, setRole] = useState('');
+  const profile = useSelector((state) => state.profile);
 
   useEffect(() => {
     if (user.me === null) return;
@@ -27,34 +28,33 @@ export default function Profile() {
     setRole(user.me.role);
   }, [user.me, dispatch]);
 
+  useEffect(() => {
+    if (profile.profileDeleteDone) {
+      window.location.replace('/');
+    }
+  }, [profile]);
+
+  const deleteHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch({
+        type: PROFILE_DELETE_REQUEST,
+        data: user.me,
+      });
+    },
+    [dispatch, user.me]
+  );
+
   return (
     <form>
       <div className="container text-left">
         <StyledHeaderDiv padding style={{ position: 'relative' }}>
           <StyledHeaderMargin className={'container row justify-content-end'}>
             <div
-              className={'col-md-9 col-8'}
+              className={'col-md-12 col-8'}
               style={{ marginTop: '10px', paddingTop: '5px' }}
             >
-              <h5>계정 관리</h5>
-            </div>
-            <div
-              className={'col-md-3 col-4 text-right'}
-              style={{ paddingRight: '0' }}
-            >
-              {role === 'ROLE_MEMBER' ? (
-                <Link to="/profile/modify">
-                  <StyledButton style={{ marginRight: '0' }} wide>
-                    개인정보 수정
-                  </StyledButton>
-                </Link>
-              ) : (
-                <Link to="/profile/modify2">
-                  <StyledButton style={{ marginRight: '0' }} wide>
-                    기업정보 수정
-                  </StyledButton>
-                </Link>
-              )}
+              <h5>회원 탈퇴</h5>
             </div>
           </StyledHeaderMargin>
         </StyledHeaderDiv>
@@ -70,11 +70,24 @@ export default function Profile() {
             {console.log('잉????: ', role)}
 
             <ProfileDiv className={'col-12 col-lg-10'}>
-              {role === 'ROLE_MEMBER' ? (
-                <ProfileDetails />
-              ) : (
-                <ProfileDetails2 />
-              )}
+              <div
+                style={{
+                  textAlign: 'center',
+                  borderRadius: '10px',
+                  marginTop: '100px',
+                }}
+              >
+                <h2>경고: 정말로 탈퇴 하시겠습니까?</h2>
+                <p>회원탈퇴 버튼을 클릭하면 모든 정보가 지워집니다.</p>
+                <StyledButton
+                  red
+                  style={{ marginRight: '0' }}
+                  wide
+                  onClick={(e) => deleteHandler(e)}
+                >
+                  회원탈퇴
+                </StyledButton>
+              </div>
             </ProfileDiv>
           </div>
         </div>

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import 'autoheight-textarea';
 import { ThumbUp } from '@styled-icons/material-rounded/ThumbUp';
 import { StyledButton } from '../Styled';
+import {
+  COMMENT_GET_REQUEST,
+  COMMENT_MODIFY_REQUEST,
+} from '../../../reducers/comment';
 
 const CommentForm = styled.form`
   padding-top: 1rem;
@@ -49,7 +53,7 @@ const PostComment = styled.div`
   }
 `;
 
-const A1 = styled.a`
+const A1 = styled.span`
   color: #f2d411;
   text-decoration: none;
 `;
@@ -61,7 +65,12 @@ const P1 = styled.textarea`
   width: 100%;
   outline: none;
   resize: none;
-  border: none;
+  border-color: #eee;
+  border-radius: 5px;
+
+  &:read-only {
+    border: none;
+  }
 `;
 
 const MetaP = styled.div`
@@ -90,6 +99,7 @@ const CmtInput = styled.textarea`
   margin-top: 10px;
   padding: 8px;
   border-radius: 5px;
+
   &:focus {
     outline: none;
     border-color: #f5df4d;
@@ -101,6 +111,7 @@ const ThumbUpSt = styled(ThumbUp)`
   height: 16px;
   margin-right: 8px;
   color: #aaaaaa;
+
   &:hover {
     color: #f2d411;
   }
@@ -115,8 +126,19 @@ const TextLength = styled.input`
   user-select: none;
 `;
 
-export default function Comment({ writer, content, date, img, onClick }) {
+export default function Comment({
+  postId,
+  commentId,
+  authorId,
+  writer,
+  content,
+  date,
+  img,
+  onClick,
+}) {
   const user = useSelector((state) => state.user);
+
+  // 댓글 작성자 기본이미지 설정
   const [image, setImage] = useState(
     'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   );
@@ -125,6 +147,39 @@ export default function Comment({ writer, content, date, img, onClick }) {
       setImage(img);
     }
   }, [img]);
+
+  // 댓글 수정하기
+  const dispatch = useDispatch();
+  const comment = useSelector((s) => s.comment);
+  const [modify, setModify] = useState(true);
+  const [form, setForm] = useState({
+    post: postId,
+    comment: commentId,
+    diff: content,
+  });
+  const onChangeHandler = (e) => {
+    setForm((p) => ({ ...p, diff: e.target.value }));
+  };
+  const modifyHandler = (e) => {
+    console.log('form= ', form);
+    if (modify) {
+      setModify(false);
+    } else {
+      dispatch({
+        type: COMMENT_MODIFY_REQUEST,
+        data: form,
+      });
+    }
+  };
+  useEffect(() => {
+    if (comment.commentModifyDone) {
+      setModify(true);
+      dispatch({
+        type: COMMENT_GET_REQUEST,
+        data: postId,
+      });
+    }
+  }, [comment.commentModifyDone, dispatch, postId]);
 
   return (
     <ClearFix>
@@ -137,17 +192,25 @@ export default function Comment({ writer, content, date, img, onClick }) {
           <ThumbUpSt />
         </MetaP>
         <autoheight-textarea>
-          <P1 value={content} readOnly />
+          <P1
+            value={form.diff}
+            onChange={(e) => onChangeHandler(e)}
+            readOnly={modify}
+          />
         </autoheight-textarea>
-        <Meta>
-          {user.me !== null ? (
+
+        {user.me.id === authorId ? (
+          <Meta>
+            <StyledButton white onClick={(e) => modifyHandler(e)}>
+              수정
+            </StyledButton>
             <StyledButton white onClick={onClick}>
               삭제
             </StyledButton>
-          ) : (
-            ''
-          )}
-        </Meta>
+          </Meta>
+        ) : (
+          ''
+        )}
       </PostComment>
     </ClearFix>
   );

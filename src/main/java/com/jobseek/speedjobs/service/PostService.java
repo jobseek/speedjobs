@@ -1,31 +1,34 @@
 package com.jobseek.speedjobs.service;
 
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
-
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.post.PostQueryRepository;
 import com.jobseek.speedjobs.domain.post.PostRepository;
-import com.jobseek.speedjobs.domain.tag.PostTag;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
 import com.jobseek.speedjobs.dto.post.PostResponse;
+import com.jobseek.speedjobs.dto.post.PostSearchCondition;
+import com.querydsl.core.QueryFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class PostService {
 
+	private final PostQueryRepository postQueryRepository;
 	private final PostRepository postRepository;
 	private final TagRepository tagRepository;
 
@@ -33,8 +36,8 @@ public class PostService {
 	public Long save(PostRequest postRequest, User user) {
 		Post post = postRequest.toEntity();
 		post.setUser(user);
-		List<Tag> tags = getTagsById(postRequest.getTagIds());
-		createPostTags(post, tags);
+		List<Tag> tags = findTagsById(postRequest.getTagIds());
+		post.addTags(tags);
 		return postRepository.save(post).getId();
 	}
 
@@ -44,7 +47,7 @@ public class PostService {
 		if (post.getUser() != user) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
-		List<Tag> tags = getTagsById(postRequest.getTagIds());
+		List<Tag> tags = findTagsById(postRequest.getTagIds());
 		post.update(postRequest.toEntity(), tags);
 	}
 
@@ -64,14 +67,14 @@ public class PostService {
 		return PostResponse.of(post, user);
 	}
 
-	public Page<PostListResponse> findByPage(Pageable pageable, User user) {
+	public Page<PostListResponse> findByPage(final Pageable pageable, User user) {
 		Page<Post> page = postRepository.findAll(pageable);
 		return new PageImpl<>(page.stream()
 			.map(post -> PostListResponse.of(post, user))
 			.collect(Collectors.toList()), pageable, page.getTotalElements());
 	}
 
-	public List<Tag> getTagsById(List<Long> tagIds) {
+	private List<Tag> findTagsById(List<Long> tagIds) {
 		return tagIds.stream()
 			.map(tagId -> tagRepository.findById(tagId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
@@ -79,9 +82,8 @@ public class PostService {
 	}
 
 	/**
-	 *  찜하기
+	 * 찜하기
 	 */
-
 	@Transactional
 	public void savePostFavorite(Long postId, User user) {
 		Post post = findOne(postId);
@@ -94,9 +96,11 @@ public class PostService {
 		post.removeFavorite(user);
 	}
 
-	public Page<PostListResponse> findPostFavorites(Pageable pageable, User user) {
+	public Page<PostListResponse> findPostFavorites(final Pageable pageable, User user) {
 		List<Post> posts = user.getPostFavorites();
-		return new PageImpl<>(posts.stream()
+		final int start = (int) pageable.getOffset();
+		final int end = Math.min((start + pageable.getPageSize()), posts.size());
+		return new PageImpl<>(posts.subList(start, end).stream()
 			.map(post -> PostListResponse.of(post, user))
 			.collect(Collectors.toList()), pageable, posts.size());
 	}
@@ -106,7 +110,8 @@ public class PostService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 	}
 
-	private void createPostTags(Post post, List<Tag> tags) {
-		tags.forEach(tag -> PostTag.createPostTag(post, tag));
+	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable, User user) {
+		return postQueryRepository.findAll(condition, pageable)
+			.map(post -> new PostListResponse(post, user));
 	}
 }

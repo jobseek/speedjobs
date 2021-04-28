@@ -14,7 +14,7 @@ import {
 function getRecruitListApi(action) {
   const { size, page } = action.data;
   const get = axios
-    .get(`/recruit/paging?size=${size}&page=${page}&sort=id,DESC`)
+    .get(`/recruit?size=${size}&page=${page}&sort=id,DESC`)
     .then((res) => res)
     .catch((err) => {
       throw err;
