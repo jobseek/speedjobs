@@ -45,17 +45,29 @@ function App() {
   useEffect(() => {
     setRefresh('toRefresh', 'toRefresh');
     removeRefresh('toRefresh');
-    const IDS = loginInterceptor(refresh, removeRefresh, interceptorID);
+    const IDS = loginInterceptor(
+      refresh,
+      removeRefresh,
+      interceptorID,
+      user.needLogin
+    );
     setInterceptorID((prev) => {
       prev.request = IDS.request;
       prev.response = IDS.response;
       return prev;
     });
-  }, [refresh, removeRefresh, setRefresh, user.logInDone, interceptorID]);
+  }, [
+    refresh,
+    removeRefresh,
+    setRefresh,
+    user.logInDone,
+    interceptorID,
+    user.needLogin,
+  ]);
   //  유저 상태 유지
   useEffect(() => {
     if (
-      !user.logOutDone &&
+      !user.needLogin &&
       !user.meDone &&
       !user.logInWelcomed &&
       refresh['REFRESH_TOKEN'] !== undefined
@@ -64,7 +76,7 @@ function App() {
         type: ME_REQUEST,
       });
     }
-  }, [dispatch, user.meDone, refresh, user.logOutDone, user.logInWelcomed]);
+  }, [dispatch, user.meDone, refresh, user.needLogin, user.logInWelcomed]);
   // 메타데이터설정 아이폰일경우 화면크기 조정
   useEffect(() => {
     const meta = document.createElement('meta');

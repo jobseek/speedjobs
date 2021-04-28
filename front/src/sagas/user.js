@@ -79,6 +79,10 @@ function logOutAPI() {
 function* logOut() {
   try {
     yield call(logOutAPI);
+    console.log('logout');
+    delete axios.defaults.headers.common.Authorization;
+    delete axios.defaults.headers.Authorization;
+    console.log(axios.defaults.headers);
     yield put({
       type: LOG_OUT_SUCCESS,
     });

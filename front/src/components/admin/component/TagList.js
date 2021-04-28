@@ -45,13 +45,13 @@ const AdminStyledButton = styled.button`
     `}
 `;
 
-const AdminStyledRow = styled.div`
+export const AdminStyledRow = styled.div`
   color: white;
   background-color: gray;
   width: 100%;
 `;
 
-const AdminStyledCol = styled.div`
+export const AdminStyledCol = styled.div`
   width: 100%;
   border-bottom: #e7e7e7 solid 1px;
   ${(props) =>
@@ -190,7 +190,6 @@ export default function TagList(props) {
                 <AdminStyledCol
                   id={tag.id}
                   className={'row m-0'}
-                  style={{ width: '100%', borderBottom: '#e7e7e7 solid 1px' }}
                   onClick={() => onClickHandler(tag)}
                   selected={tag.selected}
                 >

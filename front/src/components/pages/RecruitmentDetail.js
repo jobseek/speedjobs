@@ -39,13 +39,13 @@ export default function RecruitmentDetail(props) {
     }
   };
   useEffect(() => {
-    if (refresh['REFRESH_TOKEN'] === undefined || user.meDone) {
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
       dispatch({
         type: RECRUIT_GET_REQUEST,
         data: id,
       });
     }
-  }, [dispatch, id, user.meDone, refresh]);
+  }, [dispatch, id, user.me, refresh]);
   useEffect(() => {
     if (recruit.recruitGetDone) {
       setContent(recruit.recruit);

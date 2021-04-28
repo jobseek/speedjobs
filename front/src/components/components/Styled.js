@@ -158,7 +158,7 @@ export const StyledHeaderDivInside = styled.div`
   //border-bottom: 1px solid #eee;
   padding: 20px 0 5px 0;
   background-color: white;
-  z-index: 1;
+  z-index: 5;
   margin-bottom: 50px;
   position: sticky;
   top: 60px;

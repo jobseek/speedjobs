@@ -6,7 +6,7 @@ const Maps = styled.div`
   height: 400px;
 `;
 
-function KakaoMap({ position = [37.506502, 127.053617], address }) {
+function KakaoMap({ position = [37.506502, 127.053617], address, location }) {
   useEffect(() => {
     console.log('re');
     const script = document.createElement('script');
@@ -44,12 +44,15 @@ function KakaoMap({ position = [37.506502, 127.053617], address }) {
         const marker = new kakao.maps.Marker({
           position: coords !== undefined ? coords : map.getCenter(),
         });
-        if (coords !== undefined) map.setCenter(coords);
+        if (coords !== undefined) {
+          map.setCenter(coords);
+          location([coords.La, coords.Ma]);
+        }
         marker.setMap(map);
       });
     };
     /* eslint-enable */
-  }, [position, address]);
+  }, [position, address, location]);
   return (
     <>
       <Maps id={'kakaoMap'}></Maps>

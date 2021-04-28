@@ -52,7 +52,7 @@ export default function BannerSetting(props) {
     <>
       <div className={'row'} style={{ height: '100%' }}>
         <div className={'col-6'}>
-          <InfoCard index={0} height={'100%'}>
+          <InfoCard index={1} height={'100%'}>
             <div
               style={{
                 width: '100%',
@@ -80,7 +80,7 @@ export default function BannerSetting(props) {
           </InfoCard>
         </div>
         <div className={'col-6'}>
-          <InfoCard index={1}>
+          <InfoCard index={2}>
             <Header>태그관리</Header>
             <TagList></TagList>
           </InfoCard>

@@ -64,12 +64,12 @@ export default function PostDetail(props) {
 
   // 게시글 내용 불러오기
   useEffect(() => {
-    if (refresh['REFRESH_TOKEN'] === undefined || user.meDone)
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null)
       dispatch({
         type: POST_GET_REQUEST,
         data: id,
       });
-  }, [dispatch, id, user.meDone, refresh]);
+  }, [dispatch, id, user.me, refresh]);
   useEffect(() => {
     if (post.postGetDone) {
       setContent({
