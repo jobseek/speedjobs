@@ -1,11 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import * as PropTypes from 'prop-types';
-
-import logo512 from '../../components/components/img/logo512.png';
+import styled, { css } from 'styled-components';
 
 const StyledCard = styled.div`
-  height: 170px;
+  height: inherit;
   border-radius: 10px;
   user-select: none;
   position: relative;
@@ -17,6 +14,7 @@ const StyledCard = styled.div`
 
   &:before {
     position: absolute;
+    left: 0;
     content: ' ';
     width: 100%;
     height: 100%;
@@ -41,53 +39,51 @@ const StyledCard = styled.div`
 
 const Image = styled.img`
   width: 45px;
-  height: 45px;
-  top: 20px;
-  left: 20px;
-  position: relative;
-  margin-bottom: 15px;
   border: none;
+  vertical-align: top;
+  margin-right: 10px;
+`;
+
+const Title = styled.div`
+  position: relative;
   z-index: 1;
 `;
 
-const Subtitle = styled.div`
-  right: 20px;
-  font-size: 14px;
+const SubTitle = styled.div`
+  position: relative;
+  text-align: left;
+  font-size: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: justify;
   white-space: nowrap;
-  line-height: 1.2;
+  line-height: 1.5;
+  z-index: 1;
+
+  ${(props) =>
+    props.bold &&
+    css`
+      font-weight: bold;
+    `}
+
+  ${(props) =>
+    props.lighter &&
+    css`
+      font-weight: lighter;
+    `}
 `;
 
 export default function Cards(props) {
   return (
-    <StyledCard className="card text-left" height={props.height}>
-      <Image className="card-img-top" src={logo512} />
-      <div className="card-body" style={{ zIndex: '1' }}>
-        <div className="card-title">{props.title}</div>
-        <Subtitle className="card-subtitle mb-2 text-muted">
-          {props.subTitle}
-        </Subtitle>
-        <Subtitle className="card-subtitle mb-2 text-muted">
-          {props.content}
-        </Subtitle>
-        {/* <div className="card-subtitle mb-2 text-muted">{props.content}</div>*/}
+    <StyledCard>
+      <div style={{ padding: '25px' }}>
+        <Title>
+          <Image src={props.thumbnail} />
+          <div style={{ display: 'inline-block', width: '77%' }}>
+            <SubTitle bold>{props.title}</SubTitle>
+            <SubTitle lighter>{props.content}</SubTitle>
+          </div>
+        </Title>
       </div>
     </StyledCard>
   );
 }
-
-Cards.defaultProps = {
-  title: 'default title',
-  subtitle: 'default subtitle',
-  children: 'default content',
-  height: '0',
-};
-
-Cards.propTyoes = {
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
-  children: PropTypes.string,
-  height: PropTypes.string,
-};
