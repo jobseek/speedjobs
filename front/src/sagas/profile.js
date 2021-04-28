@@ -82,33 +82,22 @@ function* updateProfile(action) {
   }
 }
 
-function deleteProfileApi(data) {
-  console.log('이게 멀까요?========????', data);
-  console.log('=== data.role ===', data.role);
-  if (data.role === 'ROLE_MEMBER') {
-    return axios.delete(`/user/member/${data.id}`);
-  } else {
-    return axios.delete(`/user/company/${data.id}`);
-  }
-
-  // if (data.role === 'ROLE_MEMBER') {
-  //   return axios.delete(`/user/member/${data.id}`);
-  // } else {
-  //   return axios.delete(`/user/company/${data.id}`);
-  // }
+function deleteProfileApi(action) {
+  const { data, me } = action;
+  return axios.delete(`/user/${me.id}`, { data });
 }
 
 function* deleteProfile(action) {
   try {
-    const result = yield call(deleteProfileApi, action.data);
+    const result = yield call(deleteProfileApi, action);
     yield put({
       type: PROFILE_DELETE_SUCCESS,
-      data: result.data,
+      data: result,
     });
   } catch (error) {
     yield put({
       type: PROFILE_DELETE_FAIL,
-      data: '에러' ?? error.response.data,
+      error: error.response.status,
     });
   }
 }
