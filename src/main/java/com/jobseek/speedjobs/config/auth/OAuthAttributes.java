@@ -9,6 +9,7 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ObjectUtils;
 
 @Slf4j
 @Getter
@@ -67,7 +68,7 @@ public class OAuthAttributes {
 
 	private static OAuthAttributes ofGithub(String userNameAttributeName,
 		Map<String, Object> attributes) {
-		String nickname = attributes.get("name") == null ? "login" : "name";
+		String nickname = ObjectUtils.isEmpty(attributes.get("name")) ? "login" : "name";
 		return OAuthAttributes.builder()
 			.oauthId(attributes.get(userNameAttributeName).toString())
 			.nickname((String) attributes.get(nickname))
