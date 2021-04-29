@@ -19,6 +19,11 @@
       "name": "cloud.aws.s3.bucket",
       "type": "java.lang.String",
       "description": "Description for cloud.aws.s3.bucket."
+    },
+    {
+      "name": "front-url",
+      "type": "java.lang.String",
+      "description": "Description for front-url."
     }
   ]
 }

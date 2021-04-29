@@ -4,10 +4,10 @@ import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.dto.auth.TokenRequest;
 import com.jobseek.speedjobs.service.AuthService;
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -17,10 +17,15 @@ import org.springframework.stereotype.Component;
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 	private final AuthService authService;
+	private final String frontUrl;
 
 	@Autowired
-	public OAuth2AuthenticationSuccessHandler(@Lazy AuthService authService) {
+	public OAuth2AuthenticationSuccessHandler(
+		@Lazy AuthService authService,
+		@Value("${front-url}") String frontUrl
+	) {
 		this.authService = authService;
+		this.frontUrl = frontUrl;
 	}
 
 	@Override
@@ -32,6 +37,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 		TokenRequest tokenRequest = TokenRequest.builder().oauthId(oauthId).provider(provider)
 			.build();
 		authService.login(tokenRequest, response);
-		response.sendRedirect("http://localhost:3000/");
+		response.sendRedirect(frontUrl);
 	}
 }

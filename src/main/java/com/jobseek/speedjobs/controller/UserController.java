@@ -14,10 +14,12 @@ import com.jobseek.speedjobs.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserController {
 
+	@Value("${front-url}")
+	String frontUrl;
 	private final UserService userService;
 
 	@ApiOperation(value = "개인회원가입(이메일 인증 전)", notes = "정상적으로 처리되면 인증 이메일이 발송된다.")
@@ -58,9 +62,9 @@ public class UserController {
 	@ApiOperation(value = "회원가입(이메일 인증 후)", notes = "수신 이메일의 링크를 클릭하면 회원가입이 정상적으로 완료된다.")
 	@GetMapping("/signup/confirm/{key}")
 	public void saveCustomUser(@PathVariable String key,
-		HttpServletResponse response) throws IOException {
+		HttpServletRequest request, HttpServletResponse response) throws IOException {
 		userService.saveCustomUser(key);
-		response.sendRedirect("http://localhost:3000");
+		response.sendRedirect(frontUrl);
 	}
 
 	@ApiOperation(value = "회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다.")
