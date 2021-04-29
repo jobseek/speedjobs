@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,32 +28,25 @@ public class PostQueryRepository {
 
 	public Page<Post> findAll(PostSearchCondition condition, Pageable pageable) {
 		List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, post);
-		List<Post> content = queryFactory
-			.selectFrom(post)
+
+		JPAQuery<Post> query = queryFactory
+			.selectDistinct(post)
+			.from(post)
 			.leftJoin(post.tags, tag)
 			.leftJoin(post.user, user)
 			.where(
 				containsTagIds(condition.getTagIds()),
 				containsAuthor(condition.getAuthor()),
-				containTitle(condition.getTitle()),
-				containContent(condition.getContent())
-			)
+				containsTitleOrContent(condition.getTitle(), condition.getContent())
+			);
+
+		List<Post> content = query
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.orderBy(orders.toArray(new OrderSpecifier[0]))
-			.fetch().stream().distinct().collect(Collectors.toList());
+			.fetch();
 
-		JPAQuery<Post> countQuery = queryFactory
-			.selectFrom(post)
-			.leftJoin(post.tags, tag)
-			.leftJoin(post.user, user)
-			.where(
-				containsTagIds(condition.getTagIds()),
-				containsAuthor(condition.getAuthor()),
-				containTitle(condition.getTitle()),
-				containContent(condition.getContent())
-			);
-		return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+		return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
 	}
 
 	private BooleanExpression containsTagIds(List<Long> tagIds) {
@@ -63,11 +57,19 @@ public class PostQueryRepository {
 		return !StringUtils.hasText(author) ? null : post.user.nickname.contains(author);
 	}
 
-	private BooleanExpression containTitle(String title) {
+	private BooleanExpression containsTitle(String title) {
 		return !StringUtils.hasText(title) ? null : post.title.contains(title);
 	}
 
-	private BooleanExpression containContent(String content) {
+	private BooleanExpression containsContent(String content) {
 		return !StringUtils.hasText(content) ? null : post.postDetail.content.contains(content);
 	}
+
+	private BooleanExpression containsTitleOrContent(String title, String content) {
+		if (StringUtils.hasText(title) && StringUtils.hasText(content)) {
+			return Objects.requireNonNull(containsTitle(title)).or(containsContent(content));
+		}
+		return StringUtils.hasText(title) ? containsTitle(title) : containsContent(content);
+	}
+
 }
