@@ -37,6 +37,7 @@ export default function Community(props) {
   );
 
   const loadMore = () => {
+    console.log(page.current);
     dispatch({
       type: POST_LIST_REQUEST,
       data: {

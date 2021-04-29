@@ -99,7 +99,7 @@ export default function Recruitment() {
       tags={[...(pl.tags.POSITION ?? [])]}
       type={'recruit'}
       title={pl.title}
-      writer="아직미구현"
+      writer={pl.companyName}
       date={`${pl.openDate[0]}/${pl.openDate[1]}/${pl.openDate[2]}`}
       fav={pl.favorite}
       key={pl.id}

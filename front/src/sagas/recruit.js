@@ -8,27 +8,36 @@ import {
   RECRUIT_GET_SUCCESS,
   RECRUIT_LIST_FAIL,
   RECRUIT_LIST_REQUEST,
+  RECRUIT_LIST_SEARCHBAR_SUCCESS,
   RECRUIT_LIST_SUCCESS,
 } from '../reducers/recruit';
 
-function getRecruitListApi(action) {
-  const { size, page } = action.data;
-  const get = axios
-    .get(`/recruit?size=${size}&page=${page}&sort=id,DESC`)
-    .then((res) => res)
-    .catch((err) => {
-      throw err;
-    });
-  return get;
+async function getRecruitListApi(action) {
+  // eslint-disable-next-line
+  const { size, page, searchBar, ...search } = action.data;
+  const searchText =
+    (await Object.entries(search)
+      .map((e) => `${e[0]}=${e[1]}`)
+      .join('&')) + (Object.entries(search).length !== 0 ? '&' : '');
+  return axios.get(
+    `/recruit?${searchText}size=${size}&page=${page}&sort=id,DESC`
+  );
 }
 
 function* getRecruitList(action) {
   try {
     const recruitList = yield call(getRecruitListApi, action);
-    yield put({
-      type: RECRUIT_LIST_SUCCESS,
-      data: recruitList.data,
-    });
+    if (action.data.searchBar !== undefined) {
+      yield put({
+        type: RECRUIT_LIST_SEARCHBAR_SUCCESS,
+        data: recruitList.data,
+      });
+    } else {
+      yield put({
+        type: RECRUIT_LIST_SUCCESS,
+        data: recruitList.data,
+      });
+    }
   } catch (error) {
     yield put({
       type: RECRUIT_LIST_FAIL,

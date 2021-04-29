@@ -12,30 +12,37 @@ import {
   POST_GET_SUCCESS,
   POST_LIST_FAIL,
   POST_LIST_REQUEST,
+  POST_LIST_SEARCHBAR_SUCCESS,
   POST_LIST_SUCCESS,
   POST_MODIFY_FAIL,
   POST_MODIFY_REQUEST,
   POST_MODIFY_SUCCESS,
 } from '../reducers/post';
 
-function getPostListApi(action) {
-  const { size, page } = action.data;
-  const get = axios
-    .get(`/post/?size=${size}&page=${page}&sort=id,DESC`)
-    .then((res) => res)
-    .catch((err) => {
-      throw err;
-    });
-  return get;
+async function getPostListApi(action) {
+  // eslint-disable-next-line
+  const { size, page, searchBar, ...search } = action.data;
+  const searchText =
+    (await Object.entries(search)
+      .map((e) => `${e[0]}=${e[1]}`)
+      .join('&')) + (Object.entries(search).length !== 0 ? '&' : '');
+  return axios.get(`/post?${searchText}size=${size}&page=${page}&sort=id,DESC`);
 }
 
 function* getPostList(action) {
   try {
     const postList = yield call(getPostListApi, action);
-    yield put({
-      type: POST_LIST_SUCCESS,
-      data: postList.data,
-    });
+    if (action.data.searchBar !== undefined) {
+      yield put({
+        type: POST_LIST_SEARCHBAR_SUCCESS,
+        data: postList.data,
+      });
+    } else {
+      yield put({
+        type: POST_LIST_SUCCESS,
+        data: postList.data,
+      });
+    }
   } catch (error) {
     yield put({
       type: POST_LIST_FAIL,

@@ -5,6 +5,10 @@ import styled, { css } from 'styled-components';
 import hangul from '../../data/hangul';
 import { SearchInput } from '../Styled';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../../reducers/post';
+import {
+  RECRUIT_LIST_DONE,
+  RECRUIT_LIST_REQUEST,
+} from '../../../reducers/recruit';
 
 const SearchHeader = styled.div`
   position: sticky;
@@ -77,8 +81,9 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
   const [, setHangulString] = useState('');
   const [loading, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
+  const [recruitList, setRecruitList] = useState([]);
   const time = useRef(0);
-  const { post } = useSelector((state) => state);
+  const { post, recruit } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const onChangHandler = useCallback(
@@ -99,11 +104,22 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
             data: {
               size: 20,
               page: 0,
-              content: e.target.value,
+              // content: e.target.value,
+              title: e.target.value,
+              searchBar: true,
               // title: e.target.value,
             },
           });
-        }, 1500);
+          dispatch({
+            type: RECRUIT_LIST_REQUEST,
+            data: {
+              size: 20,
+              page: 0,
+              title: e.target.value,
+              searchBar: true,
+            },
+          });
+        }, 500);
       }
     },
     [dispatch, setLoading, setSearchText, setHangulString]
@@ -112,12 +128,16 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
   useEffect(() => {
     if (searchText !== '') {
       setTyped(true);
-      if (post.postListDone) {
-        console.log('로딩꺼짐');
+      if (post.postListSearchBar && recruit.recruitListSearchBar) {
         setLoading(false);
         setPostList(post.postList.content);
+        console.log(recruit.recruitList);
+        setRecruitList(recruit.recruitList.content);
         dispatch({
           type: POST_LIST_DONE,
+        });
+        dispatch({
+          type: RECRUIT_LIST_DONE,
         });
       }
     } else {
@@ -128,9 +148,10 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
     searchText,
     typed,
     setTyped,
-    post.postListLoading,
-    post.postListDone,
+    post.postListSearchBar,
     post.postList,
+    recruit.recruitListSearchBar,
+    recruit.recruitList,
   ]);
 
   const onClickHandler = ({ author, tags, date, fav, id, target }) => {
@@ -168,6 +189,27 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
     </SearchContent>
   ));
 
+  const mapRecruitList = recruitList.map((rl) => (
+    <SearchContent
+      onClick={() =>
+        onClickHandler({
+          fav: rl.favorite,
+          data: rl.createdDate,
+          tags: [...(rl.tags.POSITION ?? []), ...(rl.tags.SKILL ?? [])],
+          author: rl.companyName,
+          id: rl.id,
+          target: 'recruit',
+        })
+      }
+    >
+      <SearchTitle>{rl.title}</SearchTitle>
+      <SearchContentSubTitle>{rl.companyName}</SearchContentSubTitle>
+      <SearchContentSubTitle>
+        {rl.openDate.slice(0, 3).join('/')}
+      </SearchContentSubTitle>
+    </SearchContent>
+  ));
+
   // 뒷정리
   useEffect(() => {
     return () => {
@@ -187,7 +229,7 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
           '로딩중'
         ) : (
           <>
-            {postList.length === 0 ? (
+            {postList.length === 0 && recruitList.length === 0 ? (
               '검색결과가 없습니다'
             ) : (
               <>
@@ -196,7 +238,8 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
                 {postList.length !== 0 && (
                   <hr style={{ margin: '0', marginTop: '5px' }} />
                 )}
-                <SearchHeader>공고</SearchHeader>
+                {recruitList.length !== 0 && <SearchHeader>공고</SearchHeader>}
+                {mapRecruitList}
               </>
             )}
           </>

@@ -12,6 +12,7 @@ export const initialState = {
 
   postListLoading: false,
   postListDone: false,
+  postListSearchBar: false,
   postListError: null,
   postList: null,
   postAddLoading: false,
@@ -44,6 +45,7 @@ export const POST_LIST_REQUEST = 'POST_LIST_REQUEST';
 export const POST_LIST_FAIL = 'POST_LIST_FAIL';
 export const POST_LIST_SUCCESS = 'POST_LIST_SUCCESS';
 export const POST_LIST_DONE = 'POST_LIST_DONE';
+export const POST_LIST_SEARCHBAR_SUCCESS = 'POST_LIST_SEARCHBAR_SUCCESS';
 
 export const POST_DELETE_REQUEST = 'POST_DELETE_REQUEST';
 export const POST_DELETE_SUCCESS = 'POST_DELETE_SUCCESS';
@@ -99,6 +101,7 @@ const reducer = (state = initialState, action) =>
         draft.postListDone = false;
         draft.postListLoading = false;
         draft.postList = null;
+        draft.postListSearchBar = false;
         break;
       case POST_LIST_REQUEST:
         draft.postListLoading = true;
@@ -113,7 +116,10 @@ const reducer = (state = initialState, action) =>
         draft.postListDone = true;
         draft.postList = action.data;
         break;
-
+      case POST_LIST_SEARCHBAR_SUCCESS:
+        draft.postListSearchBar = true;
+        draft.postList = action.data;
+        break;
       case POST_ADD_REQUEST:
         draft.postAddLoading = true;
         draft.postAdd = null;

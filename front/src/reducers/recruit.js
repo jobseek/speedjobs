@@ -9,6 +9,7 @@ export const initialState = {
   recruitListDone: false,
   recruitListError: null,
   recruitList: null,
+  recruitListSearchBar: false,
   recruitAddLoading: false,
   recruitAddDone: false,
   recruitAddError: null,
@@ -24,6 +25,7 @@ export const RECRUIT_LIST_REQUEST = 'RECRUIT_LIST_REQUEST';
 export const RECRUIT_LIST_SUCCESS = 'RECRUIT_LIST_SUCCESS';
 export const RECRUIT_LIST_FAIL = 'RECRUIT_LIST_FAIL';
 export const RECRUIT_LIST_DONE = 'RECRUIT_LIST_DONE';
+export const RECRUIT_LIST_SEARCHBAR_SUCCESS = 'RECRUIT_LIST_SEARCHBAR_SUCCESS';
 
 export const RECRUIT_ADD_REQUEST = 'RECRUIT_ADD_REQUEST';
 export const RECRUIT_ADD_SUCCESS = 'RECRUIT_ADD_SUCCESS';
@@ -61,6 +63,10 @@ const reducer = (state = initialState, action) =>
         draft.recruitListDone = true;
         draft.recruitList = action.data;
         break;
+      case RECRUIT_LIST_SEARCHBAR_SUCCESS:
+        draft.recruitListSearchBar = true;
+        draft.recruitList = action.data;
+        break;
       case RECRUIT_LIST_FAIL:
         draft.recruitListLoading = false;
         draft.recruitListError = action.error;
@@ -69,6 +75,7 @@ const reducer = (state = initialState, action) =>
         draft.recruitListDone = false;
         draft.recruitListLoading = false;
         draft.recruitList = null;
+        draft.recruitListSearchBar = false;
         break;
       case RECRUIT_ADD_REQUEST:
         draft.recruitAddLoading = true;
