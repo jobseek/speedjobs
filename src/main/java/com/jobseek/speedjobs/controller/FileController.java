@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.common.file;
+package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.common.file.dto.FileResponses;
