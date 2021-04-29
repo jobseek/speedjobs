@@ -18,24 +18,19 @@ import lombok.Setter;
 public class RecruitDetail {
 
 	@Enumerated(EnumType.STRING)
-	private Experience experience;
-
-	@Enumerated(EnumType.STRING)
 	private Position position;
 
 	@Lob
 	private String content;
 
 	@Builder
-	public RecruitDetail(Experience experience, Position position, String content) {
-		this.experience = experience;
+	public RecruitDetail(Position position, String content) {
 		this.position = position;
 		this.content = content;
 	}
 
-	public static RecruitDetail from(Experience experience, Position position, String content) {
+	public static RecruitDetail from(Position position, String content) {
 		return RecruitDetail.builder()
-			.experience(experience)
 			.position(position)
 			.content(content)
 			.build();

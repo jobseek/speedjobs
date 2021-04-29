@@ -1,11 +1,9 @@
 package com.jobseek.speedjobs.dto.recruit;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jobseek.speedjobs.domain.recruit.Experience;
+import com.jobseek.speedjobs.domain.recruit.Status;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,8 +16,7 @@ public class RecruitSearchCondition {
 
 	private String content;
 
-	@Enumerated(EnumType.STRING)
-	private Experience experience;
+	private Integer experience;
 
 	private String companyName;
 
@@ -29,11 +26,20 @@ public class RecruitSearchCondition {
 
 	private Double rating;
 
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
-//	@DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-	private LocalDateTime open;
+	private List<Status> status;
 
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
-	private LocalDateTime close;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate openDate;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate closeDate;
+
+	public LocalDateTime getOpenDateTime() {
+		return openDate == null ? null : openDate.atStartOfDay();
+	}
+
+	public LocalDateTime getCloseDateTime() {
+		return closeDate == null ? null : closeDate.atStartOfDay().plusDays(1L).minusSeconds(1L);
+	}
 
 }

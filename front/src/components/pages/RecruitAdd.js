@@ -15,7 +15,7 @@ export default function RecruitAdd() {
     title: '',
     position: 'TEMPORARY',
     thumbnail: '',
-    experience: 'JUNIOR',
+    experience: 'ZERO',
     content: '',
     openDate: '',
     closeDate: '',

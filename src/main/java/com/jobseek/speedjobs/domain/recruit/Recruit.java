@@ -79,36 +79,17 @@ public class Recruit extends BaseTimeEntity {
 
 	private String thumbnail;
 
+	private int experience;
+
 	private int viewCount;
+
+	private int favoriteCount;
 
 	@Embedded
 	private RecruitDetail recruitDetail;
 
-	@Builder
-	public Recruit(String title, LocalDateTime openDate, LocalDateTime closeDate,
-		Status status, String thumbnail,
-		RecruitDetail recruitDetail) {
-		this.title = title;
-		this.openDate = openDate;
-		this.closeDate = closeDate;
-		this.status = status;
-		this.thumbnail = thumbnail;
-		this.recruitDetail = recruitDetail;
-	}
-
-	public static Recruit createRecruit(String title, LocalDateTime openDate,
-		LocalDateTime closeDate,
-		Status status, String thumbnail, Experience experience, Position position, String content) {
-		return new Recruit(title, openDate, closeDate, status, thumbnail,
-			RecruitDetail.from(experience, position, content));
-	}
-
 	public void increaseViewCount() {
 		viewCount += 1;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
 	}
 
 	public void update(Recruit recruit, List<Tag> tags) {
@@ -140,6 +121,7 @@ public class Recruit extends BaseTimeEntity {
 		}
 		favorites.add(user);
 		user.getRecruitFavorites().add(this);
+		favoriteCount += 1;
 	}
 
 	public void removeFavorite(User user) {
@@ -148,13 +130,10 @@ public class Recruit extends BaseTimeEntity {
 		}
 		favorites.remove(user);
 		user.getRecruitFavorites().remove(this);
+		favoriteCount -= 1;
 	}
 
 	public boolean favoriteOf(User user) {
 		return favorites.contains(user);
-	}
-
-	public int getFavoriteCount() {
-		return favorites.size();
 	}
 }

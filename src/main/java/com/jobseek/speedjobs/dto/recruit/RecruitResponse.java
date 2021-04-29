@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.dto.recruit;
 
 import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.recruit.Experience;
 import com.jobseek.speedjobs.domain.recruit.Position;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.Status;
@@ -29,7 +28,7 @@ public class RecruitResponse {
 	private LocalDateTime closeDate;
 	private Status status;
 	private String thumbnail;
-	private Experience experience;
+	private int experience;
 	private Position position;
 	private String content;
 	private Map<Type, List<TagMap>> tags;
@@ -58,7 +57,7 @@ public class RecruitResponse {
 			.closeDate(recruit.getCloseDate())
 			.status(recruit.getStatus())
 			.thumbnail(recruit.getThumbnail())
-			.experience(recruit.getRecruitDetail().getExperience())
+			.experience(recruit.getExperience())
 			.position(recruit.getRecruitDetail().getPosition())
 			.content(recruit.getRecruitDetail().getContent())
 			.tags(TagMap.toMap(recruit.getTags()))

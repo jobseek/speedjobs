@@ -1,72 +1,118 @@
 -- 테스트 비밀번호 : jobseek2021!
 
 -- MEMBER 짱우/이승기/이혜지/김성원/이충복/이은혜/김상호/유세진/최예린/김진혁/김동욱/김승현/한보라/김영현 => 총 15
-insert into users (user_id, created_date, modified_date, contact, email, name, nickname, password, picture, role)
-values  (1, '2021-02-06 17:23:02', null, '010-1342-3433', 'member@member.com', '김건목', '기술자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(2, '2021-02-13 17:23:13', null, '010-3432-3438', 'member2@member.com', '이장우', '실무자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(3, '2021-03-23 17:23:19', '2021-04-24 17:24:38', '010-3122-7754', 'member3@member.com', '이승기', '실세', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(4, '2021-04-16 03:23:25', null, '010-3486-4222', 'member4@member.com', '박지훈', '갓카오', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(5, '2021-02-02 17:23:35', '2021-04-03 17:24:43', '010-3777-9867', 'member5@member.com', '김성원', '배후자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(6, '2021-02-13 18:23:40', null, '010-3422-3333', 'member6@member.com', '이중복', '암살자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(7, '2021-04-05 17:23:48', null, '010-6765-8440', 'member7@member.com', '이은혜', '고문관', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(8, '2021-01-02 17:23:53', '2021-02-21 17:24:47', '010-5555-9383', 'member8@member.com', '김상호', '전문가', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(9, '2021-04-02 17:23:58', null, '010-3499-0039', 'member9@member.com', '유세진', '킹메이커', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(10, '2021-03-16 17:24:02', null, '010-8876-7676', 'member10@member.com', '최예린', '방관자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(11, '2021-02-13 17:24:06', '2021-03-27 17:24:53', '010-3432-3424', 'member11@member.com', '김진혁', '무도가', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(12, '2021-04-07 17:24:12', null, '010-3222-2222', 'member12@member.com', '김동욱', '바리스타', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(13, '2021-01-26 17:24:16', '2021-02-22 17:25:01', '010-3333-8888', 'member13@member.com', '김승현', '복불러', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(14, '2021-01-29 17:24:22', null, '010-8695-9484', 'member14@member.com', '한보라', '지배자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(15, '2021-02-06 17:24:28', null, '010-3422-0393', 'member15@member.com', '김영현', '월급루팡', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
-(16, '2021-04-02 17:46:39', null, '010-5378-5628', 'company@company.com', '(주)잡식', '(주)잡식', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png', 'ROLE_COMPANY'),
-(17, '2021-04-06 17:46:46', null, '010-2816-4677', 'company17@company.com', '네이버', '네이버', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(18, '2021-03-24 17:46:49', null, '010-4462-1155', 'company18@company.com', '카카오', '카카오', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(19, '2021-02-22 17:46:53', null, '010-9758-2918', 'company19@company.com', '라인', '라인', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(20, '2021-01-24 17:46:57', '2021-04-24 17:47:49', '010-2499-6696', 'company20@company.com', '쿠팡', '쿠팡', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(21, '2021-03-09 17:47:00', null, '010-9242-1250', 'company21@company.com', '토스', '토스', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(22, '2021-03-27 17:47:08', null, '010-9739-8897', 'company22@company.com', '넷마블', '넷마블', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(23, '2021-04-07 17:47:13', null, '010-8291-6528', 'company23@company.com', '구글코리아', '구글코리아', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(24, '2021-03-24 17:47:17', null, '010-9804-9160', 'company24@company.com', '삼성전자', '삼성전자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(25, '2021-01-29 17:47:21', null, '010-5606-1328', 'company25@company.com', '배달의민족', '배달의민족', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(26, '2021-02-03 17:47:24', '2021-03-19 17:48:48', '010-3785-4140', 'company26@company.com', 'SK', 'SK', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(27, '2021-03-27 17:47:29', null, '010-1143-4564', 'company27@company.com', 'LG', 'LG', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(28, '2021-04-02 17:47:34', '2021-04-11 17:49:03', '010-4990-9073', 'company28@company.com', 'KT', 'KT', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(29, '2021-02-28 17:47:38', null, '010-7531-6008', 'company29@company.com', 'NC SOFT', 'NC SOFT', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
-(30, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-6919-8734', 'company30@company.com', 'NHN', 'NHN', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY');
+insert into users (user_id, created_date, modified_date, contact, email, name, nickname, password,
+                   picture, role)
+values (1, '2021-02-06 17:23:02', null, '010-1342-3433', 'member@member.com', '김건목', '기술자',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (2, '2021-02-13 17:23:13', null, '010-3432-3438', 'member2@member.com', '이장우', '실무자',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (3, '2021-03-23 17:23:19', '2021-04-24 17:24:38', '010-3122-7754', 'member3@member.com',
+        '이승기', '실세', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_MEMBER'),
+       (4, '2021-04-16 03:23:25', null, '010-3486-4222', 'member4@member.com', '박지훈', '갓카오',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (5, '2021-02-02 17:23:35', '2021-04-03 17:24:43', '010-3777-9867', 'member5@member.com',
+        '김성원', '배후자', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_MEMBER'),
+       (6, '2021-02-13 18:23:40', null, '010-3422-3333', 'member6@member.com', '이중복', '암살자',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (7, '2021-04-05 17:23:48', null, '010-6765-8440', 'member7@member.com', '이은혜', '고문관',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (8, '2021-01-02 17:23:53', '2021-02-21 17:24:47', '010-5555-9383', 'member8@member.com',
+        '김상호', '전문가', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_MEMBER'),
+       (9, '2021-04-02 17:23:58', null, '010-3499-0039', 'member9@member.com', '유세진', '킹메이커',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (10, '2021-03-16 17:24:02', null, '010-8876-7676', 'member10@member.com', '최예린', '방관자',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (11, '2021-02-13 17:24:06', '2021-03-27 17:24:53', '010-3432-3424', 'member11@member.com',
+        '김진혁', '무도가', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_MEMBER'),
+       (12, '2021-04-07 17:24:12', null, '010-3222-2222', 'member12@member.com', '김동욱', '바리스타',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (13, '2021-01-26 17:24:16', '2021-02-22 17:25:01', '010-3333-8888', 'member13@member.com',
+        '김승현', '복불러', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_MEMBER'),
+       (14, '2021-01-29 17:24:22', null, '010-8695-9484', 'member14@member.com', '한보라', '지배자',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (15, '2021-02-06 17:24:28', null, '010-3422-0393', 'member15@member.com', '김영현', '월급루팡',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_MEMBER'),
+       (16, '2021-04-02 17:46:39', null, '010-5378-5628', 'company@company.com', '(주)잡식', '(주)잡식',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq',
+        'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png',
+        'ROLE_COMPANY'),
+       (17, '2021-04-06 17:46:46', null, '010-2816-4677', 'company17@company.com', '네이버', '네이버',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (18, '2021-03-24 17:46:49', null, '010-4462-1155', 'company18@company.com', '카카오', '카카오',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (19, '2021-02-22 17:46:53', null, '010-9758-2918', 'company19@company.com', '라인', '라인',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (20, '2021-01-24 17:46:57', '2021-04-24 17:47:49', '010-2499-6696', 'company20@company.com',
+        '쿠팡', '쿠팡', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_COMPANY'),
+       (21, '2021-03-09 17:47:00', null, '010-9242-1250', 'company21@company.com', '토스', '토스',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (22, '2021-03-27 17:47:08', null, '010-9739-8897', 'company22@company.com', '넷마블', '넷마블',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (23, '2021-04-07 17:47:13', null, '010-8291-6528', 'company23@company.com', '구글코리아', '구글코리아',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (24, '2021-03-24 17:47:17', null, '010-9804-9160', 'company24@company.com', '삼성전자', '삼성전자',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (25, '2021-01-29 17:47:21', null, '010-5606-1328', 'company25@company.com', '배달의민족', '배달의민족',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (26, '2021-02-03 17:47:24', '2021-03-19 17:48:48', '010-3785-4140', 'company26@company.com',
+        'SK', 'SK', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_COMPANY'),
+       (27, '2021-03-27 17:47:29', null, '010-1143-4564', 'company27@company.com', 'LG', 'LG',
+        '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY'),
+       (28, '2021-04-02 17:47:34', '2021-04-11 17:49:03', '010-4990-9073', 'company28@company.com',
+        'KT', 'KT', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_COMPANY'),
+       (29, '2021-02-28 17:47:38', null, '010-7531-6008', 'company29@company.com', 'NC SOFT',
+        'NC SOFT', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_COMPANY'),
+       (30, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-6919-8734', 'company30@company.com',
+        'NHN', 'NHN', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null,
+        'ROLE_COMPANY');
 # (31, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-3134-8734', 'company31@company.com', 'KB Bank', 'KB Bank', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY');
 # (32, '2021-01-26 17:47:42', '2021-03-02 17:49:07', '010-7373-8734', 'company32@company.com', 'Hana Bank', 'Hana Bank', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', null, 'ROLE_COMPANY');
 insert into members (bio, birth, gender, oauth_id, provider, user_id)
-values  ('안녕하세요. 반갑습니다', '1992-05-30', 'M', null, 'LOCAL', 1),
-('안녕하세요. 짱우진입니다', '1994-02-18', 'M', null, 'LOCAL', 2),
-('저는 가수입니다.', '2000-03-03', 'M', null, 'LOCAL', 3),
-('여성개발자입니다 갓카오짱', '1983-10-21', 'F', null, 'LOCAL', 4),
-('안녕하세요.', '1998-04-05', 'M', null, 'LOCAL', 5),
-('안녕하세요.', '1966-03-03', 'M', null, 'LOCAL', 6),
-('안녕하세요.', '2001-01-10', 'F', null, 'LOCAL', 7),
-('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 8),
-('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 9),
-('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 10),
-('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 11),
-('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 12),
-('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 13),
-('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 14),
-('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 15);
+values ('안녕하세요. 반갑습니다', '1992-05-30', 'M', null, 'LOCAL', 1),
+       ('안녕하세요. 짱우진입니다', '1994-02-18', 'M', null, 'LOCAL', 2),
+       ('저는 가수입니다.', '2000-03-03', 'M', null, 'LOCAL', 3),
+       ('여성개발자입니다 갓카오짱', '1983-10-21', 'F', null, 'LOCAL', 4),
+       ('안녕하세요.', '1998-04-05', 'M', null, 'LOCAL', 5),
+       ('안녕하세요.', '1966-03-03', 'M', null, 'LOCAL', 6),
+       ('안녕하세요.', '2001-01-10', 'F', null, 'LOCAL', 7),
+       ('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 8),
+       ('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 9),
+       ('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 10),
+       ('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 11),
+       ('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 12),
+       ('안녕하세요.', '1997-08-20', 'M', null, 'LOCAL', 13),
+       ('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 14),
+       ('안녕하세요.', '1997-08-20', 'F', null, 'LOCAL', 15);
 -- COMPANY    카카오/라인/쿠팡/토스/넷마블/구글/삼성전자/배달의민족/SK/LG/KT/NC SOFT/NHN명 => 총 15명
-insert into companies (description, homepage, registration_number, company_name, logo_image, scale, user_id)
-values  ('잡식컴퍼니입니다.', null, '123-45-67890', '(주)잡식', 'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png', 6, 16),
-('네이버입니다.', 'www.naver.com', '123-45-67891', '네이버', null, 232, 17),
-('카카오니입니다.', 'www.daum.net', '123-45-67892', '카카오', null, 3, 18),
-('라인입니다.', null, '123-45-67893', '라인', null, 43, 19),
-('쿠팡입니다.', null, '123-45-67894', '쿠팡', null, 44, 20),
-('Toss입니다.', null, '123-45-67895', '토스', null, 64, 21),
-('라인입니다..', null, '123-45-67896', '넷마블', null, 744, 22),
-('구글코리아입니다.', null, '123-45-67901', '구글코리아', null, 12, 23),
-('또 하나의 가족입니다', null, '123-45-67902', '삼성전자', null, 34, 24),
-('단군의 자손입니다.', null, '123-45-67903', '배달의민족', null, 32, 25),
-('OK입니다', null, '123-45-67904', 'SK', null, 76, 26),
-('백색가전은 LG입니다', null, '123-45-67905', 'LG', null, 39, 27),
-('KT입니다', null, '123-45-67906', 'KT', null, 29, 28),
-('NC 소프트입니다', null, '123-45-67907', 'NC SOFT', null, 32, 29),
-('NHN입니다', null, '123-45-67908', 'NHN', null, 1000, 30);
+insert into companies (description, homepage, registration_number, company_name, logo_image, scale,
+                       user_id)
+values ('잡식컴퍼니입니다.', null, '123-45-67890', '(주)잡식',
+        'https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/8edbe2f6-9148-47fb-8549-efe1a6841d30.png',
+        6, 16),
+       ('네이버입니다.', 'www.naver.com', '123-45-67891', '네이버', null, 232, 17),
+       ('카카오니입니다.', 'www.daum.net', '123-45-67892', '카카오', null, 3, 18),
+       ('라인입니다.', null, '123-45-67893', '라인', null, 43, 19),
+       ('쿠팡입니다.', null, '123-45-67894', '쿠팡', null, 44, 20),
+       ('Toss입니다.', null, '123-45-67895', '토스', null, 64, 21),
+       ('라인입니다..', null, '123-45-67896', '넷마블', null, 744, 22),
+       ('구글코리아입니다.', null, '123-45-67901', '구글코리아', null, 12, 23),
+       ('또 하나의 가족입니다', null, '123-45-67902', '삼성전자', null, 34, 24),
+       ('단군의 자손입니다.', null, '123-45-67903', '배달의민족', null, 32, 25),
+       ('OK입니다', null, '123-45-67904', 'SK', null, 76, 26),
+       ('백색가전은 LG입니다', null, '123-45-67905', 'LG', null, 39, 27),
+       ('KT입니다', null, '123-45-67906', 'KT', null, 29, 28),
+       ('NC 소프트입니다', null, '123-45-67907', 'NC SOFT', null, 32, 29),
+       ('NHN입니다', null, '123-45-67908', 'NHN', null, 1000, 30);
 # insert into companies (address, avg_salary, description, homepage, latitude, longitude, rating, registration_number, company_name, logo_image, scale, user_id)
 # values ('서울시 강남구 서초1동', 4000, '국민은행입니다.', null, 30.5, 20.3, 4.0, '123-46-23213', 'KB Bank', null, 40, 31);
 # insert into companies (address, avg_salary, description, homepage, latitude, longitude, rating, registration_number, company_name, logo_image, scale, user_id)
@@ -80,96 +126,105 @@ values  ('잡식컴퍼니입니다.', null, '123-45-67890', '(주)잡식', 'http
 
 -- ADMIN
 insert into users(email, password, name, role, contact, nickname)
-values ('admin@admin.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'admin', 'ROLE_ADMIN', '010-1111-3323', '왕'); -- 31
+values ('admin@admin.com', '$2a$10$Fl3r4xqxC51vSgTbO30r8OWtuAaT7slbPeQfwBI/0TqtGu6KMRYoq', 'admin',
+        'ROLE_ADMIN', '010-1111-3323', '왕');
+-- 31
 --
 -- 직무 태그
-insert into tags(name, type) values ('서버/백엔드', 'POSITION');
-insert into tags(name, type) values ('프론트엔드', 'POSITION');
-insert into tags(name, type) values ('웹 풀스택', 'POSITION');
-insert into tags(name, type) values ('안드로이드 앱', 'POSITION');
-insert into tags(name, type) values ('아이폰 앱', 'POSITION');
-insert into tags(name, type) values ('머신러닝', 'POSITION');
-insert into tags(name, type) values ('인공지능(AI)', 'POSITION');
-insert into tags(name, type) values ('데이터 엔지니어', 'POSITION');
-insert into tags(name, type) values ('모바일 게임', 'POSITION');
-insert into tags(name, type) values ('게임 클라이언트', 'POSITION');
-insert into tags(name, type) values ('게임 서버', 'POSITION');
-insert into tags(name, type) values ('시스템/네트워크', 'POSITION');
-insert into tags(name, type) values ('시스템 소프트웨어', 'POSITION');
-insert into tags(name, type) values ('인터넷 보안', 'POSITION');
-insert into tags(name, type) values ('QA', 'POSITION');
-insert into tags(name, type) values ('사물인터넷(IoT)', 'POSITION');
-insert into tags(name, type) values ('응용프로그램', 'POSITION');
-insert into tags(name, type) values ('블록체인', 'POSITION');
+insert into tags (name, type)
+values ('서버/백엔드', 'POSITION'),
+       ('프론트엔드', 'POSITION'),
+       ('웹 풀스택', 'POSITION'),
+       ('안드로이드 앱', 'POSITION'),
+       ('아이폰 앱', 'POSITION'),
+       ('머신러닝', 'POSITION'),
+       ('인공지능(AI)', 'POSITION'),
+       ('데이터 엔지니어', 'POSITION'),
+       ('모바일 게임', 'POSITION'),
+       ('게임 클라이언트', 'POSITION'),
+       ('게임 서버', 'POSITION'),
+       ('시스템/네트워크', 'POSITION'),
+       ('시스템 소프트웨어', 'POSITION'),
+       ('인터넷 보안', 'POSITION'),
+       ('QA', 'POSITION'),
+       ('사물인터넷(IoT)', 'POSITION'),
+       ('응용프로그램', 'POSITION'),
+       ('블록체인', 'POSITION'),
 
 -- 스킬 태그
-insert into tags(name, type) values ('C', 'SKILL');
-insert into tags(name, type) values ('C++', 'SKILL');
-insert into tags(name, type) values ('C#', 'SKILL');
-insert into tags(name, type) values ('Go', 'SKILL');
-insert into tags(name, type) values ('Haskell', 'SKILL');
-insert into tags(name, type) values ('Java', 'SKILL');
-insert into tags(name, type) values ('Kotlin', 'SKILL');
-insert into tags(name, type) values ('JavaScript', 'SKILL');
-insert into tags(name, type) values ('TypeScript', 'SKILL');
-insert into tags(name, type) values ('Objective-C', 'SKILL');
-insert into tags(name, type) values ('Swift', 'SKILL');
-insert into tags(name, type) values ('JSP', 'SKILL');
-insert into tags(name, type) values ('PHP', 'SKILL');
-insert into tags(name, type) values ('ASP.net', 'SKILL');
-insert into tags(name, type) values ('Python', 'SKILL');
-insert into tags(name, type) values ('Django', 'SKILL');
-insert into tags(name, type) values ('R', 'SKILL');
-insert into tags(name, type) values ('Ruby', 'SKILL');
-insert into tags(name, type) values ('Rust', 'SKILL');
-insert into tags(name, type) values ('Visual Basic', 'SKILL');
-insert into tags(name, type) values ('HTML/CSS', 'SKILL');
-insert into tags(name, type) values ('SQL', 'SKILL');
-insert into tags(name, type) values ('NoSQL', 'SKILL');
-insert into tags(name, type) values ('JPA', 'SKILL');
-insert into tags(name, type) values ('Sequelize', 'SKILL');
-insert into tags(name, type) values ('Node.js', 'SKILL');
-insert into tags(name, type) values ('React.js', 'SKILL');
-insert into tags(name, type) values ('Vue.js', 'SKILL');
-insert into tags(name, type) values ('Angular.js', 'SKILL');
-insert into tags(name, type) values ('Svelte.js', 'SKILL');
-insert into tags(name, type) values ('Flutter', 'SKILL');
-insert into tags(name, type) values ('jQuery', 'SKILL');
-insert into tags(name, type) values ('React Native', 'SKILL');
-insert into tags(name, type) values ('Spring MVC', 'SKILL');
-insert into tags(name, type) values ('Spring boot', 'SKILL');
-insert into tags(name, type) values ('ElasticSearch', 'SKILL');
+       ('C', 'SKILL'),
+       ('C++', 'SKILL'),
+       ('C#', 'SKILL'),
+       ('Go', 'SKILL'),
+       ('Haskell', 'SKILL'),
+       ('Java', 'SKILL'),
+       ('Kotlin', 'SKILL'),
+       ('JavaScript', 'SKILL'),
+       ('TypeScript', 'SKILL'),
+       ('Objective-C', 'SKILL'),
+       ('Swift', 'SKILL'),
+       ('JSP', 'SKILL'),
+       ('PHP', 'SKILL'),
+       ('ASP.net', 'SKILL'),
+       ('Python', 'SKILL'),
+       ('Django', 'SKILL'),
+       ('R', 'SKILL'),
+       ('Ruby', 'SKILL'),
+       ('Rust', 'SKILL'),
+       ('Visual Basic', 'SKILL'),
+       ('HTML/CSS', 'SKILL'),
+       ('SQL', 'SKILL'),
+       ('NoSQL', 'SKILL'),
+       ('JPA', 'SKILL'),
+       ('Sequelize', 'SKILL'),
+       ('Node.js', 'SKILL'),
+       ('React.js', 'SKILL'),
+       ('Vue.js', 'SKILL'),
+       ('Angular.js', 'SKILL'),
+       ('Svelte.js', 'SKILL'),
+       ('Flutter', 'SKILL'),
+       ('jQuery', 'SKILL'),
+       ('React Native', 'SKILL'),
+       ('Spring MVC', 'SKILL'),
+       ('Spring boot', 'SKILL'),
+       ('ElasticSearch', 'SKILL');
 
 -- -- POST
-insert into posts (post_id, created_date, modified_date, content, title, view_count, comment_count, favorite_count, user_id)
-values  (1, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '안녕하세요.
+insert into posts (post_id, created_date, modified_date, content, title, view_count, comment_count,
+                   favorite_count, user_id)
+values (1, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '안녕하세요.
 개발자 신입이 되려고 준비하는 학생입니다.
  Java, Python, Javascript 요 세지를 공부하고 있는데요 이것들과 연동되는 데이터베이스가 뭔지 알려주세요. 가
  MongoDB나 MySQL있는것 같은데 어떤 언어가 어떤 데이터베이스와 연동이 되는지 연결해주실수있나요?
   또 MongoDB는 SQL의 문법과 많이 다른가요?', ' Python', 22, 2, 0, 1),
-(2, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '둘의 차이가 스프링부트가 설정이 더 쉽다 이게 가장 큰 차이인가요? gradle 과 메이븐의 차이는 별로없는건가요.... 스프링 개발자가 스프링부트를 공부할때 러닝커브는 어느정도 될까요?', '스프링과 스프링부트의 차이', 123, 2, 0, 3),
-(3, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '계속 들어만 봐왔어서 어떤 차이점이 있는지 궁금해요.', 'iBatis와 MyBatis의 차이점', 43, 2, 0, 3),
-(4, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '주로들 하시는 설명이 확장이 쉽고, 커스터마이징 서비스가 용이하다 라는게 일반적인 설명들이잖아요??
+       (2, '2020-01-03 11:13:00', '2020-01-20 11:15:00',
+        '둘의 차이가 스프링부트가 설정이 더 쉽다 이게 가장 큰 차이인가요? gradle 과 메이븐의 차이는 별로없는건가요.... 스프링 개발자가 스프링부트를 공부할때 러닝커브는 어느정도 될까요?',
+        '스프링과 스프링부트의 차이', 123, 2, 0, 3),
+       (3, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '계속 들어만 봐왔어서 어떤 차이점이 있는지 궁금해요.',
+        'iBatis와 MyBatis의 차이점', 43, 2, 0, 3),
+       (4, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '주로들 하시는 설명이 확장이 쉽고, 커스터마이징 서비스가 용이하다 라는게 일반적인 설명들이잖아요??
  재 개인적인 생각으로는 메서드명을 지키려고 사용하는거를 거창하게 포장해서 표현한다는 생각이 듭니다.
  솔직히 부모객체만으로 인터페이스를 대체할수 있다고 생각합니다.
  확장도 인터페이스 = 구현화객체; 부모객체 = 자식객체;
  이런식으로 대체 가능하고 커스터마이징 서비스는 자식객체를 새로 실수없이 만들어서 상속받고 오버라이딩하면 되는 부분이고요
  결론적으로 부모객체로는 커버할수 없는 인터페이스의 장점은 무엇이죠??
 내일 면접있는데 이렇게 뿔난식으로 대답할까봐 걱정됩니다', '인터페이스의 장점에 대해 모르겠습니다. 납득좀 시켜주세요', 2, 5, 0, 5),
-(5, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '로그나 구글 검색해보면 두루뭉실하게 겉핥기처럼 간단하게 설명만 나와있고, 구체적인 예시란게 없어서 공부해보려는 제가 어떻게 시작해야할 지 막막하네요.
+       (5, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '로그나 구글 검색해보면 두루뭉실하게 겉핥기처럼 간단하게 설명만 나와있고, 구체적인 예시란게 없어서 공부해보려는 제가 어떻게 시작해야할 지 막막하네요.
  도움이될만한 포스트나 예시가 있을까요? 감사합니다.', 'rest api란게 도대체 뭔가요?', 3, 1, 0, 9),
-(6, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '클로저(closure)는 내부함수가 외부함수의 맥락(context)에 접근할 수 있는 것을 가르킨다. 클로저는 자바스크립트를 이용한 고난이도의 테크닉을 구사하는데 필수적인 개념으로 활용된다.
+       (6, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '클로저(closure)는 내부함수가 외부함수의 맥락(context)에 접근할 수 있는 것을 가르킨다. 클로저는 자바스크립트를 이용한 고난이도의 테크닉을 구사하는데 필수적인 개념으로 활용된다.
  클로저란 내부함수가 외부함수의 지역변수에 접근 할 수 있고, 외부함수는 외부함수의 지역변수를 사용하는 내부함수가 소멸될 때까지 소멸되지 않는 특성을 의미한다.
   자신의 생성된 시점의 환경을 기억하는 함수
    렉시컬 스코프 : 함수가 중첩될 때 parser가 변수의 이름을 해석하는 방법
     Hooks도 클로져 함수이다!!!!왜 클로져를 사용할까?
     Closure는 어떤 데이터(어휘적 환경)와 그 데이터를 조작하는 함수를 연결하는 데 있어서 유용하다. (객체지향 프로그래밍의 정보 은닉과 모듈화 같은 이점을 얻을 수 있다.)
     Tip!(Closure도 남발하면 안좋을 수 있다.)
-    클로져를 사용하면 가비지 컬렉션 대상이 되어야 할 객체가 메모리 상에 남아 있게 되므로, 클로져를 남발하면 메모리를 과다로 잡아 먹을 수 있기 때문이다.', '[Closure] 클로져란 무엇인가?', 22, 1, 0, 20),
-(7, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '현재 톰캣으로 90 포트로 돌고 있는 서비스가 있는데요~ 이번에 ssl로 변경 하게 되었습니다.
+    클로져를 사용하면 가비지 컬렉션 대상이 되어야 할 객체가 메모리 상에 남아 있게 되므로, 클로져를 남발하면 메모리를 과다로 잡아 먹을 수 있기 때문이다.',
+        '[Closure] 클로져란 무엇인가?', 22, 1, 0, 20),
+       (7, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '현재 톰캣으로 90 포트로 돌고 있는 서비스가 있는데요~ 이번에 ssl로 변경 하게 되었습니다.
  그래서 server.xml의 <Connector port> 부분에서  redirectPort="443" 으로 해줬는데요. 기준의 윈도우 방화벽 인바운드가 90 포트로 되어있는데 이거에 443포트를 추가 해줘야 하는건가요?
   아니면 인바운드에  90 포트는 지우고 443 포트만 추가 해줘야 하는건가요?', '초보개발자 ssl 질문이 있습니다.', 432, 0, 0, 13),
-(8, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '자바 정규식에 대해 알고싶어요.', '자바 정규식', 42, 0, 0, 14);
+       (8, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '자바 정규식에 대해 알고싶어요.', '자바 정규식', 42, 0, 0,
+        14);
 -- insert into posts (created_date, modified_date, comment_count, like_count, content, title, user_id, view_count) values ('2020-01-03 11:13:00', '2020-01-20 11:15:00', 0, 0, '안녕하세요.\n 개발자 신입이 되려고 준비하는 학생입니다.\n Java, Python, Javascript 요 세가지를 공부하고 있는데요 이것들과 연동되는 데이터베이스가 뭔지 알려주세요. MongoDB나 MySQL있는것 같은데 어떤 언어가 어떤 데이터베이스와 연동이 되는지 연결해주실수있나요?\n 또 MongoDB는 SQL의 문법과 많이 다른가요?', '데이터베이스의 종류를 알고싶어요', 1, 20);
 -- insert into posts (created_date, modified_date, comment_count, like_count, content, title, user_id, view_count) values ('2020-01-03 11:13:00', '2020-01-20 11:15:00', 0, 0, '둘의 차이가 스프링부트가 설정이 더 쉽다 이게 가장 큰 차이인가요? gradle 과 메이븐의 차이는 별로없는건가요.... 스프링 개발자가 스프링부트를 공부할때 러닝커브는 어느정도 될까요?','스프링과 스프링부트의 차이', 3, 10);
 -- insert into posts (created_date, modified_date, comment_count, like_count, content, title, user_id, view_count) values ('2020-01-03 11:13:00', '2020-01-20 11:15:00', 0, 0, '계속 들어만 봐왔어서 어떤 차이점이 있는지 궁금해요.','iBatis와 MyBatis의 차이점', 3, 5);
@@ -180,28 +235,39 @@ values  (1, '2020-01-03 11:13:00', '2020-01-20 11:15:00', '안녕하세요.
 -- insert into posts (created_date, modified_date, comment_count, like_count, content, title, user_id, view_count) values ('2020-01-03 11:13:00', '2020-01-20 11:15:00', 0, 0, '자바 정규식에 대해 알고싶어요.', '자바 정규식', 14, 3);
 
 -- -- COMMENT
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (1, '2020-04-22 15:01:40', '2020-04-22 15:01:40', '언어랑 DB랑은 연동여부는 관련 없습니다. (아주 없는건 아니지만요...)
+insert into comments (comment_id, created_date, modified_date, content, post_id, user_id)
+values (1, '2020-04-22 15:01:40', '2020-04-22 15:01:40', '언어랑 DB랑은 연동여부는 관련 없습니다. (아주 없는건 아니지만요...)
  해당 언어에서 DB와 연결할 수 있는 Driver만 제공되면 어느 언어든 연동 가능합니다.
- 자바나 파이썬, Javascript (Node 겠죠?) 모두 메이저 언어이기 때문에 어지간한 DB 벤더사에서 이미 드라이버 잘 만들어놓았고, DB 커넥션을 쉽게할 수 있도록 잘 래핑한 모듈들도 많이 때문에 어렵지않게 연동 가능합니다.', 1, 2);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (2, '2021-04-22 15:01:40', '2021-04-22 15:01:40', 'db는 nosql입니다. 많이 다르죠', 1, 3);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (3, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '스프링개발자가 스프링부트를 공부할때 러닝커브 하루정도입니다.(당장 실무에 적용한다는 기준.. ) 설정이 간편해졌다 이정도입니다. 그냥 레퍼런스도큐먼트만 쭉 정독해보시면됩니다.', 2, 1);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (4, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '음. 간단하게 기본 스프링 관련된거 많이 사용되는 라이브러리 같은걸 쉽게 메이븐에 넣엇다 뺏다 할수있구요 내장으로 톰캣 같은게 있어서 개발시 서버도 쉽게 띄울수있구요. 이런저런 설정 스프링 설정 이라던가 톰캣 설정을 하나의 프로퍼티파일로 관리 가능합니다.', 2, 3);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (5, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '이름은 아마도 Apache proejct팀에서 google code팀으로 이동하면서 명칭이 변경되었을거에요.', 3, 5);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (6, '2021-04-22 15:01:40', '2021-04-22 15:01:40', 'sqlMap.xml 내부구조도 변경되었어요. sqlMap에서 Mapper로, resultClass에서 resultType, #var#에서 #{var} 등등 변화점 많아요. 한번 찾아보세요.', 3, 8);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (7, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '음... 글쓴분이 생각하고계신걸 좀 더 구체적으로 작성해주세요. 부모객체라는건 상속을 말씀하시는건가요?
-', 4, 2);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (8, '2021-04-22 15:01:40', '2021-04-22 15:01:40', 'SOLID https://www.nextree.co.kr/p6960/', 4, 3);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (9, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '님께서 말씀하신부분 하나도 틀린점이 없습니다 부모자식간의 상속으로도 충분히 해결가능하고 굳이 루즈 커플링을 지향하지 않아도 되는 소프트웨어라면 아무런 문제가 없고 세상 모두가 행복해지는 아주 빠른 지름길입니다.
+ 자바나 파이썬, Javascript (Node 겠죠?) 모두 메이저 언어이기 때문에 어지간한 DB 벤더사에서 이미 드라이버 잘 만들어놓았고, DB 커넥션을 쉽게할 수 있도록 잘 래핑한 모듈들도 많이 때문에 어렵지않게 연동 가능합니다.',
+        1, 2),
+       (2, '2021-04-22 15:01:40', '2021-04-22 15:01:40', 'db는 nosql입니다. 많이 다르죠', 1, 3),
+       (3, '2021-04-22 15:01:40', '2021-04-22 15:01:40',
+        '스프링개발자가 스프링부트를 공부할때 러닝커브 하루정도입니다.(당장 실무에 적용한다는 기준.. ) 설정이 간편해졌다 이정도입니다. 그냥 레퍼런스도큐먼트만 쭉 정독해보시면됩니다.',
+        2, 1),
+       (4, '2021-04-22 15:01:40', '2021-04-22 15:01:40',
+        '음. 간단하게 기본 스프링 관련된거 많이 사용되는 라이브러리 같은걸 쉽게 메이븐에 넣엇다 뺏다 할수있구요 내장으로 톰캣 같은게 있어서 개발시 서버도 쉽게 띄울수있구요. 이런저런 설정 스프링 설정 이라던가 톰캣 설정을 하나의 프로퍼티파일로 관리 가능합니다.',
+        2, 3),
+       (5, '2021-04-22 15:01:40', '2021-04-22 15:01:40',
+        '이름은 아마도 Apache proejct팀에서 google code팀으로 이동하면서 명칭이 변경되었을거에요.', 3, 5),
+       (6, '2021-04-22 15:01:40', '2021-04-22 15:01:40',
+        'sqlMap.xml 내부구조도 변경되었어요. sqlMap에서 Mapper로, resultClass에서 resultType, #var#에서 #{var} 등등 변화점 많아요. 한번 찾아보세요.',
+        3, 8),
+       (7, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '음... 글쓴분이 생각하고계신걸 좀 더 구체적으로 작성해주세요. 부모객체라는건 상속을 말씀하시는건가요?
+', 4, 2),
+       (8, '2021-04-22 15:01:40', '2021-04-22 15:01:40', 'SOLID https://www.nextree.co.kr/p6960/',
+        4, 3),
+       (9, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '님께서 말씀하신부분 하나도 틀린점이 없습니다 부모자식간의 상속으로도 충분히 해결가능하고 굳이 루즈 커플링을 지향하지 않아도 되는 소프트웨어라면 아무런 문제가 없고 세상 모두가 행복해지는 아주 빠른 지름길입니다.
  하지만 그건 소스코드를 작성하는 본인 입장에서는 그렇지만 만약 소스코드를 실행파일 형태 혹은 라이브러리 형태로 모두 빌드하고 난 후 외부에다가는 일정 함수만 공개하고 싶으실때, 그리고 그 함수의 원형을 꼭 지키게 하고 싶을때. 그럴때는 인터페이스 만큼 유용한게 없습니다^^
  사실 인터페이스란게 일정한 인풋을 지키면 예측가능한 아웃풋을 던져주는 일종의 블랙박스 같은 녀석입니다.
  또한 보통 학원이나 무언가를 배울때 인터페이스를 구현 한 후 1개 혹은 많아봤자 2~3개의 클래스만 해당 인터페이스를 사용하고 구현하죠. 사실 이러면 인터페이스를 진정으로 사용하는 것이 아니고 오히려 더 걸리적거리고 불편한것은 사실입니다^^.
  하지만 수천명이나 되는 회사에서 각자 소스코드를 작성할 때 같은 기능을 하는 함수라도 각자 네이밍하는 부분이 다르기 때문에 이 부분을 강제적으로 공통화 할 수 있는 장점도 있구요 인터페이스는 해당 인터페이스를 사용하는 클래스들이 많을 때 그 진가를 발휘하는 녀석입니다.
- 아직은 작은 스케일의 코딩만 하시는 것 같은데 너무 불편하다고만 생각하실 게 아니고 지금은 아 인터페이스란게 유용한 녀석이구나. 하고 요지만 잘 파악하고 넘어가셔도 될 것 같습니다^^ 나중에는 언젠가는 쓰게되는 녀석이니까요 ㅎㅎ', 4, 7);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (10, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '인터페이스는 메서드명을 지킨다기보다 이 인터페이스를 구현한 애들은 이 메서드를 구현한다는 규약입니다.
+ 아직은 작은 스케일의 코딩만 하시는 것 같은데 너무 불편하다고만 생각하실 게 아니고 지금은 아 인터페이스란게 유용한 녀석이구나. 하고 요지만 잘 파악하고 넘어가셔도 될 것 같습니다^^ 나중에는 언젠가는 쓰게되는 녀석이니까요 ㅎㅎ',
+        4, 7),
+       (10, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '인터페이스는 메서드명을 지킨다기보다 이 인터페이스를 구현한 애들은 이 메서드를 구현한다는 규약입니다.
  그 규약이 있기때문에 어떤 객체가 넘어오든 Runnable 인터페이스를 구현했다면 run 메서드가 존재한다고 믿는거죠. 그 구현이 어떻게 되어있느냐는 상관없고요.
  사실 객체지향의 많은 내용들은 다른분 말씀처럼 내가 지구반대편 사용자에게 모듈을 제공한다고 생각할때 그 빛을 발합니다.
- 내부에서 나혼자 혹은 나랑 내옆사람이 그냥 애플리케이션 만드는 단계에서는 잘 와닿지않을 수 있어요.', 4, 4);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (11, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '솔직히 코딩할때 인터페이스 걸리적거렸던 기억밖에 없습니다. 제약받는느낌?
+ 내부에서 나혼자 혹은 나랑 내옆사람이 그냥 애플리케이션 만드는 단계에서는 잘 와닿지않을 수 있어요.', 4, 4),
+       (11, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '솔직히 코딩할때 인터페이스 걸리적거렸던 기억밖에 없습니다. 제약받는느낌?
  "확장성이 좋다!"
  "인터페이스는 정말 중요하다"
  말장난 같을수도 있는데... 이미 대략적으로 잘알고 계시네요.
@@ -213,8 +279,8 @@ INSERT INTO comments (comment_id, created_date, modified_date, content, post_id,
  실제 일반적인 웹개발(화면찍어내기) 할때는 인터페이스의 필요성 잘 못느낄수밖에 없고요..
  위에도 언급되었지만 라이브러리를 제공하는 입장에서는 또 전혀 다르거든요.
 
-다른 대답은 윗분들이 훌륭하게 해주신 것 같고, 애당초 질문에 답이 나와있네요', 4, 8);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (12, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '웹 서비스를 디자인 하는 여러 방법중 한가지에요. 특징으로는 우리가 흔히 인터넷 창에 검색하는 uri와 데이터를 주고받는 프로토콜인 http를 어떤식으로 사용했느냐로 어떤 데이터를 전송해줄지 파악하기가 쉽죠
+다른 대답은 윗분들이 훌륭하게 해주신 것 같고, 애당초 질문에 답이 나와있네요', 4, 8),
+       (12, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '웹 서비스를 디자인 하는 여러 방법중 한가지에요. 특징으로는 우리가 흔히 인터넷 창에 검색하는 uri와 데이터를 주고받는 프로토콜인 http를 어떤식으로 사용했느냐로 어떤 데이터를 전송해줄지 파악하기가 쉽죠
  예를들어서, 지금 이 okky 페이지를 보면 주소창에 jobspeed.com/community/post/5 로 적혀있잖아요.
  그리고 이 페이지에 들어오기 위해서 우리가 글쓴이분이 적어주신 글을 제가 클릭해서 들어왔구요.
  여기서 웹 주소는 uri이구, 제가 클릭한 행동은 해당 uri로 HTTP GET 요청을 보낸거에요.
@@ -229,9 +295,8 @@ INSERT INTO comments (comment_id, created_date, modified_date, content, post_id,
  jobspeed.com/createArticles/ 를 따로 만들어 줘야 하는 번잡함이 발생합니다.
  따라서 restful api를 제작할때는 최대한 명사만 활용해서 디자인을 해야해요.
  www.shopping.com/products에 get 요청을 보내면, 해당 사이트의 물품 정보를 다 가져올 수 있을테고 post 요청을 보내면, 물품 생성이 가능할테고 www.shopping.com/products/13524에 get 요청을 보내면, 13524 아이디에 해당하는 물품 정보를 가져올 수 있고 put 요청을 보내면 13524 아이디에 해당하는 물품 정보 수정이 가능하고, delete 요청을 보내면 삭제가 가능한것 처럼요.
- 이런 편의성을 위해서 적용하는 시스템 디자인중 하나입니다.', 5, 15);
-INSERT INTO comments (comment_id, created_date, modified_date, content, post_id, user_id) VALUES (13, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '감사합니다.', 6, 2);
-
+ 이런 편의성을 위해서 적용하는 시스템 디자인중 하나입니다.', 5, 15),
+       (13, '2021-04-22 15:01:40', '2021-04-22 15:01:40', '감사합니다.', 6, 2);
 
 
 
@@ -254,7 +319,10 @@ INSERT INTO comments (comment_id, created_date, modified_date, content, post_id,
 
 
 -- -- -- RECRUIT
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (1, '2021-04-24 19:21:19', null, '2021-04-30 23:59:59', '2021-04-25 12:00:00', '팀 소개
+insert into recruits (recruit_id, created_date, modified_date, close_date, open_date, content,
+                      experience, position, status, thumbnail, title, view_count, favorite_count,
+                      company_id)
+values (1, '2021-04-24 19:21:19', null, '2021-04-30 23:59:59', '2021-04-25 12:00:00', '팀 소개
 
      매스프레소의 Production Development Division은 매스프레소의 가장 핵심 제품인 QANDA의 개발을 책임지고 있는 Division입니다. 해적선 정신과 Start-up Spirit을 가슴에 품고, 고객이 만족하는 제품을 만들어 내는 것에 집중하고 있습니다.
 높은 수준의 제품 Quality 유지하는 것과 제품을 빠르게 개선하는 것을 매우 중요한 가치로 생각합니다. 이를 달성하기 위해서 실험하는 것을 좋아하며 데이터에 기반한 접근을 하기 위해 노력합니다.
@@ -309,8 +377,9 @@ Airflow, Luigi 등의 파이프라인 라이브러리 사용 경험
 맥북, 모니터 등의 고사양 IT장비 지원
 사내 동아리 활동 지원 (밴드, 탁구, 독서모임 운영 중)
 매년 떠나는 해외 워크샵
- ', 'JUNIOR', 'PERMANENT', 'REGULAR', null, 'Data Engineer 구인', 470, 16);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (2, '2021-04-07 19:21:19', null, '2021-04-30 23:59:59', '2021-04-13 12:00:00', '업무 소개
+ ', 0, 'PERMANENT', 'REGULAR', null, 'Data Engineer 구인', 470, 0, 16),
+
+       (2, '2021-04-07 19:21:19', null, '2021-04-30 23:59:59', '2021-04-13 12:00:00', '업무 소개
 Service Design 팀의 Data Engineer 로서 Fulfillment Center (FC)의 운영 향상을 위한 인사이트를 제공하는 데이터를 발견, 추출, 생성하며 예측 모델을 개발하는 역할을 맡게 됩니다. Service Design 팀은 효율적이고 확장성 있는 FC 운영을 지원하며 쿠팡의 성장에 기여하는 팀입니다. 창의적인 문제해결 능력을 갖춘 인재들이 모여 혁신적인 비즈니스 솔루션을 제공합니다. 데이터를 기반으로 비즈니스 의사결정이 이루어질 수 있도록 지원하며, FC의 운영 목표 달성을 위한 각종 인사이트, 지표 및 도구 등을 제공합니다.
 
 물류, Fulfilment Center (FC), 공급체인 등과 관련한 대규모의 (비)정형 데이터를 분석하여 비용 및 생산성 개선 지원
@@ -344,8 +413,11 @@ Tableau, Power BI 등 데이터 시각화 툴의 사용 경험
 참고사항
 본 공고는 모집 완료 시조기 마감될 수 있습니다.
 지원서 내용 중 허위사실이 있는 경우에는 합격이 취소될 수 있습니다.
-보훈대상자 및 장애인 여부는 채용 과정에서 어떠한 불이익도 미치지 않습니다.', 'THREE', 'PERMANENT', 'REGULAR', null, 'Senior, Data Engineer (Fresh Process)', 232, 17);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (4, '2021-04-02 19:21:19', '2021-04-15 16:08:38', '2021-04-30 23:59:59', '2021-04-16 12:00:00', '업무 소개
+보훈대상자 및 장애인 여부는 채용 과정에서 어떠한 불이익도 미치지 않습니다.', 3, 'PERMANENT', 'PROCESS', null,
+        'Senior, Data Engineer (Fresh Process)', 232, 0, 17),
+
+       (4, '2021-04-02 19:21:19', '2021-04-15 16:08:38', '2021-04-30 23:59:59',
+        '2021-04-16 12:00:00', '업무 소개
 사이트 웹 개발 (Front & Back End)
 해외 파트너사/금융기관과의 해외 송금 및 결제 플랫폼 개발
 시스템 운영 및 유지보수
@@ -377,8 +449,9 @@ Git / Slack / Mantis 등의 개발 보조 도구에 익숙한 개발자
 버전관리	Gitlab
 기술 스택	ReactJS, AngularJS, Backbone.js, Node.js, MySQL, C++, PHP
 프로젝트 관리	Trello
-OS 환경	Linux', 'THREE', 'PERMANENT', 'REGULAR', null, '웹 개발자', 11, 18);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (5, '2021-02-28 19:21:19', null, '2021-02-10 23:59:59', '2021-02-02 12:00:00', '업무 소개
+OS 환경	Linux', 3, 'PERMANENT', 'PROCESS', null, '웹 개발자', 11, 0, 18),
+
+       (5, '2021-02-28 19:21:19', null, '2021-02-10 23:59:59', '2021-02-02 12:00:00', '업무 소개
 [이런 일을 하시게 됩니다]
 저희 테스트웍스가 수집하고 가공한 데이터를 이용하여 보다 더 좋은 고품질데이타로 가공하여 인공지능 모델을 테스트하고 만들 수 있습니다.
 가공할 수 있도록 시스템을 구성하여 빠른 시간안에 고품질의 데이터를 생성 합니다.
@@ -440,8 +513,9 @@ GnuBoard와 같은 CMS 사용경험 / 이해
 뭐든 일단 해보자는 마음을 가진 자 환영
 배움에의지가 있는 자
 어떤 상황에서도 무한 긍정 마인드를 가질 수 있는 자
-개선점이 있으면 고치고 싶어하는분', 'FIVE', 'PERMANENT', 'REGULAR', null, '프론트엔드 웹 개발자', 342, 19);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (6, '2021-03-30 19:21:19', null, '2021-04-13 23:59:59', '2021-04-03 19:21:14', '업무 소개
+개선점이 있으면 고치고 싶어하는분', 5, 'PERMANENT', 'EARLY', null, '프론트엔드 웹 개발자', 342, 0, 19),
+
+       (6, '2021-03-30 19:21:19', null, '2021-04-13 23:59:59', '2021-04-03 19:21:14', '업무 소개
 오픈서베이 서비스 개발/운영
 데이터 수집/분석 플랫폼 개발
 자격 조건
@@ -505,8 +579,11 @@ Github에는 직접 개발한 코드를 올려주세요. (일부분만 올리셔
 고사양 장비 제공 - 최고 사양의 노트북(윈도우, 맥 중 선택)과 소프트웨어 지원
 도서 지원 - 생각보다 광범위한 업무 관련 도서 100% 지원
 컨퍼런스 및 교육 지원 - 업무 관련 컨퍼런스 및 외부 교육 지원
-다양한 사내 교육 - 엑셀부터 sql까지 일을 잘하기 위한 다양한 사내 교육 제공', 'THREE', 'PERMANENT', 'REGULAR', null, '백엔드 개발자', 32, 20);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (7, '2021-03-12 19:21:19', '2021-03-14 16:08:42', '2021-03-30 23:59:59', '2021-03-24 19:21:14', '업무 소개
+다양한 사내 교육 - 엑셀부터 sql까지 일을 잘하기 위한 다양한 사내 교육 제공', 7, 'PERMANENT', 'END', null, '백엔드 개발자',
+        32, 0, 20),
+
+       (7, '2021-03-12 19:21:19', '2021-03-14 16:08:42', '2021-03-30 23:59:59',
+        '2021-03-24 19:21:14', '업무 소개
 Java Springframework을 이용한 MSA 기반의 음악 서비스 feature API 개발
 음악 서비스 Backend Platform 개발
 자격 조건
@@ -575,8 +652,9 @@ VM / Docker / 물리장비 서버군
      -  매월 SKT 통신비 4만원 지원
      -  사내 온라인 강의 및 직무 연계 오프라인 강의/세미나 참석 지원
      -  연장근로 식대/교통비 지원
-     -  장기근속 휴가 및 축하금 지원', 'ONE', 'PERMANENT', 'REGULAR', null, '뮤직서비스 FLO Backend 개발', 56, 21);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (8, '2021-01-25 16:07:52', null, '2021-01-30 23:59:59', '2021-01-26 19:21:14', '업무 소개
+     -  장기근속 휴가 및 축하금 지원', 2, 'PERMANENT', 'END', null, '뮤직서비스 FLO Backend 개발', 56, 0, 21),
+
+       (8, '2021-01-25 16:07:52', null, '2021-01-30 23:59:59', '2021-01-26 19:21:14', '업무 소개
 빅데이터와 A.I. 기술을 적용한 디지털마케팅 플랫폼 개발업무와 솔루션,
 SaaS형 서비스사업을 하고있으며, 빅데이터와 최신기술을 경험 할 수 있습니다.
 - 솔루션 백엔드 개발
@@ -616,8 +694,10 @@ SaaS형 서비스사업을 하고있으며, 빅데이터와 최신기술을 경�
  - 명절 상여금/선물 지급
  - 생일선물(상품권) 지급
  - 경조사 지원(경조휴가 및 경조비 등)
-', 'ONE', 'PERMANENT', 'REGULAR', null, '솔루션 / 서비스 개발자', 33, 22);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (9, '2021-02-02 16:07:55', '2021-02-09 16:08:55', '2021-03-01 23:59:59', '2021-02-03 19:21:14', '자격 조건
+', 8, 'PERMANENT', 'REGULAR', null, '솔루션 / 서비스 개발자', 33, 0, 22),
+
+       (9, '2021-02-02 16:07:55', '2021-02-09 16:08:55', '2021-03-01 23:59:59',
+        '2021-02-03 19:21:14', '자격 조건
 컴퓨터 공학, 수학, 공학 또는 이에 준하는 관련 분야 학사 학위
 Python 또는 Golang 중 1개 이상 언어 사용 가능하신 분
 대용량 분산 시스템에 대한 전반적 이해가 있으며, 이를 이용해 실제 서비스까지 개발한 경험이 있으신 분
@@ -656,8 +736,10 @@ AM 8시 ~ AM 10:30 선택적 자율 출근 (점심시간 포함 9시간 근무)
 직급의 상하를 가리지 않고 다양한 의견을 말할 수 있습니다.
 구성원 간에 지식을 개방적으로 공유하고 있습니다.
 일이 없어도 억지로 야근을 하거나, 눈치 보면서 퇴근을 하지 않습니다.
-불필요한 직급을 없애고, 계층이 나누어져 있지 않으며 닉네임을 사용합니다.', 'TWO', 'PERMANENT', 'REGULAR', null, '데이터 엔지니어', 23, 23);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (10, '2021-02-02 16:08:03', null, '2021-02-15 23:59:59', '2021-02-03 19:21:14', '업무 소개
+불필요한 직급을 없애고, 계층이 나누어져 있지 않으며 닉네임을 사용합니다.', 2, 'PERMANENT', 'EARLY', null, '데이터 엔지니어', 23, 0,
+        23),
+
+       (10, '2021-02-02 16:08:03', null, '2021-02-15 23:59:59', '2021-02-03 19:21:14', '업무 소개
 "내 코드 한줄이 국민 절반의 신용등급을 높인다면?"
                                ▼
           3분 만에 대한민국을 바꿔볼까요?
@@ -678,8 +760,9 @@ Linux 환경에서 서비스 개발/운영 경험이 있는 분
 VPN, 방화벽, L4/L7스위치 등에 대한 네트워크 운영 경험이 있으신 분
 금융관련 IT 업무 경력을 보유하신 분
 지원하기
- ', 'TWO', 'PERMANENT', 'REGULAR', null, 'DevOps 엔지니어', 22, 24);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (11, '2021-03-27 16:08:07', null, '2021-04-08 23:59:59', '2021-03-28 19:21:14', '업무 소개
+ ', 4, 'PERMANENT', 'REGULAR', null, 'DevOps 엔지니어', 22, 0, 24),
+
+       (11, '2021-03-27 16:08:07', null, '2021-04-08 23:59:59', '2021-03-28 19:21:14', '업무 소개
 리디의 모바일 앱개발자는 고객이 원할 때 언제 어디서나 책을 읽을 수 있도록 최상의 독서 경험을 만들어냅니다.
 리디북스 모바일 앱 개발(내 서재, 뷰어, 동기화 등), 리디페이퍼 펌웨어/앱 개발, EPUB 뷰어 엔진 개발 등의 업무를 수행하게 됩니다.
 직무소개
@@ -698,8 +781,9 @@ EPUB/PDF/웹툰 관련 개발 경험
 평소 전자책 독서를 즐기시는 분
 [전형 절차]
 
-서류 전형 > 온라인 코딩테스트 > 면접 전형', 'FOUR', 'PERMANENT', 'REGULAR', null, '모바일 앱 엔지니어', 19, 25);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (12, '2021-02-06 16:08:12', null, '2021-02-20 23:59:59', '2021-02-10 19:21:14', '안녕하세요, 국내 최고의 생활서비스 매칭플랫폼 숨고입니다.
+서류 전형 > 온라인 코딩테스트 > 면접 전형', 4, 'PERMANENT', 'PROCESS', null, '모바일 앱 엔지니어', 19, 0, 25),
+
+       (12, '2021-02-06 16:08:12', null, '2021-02-20 23:59:59', '2021-02-10 19:21:14', '안녕하세요, 국내 최고의 생활서비스 매칭플랫폼 숨고입니다.
 누구나 손쉽게 전문가를 찾고, 누구나 나에게 맞는 고객을 찾기는 어렵습니다.
 고객은 발품 팔지 않고 전문가인 숨은고수를 찾을 수 있고,
 전문가는 쉽고 빠르게 고객을 찾고 비즈니스 구축을 시작할 수 있는 곳.
@@ -801,8 +885,10 @@ INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_
 • 서류 : 이력서(자기소개서) 및 경력 기술서
 • 코드 테스트 : (서류전형 합격시) 코드테스트 전달 예정.
 • 인터뷰 : 코드테스트 피드백 및 숨고 Fit, R&R 논의
-• Finally, 숨고 멤버로 입사!', 'THREE', 'PERMANENT', 'REGULAR', null, '[숨고] Mobile App Engineer (iOS/React Native/React)', 32, 26);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (13, '2021-03-14 16:08:19', null, '2021-04-24 23:59:59', '2021-03-24 19:21:14', '업무 소개
+• Finally, 숨고 멤버로 입사!', 3, 'PERMANENT', 'REGULAR', null,
+        '[숨고] Mobile App Engineer (iOS/React Native/React)', 32, 0, 26),
+
+       (13, '2021-03-14 16:08:19', null, '2021-04-24 23:59:59', '2021-03-24 19:21:14', '업무 소개
 기능 테스트, QA 진행
 버그 수집, 관리
 업데이트 오픈 테스트
@@ -821,8 +907,10 @@ INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_
 ㆍ청년내일채움공제 가입 적극지원
 ㆍ중소기업청년소득세 감면 가입 적극지원
 ㆍ주차 지원
-ㆍ명절상여', 'JUNIOR', 'PERMANENT', 'REGULAR', null, '[투윈게임즈] QA 담당자', 11, 27);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (14, '2021-03-04 16:08:25', '2021-03-14 16:09:08', '2021-03-30 23:59:59', '2021-03-05 19:21:14', '업무 소개
+ㆍ명절상여', 0, 'PERMANENT', 'REGULAR', null, '[투윈게임즈] QA 담당자', 11, 0, 27),
+
+       (14, '2021-03-04 16:08:25', '2021-03-14 16:09:08', '2021-03-30 23:59:59',
+        '2021-03-05 19:21:14', '업무 소개
 서버 인프라는 AWS를 사용 하고 있으며 ECS, ApiGateway를 주로 사용하고 있습니다. 현재 10개 이상의 마이크로 서비스들이 존재합니다. 메시지 브로커는 SQS를 사용하고 있으며 Kafka로 변경하려 합니다. 효율적인 관리를 위해 Terraform으로 ECS와 ApiGateway를 마이그레이션 하고 있습니다. 인프라 모니터링을 위해 Datadog을 사용 중이며 Datadog 또한 Terraform으로 관리하고 있습니다.
 　
 Github Actions를 사용하여 CI/CD 파이프라인을 구축하여 이용 중에 있습니다. 추후 Kubernetes(EKS), Helm, ArgoCD를 이용하여 파이프라인을 업데이트 하려고 합니다. production, qa 환경에서 운영중이며 개발단에서도 좀더 쉽게 이용 할 수 있도록 제공하려고 합니다. Spot Fleet을 이용하여 비용 효율화를 진행하려 합니다. 무중단 서비스를 만들기 위해 노력합니다.
@@ -918,8 +1006,9 @@ Terraform, Ansible 등 IaaC를 통한 인프라 자동화 및 운영 경험이 �
 4. 임원면접
 - 모두싸인에 대한 관심도, 성장에 대한 욕구, 가치관 등을 확인하는 과정이에요.
 5. 처우협의
-- 처우, 출근날짜, 근무지 등을 최종적으로 협의하는 과정이에요.', 'JUNIOR', 'PERMANENT', 'REGULAR', null, 'DevOps 엔지니어', 24, 28);
-INSERT INTO recruits (recruit_id, created_date, modified_date, close_date, open_date, content, experience, position, status, thumbnail, title, view_count, company_id) VALUES (15, '2021-04-25 16:08:33', null, '2021-05-15 23:59:59', '2021-04-25 19:21:14', '업무 소개
+- 처우, 출근날짜, 근무지 등을 최종적으로 협의하는 과정이에요.', -1, 'PERMANENT', 'REGULAR', null, 'DevOps 엔지니어', 24, 0, 28),
+
+       (15, '2021-04-25 16:08:33', null, '2021-05-15 23:59:59', '2021-04-25 19:21:14', '업무 소개
 이마고웍스는 인공지능 기반 디지털 덴티스트리 전문 기업입니다. 한국과학기술연구원의 정식 스핀 오프 회사로서, 다년간 축적한 의료영상 분야 3차원 형상 모델 처리, 인공지능, 클라우드 기반 의료 소프트웨어 기술을 바탕으로,
 디지털 덴티스트리 및 의료 인공지능 분야를 혁신하고자 합니다.
 세계적 수준의 3차원 형상 모델 처리 및 인공지능 기술을 확보한 이마고웍스와 함께 성장하실 새 멤버를 모십니다!
@@ -943,5 +1032,4 @@ http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcod
 자율 출퇴근제
 점심 식사 제공
 교육 지원 (도서, 온라인 강의, 학회 등)
-경력에 따라 스톡옵션 제공 가능', 'ONE
-', 'PERMANENT', 'REGULAR', null, '의료용/치과용 3D CAD 소프트웨어 개발', 399, 29);
+경력에 따라 스톡옵션 제공 가능', -1, 'PERMANENT', 'REGULAR', null, '의료용/치과용 3D CAD 소프트웨어 개발', 399, 0, 29);

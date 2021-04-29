@@ -38,10 +38,9 @@ public class RecruitService {
 
 	@Transactional
 	public Long save(RecruitRequest recruitRequest, User user) {
-		Recruit recruit = recruitRequest.toEntity();
 		Company company = companyRepository.findById(user.getId())
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업회원입니다."));
-		recruit.setCompany(company);
+		Recruit recruit = recruitRequest.toEntity(company);
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.addTags(tags);
 		return recruitRepository.save(recruit).getId();
@@ -50,11 +49,12 @@ public class RecruitService {
 	@Transactional
 	public void update(Long recruitId, User user, RecruitRequest recruitRequest) {
 		Recruit recruit = findOne(recruitId);
-		if (!recruit.getCompany().getId().equals(user.getId())) {
+		Company company = recruit.getCompany();
+		if (company != user) {
 			throw new UnauthorizedException("권한이 없습니다.");
 		}
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
-		recruit.update(recruitRequest.toEntity(), tags);
+		recruit.update(recruitRequest.toEntity(company), tags);
 	}
 
 
@@ -83,7 +83,8 @@ public class RecruitService {
 			.collect(Collectors.toList()), pageable, page.getTotalElements());
 	}
 
-	public Page<RecruitResponse> findAll(RecruitSearchCondition condition, Pageable pageable, User user) {
+	public Page<RecruitResponse> findAll(RecruitSearchCondition condition, Pageable pageable,
+		User user) {
 		return recruitQueryRepository.findAll(condition, pageable)
 			.map(recruit -> RecruitResponse.of(recruit, user));
 	}

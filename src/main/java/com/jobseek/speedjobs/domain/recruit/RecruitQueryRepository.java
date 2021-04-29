@@ -10,6 +10,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 @Repository
@@ -40,7 +42,10 @@ public class RecruitQueryRepository {
 				containsContent(condition.getContent()),
 				containsAddress(condition.getAddress()),
 				goeAvgSalary(condition.getAvgSalary()),
-				goeRating(condition.getRating())
+				goeRating(condition.getRating()),
+				betweenDateTime(condition.getOpenDateTime(), condition.getCloseDateTime()),
+				loeExperience(condition.getExperience()),
+				containsStatus(condition.getStatus())
 			);
 
 		List<Recruit> content = query
@@ -67,7 +72,8 @@ public class RecruitQueryRepository {
 
 	private BooleanExpression containsTitleOrCompanyName(String title, String companyName) {
 		if (StringUtils.hasText(title) && StringUtils.hasText(companyName)) {
-			return Objects.requireNonNull(containsTitle(title)).or(containsCompanyName(companyName));
+			return Objects.requireNonNull(containsTitle(title))
+				.or(containsCompanyName(companyName));
 		}
 		return StringUtils.hasText(title) ? containsTitle(title) : containsCompanyName(companyName);
 	}
@@ -90,13 +96,23 @@ public class RecruitQueryRepository {
 		return rating == null ? null : recruit.company.companyDetail.rating.goe(rating);
 	}
 
-//	private BooleanExpression afterOpen(LocalDateTime open) {
-//		return open == null ? null : recruit.openDate.after(open);
-//	}
+	private BooleanExpression betweenDateTime(LocalDateTime openDateTime,
+		LocalDateTime closeDateTime) {
+		if (openDateTime == null || closeDateTime == null) {
+			return null;
+		}
+		return recruit.openDate.between(openDateTime, closeDateTime);
+	}
 
-//	private BooleanExpression eqExperience(Experience experience) {
-//		return ObjectUtils.isEmpty(experience) ? recruit.recruitDetail.experience.eq(experience) : null;
-//	}
+	private BooleanExpression loeExperience(Integer experience) {
+		return experience == null ? null : recruit.experience.loe(experience);
+	}
 
+	private BooleanExpression containsStatus(List<Status> status) {
+		if (ObjectUtils.isEmpty(status)) {
+			return null;
+		}
+		return recruit.status.in(status);
+	}
 
 }

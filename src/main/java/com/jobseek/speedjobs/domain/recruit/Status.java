@@ -1,10 +1,14 @@
 package com.jobseek.speedjobs.domain.recruit;
 
-/**
- * 모집중, 마감, 조기마감, 상시모집
- *
- * @author Boki
- */
 public enum Status {
-	PROCESS, END, EARLY, REGULAR
+	PROCESS("채용중"),
+	END("마감"),
+	EARLY("조기마감"),
+	REGULAR("상시채용");
+
+	private final String name;
+
+	Status(String name) {
+		this.name = name;
+	}
 }
