@@ -9,6 +9,7 @@ import {
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
 import { PROFILE_DELETE_REQUEST } from '../../reducers/profile';
+import { LOG_OUT_REQUEST } from '../../reducers/user';
 
 export default function Profile() {
   const user = useSelector((state) => state.user);
@@ -28,10 +29,10 @@ export default function Profile() {
         data: form,
         me: user.me,
       });
-      // dispatch({
-      //   type: LOG_OUT_REQUEST,
-      //   data: user.me,
-      // });
+      dispatch({
+        type: LOG_OUT_REQUEST,
+        data: user.me,
+      });
       console.log(profile);
     },
     [dispatch, user.me, profile, form]
