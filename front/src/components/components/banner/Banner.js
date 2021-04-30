@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import Img from '../img/banners/img.jpeg';
-import Img2 from '../img/banners/img2.jpeg';
-import Img3 from '../img/banners/img3.jpeg';
-import Img4 from '../img/banner.jpg';
+import Img from '../img/banners/img.png';
+import Img2 from '../img/banners/img2.png';
 import BannerImg from './BannerImg';
 
 const Jumbo = styled.div`
@@ -13,21 +11,16 @@ const Jumbo = styled.div`
   padding: 0;
   user-select: none;
   position: relative;
-  height: 350px;
+  height: 32vw;
   overflow-x: hidden;
-  @media (max-width: 768px) {
-    height: 170px;
-  }
 `;
 
 export default function Banner(props) {
   const [cnt, setCnt] = useState(0);
   const bannerList = useMemo(
     () => [
-      { src: Img, key: 1, order: 1 },
-      { src: Img2, key: 2, order: 2 },
-      { src: Img3, key: 3, order: 3 },
-      { src: Img4, key: 4, order: 0 },
+      { src: Img, key: 1, order: 0 },
+      { src: Img2, key: 2, order: 1 },
     ],
     []
   );
@@ -45,7 +38,7 @@ export default function Banner(props) {
   useEffect(() => {
     const time = setTimeout(() => {
       setCnt((prev) => prev + 1);
-    }, 10000);
+    }, 20000);
     setList((prev) =>
       [
         ...prev,
@@ -63,12 +56,12 @@ export default function Banner(props) {
   }, [cnt, bannerList]);
 
   useEffect(() => {
-    if (list.length > 6) {
+    if (list.length > bannerList.length + 2) {
       setList((prev) => {
         return prev.slice(1);
       });
     }
-  }, [list.length]);
+  }, [list.length, bannerList.length]);
 
   return (
     <div className="container-fluid" style={{ padding: 0, marginTop: '59px' }}>

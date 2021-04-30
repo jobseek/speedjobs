@@ -41,16 +41,7 @@ export default function Profile() {
   return (
     <form>
       <div className="container text-left">
-        <StyledHeaderDiv padding style={{ position: 'relative' }}>
-          <StyledHeaderMargin className={'container row justify-content-end'}>
-            <div
-              className={'col-md-12 col-8'}
-              style={{ marginTop: '10px', paddingTop: '5px' }}
-            >
-              <h5>회원 탈퇴</h5>
-            </div>
-          </StyledHeaderMargin>
-        </StyledHeaderDiv>
+        <StyledHeaderDiv padding title={'회원탈퇴'}></StyledHeaderDiv>
         <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout

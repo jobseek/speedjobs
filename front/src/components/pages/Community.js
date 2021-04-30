@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
-import Tags from '../components/Tags';
 import { TagBody } from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
+import TagSelector from '../components/tag/TagSelector';
+import TagShower from '../components/tag/TagShower';
 
 export const Blank = styled.div`
   display: inline-block;
@@ -128,9 +129,9 @@ export default function Community(props) {
               className={'row justify-content-between'}
               style={{ padding: '10px', paddingTop: '0' }}
             >
-              <Tags tagList={taglist} selected={setTaglist}>
-                filter
-              </Tags>
+              <TagSelector tagList={taglist} setTagList={setTaglist}>
+                필터
+              </TagSelector>
               {user.me !== null ? (
                 <TagBody
                   style={{ marginTop: '0', border: '1px solid #f5df4d' }}
@@ -144,6 +145,9 @@ export default function Community(props) {
                 ''
               )}
             </div>
+          </div>
+          <div className={'text-left'}>
+            <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
           </div>
           <div style={{ height: '30px' }}></div>
           {mapPost}

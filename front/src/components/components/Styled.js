@@ -215,10 +215,25 @@ export const StyledHeaderDivInside = styled.div`
   }
 `;
 
-export const StyledHeaderDiv = ({ children, padding, fix }) => (
+const HeaderTitle = styled.div`
+  margin: 10px;
+  flex: 1;
+  padding: 5px;
+  font-size: 18px;
+`;
+
+export const StyledHeaderDiv = ({ children, padding, fix, title }) => (
   <>
     <StyledHeaderDivInside padding={padding} fix={fix}>
-      <div style={{ borderBottom: '1px solid #eee ', paddingBottom: '20px' }}>
+      <div
+        style={{
+          borderBottom: '1px solid #eee ',
+          display: 'flex',
+          flexWrap: 'nowrap',
+          paddingBottom: '2px',
+        }}
+      >
+        <HeaderTitle>{title}</HeaderTitle>
         {children}
       </div>
     </StyledHeaderDivInside>

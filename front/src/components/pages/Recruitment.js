@@ -11,6 +11,8 @@ import {
 } from '../../reducers/recruit';
 import Post from '../components/Post';
 import { COMPANY_GET_REQUEST } from '../../reducers/company';
+import TagSelector from '../components/tag/TagSelector';
+import TagShower from '../components/tag/TagShower';
 
 export default function Recruitment() {
   const history = useHistory();
@@ -129,9 +131,9 @@ export default function Recruitment() {
                   paddingTop: '0',
                 }}
               >
-                <Tags tagList={taglist} selected={setTaglist}>
-                  직무
-                </Tags>
+                <TagSelector tagList={taglist} setTagList={setTaglist}>
+                  필터
+                </TagSelector>
                 {me[0].role === 'ROLE_COMPANY' ? (
                   <TagBody
                     style={{ marginTop: '0', border: '1px solid #f5df4d' }}
@@ -149,6 +151,9 @@ export default function Recruitment() {
                   ''
                 )}
               </div>
+            </div>
+            <div className={'text-left'}>
+              <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
             </div>
             <div style={{ height: '30px' }}></div>
             {mapRecruit}

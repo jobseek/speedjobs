@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { X } from 'react-bootstrap-icons';
 import { TagBody } from './Styled';
 
-const TagDrop = styled.div`
+export const TagDrop = styled.div`
   position: absolute;
   border-radius: 5px;
   top: 50px;
@@ -23,7 +23,7 @@ const TagDrop = styled.div`
   }
 `;
 
-const TagsInDrop = styled.div`
+export const TagsInDrop = styled.div`
   width: 100%;
   text-align: left;
   padding: 5px 10px 5px 10px;
@@ -116,7 +116,7 @@ export default function Tags({ tagList, children, sm, selected }) {
         {children}
         {show && <TagDrop>{TagToDrop}</TagDrop>}
       </TagBody>
-      {TagToMap}
+      <div>{TagToMap}</div>
     </span>
   );
 }

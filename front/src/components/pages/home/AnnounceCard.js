@@ -17,7 +17,7 @@ export default function AnnounceCard() {
       type: RECRUIT_LIST_REQUEST,
       data: { size: 6, page: 0 },
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (recruit.recruitList) {

@@ -107,26 +107,21 @@ export default function RecruitmentDetail(props) {
         }}
       >
         {/* 제목 지원 찜하기 */}
-        <StyledHeaderDiv>
-          <div className={'container row justify-content-end'}>
-            <div className={'col-md-8 col-4 p-0'} style={{ marginTop: '14px' }}>
-              <h5>{content.title ?? '.....'}</h5>
-            </div>
-            <div className={'col-md-3 col-4 text-right'}>
-              <StyledButton wide>지원하기</StyledButton>
-            </div>
-            <div className={'col-md-1 col-3 text-right'}>
-              <StyledButton
-                white={!isFav}
-                grey={isFav}
-                onClick={(e) => {
-                  if (isFav) unFavClick(e);
-                  else favClick(e);
-                }}
-              >
-                찜하기
-              </StyledButton>
-            </div>
+        <StyledHeaderDiv title={content.title ?? '.....'}>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton wide>지원하기</StyledButton>
+          </div>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton
+              white={!isFav}
+              grey={isFav}
+              onClick={(e) => {
+                if (isFav) unFavClick(e);
+                else favClick(e);
+              }}
+            >
+              찜하기
+            </StyledButton>
           </div>
         </StyledHeaderDiv>
 

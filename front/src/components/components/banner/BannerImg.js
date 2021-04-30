@@ -3,23 +3,19 @@ import styled from 'styled-components';
 
 const Img = styled.img`
   position: absolute;
-  left: 2%;
-  width: 96%;
-  height: 350px;
-  transition: margin 2s ease-in-out;
-  margin-left: ${(props) => props.now + 'vw'};
-  opacity: ${(props) => (props.now === 0 ? 1 : 0.3)};
-  object-fit: cover;
+  width: 100vw;
+  left: 0;
+  height: 100%;
+  transition: opacity 2s ease-in-out;
+  opacity: ${(props) => (props.now === 0 ? 1 : 0)};
+  object-fit: fill;
   z-index: ${(props) => props.zIndex};
-  @media (max-width: 768px) {
-    height: 170px;
-  }
 `;
 
 export default function BannerImg({ src, now, zIndex }) {
   return (
     <>
-      <Img src={src} now={(now - 1) * 96} zIndex={zIndex}></Img>
+      <Img src={src} now={now * 100} zIndex={zIndex}></Img>
     </>
   );
 }

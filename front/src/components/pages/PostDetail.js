@@ -153,36 +153,27 @@ export default function PostDetail(props) {
         }}
       >
         {/* 헤더*/}
-        <StyledHeaderDiv>
-          <div
-            className={'container row justify-content-end'}
-            style={{ paddingTop: '15px' }}
-          >
-            <div className={'col-md-8 col-6 p-0'} style={{ marginTop: '14px' }}>
-              <h5 style={{ paddingLeft: '15px' }}>{content.title}</h5>
-            </div>
-            <div
-              className={'col-md-4 col-6 text-right'}
-              style={{ paddingRight: 0 }}
+        <StyledHeaderDiv title={content.title}>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton
+              wide
+              style={{ letterSpacing: '10px', paddingLeft: '20px' }}
+              onClick={() => history.goBack()}
             >
-              <StyledButton
-                wide
-                style={{ letterSpacing: '10px', paddingLeft: '20px' }}
-                onClick={() => history.goBack()}
-              >
-                목록
-              </StyledButton>
-              <StyledButton
-                white={!fav}
-                grey={fav}
-                onClick={(e) => {
-                  if (fav) unFavClick(e);
-                  else favClick(e);
-                }}
-              >
-                찜하기
-              </StyledButton>
-            </div>
+              목록
+            </StyledButton>
+          </div>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton
+              white={!fav}
+              grey={fav}
+              onClick={(e) => {
+                if (fav) unFavClick(e);
+                else favClick(e);
+              }}
+            >
+              찜하기
+            </StyledButton>
           </div>
         </StyledHeaderDiv>
         {/* 작성자*/}
