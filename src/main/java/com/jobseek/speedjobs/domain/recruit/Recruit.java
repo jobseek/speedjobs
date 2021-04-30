@@ -103,6 +103,11 @@ public class Recruit extends BaseTimeEntity {
 		this.recruitDetail = recruit.getRecruitDetail();
 	}
 
+	public Recruit changeStatus() {
+		this.status = Status.END;
+		return this;
+	}
+
 	public void addTags(List<Tag> tags) {
 		for (Tag tag : tags) {
 			this.tags.add(tag);

@@ -8,6 +8,7 @@ import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.RecruitQueryRepository;
 import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
+import com.jobseek.speedjobs.domain.recruit.Status;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
@@ -15,6 +16,7 @@ import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitSearchCondition;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,6 +90,14 @@ public class RecruitService {
 		User user) {
 		return recruitQueryRepository.findAll(condition, pageable)
 			.map(recruit -> RecruitResponse.of(recruit, user));
+	}
+
+	@Transactional
+	@Scheduled(cron = "0 0 * * * *")
+	public void changeStatusOfFinishedRecruit() {
+		List<Recruit> recruits = recruitRepository
+			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now());
+		recruits.forEach(Recruit::changeStatus);
 	}
 
 	/**
