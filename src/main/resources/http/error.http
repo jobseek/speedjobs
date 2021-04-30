@@ -14,5 +14,13 @@ GET http://{{host}}/test/v2
 Accept: application/json
 
 ###
+GET http://{{host}}/test/v3
+Accept: application/json
+
+###
+GET http://{{host}}/test/v4
+Accept: application/json
+
+###
 GET http://{{host}}/testing
 Accept: application/json
