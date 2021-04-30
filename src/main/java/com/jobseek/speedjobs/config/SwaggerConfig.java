@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.config;
 
+import com.jobseek.speedjobs.config.auth.LoginUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -20,6 +21,7 @@ public class SwaggerConfig {
 			.apis(RequestHandlerSelectors.basePackage("com.jobseek.speedjobs.controller"))
 			.paths(PathSelectors.any())
 			.build()
+			.ignoredParameterTypes(LoginUser.class)
 			.useDefaultResponseMessages(false);
 	}
 
