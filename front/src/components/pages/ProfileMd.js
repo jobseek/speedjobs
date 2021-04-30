@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import { ko } from 'date-fns/esm/locale';
+import 'react-datepicker/dist/react-datepicker.css';
+import styled from 'styled-components';
+import moment from 'moment';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import '../components/DatePicker/customDatePickerWidth.css';
 import {
   InputText,
   ProfileDiv,
@@ -13,16 +19,33 @@ import ProfileImage from '../components/Profile/ProfileImage';
 import ProfileInputs from '../components/Profile/ProfileInputs';
 import ProfileGender from '../components/Profile/ProfileGender';
 import ProfileTextarea from '../components/Profile/ProfileTextarea';
+
 import {
   PROFILE_GET_REQUEST,
   PROFILE_UPDATE_REQUEST,
 } from '../../reducers/profile';
+
+const StyledDatePicker = styled(DatePicker)`
+  width: 100%;
+  height: 35px;
+  border-radius: 27px;
+  background-color: #fdfdfd;
+  border: 1px solid silver;
+  margin-bottom: 5px;
+  padding-left: 15px;
+
+  &:focus {
+    outline: none;
+  }
+`;
 
 export default function ProfileMd() {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
+  const [startDate, setStartDate] = useState('');
+
   const [form, setForm] = useState({
     name: '',
     nickname: '',
@@ -37,6 +60,26 @@ export default function ProfileMd() {
   const onChangeHandler = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
+
+  const onChangeHandler2 = useCallback(
+    (e) => {
+      console.log('=== e ===', e);
+      const event = { target: { name: 'birth', value: e } };
+      console.log('=== event ===', event);
+      console.log('=== event.target ===', event.target);
+      console.log('=== event.target.name ===', event.target.name);
+      console.log('=== event.target.value ===', event.target.value);
+      if (event.target.name === 'birth') {
+        console.log('hi');
+        setForm((prev) => ({
+          ...prev,
+          [event.target.name]: moment(event.target.value).format('YYYY-MM-DD'),
+        }));
+      }
+      console.log('=== form ===', form);
+    },
+    [form]
+  );
 
   // useEffect(() => {
   //   if (profile.profileUpdateDone) {
@@ -120,13 +163,26 @@ export default function ProfileMd() {
               value={form.nickname || ''}
             />
             {/* 생년월일 */}
-            <ProfileInputs name={'생년월일'} />
-            <InputText
-              onChange={(e) => onChangeHandler(e)}
-              name={'birth'}
-              type="text"
-              value={form.birth || ''}
-            />
+            {/* <InputText*/}
+            {/*  onChange={(e) => onChangeHandler(e)}*/}
+            {/*  name={'birth'}*/}
+            {/*  type="text"*/}
+            {/*  value={form.birth || ''}*/}
+            {/* />*/}
+            <div>
+              <ProfileInputs name={'생년월일'} />
+              <div className="customDatePickerWidth">
+                <StyledDatePicker
+                  locale={ko}
+                  dateFormat="yyyy-MM-dd"
+                  selected={startDate}
+                  onSelect={(e) => setStartDate(e)}
+                  onChange={(e) => onChangeHandler2(e)}
+                  peekMonthDropdown
+                  showYearDropdown
+                />
+              </div>
+            </div>
 
             {/* 비밀번호 */}
             {/* <ProfileInputs name={'비밀번호'} />*/}

@@ -71,6 +71,21 @@ export default function PopUp({ type, text }) {
       color: 'white',
       text: '로그아웃 되었습니다.',
     },
+    profileUpdate: {
+      backColor: 'green',
+      color: 'white',
+      text: '회원정보가 수정되었습니다.',
+    },
+    withdraw: {
+      backColor: 'red',
+      color: 'white',
+      text: '회원탈퇴 되었습니다.',
+    },
+    withdrawErr: {
+      backColor: 'red',
+      color: 'white',
+      text: '비밀번호가 틀렸습니다.',
+    },
     green: {
       backColor: 'green',
       color: 'white',

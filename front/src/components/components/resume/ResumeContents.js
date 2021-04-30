@@ -6,11 +6,11 @@ import ResumeSelf from './ResumeSelf';
 import ResumeSkill from './ResumeSkill';
 import ResumeCertificate from './ResumeCertificate';
 
-export default function ResumeContents() {
+export default function ResumeContents(setData) {
   return (
     <>
       <div className={'container-fluid'}>
-        <ResumeBasic />
+        <ResumeBasic setData={setData} />
         <ResumeEducation />
         <ResumeCertificate />
         <ResumeCareer />

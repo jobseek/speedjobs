@@ -19,6 +19,11 @@ import {
 } from '../../reducers/user';
 import { POST_ADD_DONE } from '../../reducers/post';
 import { RECRUIT_ADD_DONE } from '../../reducers/recruit';
+import {
+  PROFILE_DELETE_DONE,
+  PROFILE_DELETE_FAIL,
+  PROFILE_UPDATE_DONE,
+} from '../../reducers/profile';
 
 // 네비바스타일
 const NavBar = styled.div`
@@ -127,6 +132,21 @@ export default function Header(props) {
       addPop({ type: 'warn', id: v4(), text: '게시글 등록 오류' });
       dispatch({
         type: POST_ADD_DONE,
+      });
+    } else if (state.profile.profileUpdateDone) {
+      addPop({ type: 'profileUpdate', id: v4() });
+      dispatch({
+        type: PROFILE_UPDATE_DONE,
+      });
+    } else if (state.profile.profileDeleteDone) {
+      addPop({ type: 'withdraw', id: v4() });
+      dispatch({
+        type: PROFILE_DELETE_DONE,
+      });
+    } else if (state.profile.profileDeleteError === 400) {
+      addPop({ type: 'withdrawErr', id: v4() });
+      dispatch({
+        type: PROFILE_DELETE_FAIL,
       });
     }
   }, [state, dispatch, history, remove]);

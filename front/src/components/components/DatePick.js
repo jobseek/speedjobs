@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { ResumeTitles } from './Styled';
 
 const StyledDatePicker = styled(DatePicker)`
-  width: 100%;
   border-radius: 5px;
   background-color: #fbfbfb;
   height: 35px;

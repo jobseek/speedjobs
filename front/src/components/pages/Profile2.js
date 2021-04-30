@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ProfileDiv,
@@ -7,8 +7,10 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import { PROFILE_DELETE_REQUEST } from '../../reducers/profile';
-import { LOG_OUT_REQUEST } from '../../reducers/user';
+import {
+  PROFILE_DELETE_DONE,
+  PROFILE_DELETE_REQUEST,
+} from '../../reducers/profile';
 
 export default function Profile() {
   const user = useSelector((state) => state.user);
@@ -28,14 +30,32 @@ export default function Profile() {
         data: form,
         me: user.me,
       });
-      dispatch({
-        type: LOG_OUT_REQUEST,
-        data: user.me,
-      });
-      console.log(profile);
     },
-    [dispatch, user.me, profile, form]
+    [dispatch, user.me, form]
   );
+
+  useEffect(() => {
+    if (profile.profileDeleteError === 400) {
+      console.log('비밀번호 오류');
+      console.log(profile);
+    } else if (profile.profileDeleteDone) {
+      console.log(profile);
+
+      // dispatch({
+      //   type: LOG_OUT_REQUEST,
+      //   data: user.me,
+      // });
+    }
+
+    if (profile.profileDeleteError || profile.profileDeleteDone) {
+      dispatch({ type: PROFILE_DELETE_DONE });
+    }
+  }, [
+    profile.profileDeleteDone,
+    profile.profileDeleteError,
+    dispatch,
+    user.me,
+  ]);
 
   return (
     <form>

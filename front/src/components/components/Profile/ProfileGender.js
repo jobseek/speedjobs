@@ -24,9 +24,9 @@ export default function ProfileGender({ onChange, name, value }) {
         <input
           type="radio"
           name={name}
-          value="male"
+          value="M"
           onChange={onChange}
-          checked={value === 'male'}
+          checked={value === 'M'}
         />
         <label>&nbsp;&nbsp;남</label>
       </div>
@@ -35,9 +35,9 @@ export default function ProfileGender({ onChange, name, value }) {
         <input
           type="radio"
           name={name}
-          value="female"
+          value="F"
           onChange={onChange}
-          checked={value === 'female'}
+          checked={value === 'F'}
         />
         <label>&nbsp;&nbsp;여</label>
       </div>
