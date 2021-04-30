@@ -38,6 +38,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'junit:junit:4.12'
     implementation 'com.querydsl:querydsl-jpa'
+    implementation group: 'org.json', name: 'json', version: '20201115'
 
     compileOnly 'org.projectlombok:lombok'
 

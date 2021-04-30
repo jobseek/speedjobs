@@ -1,0 +1,18 @@
+### 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{member_email}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+###
+GET http://{{host}}/test/v2
+Accept: application/json
+
+###
+GET http://{{host}}/testing
+Accept: application/json
