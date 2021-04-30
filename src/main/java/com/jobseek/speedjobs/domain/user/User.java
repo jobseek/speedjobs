@@ -110,6 +110,10 @@ public class User extends BaseTimeEntity {
 		return this;
 	}
 
+	public void changeRole(Role role) {
+		this.role = role;
+	}
+
 	public boolean isMember() {
 		return role == Role.ROLE_MEMBER;
 	}

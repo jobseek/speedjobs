@@ -1,7 +1,7 @@
 ### 회원가입(UUID<key>)값 생성 -> 회원가입 확인(엑세스토큰받아옴) -> 로그인 -> 이후에 모든 행동들이 access_token필요함
 
 ### 1.회원가입(멤버)
-POST http://localhost:8081/api/user/signup
+POST http://localhost:8081/api/user/signup/member
 Content-Type: application/json
 
 {
@@ -12,18 +12,18 @@ Content-Type: application/json
 }
 
 ### 1-1.회원가입(기업)
-POST http://localhost:8081/api/user/signup
+POST http://localhost:8081/api/user/signup/company
 Content-Type: application/json
 
 {
-  "companyName": "스피드잡스",
+  "name": "잡부",
+  "email": "jobseek@abcd.com",
+  "password": "jobseekA2021!",
   "contact": "010-1234-5678",
-  "email": "1234@1234.com",
-  "homepage": "string",
-  "name": "보쿠",
-  "password": "a12341234!",
-  "registrationNumber": "111111",
-  "role": "ROLE_COMPANY"
+  "role": "ROLE_GUEST",
+  "companyName": "잡식컴퍼니",
+  "registrationNumber": "223-45-67890",
+  "homepage": "https://www.jobseek.com"
 }
 
 ### 2.회원가입확인(이메일인증)
@@ -67,3 +67,6 @@ Authorization: Bearer {{accessToken}}
 {
   "password": "jobseek2021!"
 }
+
+### 6.전체조회
+GET http://{{host}}/user/

@@ -24,6 +24,11 @@
       "name": "front-url",
       "type": "java.lang.String",
       "description": "Description for front-url."
+    },
+    {
+      "name": "back_url",
+      "type": "java.lang.String",
+      "description": "Description for back_url."
     }
   ]
 }

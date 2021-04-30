@@ -19,7 +19,7 @@ export default function RegisterContents(props) {
     companyName: '',
     homepage: '',
     registrationNumber: '',
-    role: 'ROLE_COMPANY',
+    role: 'ROLE_GUEST',
   });
 
   const [check, setCheck] = useState({

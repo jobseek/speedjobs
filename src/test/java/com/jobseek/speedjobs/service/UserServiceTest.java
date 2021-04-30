@@ -28,8 +28,8 @@ class UserServiceTest {
 	void SetUp() {
 		UserSaveRequest user = UserSaveRequest.builder().name("테스터").email("test@test.com")
 			.password("testerA123").role(Role.ROLE_MEMBER).build();
-		String key = userService.sendEmail(user);
-		userId = userService.saveCustomUser(key);
+//		String key = userService.sendEmail(user);
+//		userId = userService.saveCustomUser(key);
 	}
 
 //	@AfterEach

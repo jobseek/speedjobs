@@ -22,16 +22,17 @@ public class MailUtil {
 
 	private final JavaMailSender javaMailSender;
 
-	public void sendEmail(String email, String key) {
+	public void sendEmail(String email, String subject, String content, String src) {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		try {
 			VelocityEngine velocityEngine = new VelocityEngine();
-			message.setSubject("[speedjobs] 가입완료를 위해 이메일 인증을 해주세요.");
+			message.setSubject(subject);
 			message.setRecipient(RecipientType.TO, new InternetAddress(email));
 			Template template = velocityEngine
 				.getTemplate("./src/main/resources/templates/email.html", "UTF-8");
 			VelocityContext context = new VelocityContext();
-			context.put("src", "http://localhost:8081/api/user/signup/confirm/" + key);
+			context.put("content", content);
+			context.put("src", src);
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);
 			message.setText(writer.toString(), "UTF-8", "html");
