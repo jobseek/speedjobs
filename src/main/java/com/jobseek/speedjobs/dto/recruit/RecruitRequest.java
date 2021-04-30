@@ -8,6 +8,7 @@ import com.jobseek.speedjobs.domain.recruit.RecruitDetail;
 import com.jobseek.speedjobs.domain.recruit.Status;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -24,11 +25,11 @@ public class RecruitRequest {
 	private String title;
 
 	@NotNull
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime openDate;
 
-	@NotNull
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+	@Future
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime closeDate;
 
 	@NotNull

@@ -15,10 +15,10 @@ public class Career {
 
 	private String position;
 
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime inDate; //입사날짜
 
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime outDate; //퇴사날짜
 
 }
