@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 
+import com.jobseek.speedjobs.common.exception.NotSelfException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.post.Comment;
@@ -128,7 +129,7 @@ public class User extends BaseTimeEntity {
 
 	public void validateMe(Long id) {
 		if (!this.id.equals(id)) {
-			throw new IllegalArgumentException("본인이 아닙니다.");
+			throw new NotSelfException(id, this.id);
 		}
 	}
 }

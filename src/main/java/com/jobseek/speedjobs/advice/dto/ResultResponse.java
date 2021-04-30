@@ -13,7 +13,6 @@ public class ResultResponse {
 
 	private String status;
 	private String message;
-	private Boolean success; // True or False
 
 }
 

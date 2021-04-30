@@ -14,12 +14,20 @@ GET http://{{host}}/test/v2
 Accept: application/json
 
 ###
-GET http://{{host}}/test/v3
+GET http://{{host}}/test/v3/99
 Accept: application/json
 
 ###
-GET http://{{host}}/test/v4
-Accept: application/json
+POST http://{{host}}/test/v4
+Content-Type: application/json
+
+{
+  "name": "킹받네",
+  "email": "admin@admin.com",
+  "password": "Aa12341234!",
+  "role": "ROLE_MEMBER",
+  "contact": "010-1234-5678"
+}
 
 ###
 GET http://{{host}}/testing

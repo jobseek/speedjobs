@@ -4,7 +4,10 @@ import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 
+import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotExistException;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
+import com.jobseek.speedjobs.common.exception.UnMatchedException;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
@@ -57,7 +60,7 @@ public class UserService {
 
 	public User findOne(Long userId) {
 		return userRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다. id=" + userId));
+			.orElseThrow(() -> new NotFoundException("User", "id"));
 	}
 
 	public String sendRegisterEmail(UserSaveRequest request) {
@@ -85,7 +88,7 @@ public class UserService {
 	@Transactional
 	public Long saveCustomUser(String key) {
 		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key)
-			.orElseThrow(() -> new NotExistException("이미 처리된 요청이거나 시간초과되었습니다."));
+			.orElseThrow(() -> new NotFoundException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
 		UserDto userDto = request.getUserDto(passwordEncoder);
 		userDto.setNickname(request.getName());
@@ -96,21 +99,21 @@ public class UserService {
 			Company company = new Company(userDto);
 			return companyRepository.save(company).getId();
 		} else {
-			throw new IllegalArgumentException("존재하지 않는 역할입니다.");
+			throw new NotFoundException("존재하지 않는 역할입니다.");
 		}
 	}
 
 	public MemberInfoResponse findMemberInfo(Long userId, User user) {
 		user.validateMe(userId);
 		Member member = memberRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("개인회원이 아닙니다."));
+			.orElseThrow(() -> new NotFoundException("Member", "Id"));
 		return MemberInfoResponse.of(member);
 	}
 
 	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
 		user.validateMe(userId);
 		Company company = companyRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("기업회원이 아닙니다."));
+			.orElseThrow(() -> new NotFoundException("Company", "Id"));
 		return CompanyInfoResponse.of(company);
 	}
 
@@ -120,7 +123,7 @@ public class UserService {
 			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(),
 				request.getPicture(), request.getContact(), request.getBirth(),
 				request.getBio(), request.getGender()))
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+			.orElseThrow(() -> new NotFoundException("Member", "Id"));
 	}
 
 	@Transactional
@@ -129,7 +132,7 @@ public class UserService {
 			.map(company -> company.updateCompanyInfo(request.getName(), request.getNickname(),
 				request.getPicture(), request.getContact(), request.getCompanyName(),
 				request.getScale(), request.toCompanyDetail()))
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+			.orElseThrow(() -> new NotFoundException("Company", "Id"));
 	}
 
 	@Transactional
@@ -156,7 +159,7 @@ public class UserService {
 		if (!Pattern.matches(nameReg, request.getName()) ||
 			!Pattern.matches(emailReg, request.getEmail()) ||
 			!Pattern.matches(passwordReg, request.getPassword())) {
-			throw new IllegalArgumentException("회원가입 형식에 맞지 않습니다.");
+			throw new UnMatchedException("SignUp Rule");
 		}
 
 		if (request.getRole() == ROLE_GUEST) {
@@ -165,18 +168,18 @@ public class UserService {
 				!Pattern.matches(homepageReg, request.getHomepage()) ||
 				!Pattern.matches(registrationNumReg, request.getRegistrationNumber())
 			) {
-				throw new IllegalArgumentException("회원가입 형식에 맞지 않습니다.");
+				throw new UnMatchedException("SignUp Rule");
 			}
 		}
 
 		if (userRepository.existsByEmail(request.getEmail())) {
-			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+			throw new DuplicatedException(request.getEmail(), "E-mail");
 		}
 	}
 
 	public void validatePassword(UserCheckRequest request, User user) {
 		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+			throw new UnMatchedException("password");
 		}
 	}
 }
