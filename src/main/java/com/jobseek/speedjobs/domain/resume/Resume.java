@@ -119,15 +119,27 @@ public class Resume extends BaseTimeEntity {
 	}
 
 	public void addMoreInfo(List<Career> careers, List<Scholar> scholars, List<Certificate> certificates) {
-		this.careerList.addAll(careers);
-		this.scholarList.addAll(scholars);
-		this.certificateList.addAll(certificates);
+		if (careers != null) {
+			this.careerList.addAll(careers);
+		}
+		if (scholars != null) {
+			this.scholarList.addAll(scholars);
+		}
+		if (certificates != null) {
+			this.certificateList.addAll(certificates);
+		}
 	}
 
 	public void updateInfo(List<Career> careers, List<Scholar> scholars, List<Certificate> certificates) {
-		this.careerList.clear();
-		this.scholarList.clear();
-		this.certificateList.clear();
+		if (careers != null) {
+			this.careerList.clear();
+		}
+		if (scholars != null) {
+			this.scholarList.clear();
+		}
+		if (certificates != null) {
+			this.certificateList.clear();
+		}
 		addMoreInfo(careers,scholars,certificates);
 	}
 

@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class ResultResponse {
 
-	private Boolean success; // True or False
 	private String status;
 	private String message;
+	private Boolean success; // True or False
 
 }
 
