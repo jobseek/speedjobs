@@ -79,7 +79,6 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@GetMapping("/me")
 	public ResponseEntity<UserInfoResponse> findLoginUserInfo(@LoginUser User user) {
 		return ResponseEntity.ok(UserInfoResponse.of(user));

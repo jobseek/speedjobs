@@ -7,6 +7,8 @@ import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +21,19 @@ public class TagService {
 	private final TagRepository tagRepository;
 
 	@Transactional
+	@CacheEvict(value = "tags", allEntries = true)
 	public void saveTag(TagRequest request) {
 		tagRepository.save(request.toEntity());
 	}
 
+	@Cacheable(value = "tags")
 	public TagResponses findTagsByType() {
 		List<Tag> tags = tagRepository.findAll();
 		return TagResponses.mappedByType(tags);
 	}
 
 	@Transactional
+	@CacheEvict(value = "tags", allEntries = true)
 	public void deleteTag(Long tagId) {
 		Tag tag = findOne(tagId);
 		tag.getPosts().forEach(post -> post.getTags().remove(tag));
@@ -37,6 +42,7 @@ public class TagService {
 	}
 
 	@Transactional
+	@CacheEvict(value = "tags", allEntries = true)
 	public void updateTag(Long tagId, TagRequest request) {
 		Tag tag = findOne(tagId);
 		tag.changeTag(request.getTagType(), request.getTagName());

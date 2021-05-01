@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.dto.tag;
 
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.Type;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TagResponses {
+public class TagResponses implements Serializable {
 
 	private Map<Type, List<TagResponse>> tags = new HashMap<>();
 
@@ -35,7 +36,7 @@ public class TagResponses {
 	}
 
 	@Getter
-	private static class TagResponse {
+	private static class TagResponse implements Serializable {
 
 		private final Long id;
 		private final String name;
