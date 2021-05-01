@@ -31,8 +31,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		Object principal = authentication.getPrincipal();
 		if (principal == null || principal.getClass() == String.class) {
 //			throw new LoginException("로그인이 필요합니다.");
-			return User.builder().build();
-//			return null;
+//			return User.builder().build();
+			return null;
 		}
 		return userService.findOne((Long) principal);
 	}

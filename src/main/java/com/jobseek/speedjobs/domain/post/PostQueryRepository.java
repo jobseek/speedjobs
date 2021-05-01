@@ -32,8 +32,8 @@ public class PostQueryRepository {
 		JPAQuery<Post> query = queryFactory
 			.selectDistinct(post)
 			.from(post)
-			.leftJoin(post.tags, tag)
-			.leftJoin(post.user, user)
+			.leftJoin(post.tags, tag).fetchJoin()
+			.leftJoin(post.user, user).fetchJoin()
 			.where(
 				containsTagIds(condition.getTagIds()),
 				containsAuthor(condition.getAuthor()),

@@ -34,8 +34,8 @@ public class RecruitQueryRepository {
 		JPAQuery<Recruit> query = queryFactory
 			.selectDistinct(recruit)
 			.from(recruit)
-			.leftJoin(recruit.tags, tag)
-			.leftJoin(recruit.company, company)
+			.leftJoin(recruit.tags, tag).fetchJoin()
+			.leftJoin(recruit.company, company).fetchJoin()
 			.where(
 				containsTagIds(condition.getTagIds()),
 				containsTitleOrCompanyName(condition.getTitle(), condition.getCompanyName()),
