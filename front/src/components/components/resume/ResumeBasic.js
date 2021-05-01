@@ -46,8 +46,7 @@ const StyledDatePicker = styled(DatePicker)`
     outline: none;
   }
 `;
-
-export default function ResumeBasic({ setData }) {
+export default function ResumeBasic({ onChange }) {
   const [form, setForm] = useState({
     open: '',
     name: '',
@@ -133,7 +132,7 @@ export default function ResumeBasic({ setData }) {
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
   }, [user.me, dispatch]);
 
-  const onChange = async (e) => {
+  const onChange2 = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append('files', e.target.files[0]);
@@ -172,7 +171,7 @@ export default function ResumeBasic({ setData }) {
   };
 
   return (
-    <>
+    <form>
       <div style={{ marginBottom: '40px' }}>
         <h5 style={{ display: 'inline-block' }}>기본 정보</h5>
         <Warning>
@@ -190,10 +189,7 @@ export default function ResumeBasic({ setData }) {
           >
             {bookmark ? <Private>공개</Private> : <Private>비공개</Private>}
             {bookmark ? (
-              <Toggle2
-                onClick={handleBookmark}
-                onChange={(e) => onChangeHandler(e)}
-              />
+              <Toggle2 onClick={handleBookmark} onChange={(e) => onChange(e)} />
             ) : (
               <Toggle1
                 onClick={handleBookmark}
@@ -218,7 +214,7 @@ export default function ResumeBasic({ setData }) {
           <input
             type="file"
             ref={hiddenFileInput}
-            onChange={onChange}
+            onChange={onChange2}
             style={{ display: 'none' }}
           />
         </div>
@@ -301,6 +297,6 @@ export default function ResumeBasic({ setData }) {
       >
         변경 사항 저장
       </StyledButton>
-    </>
+    </form>
   );
 }

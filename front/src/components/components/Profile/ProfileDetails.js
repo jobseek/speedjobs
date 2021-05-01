@@ -78,7 +78,7 @@ export default function ProfileDetails() {
       <StyledInputText
         name={'birth'}
         type="text"
-        value={item.birth[0] + '-' + item.birth[1] + '-' + item.birth[2] || ''}
+        value={item.birth || ''}
         disabled
       />
       <ProfileInputs name={'성별'} />

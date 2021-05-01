@@ -148,6 +148,11 @@ export default function Header(props) {
       dispatch({
         type: PROFILE_DELETE_FAIL,
       });
+    } else if (state.profile.profileDeleteError === 401) {
+      addPop({ type: 'withdrawErr', id: v4() });
+      dispatch({
+        type: PROFILE_DELETE_FAIL,
+      });
     }
   }, [state, dispatch, history, remove]);
 

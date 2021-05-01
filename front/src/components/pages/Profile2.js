@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { LOG_OUT_REQUEST } from '../../reducers/user';
 import {
   ProfileDiv,
   StyledButton,
@@ -36,15 +37,17 @@ export default function Profile() {
 
   useEffect(() => {
     if (profile.profileDeleteError === 400) {
-      console.log('비밀번호 오류');
+      console.log('비밀번호 오류 1');
+      console.log(profile);
+    } else if (profile.profileDeleteError === 401) {
+      console.log('비밀번호 오류 2');
       console.log(profile);
     } else if (profile.profileDeleteDone) {
       console.log(profile);
-
-      // dispatch({
-      //   type: LOG_OUT_REQUEST,
-      //   data: user.me,
-      // });
+      dispatch({
+        type: LOG_OUT_REQUEST,
+        data: user.me,
+      });
     }
 
     if (profile.profileDeleteError || profile.profileDeleteDone) {

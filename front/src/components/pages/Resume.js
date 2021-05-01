@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ProfileDiv,
   StyledButton,
@@ -9,16 +9,6 @@ import SideMenu from '../components/SideMenu';
 import ResumeContents from '../components/resume/ResumeContents';
 
 export default function Resume() {
-  const [data, setData] = useState({
-    open: '',
-    name: '',
-    gender: '',
-    contact: '',
-    birth: '',
-    blogUrl: '',
-    githubUrl: '',
-    resumeImage: '',
-  });
   return (
     <form>
       <div className="container text-left">
@@ -36,7 +26,7 @@ export default function Resume() {
               <SideMenu />
             </StyledLeftLayout>
             <ProfileDiv className={'col-12 col-lg-10 p-0'}>
-              <ResumeContents setData={setData} />
+              <ResumeContents />
             </ProfileDiv>
           </div>
         </div>
