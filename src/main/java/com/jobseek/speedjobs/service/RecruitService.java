@@ -4,6 +4,7 @@ import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
 
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
+import com.jobseek.speedjobs.config.auth.LoginUserArgumentResolver;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;

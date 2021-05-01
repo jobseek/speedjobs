@@ -1,5 +1,16 @@
 ### 회원가입(UUID<key>)값 생성 -> 회원가입 확인(엑세스토큰받아옴) -> 로그인 -> 이후에 모든 행동들이 access_token필요함
 
+### 멤버 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{member_email}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
 ### 1.회원가입(멤버)
 POST http://localhost:8081/api/user/signup/member
 Content-Type: application/json
@@ -65,8 +76,12 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "password": "jobseek2021!"
+  "password": "jobse"
 }
 
 ### 6.전체조회
 GET http://{{host}}/user/
+
+### 개인정보 조회
+GET http://{{host}}/user/me
+Authorization: Bearer {{accessToken}}

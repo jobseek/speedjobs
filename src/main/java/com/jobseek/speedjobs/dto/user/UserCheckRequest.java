@@ -17,4 +17,5 @@ public class UserCheckRequest {
 	@NotBlank
 	@Size(min = 8, max = 20)
 	private String password;
+
 }

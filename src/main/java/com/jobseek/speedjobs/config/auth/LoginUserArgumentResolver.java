@@ -1,5 +1,7 @@
 package com.jobseek.speedjobs.config.auth;
 
+import com.jobseek.speedjobs.config.auth.exception.LoginException;
+import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -28,8 +30,11 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = authentication.getPrincipal();
 		if (principal == null || principal.getClass() == String.class) {
-			return null;
+//			throw new LoginException("로그인이 필요합니다.");
+			return User.builder().build();
+//			return null;
 		}
 		return userService.findOne((Long) principal);
 	}
+
 }
