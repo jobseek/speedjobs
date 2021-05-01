@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "banners")
 public class Banner extends BaseTimeEntity {
@@ -36,5 +37,9 @@ public class Banner extends BaseTimeEntity {
 		this.baseName = baseName;
 		this.extension = extension;
 		this.url = url;
+	}
+
+	public void changeExtension(String extension) {
+		this.extension = extension;
 	}
 }
