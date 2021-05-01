@@ -1,6 +1,7 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
+import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostQueryRepository;
 import com.jobseek.speedjobs.domain.post.PostRepository;
@@ -44,7 +45,7 @@ public class PostService {
 	public void update(Long postId, User user, PostRequest postRequest) {
 		Post post = findOne(postId);
 		if (post.getUser() != user) {
-			throw new UnauthorizedException("권한이 없습니다.");
+			throw new UnAuthorizedException("권한이 없습니다.");
 		}
 		List<Tag> tags = findTagsById(postRequest.getTagIds());
 		post.update(postRequest.toEntity(), tags);
@@ -54,7 +55,7 @@ public class PostService {
 	public void delete(Long postId, User user) {
 		Post post = findOne(postId);
 		if (!user.isAdmin() && post.getUser() != user) {
-			throw new UnauthorizedException("권한이 없습니다.");
+			throw new UnAuthorizedException("권한이 없습니다.");
 		}
 		postRepository.delete(post);
 	}
@@ -71,7 +72,7 @@ public class PostService {
 	private List<Tag> findTagsById(List<Long> tagIds) {
 		return tagIds.stream()
 			.map(tagId -> tagRepository.findById(tagId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
+				.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다.")))
 			.collect(Collectors.toList());
 	}
 
@@ -101,7 +102,7 @@ public class PostService {
 
 	private Post findOne(Long postId) {
 		return postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
 	}
 
 	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable,

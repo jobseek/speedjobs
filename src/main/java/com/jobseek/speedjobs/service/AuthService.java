@@ -1,12 +1,14 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.common.exception.InvalidTokenException;
-import com.jobseek.speedjobs.common.exception.OAuth2RegistrationException;
-import com.jobseek.speedjobs.domain.company.CompanyRepository;
+import com.jobseek.speedjobs.domain.user.exception.InvalidTokenException;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
+import com.jobseek.speedjobs.domain.user.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
+import com.jobseek.speedjobs.domain.user.exception.NotFoundOAuth2Exception;
+import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
 import com.jobseek.speedjobs.dto.auth.TokenRequest;
 import com.jobseek.speedjobs.dto.auth.TokenResponse;
 import com.jobseek.speedjobs.dto.user.UserTokenDto;
@@ -29,7 +31,6 @@ public class AuthService {
 
 	private final UserRepository userRepository;
 	private final MemberRepository memberRepository;
-	private final CompanyRepository companyRepository;
 	private final JwtUtil jwtUtil;
 	private final RedisUtil redisUtil;
 	private final CookieUtil cookieUtil;
@@ -41,17 +42,17 @@ public class AuthService {
 
 		if (Provider.LOCAL.equals(provider)) {
 			user = userRepository.findByEmail(tokenRequest.getEmail())
-				.orElseThrow(() -> new IllegalArgumentException("해당 이메일을 갖는 유저가 존재하지 않습니다."));
+				.orElseThrow(() -> new NotFoundException("해당 이메일을 갖는 유저가 존재하지 않습니다."));
 			if (!passwordEncoder.matches(tokenRequest.getPassword(), user.getPassword())) {
-				throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
+				throw new WrongPasswordException("비밀번호가 서로 일치하지 않습니다.");
 			}
 		} else if (Arrays.stream(Provider.values())
 			.anyMatch(p -> p.name().equals(provider.name()))) {
 			String oAuthId = tokenRequest.getOauthId();
 			user = memberRepository.findByProviderAndOauthId(provider, oAuthId)
-				.orElseThrow(() -> new IllegalArgumentException("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
+				.orElseThrow(() -> new NotFoundOAuth2Exception("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
 		} else {
-			throw new OAuth2RegistrationException();
+			throw new OAuth2RegistrationException("해당 소셜 로그인은 현재 지원하지 않습니다.");
 		}
 
 		String accessToken = jwtUtil.createAccessToken(UserTokenDto.from(user));
@@ -75,7 +76,7 @@ public class AuthService {
 		String refreshToken = jwtUtil.getTokenFromRequest(request);
 
 		if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.delete(refreshToken)) {
-			throw new InvalidTokenException();
+			throw new InvalidTokenException("유효하지 않은 토큰입니다.");
 		}
 	}
 
@@ -83,7 +84,7 @@ public class AuthService {
 		String refreshToken = jwtUtil.getTokenFromRequest(request);
 
 		if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.hasKey(refreshToken)) {
-			throw new InvalidTokenException();
+			throw new InvalidTokenException("유효하지 않은 토큰입니다.");
 		}
 
 		UserTokenDto userTokenDto = jwtUtil.getUserTokenDto(refreshToken);

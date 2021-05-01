@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.dto.tag.TagRequest;
@@ -50,6 +51,6 @@ public class TagService {
 
 	private Tag findOne(Long tagId) {
 		return tagRepository.findById(tagId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다."));
 	}
 }

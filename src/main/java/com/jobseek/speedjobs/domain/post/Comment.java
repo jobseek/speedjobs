@@ -6,6 +6,7 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.user.User;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class Comment extends BaseTimeEntity {
 
 	public void addFavorite(User user) {
 		if (favoriteOf(user)) {
-			throw new IllegalArgumentException("이미 추천한 댓글입니다.");
+			throw new DuplicatedException("이미 추천한 댓글입니다.");
 		}
 		favorites.add(user);
 		user.getCommentFavorites().add(this);
@@ -73,7 +74,7 @@ public class Comment extends BaseTimeEntity {
 
 	public void removeFavorite(User user) {
 		if (!favoriteOf(user)) {
-			throw new IllegalArgumentException("이미 추천 취소한 댓글입니다.");
+			throw new DuplicatedException("이미 추천 취소한 댓글입니다.");
 		}
 		favorites.remove(user);
 		user.getCommentFavorites().remove(this);

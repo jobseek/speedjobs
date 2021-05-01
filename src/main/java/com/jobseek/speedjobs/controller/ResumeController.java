@@ -1,6 +1,5 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
 import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;

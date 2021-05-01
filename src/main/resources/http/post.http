@@ -26,7 +26,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 2. 게시글 수정
-PUT http://{{host}}/post/9
+PUT http://{{host}}/post/3
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 

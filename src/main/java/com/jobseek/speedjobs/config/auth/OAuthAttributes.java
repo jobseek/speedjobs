@@ -1,6 +1,6 @@
 package com.jobseek.speedjobs.config.auth;
 
-import com.jobseek.speedjobs.common.exception.OAuth2RegistrationException;
+import com.jobseek.speedjobs.domain.user.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
@@ -47,7 +47,7 @@ public class OAuthAttributes {
 		} else if ("google".equalsIgnoreCase(registrationId)) {
 			return ofGoogle(userNameAttributeName, attributes);
 		} else {
-			throw new OAuth2RegistrationException();
+			throw new OAuth2RegistrationException("해당 소셜 로그인은 현재 지원하지 않습니다.");
 		}
 	}
 

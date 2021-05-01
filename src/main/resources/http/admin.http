@@ -1,0 +1,15 @@
+### 어드민 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@admin.com",
+  "password": "jobseek2021!"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 기업 승인
+PATCH http://{{host}}/user/signup/company/32
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

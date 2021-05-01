@@ -1,12 +1,9 @@
 package com.jobseek.speedjobs.domain.user;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
 
-import com.jobseek.speedjobs.common.exception.NotSelfException;
+import com.jobseek.speedjobs.common.exception.UnMatchedException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
-import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -129,7 +126,7 @@ public class User extends BaseTimeEntity {
 
 	public void validateMe(Long id) {
 		if (!this.id.equals(id)) {
-			throw new NotSelfException(id, this.id);
+			throw new UnMatchedException("본인이 아닙니다. 자신의 id로 재 로그인 필요");
 		}
 	}
 }

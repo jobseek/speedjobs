@@ -3,6 +3,7 @@ package com.jobseek.speedjobs.utils;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class S3Util {
 					.withCannedAcl(CannedAccessControlList.PublicRead));
 			return s3Client.getUrl(bucket, key).toString();
 		} catch (IOException e) {
-			throw new IllegalArgumentException("유효하지 않은 파일입니다.");
+			throw new NotFoundException("유효하지 않은 파일입니다.");
 		}
 	}
 }

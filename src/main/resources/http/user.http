@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### 2.회원가입확인(이메일인증)
-GET http://localhost:8081/api/user/signup/confirm/d218ec0a-c5bd-4a07-bb79-91e618234011
+GET http://localhost:8081/api/user/signup/confirm/b873c9d4-ae80-40b7-b10d-46626bced036
 Accept: application/json
 
 ### 토큰 재발급

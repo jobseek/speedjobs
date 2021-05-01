@@ -2,7 +2,8 @@ package com.jobseek.speedjobs.service;
 
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
 
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
+import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -42,7 +43,7 @@ public class RecruitService {
 	@Transactional
 	public Long save(RecruitRequest recruitRequest, User user) {
 		Company company = companyRepository.findById(user.getId())
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업회원입니다."));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
 		Recruit recruit = recruitRequest.toEntity(company);
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.addTags(tags);
@@ -54,7 +55,7 @@ public class RecruitService {
 		Recruit recruit = findOne(recruitId);
 		Company company = recruit.getCompany();
 		if (company != user) {
-			throw new UnauthorizedException("권한이 없습니다.");
+			throw new UnAuthorizedException("권한이 없습니다.");
 		}
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.update(recruitRequest.toEntity(company), tags);
@@ -65,7 +66,7 @@ public class RecruitService {
 	public void delete(Long recruitId, User user) {
 		Recruit recruit = findOne(recruitId);
 		if (user.getRole() != ROLE_ADMIN && recruit.getCompany().getId() != user.getId()) {
-			throw new UnauthorizedException("권한이 없습니다.");
+			throw new UnAuthorizedException("권한이 없습니다.");
 		}
 		recruitRepository.delete(recruit);
 	}
@@ -125,12 +126,12 @@ public class RecruitService {
 	private List<Tag> findTagsById(List<Long> tagIds) {
 		return tagIds.stream()
 			.map(tagId -> tagRepository.findById(tagId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다.")))
+				.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다.")))
 			.collect(Collectors.toList());
 	}
 
 	private Recruit findOne(Long recruitId) {
 		return recruitRepository.findById(recruitId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 공고가 존재하지 않습니다."));
+			.orElseThrow(() -> new NotFoundException("해당 공고가 존재하지 않습니다."));
 	}
 }

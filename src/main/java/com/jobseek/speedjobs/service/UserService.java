@@ -5,18 +5,20 @@ import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
-import com.jobseek.speedjobs.common.exception.NotExistException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.common.exception.UnMatchedException;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
-import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserDto;
 import com.jobseek.speedjobs.domain.user.UserQueryRepository;
 import com.jobseek.speedjobs.domain.user.UserRepository;
+import com.jobseek.speedjobs.domain.user.exception.NotFoundKeyException;
+import com.jobseek.speedjobs.domain.user.exception.NotFoundRoleException;
+import com.jobseek.speedjobs.domain.user.exception.SignUpRuleException;
+import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
 import com.jobseek.speedjobs.dto.user.UserListResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
@@ -60,7 +62,7 @@ public class UserService {
 
 	public User findOne(Long userId) {
 		return userRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("User", "id"));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다. id=" + userId));
 	}
 
 	public String sendRegisterEmail(UserSaveRequest request) {
@@ -88,7 +90,7 @@ public class UserService {
 	@Transactional
 	public Long saveCustomUser(String key) {
 		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key)
-			.orElseThrow(() -> new NotFoundException("이미 처리된 요청이거나 시간초과되었습니다."));
+			.orElseThrow(() -> new NotFoundKeyException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
 		UserDto userDto = request.getUserDto(passwordEncoder);
 		userDto.setNickname(request.getName());
@@ -99,21 +101,21 @@ public class UserService {
 			Company company = new Company(userDto);
 			return companyRepository.save(company).getId();
 		} else {
-			throw new NotFoundException("존재하지 않는 역할입니다.");
+			throw new NotFoundRoleException("존재하지 않는 역할입니다.");
 		}
 	}
 
 	public MemberInfoResponse findMemberInfo(Long userId, User user) {
 		user.validateMe(userId);
 		Member member = memberRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("Member", "Id"));
+			.orElseThrow(() -> new UnMatchedException("개인회원이 아닙니다."));
 		return MemberInfoResponse.of(member);
 	}
 
 	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
 		user.validateMe(userId);
 		Company company = companyRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("Company", "Id"));
+			.orElseThrow(() -> new UnMatchedException("기업회원이 아닙니다."));
 		return CompanyInfoResponse.of(company);
 	}
 
@@ -123,7 +125,7 @@ public class UserService {
 			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(),
 				request.getPicture(), request.getContact(), request.getBirth(),
 				request.getBio(), request.getGender()))
-			.orElseThrow(() -> new NotFoundException("Member", "Id"));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 개인회원입니다."));
 	}
 
 	@Transactional
@@ -132,7 +134,7 @@ public class UserService {
 			.map(company -> company.updateCompanyInfo(request.getName(), request.getNickname(),
 				request.getPicture(), request.getContact(), request.getCompanyName(),
 				request.getScale(), request.toCompanyDetail()))
-			.orElseThrow(() -> new NotFoundException("Company", "Id"));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
 	}
 
 	@Transactional
@@ -159,7 +161,7 @@ public class UserService {
 		if (!Pattern.matches(nameReg, request.getName()) ||
 			!Pattern.matches(emailReg, request.getEmail()) ||
 			!Pattern.matches(passwordReg, request.getPassword())) {
-			throw new UnMatchedException("SignUp Rule");
+			throw new SignUpRuleException("회원가입 형식에 맞지 않습니다.");
 		}
 
 		if (request.getRole() == ROLE_GUEST) {
@@ -168,18 +170,18 @@ public class UserService {
 				!Pattern.matches(homepageReg, request.getHomepage()) ||
 				!Pattern.matches(registrationNumReg, request.getRegistrationNumber())
 			) {
-				throw new UnMatchedException("SignUp Rule");
+				throw new SignUpRuleException("회원가입 형식에 맞지 않습니다.");
 			}
 		}
 
 		if (userRepository.existsByEmail(request.getEmail())) {
-			throw new DuplicatedException(request.getEmail(), "E-mail");
+			throw new DuplicatedException("이미 존재하는 이메일입니다.");
 		}
 	}
 
 	public void validatePassword(UserCheckRequest request, User user) {
 		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-			throw new UnMatchedException("password");
+			throw new WrongPasswordException("비밀번호가 틀렸습니다.");
 		}
 	}
 }

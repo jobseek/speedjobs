@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.config.auth;
 
+import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.user.User;
@@ -51,7 +52,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				userRepository.existsByEmail(attributes.getEmail()) ? null : attributes.toEntity());
 
 		if (member == null) {
-			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+			throw new DuplicatedException("이미 존재하는 이메일입니다.");
 		}
 
 		return memberRepository.save(member);

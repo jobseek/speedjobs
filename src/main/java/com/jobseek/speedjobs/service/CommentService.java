@@ -1,6 +1,7 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.common.exception.UnauthorizedException;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
+import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.CommentRepository;
 import com.jobseek.speedjobs.domain.post.Post;
@@ -11,7 +12,6 @@ import com.jobseek.speedjobs.dto.post.CommentResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -70,17 +70,17 @@ public class CommentService {
 
 	private Post findPost(Long postId) {
 		return postRepository.findById(postId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId=" + postId));
+			.orElseThrow(() -> new NotFoundException("해당 게시글이 존재하지 않습니다. postId=" + postId));
 	}
 
 	private Comment findOne(Long commentId) {
 		return commentRepository.findById(commentId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+			.orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않습니다."));
 	}
 
 	private void validateUser(Comment comment, User user) {
 		if (!user.isAdmin() && user != comment.getUser()) {
-			throw new UnauthorizedException("댓글을 지울 수 있는 권한이 없습니다.");
+			throw new UnAuthorizedException("댓글을 지울 수 있는 권한이 없습니다.");
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.domain.banner.Banner;
 import com.jobseek.speedjobs.domain.banner.BannerRepository;
@@ -37,7 +38,7 @@ public class BannerService {
 	@Transactional
 	public void delete(Long id) {
 		Banner banner = bannerRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 배너입니다."));
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 배너입니다."));
 		bannerRepository.delete(banner);
 	}
 }

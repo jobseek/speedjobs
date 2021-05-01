@@ -7,6 +7,8 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.DuplicatedException;
+import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.user.User;
@@ -119,7 +121,7 @@ public class Post extends BaseTimeEntity {
 
 	public void addFavorite(User user) {
 		if (favoriteOf(user)) {
-			throw new IllegalArgumentException("이미 찜한 게시글입니다.");
+			throw new DuplicatedException("이미 찜한 게시글입니다.");
 		}
 		favorites.add(user);
 		user.getPostFavorites().add(this);
@@ -128,7 +130,7 @@ public class Post extends BaseTimeEntity {
 
 	public void removeFavorite(User user) {
 		if (!favoriteOf(user)) {
-			throw new IllegalArgumentException("찜 목록에 존재하지 않는 게시글입니다.");
+			throw new NotFoundException("찜 목록에 존재하지 않는 게시글입니다.");
 		}
 		favorites.remove(user);
 		user.getPostFavorites().remove(this);
