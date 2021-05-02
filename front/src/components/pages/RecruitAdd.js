@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  HeaderTitle,
   PostTitleInput,
   StyledButton,
   StyledHeaderDiv,
@@ -74,27 +75,22 @@ export default function RecruitAdd() {
     >
       <form>
         {/* 헤더 */}
-        <StyledHeaderDiv fix>
-          <div
-            className={'container row justify-content-end'}
-            style={{ padding: '15px 0 0 15px' }}
-          >
-            <div className={'col-9 p-0'} style={{ marginTop: '14px' }}>
-              <PostTitleInput
-                onChange={(e) => onChangHandler(e)}
-                name={'title'}
-                placeholder={'제목을 입력해주세요'}
-              />
-            </div>
-            <div className={'col-3 text-right'}>
-              <StyledButton
-                wide
-                style={{ letterSpacing: '10px', paddingLeft: '20px' }}
-                onClick={(e) => onSubmitHandler(e)}
-              >
-                등록
-              </StyledButton>
-            </div>
+        <StyledHeaderDiv>
+          <HeaderTitle>
+            <PostTitleInput
+              onChange={(e) => onChangHandler(e)}
+              name={'title'}
+              placeholder={'제목을 입력해주세요'}
+            />
+          </HeaderTitle>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton
+              wide
+              style={{ letterSpacing: '10px', paddingLeft: '20px' }}
+              onClick={(e) => onSubmitHandler(e)}
+            >
+              등록
+            </StyledButton>
           </div>
         </StyledHeaderDiv>
 

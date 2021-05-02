@@ -128,8 +128,12 @@ const StyledSearchArea = styled.div`
 `;
 
 export default function NavSearch(props) {
+  // 컴포넌트 보이는 상태
   const [toggle, setToggle] = useState('none');
+  // 서치바 내부 입력이 있는지 확인하는 상태
+  // 입력이 있을경우 서치바 확장
   const [typed, setTyped] = useState(false);
+  // 서치바 외부를 클릭했을시에 컴포넌트를 지우기위해 ㅇ필요한 레
   const SearchRef = useRef();
   const toggleHandler = () => {
     setToggle(toggle === 'none' ? 'block' : 'none');
@@ -139,7 +143,7 @@ export default function NavSearch(props) {
       setToggle('none');
     }
   };
-
+  // 이벤트 리스너를 통해서 서치바 가 토글됬을시 서치바 외부를 클릭하면 꺼지도록 설정.
   useEffect(() => {
     addEventListener('click', clickHandler, true);
     return () => {

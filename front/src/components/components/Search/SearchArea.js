@@ -76,13 +76,21 @@ const ContentWrap = styled.div`
 `;
 
 export default function SearchArea({ typed, setTyped, setToggle }) {
+  // 서치바 value를 렌더링하기위한 상태
   const [searchText, setSearchText] = useState('');
+  // 서치바 클릭시 다른곳으로 보내기위한 훅스
   const history = useHistory();
+  // 아직 개발중인 부분.. 한글을 완전하게 미입력시에도 검색하게 하는 기능
+  // 안ㄴ => 안녕 검색
   const [, setHangulString] = useState('');
+  // 순서대로 로딩,질문검색결과, 공고검색결과 상태
   const [loading, setLoading] = useState(false);
   const [postList, setPostList] = useState([]);
   const [recruitList, setRecruitList] = useState([]);
+  // onChange이후 ref에 저장된 settimeout을 지우고 다시 셋타임아웃을 설정.
+  // 기대효과: onChange가 500ms 동안 새로 발생하지 않은 경우 검색 실행
   const time = useRef(0);
+  // 리덕스
   const { post, recruit } = useSelector((state) => state);
   const dispatch = useDispatch();
 

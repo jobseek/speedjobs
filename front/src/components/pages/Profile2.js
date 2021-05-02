@@ -4,7 +4,6 @@ import {
   ProfileDiv,
   StyledButton,
   StyledHeaderDiv,
-  StyledHeaderMargin,
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';

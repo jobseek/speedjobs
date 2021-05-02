@@ -6,7 +6,6 @@ import {
   ProfileDiv,
   StyledButton,
   StyledHeaderDiv,
-  StyledHeaderMargin,
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
@@ -81,27 +80,16 @@ export default function ProfileMd() {
 
   return (
     <div className="container text-left">
-      <StyledHeaderDiv padding style={{ position: 'relative' }}>
-        <StyledHeaderMargin className={'container row justify-content-end'}>
-          <div
-            className={'col-md-9 col-8'}
-            style={{ marginTop: '10px', paddingTop: '5px' }}
+      <StyledHeaderDiv padding title={'계정 수정'}>
+        <div style={{ flex: '0 0' }}>
+          <StyledButton
+            style={{ marginRight: '0' }}
+            wide
+            onClick={(e) => onSubmitHandler(e)}
           >
-            <h5>계정 수정</h5>
-          </div>
-          <div
-            className={'col-md-3 col-4 text-right'}
-            style={{ paddingRight: '0' }}
-          >
-            <StyledButton
-              style={{ marginRight: '0' }}
-              wide
-              onClick={(e) => onSubmitHandler(e)}
-            >
-              변경 사항 저장
-            </StyledButton>
-          </div>
-        </StyledHeaderMargin>
+            변경 사항 저장
+          </StyledButton>
+        </div>
       </StyledHeaderDiv>
       <div className="container" style={{ marginTop: '70px' }}>
         <div className="row justify-content-center">

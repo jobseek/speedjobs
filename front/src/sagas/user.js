@@ -4,6 +4,7 @@ import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
+  LOG_OUT_DONE,
   // LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
@@ -76,20 +77,31 @@ function logOutAPI() {
   return axios.get('/auth/logout');
 }
 
-function* logOut() {
+function* logOut(action) {
   try {
     yield call(logOutAPI);
-    console.log('logout');
     delete axios.defaults.headers.common.Authorization;
     delete axios.defaults.headers.Authorization;
-    console.log(axios.defaults.headers);
-    yield put({
-      type: LOG_OUT_SUCCESS,
-    });
+    console.log(action.data);
+    if (action.data === 'no-redirect') {
+      yield put({
+        type: LOG_OUT_DONE,
+      });
+    } else {
+      yield put({
+        type: LOG_OUT_SUCCESS,
+      });
+    }
   } catch (error) {
-    yield put({
-      type: LOG_OUT_SUCCESS,
-    });
+    if (action.data === 'no-redirect') {
+      yield put({
+        type: LOG_OUT_DONE,
+      });
+    } else {
+      yield put({
+        type: LOG_OUT_SUCCESS,
+      });
+    }
   }
 }
 

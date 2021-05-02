@@ -135,9 +135,11 @@ export default function Header(props) {
     <>
       <NavBar className="container-fluid">
         <MapLink></MapLink>
+        {/* 서치 컴포넌트 */}
         <NavSearch>
           <Search></Search>
         </NavSearch>
+        {/* 메뉴컴포넌트 */}
         <NavMenu></NavMenu>
         <RightContainer>
           <NavDrop>

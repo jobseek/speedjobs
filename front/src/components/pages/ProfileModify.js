@@ -13,23 +13,12 @@ export default function Profile() {
   return (
     <form>
       <div className="container text-left">
-        <StyledHeaderDiv padding style={{ position: 'relative' }}>
-          <StyledHeaderMargin className={'container row justify-content-end'}>
-            <div
-              className={'col-md-9 col-8'}
-              style={{ marginTop: '10px', paddingTop: '5px' }}
-            >
-              <h5>계정 관리</h5>
-            </div>
-            <div
-              className={'col-md-3 col-4 text-right'}
-              style={{ paddingRight: '0' }}
-            >
-              <StyledButton style={{ marginRight: '0' }} wide>
-                개인정보 저장
-              </StyledButton>
-            </div>
-          </StyledHeaderMargin>
+        <StyledHeaderDiv padding title={'계정 관리'}>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton style={{ marginRight: '0' }} wide>
+              개인정보 저장
+            </StyledButton>
+          </div>
         </StyledHeaderDiv>
         <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">

@@ -215,11 +215,12 @@ export const StyledHeaderDivInside = styled.div`
   }
 `;
 
-const HeaderTitle = styled.div`
+export const HeaderTitle = styled.div`
   margin: 10px;
   flex: 1;
   padding: 5px;
   font-size: 18px;
+  text-align: left;
 `;
 
 export const StyledHeaderDiv = ({ children, padding, fix, title }) => (
@@ -233,7 +234,7 @@ export const StyledHeaderDiv = ({ children, padding, fix, title }) => (
           paddingBottom: '2px',
         }}
       >
-        <HeaderTitle>{title}</HeaderTitle>
+        {title !== undefined && <HeaderTitle>{title}</HeaderTitle>}
         {children}
       </div>
     </StyledHeaderDivInside>
@@ -538,7 +539,7 @@ export const MySideMenu = styled.div`
   border: 0.5px solid silver;
   border-radius: 10px;
   padding: 15px 15px;
-  z-index: 1;
+  z-index: 5;
   @media (max-width: 992px) {
     display: none;
   }
@@ -709,17 +710,11 @@ export const PostTextArea = styled.textarea`
 
 export const PostTitleInput = styled.input`
   border: none;
-  font-size: 25px;
   padding-left: 15px;
   width: 100%;
 
   &:focus {
     outline: none;
-  }
-
-  @media (max-width: 992px) {
-    font-size: 15px;
-    margin-left: 10px;
   }
 `;
 

@@ -241,6 +241,10 @@ export function CommentsForm(props) {
     }
   }, [user.me.picture]);
 
+  const onChangeHandler = (e) => {
+    setComForm((p) => ({ ...p, content: e.target.value }));
+  };
+
   return (
     <CommentForm>
       <BlogCommentAvatar src={img} />
@@ -249,15 +253,13 @@ export function CommentsForm(props) {
           <CmtInput
             maxLength="300"
             rows="4"
-            value={comForm.content}
             placeholder="내용을 입력해주세요."
             onKeyPress={cal}
             onKeyDown={cal}
             onKeyUp={cal}
-            onChange={(e) =>
-              setComForm({ ...comForm, content: e.target.value })
-            }
-          />
+            onChange={onChangeHandler}
+            value={comForm.content}
+          ></CmtInput>
         </autoheight-textarea>
         <Meta>
           <TextLength value={result} readOnly />

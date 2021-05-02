@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useCookies } from 'react-cookie';
 import Banner from '../components/banner/Banner';
-import Tags from '../components/Tags';
 import { TagBody } from '../components/Styled';
 import {
   RECRUIT_LIST_DONE,

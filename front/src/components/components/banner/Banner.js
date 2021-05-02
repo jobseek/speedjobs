@@ -11,7 +11,7 @@ const Jumbo = styled.div`
   padding: 0;
   user-select: none;
   position: relative;
-  height: 32vw;
+  height: 25vw;
   overflow-x: hidden;
 `;
 

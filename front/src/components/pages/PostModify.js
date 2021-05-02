@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import {
+  HeaderTitle,
   PostTextArea,
   PostTitleInput,
   StyledButton,
@@ -123,37 +124,31 @@ export default function PostModify() {
       }}
     >
       <form>
-        <StyledHeaderDiv fix>
-          <div
-            className={'container row justify-content-end'}
-            style={{ paddingTop: '15px', paddingRight: 0 }}
-          >
-            <div className={'col-md-8 col-6 p-0'} style={{ marginTop: '14px' }}>
-              <PostTitleInput
-                onChange={(e) => onChangHandler(e)}
-                name={'title'}
-                value={form.title}
-                placeholder={'제목을 입력해주세요'}
-                maxLength="35"
-              />
-            </div>
-            <div
-              className={'col-md-4 col-6 text-right'}
-              style={{ paddingRight: 0 }}
+        <StyledHeaderDiv>
+          <HeaderTitle>
+            <PostTitleInput
+              onChange={(e) => onChangHandler(e)}
+              name={'title'}
+              value={form.title}
+              placeholder={'제목을 입력해주세요'}
+              maxLength="35"
+            />
+          </HeaderTitle>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton
+              wide
+              style={{ letterSpacing: '10px', paddingLeft: '20px' }}
+              onClick={(e) => {
+                onSubmitHandler(e);
+              }}
             >
-              <StyledButton
-                wide
-                style={{ letterSpacing: '10px', paddingLeft: '20px' }}
-                onClick={(e) => {
-                  onSubmitHandler(e);
-                }}
-              >
-                수정
-              </StyledButton>
-              <StyledButton white onClick={() => history.goBack()}>
-                뒤로
-              </StyledButton>
-            </div>
+              수정
+            </StyledButton>
+          </div>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton white onClick={() => history.goBack()}>
+              뒤로
+            </StyledButton>
           </div>
         </StyledHeaderDiv>
         <div className={'container'}>

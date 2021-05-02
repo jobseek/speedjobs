@@ -34,14 +34,20 @@ const PostTextarea = styled.textarea`
 `;
 
 export default function PostDetail(props) {
+  // react-router-dom 페이지 이동관련 훅스
   const history = useHistory();
   const { id } = useParams();
+  // 찜하기 관련상태
   const [fav, setFav] = useState(false);
+  // 내 포스트인지 확인하는 상태
   const [myPost, setMyPost] = useState(false);
+  // 리덕스
   const post = useSelector((state) => state.post);
   const like = useSelector((state) => state.like);
   const user = useSelector((state) => state.user);
+  // 쿠키확인 훅스
   const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
+  // 게시글 내용 상태
   const [content, setContent] = useState({
     title: '',
     content: '',
@@ -49,12 +55,16 @@ export default function PostDetail(props) {
   });
   const dispatch = useDispatch();
 
+  // 게시글에 들어왔을시에 마이포스트 상태 초기화
   useEffect(() => {
     setMyPost(false);
   }, []);
 
+  // 로그인되어서 새로 리퀘스트가 받아진경우(새로고침 대비)
+  // 포스트가 로딩이끝났을경우.
+  // 자신의 포스트인지 확인한다음에 수정 삭제버튼 노출
   useEffect(() => {
-    if (user.meDone && post.post) {
+    if (user.me !== null && post.post) {
       console.log('Set');
       console.log(user.me.id);
       console.log(post.post.authorId);
@@ -70,6 +80,8 @@ export default function PostDetail(props) {
         data: id,
       });
   }, [dispatch, id, user.me, refresh]);
+
+  // 게시글이 불러와졌다면 내용 세팅
   useEffect(() => {
     if (post.postGetDone) {
       setContent({
@@ -97,18 +109,21 @@ export default function PostDetail(props) {
       data: id,
     });
   };
+
+  // 게시글이 삭제되었다면 뒤로 가기
   useEffect(() => {
     if (post.postDeleteDone) {
       dispatch({
         type: POST_DELETE_DONE,
       });
       history.goBack();
-      dispatch({
-        type: POST_LIST_REQUEST,
-      });
+      // dispatch({
+      //   type: POST_LIST_REQUEST,
+      // });
     }
   }, [dispatch, history, post.postDeleteDone]);
 
+  // 찜하기 기능 관련 이펙트
   useEffect(() => {
     if (like.data === null) return;
     if (!like.addLikeDone && !like.unLikeDone) return;
@@ -127,7 +142,7 @@ export default function PostDetail(props) {
     (e) => {
       dispatch({
         type: ADD_LIKE_REQUEST,
-        data: { id },
+        data: { id, type: 'community' },
       });
     },
     [id, dispatch]
@@ -137,7 +152,7 @@ export default function PostDetail(props) {
     (e) => {
       dispatch({
         type: UN_LIKE_REQUEST,
-        data: { id },
+        data: { id, type: 'community' },
       });
     },
     [id, dispatch]
