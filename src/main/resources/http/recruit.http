@@ -67,7 +67,7 @@ Authorization: Bearer {{accessToken}}
 #GET http://{{host}}/recruit
 #GET http://{{host}}/recruit?page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?tagIds=1,2,3,10&page=0&size=3&sort=id,DESC
-GET http://{{host}}/recruit?status=END,EARLY&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit?status=END,EARLY&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?experience=TWO&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?content=국내&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?companyName=삼&page=0&size=3&sort=id,DESC
@@ -75,8 +75,9 @@ GET http://{{host}}/recruit?status=END,EARLY&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?address=강남&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?avgSalary=5000&page=0&size=3&sort=id,DESC
 #GET http://{{host}}/recruit?rating=2&page=0&size=3&sort=id,DESC
+#GET http://{{host}}/recruit
+GET http://{{host}}/recruit?openDate=2021-04-01&closeDate=2021-04-30
 Accept: application/json
-Authorization: Bearer {{accessToken}}
 
 ### 6. 공고 찜하기
 POST http://{{host}}/recruit/1/favorite

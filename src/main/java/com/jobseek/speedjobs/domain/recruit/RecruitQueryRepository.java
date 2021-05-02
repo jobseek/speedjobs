@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -24,6 +25,7 @@ import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class RecruitQueryRepository {
 
 	private final JPAQueryFactory queryFactory;
