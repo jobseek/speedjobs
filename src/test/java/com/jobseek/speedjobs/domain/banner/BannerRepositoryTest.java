@@ -3,7 +3,6 @@ package com.jobseek.speedjobs.domain.banner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +16,37 @@ class BannerRepositoryTest {
 	@Autowired
 	BannerRepository bannerRepository;
 
-	@Autowired
-	EntityManager em;
-
+	/**
+	* 기본 JpaRepository 저장 테스트
+	*/
 	@Test
 	@DisplayName("basic test")
 	public void testBanner() {
-		Banner banner = Banner.builder()
-			.baseName("img")
-			.extension("png")
+		//given
+		Banner banner = Banner.builder().baseName("img").extension("png")
 			.url("https://www.google.com").build();
+
+		//when
 		Banner savedBanner = bannerRepository.save(banner);
+
+		//then
 		assertThat(savedBanner.getId()).isEqualTo(banner.getId());
 		assertThat(savedBanner.getBaseName()).isEqualTo("img");
 	}
 
+	/**
+	* JpaRepository Basic CRUD Test
+	*/
 	@Test
 	@DisplayName("basic CRUD")
 	public void basicCRUD() {
-		Banner banner1 = Banner.builder()
-			.baseName("img")
-			.extension("png")
+		//given
+		Banner banner1 = Banner.builder().baseName("img").extension("png")
 			.url("https://www.google.com").build();
-		Banner banner2 = Banner.builder()
-			.baseName("img")
-			.extension("png")
+		Banner banner2 = Banner.builder().baseName("img").extension("png")
 			.url("https://www.google.com").build();
+
+		//when & then
 		bannerRepository.save(banner1);
 		bannerRepository.save(banner2);
 

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Embeddable
 @Getter
 @ToString
+@Setter
 public class Certificate {
 
 	private String certName;

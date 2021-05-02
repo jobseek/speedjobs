@@ -147,3 +147,4 @@ public class Recruit extends BaseTimeEntity {
 		return user.getRecruitFavorites().contains(this);
 	}
 }
+

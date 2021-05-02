@@ -51,7 +51,7 @@ public class ResumeService {
 			resumeRequest.getCareerList(),
 			resumeRequest.getScholarList(),
 			resumeRequest.getCertificateList()
-			);
+		);
 	}
 
 	@Transactional
