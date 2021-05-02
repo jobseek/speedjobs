@@ -32,7 +32,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 2. 공고 수정
-PUT http://{{host}}/recruit/16
+PUT http://{{host}}/recruit/15
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -54,21 +54,22 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 3. 공고 삭제
-DELETE http://{{host}}/recruit/16
+DELETE http://{{host}}/recruit/15
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 4. 공고 단건 조회
-GET http://{{host}}/recruit/15
+GET http://{{host}}/recruit/14
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 5. 공고 전체 조회
-GET http://{{host}}/recruit
+#GET http://{{host}}/recruit
 #GET http://{{host}}/recruit?sort=id,DESC
 #GET http://{{host}}/recruit?page=1&size=4&sort=viewCount,DESC
 #GET http://{{host}}/recruit?title=엔지니어
 #GET http://{{host}}/recruit?openDate=2021-04-01&closeDate=2021-04-30
+GET http://{{host}}/recruit?tagIds=1,2,3&page=0&size=3&sort=id,DESC
 Accept: application/json
 
 ### 6. 공고 찜하기

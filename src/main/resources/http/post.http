@@ -42,7 +42,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 3. 게시글 삭제
-DELETE http://{{host}}/post/9
+DELETE http://{{host}}/post/3
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
