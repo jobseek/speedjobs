@@ -109,10 +109,7 @@ public class RecruitQueryRepository {
 	}
 
 	private BooleanExpression containsStatus(List<Status> status) {
-		if (ObjectUtils.isEmpty(status)) {
-			return null;
-		}
-		return recruit.status.in(status);
+		return ObjectUtils.isEmpty(status) ? null : recruit.status.in(status);
 	}
 
 }

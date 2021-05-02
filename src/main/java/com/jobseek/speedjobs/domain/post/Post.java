@@ -138,6 +138,9 @@ public class Post extends BaseTimeEntity {
 	}
 
 	public boolean favoriteOf(User user) {
-		return favorites.contains(user);
+		if (user == null) {
+			return false;
+		}
+		return user.getPostFavorites().contains(this);
 	}
 }
