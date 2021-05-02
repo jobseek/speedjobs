@@ -153,7 +153,3 @@ Authorization: Bearer {{accessToken}}
 GET http://{{host}}/resume
 Accept: application/json
 Authorization: Bearer {{accessToken}}
-
-### 6. 이력서 페이징 조회 //TODO)
-#GET http://{{host}}/resume?page=0&size=3&sort=id,DESC
-#Accept: application/json

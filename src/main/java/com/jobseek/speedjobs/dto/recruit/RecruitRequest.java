@@ -25,11 +25,11 @@ public class RecruitRequest {
 	private String title;
 
 	@NotNull
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime openDate;
 
 	@Future
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime closeDate;
 
 	@NotNull

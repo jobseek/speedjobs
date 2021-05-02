@@ -1,18 +1,32 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.domain.user.Role;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
+import static com.jobseek.speedjobs.domain.user.UserTest.COMPANY_CONTACT;
+import static com.jobseek.speedjobs.domain.user.UserTest.COMPANY_EMAIL;
+import static com.jobseek.speedjobs.domain.user.UserTest.COMPANY_HOMEPAGE;
+import static com.jobseek.speedjobs.domain.user.UserTest.COMPANY_NAME;
+import static com.jobseek.speedjobs.domain.user.UserTest.COMPANY_PASSWORD;
+import static com.jobseek.speedjobs.domain.user.UserTest.COMPANY_REGISTRATION_NUMBER;
+import static com.jobseek.speedjobs.domain.user.UserTest.MEMBER_EMAIL;
+import static com.jobseek.speedjobs.domain.user.UserTest.MEMBER_NAME;
+import static com.jobseek.speedjobs.domain.user.UserTest.MEMBER_PASSWORD;
+import static com.jobseek.speedjobs.domain.user.UserTest.MEMBER_ROLE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
-import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+@TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest
 class UserServiceTest {
 
@@ -22,96 +36,56 @@ class UserServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 
-	private Long userId;
-
-	@BeforeEach
-	void SetUp() {
-		UserSaveRequest user = UserSaveRequest.builder().name("테스터").email("test@test.com")
-			.password("testerA123").role(Role.ROLE_MEMBER).build();
-//		String key = userService.sendEmail(user);
-//		userId = userService.saveCustomUser(key);
+	private User findByEmail(String email) {
+		return userRepository.findByEmail(COMPANY_EMAIL)
+			.orElseThrow(() -> new UsernameNotFoundException("존재하지 않습니다."));
 	}
 
-//	@AfterEach
-//	void After() {
-//		userService.delete(userId);
-//	}
-
+	@Order(1)
+	@DisplayName("일반회원 회원가입")
 	@Test
-	public void delete() {
+	public void registerMember() {
+		UserSaveRequest request = UserSaveRequest.builder()
+			.name(MEMBER_NAME)
+			.email(MEMBER_EMAIL)
+			.password(MEMBER_PASSWORD)
+			.role(MEMBER_ROLE)
+			.build();
+		String key = userService.sendRegisterEmail(request);
 
+		userService.saveCustomUser(key);
+		assertEquals(userRepository.findByEmail(MEMBER_EMAIL)
+			.orElseThrow(() -> new UsernameNotFoundException("존재하지 않습니다.")).getName(), MEMBER_NAME);
 	}
 
-//	@Test
-//	@DisplayName("아이디로 찾기")
-//	void findByIdTest() {
-//		User user = userService.findOne(userId);
-//		Assertions.assertThat(user.getName()).isEqualTo("테스트");
-//	}
-//
-//	@Test
-//	@DisplayName("없는유저 삭제")
-//	void deleteNonExistedUserTest() {
-//		Assertions.assertThatThrownBy(() -> {
-//			userService.delete(21839089L);
-//		}).isInstanceOf(IllegalArgumentException.class);
-//	}
-//
-//	@Test
-//	@DisplayName("존재하는 유저 추가")
-//	void addExistedUserTest() {
-//		UserSaveRequest user = UserSaveRequest.builder().name("테스트").email("test@test.com")
-//			.password("testPassword").role(Role.ROLE_MEMBER).build();
-//
-//		Assertions.assertThatThrownBy(() -> {
-//			String key = userService.sendEmail(user);
-//			userId = userService.saveCustomUser(key);
-//		}).isInstanceOf(IllegalArgumentException.class);
-//	}
-//
-//	@Test
-//	@DisplayName("조건에 맞지않은 유저 추가")
-//	void addWeirdUserTest() {
-//		UserSaveRequest user = UserSaveRequest.builder().name("1234").email("testtest.com")
-//			.password("testPassword").role(Role.ROLE_MEMBER).build();
-//
-//		Assertions.assertThatThrownBy(() -> {
-//			String key = userService.sendEmail(user);
-//			userId = userService.saveCustomUser(key);
-//		}).isInstanceOf(IllegalArgumentException.class);
-//	}
-//
-//	@Test
-//	@DisplayName("멤버 가져오기")
-//	void findMemberTest() {
-//		//id를 세팅할수없어서 테스트불가
-//		User user = User.builder().name("테스트").password("testPassword").email("test@test.com")
-//			.role(Role.ROLE_MEMBER).build();
-//		Assertions.assertThat(userService.getMember(userId, user).getName()).isEqualTo("테스트");
-//	}
-//
-//	@Test
-//	@DisplayName("개인회원으로 기업회원 가져오기")
-//	void findCompanyTest() {
-//		//통과가 되지만 제대로된 테스트가 아님
-//		//id를 세팅할수없어서 테스트불가
-//		User user = User.builder().name("테스트").password("testPassword").email("test@test.com")
-//			.role(Role.ROLE_MEMBER).build();
-//		Assertions.assertThatThrownBy(() -> {
-//			userService.getCompany(userId, user);
-//		}).isInstanceOf(IllegalArgumentException.class);
-//	}
-//
-//	@Test
-//	@DisplayName("회원정보업데이트")
-//	void updateTest() {
-//		//id를 세팅할수없어서 테스트불가
-//		User user = User.builder().name("테스트").password("testPassword").email("test@test.com")
-//			.role(Role.ROLE_MEMBER).build();
-//		MemberUpdateRequest request = new MemberUpdateRequest();
-//		request.setNickname("테스트닉네임");
-//		userService.updateMemberInfo(userId, request);
-//		Assertions.assertThat(userService.getMember(userId, user).getNickname()).isEqualTo("테스트닉네임");
-//	}
-}
+	@Order(2)
+	@DisplayName("기업회원 회원가입")
+	@Test
+	public void registerCompany() {
+		UserSaveRequest request = UserSaveRequest.builder()
+			.name(COMPANY_NAME)
+			.email(COMPANY_EMAIL)
+			.password(COMPANY_PASSWORD)
+			.role(ROLE_GUEST)
+			.companyName(COMPANY_NAME)
+			.registrationNumber(COMPANY_REGISTRATION_NUMBER)
+			.contact(COMPANY_CONTACT)
+			.homepage(COMPANY_HOMEPAGE)
+			.build();
+		String key = userService.sendRegisterEmail(request);
 
+		userService.saveCustomUser(key);
+		assertEquals(findByEmail(COMPANY_EMAIL).getName(), COMPANY_NAME);
+	}
+
+	@Order(3)
+	@DisplayName("기업회원 가입 승인")
+	@Test
+	public void approveCompany() {
+		User guest = findByEmail(COMPANY_EMAIL);
+		userService.approveCompany(guest.getId());
+		User company = findByEmail(COMPANY_EMAIL);
+		assertEquals(company.getRole(), ROLE_COMPANY);
+	}
+
+}

@@ -24,7 +24,7 @@ GET http://{{host}}/tag
 Accept: application/json
 
 ### 3. 태그 수정
-PUT http://{{host}}/tag/19
+PUT http://{{host}}/tag/55
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -34,6 +34,6 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 4. 태그 삭제
-DELETE http://{{host}}/tag/1
+DELETE http://{{host}}/tag/55
 Accept: application/json
 Authorization: Bearer {{accessToken}}

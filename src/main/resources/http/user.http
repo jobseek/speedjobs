@@ -85,3 +85,14 @@ GET http://{{host}}/user/
 ### 개인정보 조회
 GET http://{{host}}/user/me
 Authorization: Bearer {{accessToken}}
+
+### 회원가입
+POST http://{{host}}/user/signup/member
+Content-Type: application/json
+
+{
+  "name": "개인회원",
+  "email": "woojin7124@naver.com",
+  "password": "testerA123",
+  "role": "ROLE_MEMBER"
+}

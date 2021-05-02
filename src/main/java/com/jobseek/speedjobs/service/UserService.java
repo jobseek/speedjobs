@@ -74,7 +74,7 @@ public class UserService {
 		String content = "아래 버튼을 클릭하여 인증을 완료해주세요";
 		String src = backUrl + "/user/signup/confirm/" + key;
 		mailUtil.sendEmail(request.getEmail(), subject, content, src);
-		return src;
+		return key;
 	}
 
 	@Transactional

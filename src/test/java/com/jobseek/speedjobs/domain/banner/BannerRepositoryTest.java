@@ -17,8 +17,8 @@ class BannerRepositoryTest {
 	BannerRepository bannerRepository;
 
 	/**
-	* 기본 JpaRepository 저장 테스트
-	*/
+	 * 기본 JpaRepository 저장 테스트
+	 */
 	@Test
 	@DisplayName("basic test")
 	public void testBanner() {
@@ -35,8 +35,8 @@ class BannerRepositoryTest {
 	}
 
 	/**
-	* JpaRepository Basic CRUD Test
-	*/
+	 * JpaRepository Basic CRUD Test
+	 */
 	@Test
 	@DisplayName("basic CRUD")
 	public void basicCRUD() {
@@ -62,7 +62,7 @@ class BannerRepositoryTest {
 
 		// 수정 검증 (영속성으로 인해 원본 객체를 바꿔주면 영속성 context가 알아서 업데이트 시켜준다)
 		banner1.changeExtension("jpg");
-		assertThat(findBanner1.getExtension()).isEqualTo("jpg");
+		assertThat(findBanner1 != null ? findBanner1.getExtension() : null).isEqualTo("jpg");
 
 		// 삭제 검증
 		bannerRepository.delete(banner2);
