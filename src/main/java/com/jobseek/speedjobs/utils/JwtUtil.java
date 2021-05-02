@@ -13,18 +13,16 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtUtil {
-
-	private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
 	public final String ACCESS_TOKEN = "ACCESS_TOKEN";
 	public final String REFRESH_TOKEN = "REFRESH_TOKEN";
@@ -95,15 +93,15 @@ public class JwtUtil {
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			return true;
 		} catch (SignatureException ex) {
-			logger.error("Invalid JWT signature");
+			log.error("Invalid JWT signature");
 		} catch (MalformedJwtException ex) {
-			logger.error("Invalid JWT token");
+			log.error("Invalid JWT token");
 		} catch (ExpiredJwtException ex) {
-			logger.error("Expired JWT token");
+			log.error("Expired JWT token");
 		} catch (UnsupportedJwtException ex) {
-			logger.error("Unsupported JWT token");
+			log.error("Unsupported JWT token");
 		} catch (IllegalArgumentException ex) {
-			logger.error("JWT claims string is empty.");
+			log.error("JWT claims string is empty.");
 		}
 		return false;
 	}

@@ -25,11 +25,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
@@ -37,7 +35,7 @@ import lombok.Setter;
 public class Comment extends BaseTimeEntity {
 
 	@ManyToMany(mappedBy = "commentFavorites")
-	private List<User> favorites = new ArrayList<>();
+	private final List<User> favorites = new ArrayList<>();
 
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "post_id")

@@ -9,11 +9,9 @@ import javax.persistence.Lob;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Embeddable
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 public class RecruitDetail {
 

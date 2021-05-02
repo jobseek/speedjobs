@@ -6,27 +6,20 @@ import com.jobseek.speedjobs.service.AuthService;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 	private final AuthService authService;
-	private final String frontUrl;
 
-	@Autowired
-	public OAuth2AuthenticationSuccessHandler(
-		@Lazy AuthService authService,
-		@Value("${front-url}") String frontUrl
-	) {
-		this.authService = authService;
-		this.frontUrl = frontUrl;
-	}
+	@Value("${front-url}")
+	private String frontUrl;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -34,7 +27,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 		String[] path = request.getRequestURI().split("/");
 		Provider provider = Provider.valueOf(path[path.length - 1].toUpperCase());
 		String oauthId = authentication.getName();
-		TokenRequest tokenRequest = TokenRequest.builder().oauthId(oauthId).provider(provider)
+		TokenRequest tokenRequest = TokenRequest.builder()
+			.oauthId(oauthId)
+			.provider(provider)
 			.build();
 		authService.login(tokenRequest, response);
 		response.sendRedirect(frontUrl);

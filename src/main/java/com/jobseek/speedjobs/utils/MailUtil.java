@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailUtil {
 
+	private final VelocityEngine velocityEngine;
 	private final JavaMailSender javaMailSender;
 
 	public void sendEmail(String email, String subject, String content, String src) {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		try {
-			VelocityEngine velocityEngine = new VelocityEngine();
 			message.setSubject(subject);
 			message.setRecipient(RecipientType.TO, new InternetAddress(email));
 			Template template = velocityEngine

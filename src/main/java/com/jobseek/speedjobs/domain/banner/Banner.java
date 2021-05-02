@@ -12,12 +12,9 @@ import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "banners")
 public class Banner extends BaseTimeEntity {

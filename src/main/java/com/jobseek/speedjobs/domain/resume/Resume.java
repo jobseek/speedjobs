@@ -31,11 +31,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "resumes")
@@ -86,7 +84,7 @@ public class Resume extends BaseTimeEntity {
 	private List<Career> careerList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", cascade = ALL, orphanRemoval = true)
-	private List<Apply> applies = new ArrayList<>();
+	private final List<Apply> applies = new ArrayList<>();
 
 	@Builder
 	public Resume(Open open, String coverLetter, String title, String name, String gender,
@@ -105,7 +103,8 @@ public class Resume extends BaseTimeEntity {
 		this.resumeImage = resumeImage;
 	}
 
-	public static Resume createResume(Open open, String coverLetter, String title, String name, String gender,
+	public static Resume createResume(Open open, String coverLetter, String title, String name,
+		String gender,
 		String contact, LocalDate birth, String address, String blogUrl, String githubUrl,
 		String resumeImage) {
 		return new Resume(open, coverLetter, title, name, gender, contact, birth, address, blogUrl,
@@ -118,7 +117,8 @@ public class Resume extends BaseTimeEntity {
 		member.getResumeList().add(this);
 	}
 
-	public void addMoreInfo(List<Career> careers, List<Scholar> scholars, List<Certificate> certificates) {
+	public void addMoreInfo(List<Career> careers, List<Scholar> scholars,
+		List<Certificate> certificates) {
 		if (careers != null) {
 			this.careerList.addAll(careers);
 		}
@@ -130,7 +130,8 @@ public class Resume extends BaseTimeEntity {
 		}
 	}
 
-	public void updateInfo(List<Career> careers, List<Scholar> scholars, List<Certificate> certificates) {
+	public void updateInfo(List<Career> careers, List<Scholar> scholars,
+		List<Certificate> certificates) {
 		if (careers != null) {
 			this.careerList.clear();
 		}
@@ -140,7 +141,7 @@ public class Resume extends BaseTimeEntity {
 		if (certificates != null) {
 			this.certificateList.clear();
 		}
-		addMoreInfo(careers,scholars,certificates);
+		addMoreInfo(careers, scholars, certificates);
 	}
 
 	public void update(Resume resume) {

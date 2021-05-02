@@ -1,14 +1,12 @@
 package com.jobseek.speedjobs.domain.member;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.user.Provider;
+import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.domain.user.UserDto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +17,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
 @PrimaryKeyJoinColumn(name = "user_id")
 @Table(name = "members")
 public class Member extends User {
@@ -47,14 +42,15 @@ public class Member extends User {
 	@Column(nullable = false)
 	private Provider provider;
 
-	public Member(UserDto userDto) {
-		super(userDto.getName(), userDto.getNickname(), userDto.getEmail(), userDto.getPassword(), userDto.getPicture(),
-			userDto.getContact(), userDto.getRole());
-		this.gender = userDto.getGender();
-		this.birth = userDto.getBirth();
-		this.bio = userDto.getBio();
-		this.provider = userDto.getProvider();
-		this.oauthId = userDto.getOauthId();
+	public Member(String name, String nickname, String email, String password, String picture,
+		String contact, Role role, String gender, LocalDate birth, String bio, String oauthId,
+		Provider provider) {
+		super(name, nickname, email, password, picture, contact, role);
+		this.gender = gender;
+		this.birth = birth;
+		this.bio = bio;
+		this.oauthId = oauthId;
+		this.provider = provider;
 	}
 
 	public Member updateCustomMemberInfo(String name, String nickname, String picture,

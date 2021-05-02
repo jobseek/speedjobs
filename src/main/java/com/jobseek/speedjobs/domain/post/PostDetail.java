@@ -9,17 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Getter
-@Setter
 @Builder
 public class PostDetail {
 
-	//	@Column(columnDefinition = "TEXT")
 	@Lob
 	private String content;
 

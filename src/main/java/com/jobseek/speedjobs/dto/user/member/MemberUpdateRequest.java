@@ -1,32 +1,32 @@
 package com.jobseek.speedjobs.dto.user.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jobseek.speedjobs.domain.member.Member;
 import java.time.LocalDate;
-import lombok.Data;
+import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
-
-@Data
+@Getter
+@AllArgsConstructor
 public class MemberUpdateRequest {
 
 	//유저
 	@NotBlank
 	@Length(min = 2, max = 15)
-	private String name;
+	private final String name;
 
 	@NotBlank
 	@Length(min = 2, max = 15)
-	private String nickname;
-	
-	private String password;
-	private String picture;
-	private String contact;
+	private final String nickname;
+
+	private final String password;
+	private final String picture;
+	private final String contact;
 	//멤버
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private LocalDate birth;
-	private String bio;
-	private String gender;
+	private final LocalDate birth;
+	private final String bio;
+	private final String gender;
 
 }

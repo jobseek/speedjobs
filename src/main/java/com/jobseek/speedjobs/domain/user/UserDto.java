@@ -1,6 +1,13 @@
 package com.jobseek.speedjobs.domain.user;
 
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
+
+import com.jobseek.speedjobs.common.exception.UnMatchedException;
+import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
+import com.jobseek.speedjobs.domain.member.Member;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
@@ -10,32 +17,38 @@ import lombok.Data;
 public class UserDto {
 
 	private String name;
+	private String nickname;
 	private String email;
 	private String password;
 	private String picture;
+	private String contact;
 	private Role role;
 
 	private String gender;
 	private LocalDate birth;
-	private String nickname;
 	private String bio;
-	private Provider provider;
 	private String oauthId;
+	private Provider provider;
 
-	private String contact;
 	private String companyName;
 	private String logoImage;
 	private int scale;
 	private CompanyDetail companyDetail;
 
-	public User toEntity() {
-		return User.builder()
-			.name(name)
-			.email(email)
-			.password(password)
-			.picture(picture)
-			.role(role)
-			.build();
+	public Member createMember() {
+		if (role != ROLE_MEMBER) {
+			throw new UnMatchedException("역할이 일치하지 않습니다.");
+		}
+		return new Member(name, nickname, email, password, picture, contact, role, gender, birth,
+			bio, oauthId, provider);
+	}
+
+	public Company createGUEST() {
+		if (role != ROLE_GUEST) {
+			throw new UnMatchedException("역할이 일치하지 않습니다.");
+		}
+		return new Company(name, nickname, email, password, picture, contact, role, companyName,
+			logoImage, scale, companyDetail);
 	}
 
 }

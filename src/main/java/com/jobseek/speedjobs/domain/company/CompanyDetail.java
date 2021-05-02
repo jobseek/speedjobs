@@ -10,11 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Embeddable
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
@@ -39,7 +37,8 @@ public class CompanyDetail {
 	private Double rating; // 평가점수
 
 	public static CompanyDetail from(String registrationNumber, String description,
-		String homepage, String address, Integer avgSalary, Double latitude, Double longitude, Double rating) {
+		String homepage, String address, Integer avgSalary, Double latitude, Double longitude,
+		Double rating) {
 		return new CompanyDetail(registrationNumber, description,
 			homepage, address, avgSalary, latitude, longitude, rating);
 	}

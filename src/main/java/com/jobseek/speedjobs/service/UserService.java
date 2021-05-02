@@ -95,11 +95,11 @@ public class UserService {
 		UserDto userDto = request.getUserDto(passwordEncoder);
 		userDto.setNickname(request.getName());
 		if (userDto.getRole() == ROLE_MEMBER) {
-			Member member = new Member(userDto);
+			Member member = userDto.createMember();
 			return memberRepository.save(member).getId();
 		} else if (userDto.getRole() == ROLE_GUEST) {
-			Company company = new Company(userDto);
-			return companyRepository.save(company).getId();
+			Company guest = userDto.createGUEST();
+			return companyRepository.save(guest).getId();
 		} else {
 			throw new NotFoundRoleException("존재하지 않는 역할입니다.");
 		}
