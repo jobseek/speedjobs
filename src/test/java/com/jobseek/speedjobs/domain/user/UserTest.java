@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
-//	public static final String MEMBER_EMAIL = "member@member.com";
 	public static final String MEMBER_EMAIL = "woojin7124@naver.com";
 	public static final String MEMBER_PASSWORD = "memberPassword1!";
 	public static final String MEMBER_NAME = "멤버";
@@ -21,7 +20,6 @@ public class UserTest {
 	public static final Role MEMBER_ROLE = ROLE_MEMBER;
 	public static final Provider MEMBER_PROVIDER = LOCAL;
 
-//	public static final String COMPANY_EMAIL = "company@company.com";
 	public static final String COMPANY_EMAIL = "woojin7124@gmail.com";
 	public static final String COMPANY_PASSWORD = "companyPassword1!";
 	public static final String COMPANY_NAME = "잡식컴퍼니";

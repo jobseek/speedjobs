@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

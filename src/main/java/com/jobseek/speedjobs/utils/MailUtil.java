@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailUtil {
 
-	private final VelocityEngine velocityEngine;
+	private final VelocityEngine velocityEngine; // 템플릿 엔진
 	private final JavaMailSender javaMailSender;
 
 	public void sendEmail(String email, String subject, String content, String src) {

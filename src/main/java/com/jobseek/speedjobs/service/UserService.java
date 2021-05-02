@@ -68,7 +68,6 @@ public class UserService {
 	public String sendRegisterEmail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
-		log.info("uuid key - {}", key);
 		redisUtil.set(key, request, 30 * 60 * 1000);
 		String subject = "[speedjobs] 가입완료를 위해 이메일 인증을 해주세요.";
 		String content = "아래 버튼을 클릭하여 인증을 완료해주세요";

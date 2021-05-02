@@ -8,6 +8,7 @@ import lombok.ToString;
 
 @Embeddable
 @Getter
+@Setter
 @ToString
 @Setter
 public class Certificate {

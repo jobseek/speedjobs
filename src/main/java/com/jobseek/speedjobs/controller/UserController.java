@@ -84,16 +84,6 @@ public class UserController {
 		return ResponseEntity.ok(UserInfoResponse.of(user));
 	}
 
-	@ApiOperation(value = "회원 비밀번호 확인", notes = "로그인된 회원의 비밀번호를 확인한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
-	@PostMapping("/check")
-	public ResponseEntity<Void> checkLoginUserPassword(
-		@Valid @RequestBody UserCheckRequest userCheckRequest,
-		@LoginUser User user) {
-		userService.validatePassword(userCheckRequest, user);
-		return ResponseEntity.noContent().build();
-	}
-
 	@ApiOperation(value = "개인회원 상세정보 조회", notes = "개인회원의 상세정보를 조회한다.")
 	@PreAuthorize("hasRole('MEMBER')")
 	@GetMapping("/member/{userId}")

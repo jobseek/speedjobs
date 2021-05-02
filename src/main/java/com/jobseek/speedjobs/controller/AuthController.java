@@ -29,7 +29,6 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest tokenRequest,
 		HttpServletResponse response) {
-		tokenRequest.setProvider(Provider.LOCAL);
 		return ResponseEntity.ok(authService.login(tokenRequest, response));
 	}
 

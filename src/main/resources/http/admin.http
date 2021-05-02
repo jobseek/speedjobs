@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
   "email": "admin@admin.com",
-  "password": "jobseek2021!"
+  "password": "jobseek2021!",
+  "provider": "LOCAL"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
