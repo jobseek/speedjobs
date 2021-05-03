@@ -48,6 +48,7 @@ public class RecruitResponse {
 	private Double longitude; // 경도
 	private Double rating; // 평가점수
 
+	// 엔티티들의(of) Response(DTO)로 반환한다.
 	public static RecruitResponse of(Recruit recruit, User user) {
 		Company company = recruit.getCompany();
 		return RecruitResponse.builder()

@@ -15,7 +15,7 @@ import lombok.ToString;
 public class ValidResponse {
 
 	private String status;
-	private Integer count; // 에러개수
+	private Integer errorCount; // 에러개수
 	Map<String, String> errMsgResult;
 
 }

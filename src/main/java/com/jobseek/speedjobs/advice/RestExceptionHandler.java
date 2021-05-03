@@ -15,14 +15,18 @@ import com.jobseek.speedjobs.domain.user.exception.NotFoundRoleException;
 import com.jobseek.speedjobs.domain.user.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.user.exception.SignUpRuleException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -107,8 +111,17 @@ public class RestExceptionHandler {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ResultResponse> HttpMessageConversionException(HttpMessageConversionException e) {
+		ResultResponse response = ResultResponse.builder()
+			.status(ErrorCode.TypeError.getCode())
+			.message("Enum 또는 LocalDateTime 등 json 데이터 타입을 체크하세요.")
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ValidResponse> ValidException(BindException e) {
+	public ResponseEntity<ResultResponse> ValidException(BindException e) {
 		List<String> fieldNames = e.getFieldErrors().stream().map(FieldError::getField)
 			.collect(Collectors.toList());
 		List<String> errMegs = e.getBindingResult().getAllErrors().stream()
@@ -118,11 +131,16 @@ public class RestExceptionHandler {
 			errMsgResult.put(fieldName, errMegs.get(fieldNames.indexOf(fieldName)));
 		});
 		ValidResponse validResponse = ValidResponse.builder()
-			.count(e.getErrorCount())
+			.errorCount(e.getErrorCount())
 			.errMsgResult(errMsgResult)
 			.status(ErrorCode.Validation.getCode())
 			.build();
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(validResponse);
+		log.info("@Valid Error: {}", validResponse);
+		ResultResponse response = ResultResponse.builder()
+			.status(ErrorCode.Validation.getCode())
+			.message("잘못 입력된 필드값이 있습니다. 양식을 맞춰주세요.")
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 
 
