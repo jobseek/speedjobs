@@ -5,28 +5,30 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MemberUpdateRequest {
 
 	//유저
 	@NotBlank
 	@Length(min = 2, max = 15)
-	private final String name;
+	private String name;
 
 	@NotBlank
 	@Length(min = 2, max = 15)
-	private final String nickname;
+	private String nickname;
 
-	private final String password;
-	private final String picture;
-	private final String contact;
+	private String password;
+	private String picture;
+	private String contact;
 	//멤버
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private final LocalDate birth;
-	private final String bio;
-	private final String gender;
+	private LocalDate birth;
+	private String bio;
+	private String gender;
 
 }
