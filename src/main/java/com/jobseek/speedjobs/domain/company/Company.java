@@ -23,9 +23,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "companies")
 public class Company extends User {
 
-	@OneToMany(mappedBy = "company", cascade = ALL, orphanRemoval = true)
-	private final List<Recruit> recruitList = new ArrayList<>();
-
 	private String companyName;
 
 	private String logoImage;
@@ -34,6 +31,9 @@ public class Company extends User {
 
 	@Embedded
 	private CompanyDetail companyDetail;
+
+	@OneToMany(mappedBy = "company", cascade = ALL, orphanRemoval = true)
+	private final List<Recruit> recruits = new ArrayList<>();
 
 	public Company(String name, String nickname, String email, String password,
 		String picture, String contact, Role role, String companyName, String logoImage, int scale,

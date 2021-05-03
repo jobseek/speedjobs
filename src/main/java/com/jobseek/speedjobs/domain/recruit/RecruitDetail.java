@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class RecruitDetail {
 
-	@Enumerated(EnumType.STRING)
-	private Position position;
-
 	@Lob
 	private String content;
+
+	@Enumerated(EnumType.STRING)
+	private Position position;
 
 	@Builder
 	public RecruitDetail(Position position, String content) {

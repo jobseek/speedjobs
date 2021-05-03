@@ -39,33 +39,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-	@ManyToMany
-	@JoinTable(name = "post_favorites",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "post_id")
-	)
-	private final List<Post> postFavorites = new ArrayList<>();
-
-	@ManyToMany
-	@JoinTable(name = "comment_favorites",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "comment_id")
-	)
-	private final List<Comment> commentFavorites = new ArrayList<>();
-
-	@ManyToMany
-	@JoinTable(name = "recruit_favorites",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "recruit_id")
-	)
-	private final List<Recruit> recruitFavorites = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-	private List<Post> posts;
-
-	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-	private List<Comment> comments;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
@@ -87,6 +60,33 @@ public class User extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role;
+
+	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+	private List<Post> posts;
+
+	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+	private List<Comment> comments;
+
+	@ManyToMany
+	@JoinTable(name = "post_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "post_id")
+	)
+	private final List<Post> postFavorites = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "comment_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "comment_id")
+	)
+	private final List<Comment> commentFavorites = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "recruit_favorites",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "recruit_id")
+	)
+	private final List<Recruit> recruitFavorites = new ArrayList<>();
 
 	@Builder
 	public User(String name, String nickname, String email, String password, String picture,

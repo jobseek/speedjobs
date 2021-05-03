@@ -10,7 +10,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Setter
 public class Certificate {
 
 	private String certName;

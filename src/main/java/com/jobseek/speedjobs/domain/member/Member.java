@@ -27,9 +27,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "members")
 public class Member extends User {
 
-	@OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
-	private final List<Resume> resumeList = new ArrayList<>();
-
 	private String gender;
 
 	private LocalDate birth;
@@ -41,6 +38,9 @@ public class Member extends User {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Provider provider;
+
+	@OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
+	private final List<Resume> resumeList = new ArrayList<>();
 
 	public Member(String name, String nickname, String email, String password, String picture,
 		String contact, Role role, String gender, LocalDate birth, String bio, String oauthId,

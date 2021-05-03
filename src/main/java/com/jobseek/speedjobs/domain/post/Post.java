@@ -41,19 +41,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
 
-	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-	private final List<Comment> comments = new ArrayList<>();
-
-	@ManyToMany
-	@JoinTable(name = "post_tags",
-		joinColumns = @JoinColumn(name = "post_id"),
-		inverseJoinColumns = @JoinColumn(name = "tag_id")
-	)
-	private final List<Tag> tags = new ArrayList<>();
-
-	@ManyToMany(mappedBy = "postFavorites")
-	private final List<User> favorites = new ArrayList<>();
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
@@ -73,6 +60,19 @@ public class Post extends BaseTimeEntity {
 	private int favoriteCount;
 
 	private int commentCount;
+
+	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+	private final List<Comment> comments = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "post_tags",
+		joinColumns = @JoinColumn(name = "post_id"),
+		inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private final List<Tag> tags = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "postFavorites")
+	private final List<User> favorites = new ArrayList<>();
 
 	@Builder
 	public Post(String title, PostDetail postDetail) {

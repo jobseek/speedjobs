@@ -21,7 +21,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @AllArgsConstructor(access = PRIVATE)
@@ -31,22 +30,22 @@ import lombok.ToString;
 @Table(name = "tags")
 public class Tag {
 
-	@ManyToMany(mappedBy = "tags")
-	private final List<Post> posts = new ArrayList<>();
-
-	@ManyToMany(mappedBy = "tags")
-	private final List<Recruit> recruits = new ArrayList<>();
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
 	private Long id;
 
+	@Column(unique = true, length = 50)
+	private String name;
+
 	@Enumerated(EnumType.STRING)
 	private Type type;
 
-	@Column(unique = true, length = 50)
-	private String name;
+	@ManyToMany(mappedBy = "tags")
+	private final List<Post> posts = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "tags")
+	private final List<Recruit> recruits = new ArrayList<>();
 
 	@Builder
 	public Tag(Type type, String name) {

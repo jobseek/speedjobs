@@ -45,30 +45,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "recruits")
 public class Recruit extends BaseTimeEntity {
 
-	@ManyToMany
-	@JoinTable(name = "recruit_tags",
-		joinColumns = @JoinColumn(name = "recruit_id"),
-		inverseJoinColumns = @JoinColumn(name = "tag_id")
-	)
-	private final List<Tag> tags = new ArrayList<>();
-
-	@ManyToMany(mappedBy = "recruitFavorites")
-	private final List<User> favorites = new ArrayList<>();
-
-	@OneToMany(mappedBy = "recruit", cascade = {PERSIST, MERGE}, orphanRemoval = true)
-	private final List<Apply> applies = new ArrayList<>();
-
-	@OneToMany(cascade = ALL, orphanRemoval = true)
-	private final List<Message> messages = new ArrayList<>();
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "recruit_id")
 	private Long id;
-
-	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
-	@JoinColumn(name = "company_id")
-	private Company company;
 
 	private String title;
 
@@ -89,6 +69,26 @@ public class Recruit extends BaseTimeEntity {
 
 	@Embedded
 	private RecruitDetail recruitDetail;
+
+	@OneToMany(mappedBy = "recruit", cascade = ALL, orphanRemoval = true)
+	private final List<Apply> applies = new ArrayList<>();
+
+	@OneToMany(cascade = ALL, orphanRemoval = true)
+	private final List<Message> messages = new ArrayList<>();
+
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
+	@JoinColumn(name = "company_id")
+	private Company company;
+
+	@ManyToMany
+	@JoinTable(name = "recruit_tags",
+		joinColumns = @JoinColumn(name = "recruit_id"),
+		inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private final List<Tag> tags = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "recruitFavorites")
+	private final List<User> favorites = new ArrayList<>();
 
 	public void increaseViewCount() {
 		viewCount += 1;
@@ -146,6 +146,5 @@ public class Recruit extends BaseTimeEntity {
 		}
 		return user.getRecruitFavorites().contains(this);
 	}
-
 }
 

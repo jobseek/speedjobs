@@ -34,8 +34,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "comments")
 public class Comment extends BaseTimeEntity {
 
-	@ManyToMany(mappedBy = "commentFavorites")
-	private final List<User> favorites = new ArrayList<>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "comment_id")
+	private Long id;
+
+	@Lob
+	private String content;
 
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "post_id")
@@ -45,13 +50,8 @@ public class Comment extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "comment_id")
-	private Long id;
-
-	@Lob
-	private String content;
+	@ManyToMany(mappedBy = "commentFavorites")
+	private final List<User> favorites = new ArrayList<>();
 
 	public void addComment(Post post) {
 		post.getComments().add(this);
