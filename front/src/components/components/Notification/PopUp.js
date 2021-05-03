@@ -84,7 +84,7 @@ export default function PopUp({ type, text }) {
     withdrawErr: {
       backColor: 'red',
       color: 'white',
-      text: '비밀번호가 틀렸습니다.',
+      text: '비밀번호가 다릅니다.',
     },
     green: {
       backColor: 'green',

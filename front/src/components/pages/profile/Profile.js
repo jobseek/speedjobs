@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { PROFILE_GET_REQUEST } from '../../../reducers/profile';
 import {
   ProfileDiv,
   StyledButton,
   StyledHeaderDiv,
   StyledLeftLayout,
-} from '../components/Styled';
-import SideMenu from '../components/SideMenu';
-import ProfileDetails from '../components/Profile/ProfileDetails';
-import ProfileDetails2 from '../components/Profile/ProfileDetails2';
-import { PROFILE_GET_REQUEST } from '../../reducers/profile';
+} from '../../components/Styled';
+import SideMenu from '../../components/SideMenu';
+import IndividualDetails from '../../components/Profile/IndividualDetails';
+import CorporateDetails from '../../components/Profile/CorporateDetails';
+
+/**
+ * 회원 조회 상위 컴포넌트
+ * 1. dispatch => PROFILE_GET_REQUEST 액션 발생
+ * 2. setRole을 이용해서 role의 정보를 저장한다. (useState 사용)
+ * 3. role === ROLE_MEMBER => 개인회원 수정 페이지, 개인회원 조회 페이지
+ * 4. role === ROLE_COMPANY => 기업회원 수정 페이지, 기업회원 조회 페이지
+ */
 
 export default function Profile() {
-  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [role, setRole] = useState('');
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
+    console.log('=== user.me ===', user.me);
     if (user.me === null) return;
-    dispatch({
-      type: PROFILE_GET_REQUEST,
-      data: user.me,
-    });
+    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
+    console.log('=== user.me.role ===', user.me.role);
     setRole(user.me.role);
   }, [user.me, dispatch]);
 
@@ -32,13 +39,13 @@ export default function Profile() {
         <StyledHeaderDiv padding title={'계정관리'}>
           <div style={{ flex: '0 0' }}>
             {role === 'ROLE_MEMBER' ? (
-              <Link to={'/profile/modify'}>
+              <Link to={'/profile/individual/modify'}>
                 <StyledButton style={{ marginRight: '0' }} wide>
                   개인정보 수정
                 </StyledButton>
               </Link>
             ) : (
-              <Link to={'/profile/modify2'}>
+              <Link to={'/profile/corporate/modify'}>
                 <StyledButton style={{ marginRight: '0' }} wide>
                   기업정보 수정
                 </StyledButton>
@@ -55,13 +62,11 @@ export default function Profile() {
               <SideMenu />
             </StyledLeftLayout>
 
-            {console.log('잉????: ', role)}
-
             <ProfileDiv className={'col-12 col-lg-10'}>
               {role === 'ROLE_MEMBER' ? (
-                <ProfileDetails /> // 개인회원 정보
+                <IndividualDetails /> // 개인회원 상세 컴포넌트
               ) : (
-                <ProfileDetails2 /> // 기업회원 정보
+                <CorporateDetails /> // 기업회원 상세 컴포넌트
               )}
             </ProfileDiv>
           </div>

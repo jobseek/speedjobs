@@ -13,10 +13,6 @@ import {
 } from '../reducers/profile';
 
 function getProfileApi(data) {
-  // const { id } = data;
-  console.log('data값 확인===', data);
-  console.log('이게 멀까요??', data.id);
-  console.log(data.role);
   if (data.role === 'ROLE_COMPANY') {
     return axios.get(`/user/company/${data.id}`);
   } else {
@@ -63,7 +59,6 @@ function updateProfileApi(data, data2, me) {
 
 function* updateProfile(action) {
   try {
-    console.log('머지 인건?', action);
     const result = yield call(
       updateProfileApi,
       action.data,

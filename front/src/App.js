@@ -12,8 +12,8 @@ import Recruitment from './components/pages/Recruitment';
 import RecruitmentDetail from './components/pages/RecruitmentDetail';
 import Community from './components/pages/Community';
 import PostDetail from './components/pages/PostDetail';
-import Profile from './components/pages/Profile';
-import Profile2 from './components/pages/Profile2';
+import Profile from './components/pages/profile/Profile';
+import Withdrawal from './components/pages/profile/Withdrawal';
 import Resume from './components/pages/Resume';
 import ResumeList from './components/pages/ResumeList';
 import RecruitLike from './components/pages/RecruitLike';
@@ -26,8 +26,8 @@ import RecruitAdd from './components/pages/RecruitAdd';
 import ScrollToTop from './components/includes/ScrollToTop';
 import Login from './components/admin/page/Login';
 import AdminHome from './components/admin/page/AdminHome';
-import ProfileMd from './components/pages/ProfileMd';
-import ProfileMd2 from './components/pages/ProfileMd2';
+import IndividualModify from './components/pages/profile/IndividualModify';
+import CorporateModify from './components/pages/profile/CorporateModify';
 import { TAG_GET_REQUEST } from './reducers/tag';
 import PostModify from './components/pages/PostModify';
 
@@ -110,9 +110,17 @@ function App() {
           <Route path={'/recruit/detail/:id'} component={RecruitmentDetail} />
           <Route path={'/community/post/:id'} component={PostDetail} />
           <Route exact path={'/profile'} component={Profile} />
-          <Route exact path={'/profile/delete'} component={Profile2} />
-          <Route exact path={'/profile/modify'} component={ProfileMd} />
-          <Route exact path={'/profile/modify2'} component={ProfileMd2} />
+          <Route exact path={'/profile/delete'} component={Withdrawal} />
+          <Route
+            exact
+            path={'/profile/individual/modify'}
+            component={IndividualModify}
+          />
+          <Route
+            exact
+            path={'/profile/corporate/modify'}
+            component={CorporateModify}
+          />
           <Route exact path={'/resume'} component={Resume} />
           <Route exact path={'/resume/list'} component={ResumeList} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
