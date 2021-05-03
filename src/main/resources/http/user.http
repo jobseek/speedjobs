@@ -102,5 +102,5 @@ POST http://{{host}}/user/check
 Content-Type: application/json
 
 {
-  "password": 12343344
+  "password": 1234
 }
