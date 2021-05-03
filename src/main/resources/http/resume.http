@@ -29,14 +29,14 @@ Authorization: Bearer {{accessToken}}
     {
       "companyName": "잡식컴퍼니",
       "position": "사장",
-      "inDate": "2020-01-02 00:00:00",
-      "outDate": "2021-12-15 00:00:00"
+      "inDate": "2020-01-02",
+      "outDate": "2021-12-15"
     },
     {
       "companyName": "잡식컴퍼니",
       "position": "부하",
-      "inDate": "2020-01-05 00:00:00",
-      "outDate": "2021-11-15 00:00:00"
+      "inDate": "2020-01-05",
+      "outDate": "2021-11-15"
     }
   ],
   "scholarList": [
@@ -44,15 +44,15 @@ Authorization: Bearer {{accessToken}}
       "education": "HIGH",
       "schoolName": "양명고",
       "major": "이과",
-      "inDate": "2014-03-02 00:00:00",
-      "outDate": "2017-02-21 00:00:00"
+      "inDate": "2014-03-02",
+      "outDate": "2017-02-21"
     },
     {
       "education": "UNIVERSITY",
       "schoolName": "서울대",
       "major": "컴퓨터공학과",
-      "inDate": "2017-03-02 00:00:00",
-      "outDate": "2020-03-21 00:00:00"
+      "inDate": "2017-03-02",
+      "outDate": "2020-03-21"
     }
   ],
   "certificateList": [
@@ -60,7 +60,7 @@ Authorization: Bearer {{accessToken}}
       "certName": "컴퓨터활용능력1급",
       "certNumber": "111-11-11111",
       "institute": "잡식컴퍼니",
-      "certDate": "2011-08-23 13:25:08",
+      "certDate": "2011-08-23",
       "score": null,
       "degree": 1
     },
@@ -68,7 +68,7 @@ Authorization: Bearer {{accessToken}}
       "certName": "토익",
       "certNumber": "222-22-22222",
       "institute": "토익컴퍼니",
-      "certDate": "2018-05-30 13:25:08",
+      "certDate": "2018-05-30",
       "score": 800,
       "degree": null
     }
@@ -91,8 +91,8 @@ Authorization: Bearer {{accessToken}}
     {
       "companyName": "스피드잡스",
       "position": "사장",
-      "inDate": "2020-01-02 00:00:00",
-      "outDate": "2021-12-15 00:00:00"
+      "inDate": "2020-01-02",
+      "outDate": "2021-12-15"
     }
   ],
   "scholarList": [
@@ -100,15 +100,15 @@ Authorization: Bearer {{accessToken}}
       "education": "HIGH",
       "schoolName": "못먹어도고",
       "major": "문과",
-      "inDate": "2014-03-02 00:00:00",
-      "outDate": "2017-02-21 00:00:00"
+      "inDate": "2014-03-02",
+      "outDate": "2017-02-21"
     },
     {
       "education": "UNIVERSITY",
       "schoolName": "포항공대",
       "major": "컴퓨터공학과",
-      "inDate": "2017-03-02 00:00:00",
-      "outDate": "2020-03-21 00:00:00"
+      "inDate": "2017-03-02",
+      "outDate": "2020-03-21"
     }
   ],
   "certificateList": [
@@ -116,7 +116,7 @@ Authorization: Bearer {{accessToken}}
       "certName": "컴퓨터활용능력1급",
       "certNumber": "111-11-11111",
       "institute": "컴활컴퍼니",
-      "certDate": "2011-08-23 13:25:08",
+      "certDate": "2011-08-23",
       "score": null,
       "degree": 1
     },
@@ -124,7 +124,7 @@ Authorization: Bearer {{accessToken}}
       "certName": "토익",
       "certNumber": "222-22-22222",
       "institute": "토익컴퍼니",
-      "certDate": "2018-05-30 13:25:08",
+      "certDate": "2018-05-30",
       "score": 900,
       "degree": null
     },
@@ -132,7 +132,7 @@ Authorization: Bearer {{accessToken}}
       "certName": "정보처리기사",
       "certNumber": "333-32-22222",
       "institute": "Q-net",
-      "certDate": "2020-05-30 13:25:08",
+      "certDate": "2020-05-30",
       "score": null,
       "degree": null
     }

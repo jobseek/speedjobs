@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.domain.resume.details;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -23,10 +22,8 @@ public class Scholar {
 	@Column(length = 50)
 	private String major;
 
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
-	private LocalDateTime inDate; //입학날짜
+	private LocalDate inDate; //입학날짜
 
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
-	private LocalDateTime outDate; //졸업날짜
+	private LocalDate outDate; //졸업날짜
 
 }

@@ -50,6 +50,7 @@ public class RecruitService {
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.addTags(tags);
 		return recruitRepository.save(recruit).getId();
+		// DB가 뻗을시 에러 처리 + 트랜잭션 안에서 에러 처리
 	}
 
 	@Transactional

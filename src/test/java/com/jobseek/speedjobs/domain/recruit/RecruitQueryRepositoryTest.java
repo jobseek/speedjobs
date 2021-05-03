@@ -66,7 +66,7 @@ class RecruitQueryRepositoryTest {
 		Page<Recruit> result = recruitQueryRepository.findAll(condition, pageRequest);
 
 		//then
-		assertThat(result.getContent().get(0).getId()).isEqualTo(15);
+		assertThat(result.getContent().get(0).getId()).isEqualTo(14);
 	}
 
 	/**
