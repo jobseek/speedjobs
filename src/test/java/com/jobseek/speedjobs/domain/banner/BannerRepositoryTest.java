@@ -4,13 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(OrderAnnotation.class)
 class BannerRepositoryTest {
 
 	@Autowired
@@ -21,6 +25,7 @@ class BannerRepositoryTest {
 	 */
 	@Test
 	@DisplayName("basic test")
+	@Order(1)
 	public void testBanner() {
 		//given
 		Banner banner = Banner.builder().baseName("img").extension("png")
@@ -39,6 +44,7 @@ class BannerRepositoryTest {
 	 */
 	@Test
 	@DisplayName("basic CRUD")
+	@Order(2)
 	public void basicCRUD() {
 		//given
 		Banner banner1 = Banner.builder().baseName("img").extension("png")
