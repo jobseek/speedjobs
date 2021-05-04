@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { InputBox, InputPlaceholder } from './adminStyled';
 
-export default function Input({ placeholder, type }) {
+export default function Input({
+  placeholder,
+  type,
+  disabled,
+  changeHandler,
+  value,
+  name,
+  onKeyDown,
+}) {
   const [focus, set] = useState(false);
-  const [value, setValue] = useState('');
   return (
     <>
       <div style={{ position: 'relative' }}>
@@ -12,10 +19,13 @@ export default function Input({ placeholder, type }) {
         </InputPlaceholder>
 
         <InputBox
+          name={name}
+          disabled={disabled}
           onFocus={() => set((p) => !p)}
           onBlur={() => set((p) => !p)}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={changeHandler}
+          onKeyDown={onKeyDown}
           type={type}
         />
       </div>

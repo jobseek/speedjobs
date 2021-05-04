@@ -17,10 +17,6 @@ export const loginInterceptor = (
   const requestInterceptorConfig = (config) => {
     if (config.url === '/auth/logout' && !config.headers._Retry) {
       config.headers['Authorization'] = `Bearer ${refresh['REFRESH_TOKEN']}`;
-      console.log('hello');
-      console.log(refresh['REFRESH_TOKEN']);
-      removeRefresh('REFRESH_TOKEN');
-      removeRefresh('ACCESS_TOKEN');
       return config;
     }
     // if (config.headers['Authorization'] === undefined && !needLogin) {

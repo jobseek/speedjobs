@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { v4 } from 'uuid';
 import Img from '../img/banners/img.png';
 import Img2 from '../img/banners/img2.png';
+import Img3 from '../img/banners/Img3.jpeg';
+import Img4 from '../img/banners/Img4.jpeg';
 import BannerImg from './BannerImg';
 
 const Jumbo = styled.div`
@@ -19,8 +21,10 @@ export default function Banner(props) {
   const [cnt, setCnt] = useState(0);
   const bannerList = useMemo(
     () => [
-      { src: Img, key: 1, order: 0 },
-      { src: Img2, key: 2, order: 1 },
+      { src: Img, key: 3, order: 1 },
+      { src: Img2, key: 2, order: 2 },
+      { src: Img3, key: 1, order: 0 },
+      { src: Img4, key: 4, order: 3 },
     ],
     []
   );

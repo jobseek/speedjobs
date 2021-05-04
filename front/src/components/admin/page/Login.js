@@ -5,22 +5,31 @@ import { useHistory } from 'react-router';
 import { useSpring, animated } from 'react-spring';
 import Input from '../component/Input';
 import { Button, CoverAll, LoginForm } from '../component/adminStyled';
-import { LOG_OUT_REQUEST } from '../../../reducers/user';
+import { LOG_IN_REQUEST, LOG_OUT_REQUEST } from '../../../reducers/user';
 import AdminAlert from '../component/AdminAlert';
 
 export default function Login(props) {
   const history = useHistory();
+  const [err, setErr] = useState(false);
   const [hide, set] = useState(false);
   const dispatch = useDispatch();
   const [form, setForm] = useState({ email: '', password: '' });
   const user = useSelector((state) => state.user);
-  const refresh = useCookies('REFRESH_TOKEN');
+  const [refresh, ,] = useCookies('REFRESH_TOKEN');
   const [pop, setPop] = useState(false);
   const hideSpring = useSpring({
     opacity: hide ? '0' : '1',
     from: { opacity: '1' },
     config: { duration: 500 },
   });
+
+  const onChangeHandler = useCallback(
+    (e) => {
+      if (e.target !== undefined)
+        setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    },
+    [setForm]
+  );
 
   const leftSpring = useSpring({
     transform: hide ? 'translateX(-20vw)' : 'translateX(0vw)',
@@ -30,30 +39,73 @@ export default function Login(props) {
     delay: 500,
   });
   useEffect(() => {
-    if (user.meDone || refresh['REFRESH_TOKEN'] === undefined) {
+    if (user.me?.email === 'admin@admin.com') {
+      set(true);
+      setTimeout(() => {
+        history.push('/admin/home');
+      }, 1000);
+    } else if (user.meDone || refresh['REFRESH_TOKEN'] === undefined) {
       dispatch({
         type: LOG_OUT_REQUEST,
         data: 'no-redirect',
       });
+
       setPop(true);
     }
-  }, [dispatch, refresh, user.meDone]);
+  }, [dispatch, refresh, user.meDone, history, user.me?.email]);
 
-  const onClickHandler = useCallback(() => {
-    set(true);
-    setTimeout(() => {
-      history.push('/admin/home');
-    }, 1000);
-  }, [history]);
+  const onClickHandler = useCallback(
+    (e) => {
+      if (e !== undefined) {
+        e.preventDefault();
+        dispatch({
+          type: LOG_IN_REQUEST,
+          data: form,
+        });
+      }
+    },
+    [form, dispatch]
+  );
+  useEffect(() => {
+    if (user.logInError !== null) {
+      console.log('err');
+      setErr(true);
+    } else {
+      setTimeout(() => {
+        setErr(false);
+      }, 300);
+    }
+  }, [user.logInError]);
   return (
     <>
       <CoverAll>
-        <LoginForm style={leftSpring}>
+        <LoginForm
+          style={leftSpring}
+          onSubmit={(e) => onClickHandler(e)}
+          red={err}
+        >
           <animated.div style={hideSpring}>
             <div style={{ marginBottom: '40px' }}>Admin Login</div>
-            <Input name="email" placeholder={'ADMIN ID'}></Input>
-            <Input placeholder={'PASSWORD'} type={'password'}></Input>
-            <Button onClick={() => onClickHandler()}>LOGIN</Button>
+            <Input
+              name="email"
+              value={form.email}
+              placeholder={'ADMIN ID'}
+              changeHandler={onChangeHandler}
+              disabled={!user.needLogin}
+            ></Input>
+            <Input
+              placeholder={'PASSWORD'}
+              name={'password'}
+              value={form.password}
+              type={'password'}
+              disabled={!user.needLogin}
+              changeHandler={onChangeHandler}
+              onKeyDown={(e) => {
+                console.log('key');
+                if (e.key === 'Enter') onClickHandler(e);
+              }}
+            ></Input>
+            <Button onClick={(e) => onClickHandler(e)}>LOGIN</Button>
           </animated.div>
         </LoginForm>
         {pop && (

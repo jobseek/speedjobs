@@ -82,7 +82,8 @@ export default function TagList(props) {
       if (!tag.selected) {
         tag.selected = true;
         setSelected((p) => {
-          return [...p, tag];
+          if (p.length !== 0) tagList[tagList.indexOf(p[0])].selected = false;
+          return [tag];
         });
         setInput(tag);
       } else {
@@ -95,7 +96,7 @@ export default function TagList(props) {
         });
       }
     },
-    [selected]
+    [selected, tagList]
   );
   const onSubmitHandler = (e) => {
     console.log(input);

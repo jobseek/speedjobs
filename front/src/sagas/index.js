@@ -11,6 +11,7 @@ import resumeSaga from './resume';
 import tagSaga from './tag';
 import companySaga from './company';
 import likeSaga from './like';
+import adminSaga from './admin';
 
 axios.defaults.baseURL = `http://${address()}:8081/api`;
 axios.defaults.withCredentials = true;
@@ -26,5 +27,6 @@ export default function* rootSaga() {
     fork(companySaga),
     fork(likeSaga),
     fork(resumeSaga),
+    fork(adminSaga),
   ]);
 }

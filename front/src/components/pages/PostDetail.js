@@ -16,7 +16,6 @@ import {
   POST_DELETE_REQUEST,
   POST_GET_DONE,
   POST_GET_REQUEST,
-  POST_LIST_REQUEST,
 } from '../../reducers/post';
 import {
   ADD_LIKE_DONE,
@@ -65,9 +64,6 @@ export default function PostDetail(props) {
   // 자신의 포스트인지 확인한다음에 수정 삭제버튼 노출
   useEffect(() => {
     if (user.me !== null && post.post) {
-      console.log('Set');
-      console.log(user.me.id);
-      console.log(post.post.authorId);
       if (user.me.id === post.post.authorId) setMyPost(true);
     }
   }, [user.meDone, post.post, user.me]);
@@ -94,7 +90,6 @@ export default function PostDetail(props) {
           ...(post.post.tags.SKILL ?? []),
         ],
       });
-      console.log(post.post.favorite);
       setFav(post.post.favorite);
       dispatch({
         type: POST_GET_DONE,

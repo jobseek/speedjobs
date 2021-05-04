@@ -298,16 +298,6 @@ const TagBodyInside = styled.div`
     css`
       border: #d3d3d3 1px solid;
       color: black;
-      &:after {
-        transform: translate(5px, 7px);
-        transition: all 1s ease-in-out;
-        content: '';
-        opacity: 0;
-      }
-      &:hover:after {
-        content: ' \\25B6';
-        opacity: 1;
-      }
     `};
   border-radius: 5px;
   //min-width: 125px;

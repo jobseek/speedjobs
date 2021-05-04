@@ -92,6 +92,12 @@ function* logOut(action) {
         type: LOG_OUT_SUCCESS,
       });
     }
+    // 쿠키삭제
+    yield document.cookie.split(';').forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+    });
   } catch (error) {
     if (action.data === 'no-redirect') {
       yield put({

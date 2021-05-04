@@ -80,6 +80,13 @@ export const LoginForm = styled(animated.div)`
   height: 320px;
   border-radius: 15px;
   overflow: hidden;
+  box-shadow: none;
+  transition: box-shadow ease-in-out 500ms;
+  ${(props) =>
+    props.red &&
+    css`
+      box-shadow: red 0px 0px 50px;
+    `}
 `;
 
 export const InputBox = styled.input`
@@ -89,6 +96,7 @@ export const InputBox = styled.input`
   border: none;
   padding: 0 0 3px 12px;
   border-bottom: #eee 1px solid;
+  background-color: transparent;
   &:focus {
     outline: none;
   }

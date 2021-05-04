@@ -84,6 +84,9 @@ export default function Header(props) {
   };
   // 팝업 동작 인식
   useEffect(() => {
+    if (state.user.signUpLoading) {
+      addPop({ type: 'green', id: v4(), text: '이메일을 보내는 중입니다..' });
+    }
     // 회원가입
     if (state.user.signUpDone) {
       setPopModal(true);

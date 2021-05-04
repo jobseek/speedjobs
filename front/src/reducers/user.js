@@ -73,6 +73,7 @@ const reducer = (state = initialState, action) =>
         draft.logOutLoading = true;
         draft.logOutError = null;
         draft.logOutDone = false;
+        draft.needLogin = true;
         break;
       case LOG_OUT_SUCCESS:
         draft.logOutLoading = false;
@@ -89,7 +90,6 @@ const reducer = (state = initialState, action) =>
       case LOG_OUT_DONE:
         draft.logOutError = null;
         draft.logOutDone = false;
-        draft.needLogin = true;
         break;
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;

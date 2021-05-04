@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { LOG_OUT_REQUEST } from '../../../reducers/user';
 
 const SideBarBody = styled.div`
   position: fixed;
@@ -49,6 +51,12 @@ const SideDiv = styled.div`
 `;
 
 export default function SideBar({ toggle, setToggle, set }) {
+  const dispatch = useDispatch();
+  const logoutRequest = useCallback(() => {
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    });
+  }, [dispatch]);
   return (
     <>
       <div></div>
@@ -63,6 +71,7 @@ export default function SideBar({ toggle, setToggle, set }) {
         <SideSpan>메인홈화면 배너 변경 </SideSpan>
         <SideDiv onClick={() => set('Company')}>기업회원승인</SideDiv>
         <SideSpan>기업회원 회원가입 승인</SideSpan>
+        <SideDiv onClick={() => logoutRequest()}>로그아웃</SideDiv>
         <SideDiv>게시글 관리</SideDiv>
         <SideDiv>게시글 관리</SideDiv>
       </SideBarBody>

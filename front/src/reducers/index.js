@@ -8,6 +8,7 @@ import tag from './tag';
 import company from './company';
 import like from './like';
 import resume from './resume';
+import admin from './admin';
 
 const rootReducer = combineReducers({
   user,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   tag,
   company,
   like,
+  admin,
 });
 
 export default rootReducer;

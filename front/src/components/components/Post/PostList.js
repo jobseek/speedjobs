@@ -70,7 +70,6 @@ export default function PostList({
   }, [user.me, refresh, targetRef]);
 
   useEffect(() => {
-    console.log(list);
     if (listLoading) {
       setLoading((prev) => true);
     }
@@ -78,7 +77,6 @@ export default function PostList({
       setLoading((prev) => false);
       setPostList((prev) => [...prev, ...list.content]);
       if (list.last) {
-        console.log('last');
         isLast.current = true;
       } else {
         page.current++;
@@ -98,7 +96,7 @@ export default function PostList({
 
   const mapPost = postList.map((pl) => (
     <Post
-      type
+      type={type}
       id={pl.id}
       tags={[...(pl.tags.SKILL ?? []), ...(pl.tags.POSITION ?? [])]}
       title={pl.title}

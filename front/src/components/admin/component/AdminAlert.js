@@ -13,6 +13,14 @@ const Alert = styled(animated.div)`
   font-color: #c1c1c1;
   box-shadow: 0px 5px 10px #a1a1a1;
   margin-top: 100px;
+  text-align: center;
+  ${(props) =>
+    props.popError &&
+    css`
+      background-color: #f69a9a;
+      color: white;
+      font-weight: 700;
+    `}
 `;
 
 const StatusBar = styled.div`
@@ -28,11 +36,6 @@ const StatusBar = styled.div`
     props.barEnter &&
     css`
       width: 0%;
-    `}
-  ${(props) =>
-    props.barLoading &&
-    css`
-      width: 30%;
     `}
   ${(props) =>
     props.barDone &&
@@ -54,19 +57,19 @@ const Wrapper = styled.div`
   overflow-y: hidden;
 `;
 
-export default function AdminAlert({ children, enter, done }) {
+export default function AdminAlert({ children, enter, done, error }) {
   const [ani, set] = useState(true);
   const [end, setEnd] = useState(false);
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    set(true);
-  }, []);
+    if (enter === true) {
+      set(true);
+    }
+  }, [enter]);
   useEffect(() => {
     if (done === true) {
       set(false);
-      setEnd(true);
-      setLoading(false);
-      setTimeout(() => setEnd(false), 800);
+      setTimeout(() => setEnd(true), 1000);
+      setTimeout(() => setEnd(false), 1800);
     }
   }, [done]);
 
@@ -89,11 +92,10 @@ export default function AdminAlert({ children, enter, done }) {
   return (
     <>
       <Wrapper>
-        <Alert style={ani ? style : endStyle}>
-          {children}
+        <Alert style={ani ? style : endStyle} popError={error !== undefined}>
+          {error !== undefined ? error : children}
           <StatusBar
             barEnter={enter}
-            barLoading={loading}
             barDone={end}
             style={end ? {} : barEndStyle}
           ></StatusBar>
