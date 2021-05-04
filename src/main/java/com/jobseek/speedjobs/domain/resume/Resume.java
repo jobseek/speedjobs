@@ -1,19 +1,23 @@
 package com.jobseek.speedjobs.domain.resume;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.member.Member;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -31,12 +35,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "resumes")
+@Slf4j
 public class Resume extends BaseTimeEntity {
 
 	@Id
@@ -83,7 +89,11 @@ public class Resume extends BaseTimeEntity {
 	@CollectionTable(name = "career", joinColumns = @JoinColumn(name = "resume_id"))
 	private List<Career> careerList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "resume", cascade = ALL, orphanRemoval = true)
+	@ElementCollection
+	@CollectionTable(name = "resumeTags", joinColumns = @JoinColumn(name = "resume_id"))
+	private List<Long> tagId = new ArrayList<>();
+
+	@OneToMany(mappedBy = "resume", cascade = {PERSIST, MERGE}, orphanRemoval = true)
 	private final List<Apply> applies = new ArrayList<>();
 
 	@Builder
@@ -118,7 +128,7 @@ public class Resume extends BaseTimeEntity {
 	}
 
 	public void addMoreInfo(List<Career> careers, List<Scholar> scholars,
-		List<Certificate> certificates) {
+		List<Certificate> certificates, List<Long> resumeTags) {
 		if (careers != null) {
 			this.careerList.addAll(careers);
 		}
@@ -128,10 +138,13 @@ public class Resume extends BaseTimeEntity {
 		if (certificates != null) {
 			this.certificateList.addAll(certificates);
 		}
+		if (resumeTags != null) {
+			this.tagId.addAll(resumeTags);
+		}
 	}
 
 	public void updateInfo(List<Career> careers, List<Scholar> scholars,
-		List<Certificate> certificates) {
+		List<Certificate> certificates, List<Long> resumeTags) {
 		if (careers != null) {
 			this.careerList.clear();
 		}
@@ -141,7 +154,10 @@ public class Resume extends BaseTimeEntity {
 		if (certificates != null) {
 			this.certificateList.clear();
 		}
-		addMoreInfo(careers, scholars, certificates);
+		if (resumeTags != null) {
+			this.tagId.clear();
+		}
+		addMoreInfo(careers, scholars, certificates, resumeTags);
 	}
 
 	public void update(Resume resume) {
@@ -154,6 +170,31 @@ public class Resume extends BaseTimeEntity {
 		this.certificateList = resume.getCertificateList();
 		this.scholarList = resume.getScholarList();
 		this.careerList = resume.getCareerList();
+	}
+
+	// 로직
+	public void applyTo(Recruit recruit) {
+		Apply apply = Apply.builder()
+			.resume(this)
+			.recruit(recruit)
+			.memberId(this.getMember().getId())
+			.build();
+		this.getApplies().add(apply);
+		recruit.getApplies().add(apply);
+	}
+
+	public static void cancelApplyFrom(Recruit recruit) {
+		if (recruit.getApplies().size() == 0) {
+			throw new UnAuthorizedException("지원한 적이 없는 공고입니다.");
+ 		} else {
+			recruit.getApplies().clear();
+		}
+	}
+
+	private boolean duplicatedApplyCheck(Recruit recruit) {
+		return this.getApplies().stream()
+			.map(Apply::getRecruit)
+			.anyMatch(find -> find.equals(recruit));
 	}
 
 }

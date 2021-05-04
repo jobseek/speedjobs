@@ -7,6 +7,7 @@ import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
+import com.jobseek.speedjobs.domain.resume.details.ResumeTag;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,15 +55,16 @@ class ResumeTest {
 			.build();
 		Certificate certificate = new Certificate();
 		certificate.setCertName("정보처리기사");
-		certificate.setCertDate(LocalDateTime.now());
+		certificate.setCertDate(LocalDate.now());
 		certificate.setCertNumber("111-22-33333");
 
 		List<Certificate> certificates = new ArrayList<>();
 		List<Scholar> scholars = new ArrayList<>();
 		List<Career> careers = new ArrayList<>();
+		List<Long> tagIds = new ArrayList<>();
 
 		certificates.add(certificate);
-		resume.addMoreInfo(careers, scholars, certificates);
+		resume.addMoreInfo(careers, scholars, certificates, tagIds);
 
 		// then(1)
 		assertThat(resume.getMember()).isEqualTo(null);

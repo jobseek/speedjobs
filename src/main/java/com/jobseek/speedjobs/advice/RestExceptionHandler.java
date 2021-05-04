@@ -113,6 +113,7 @@ public class RestExceptionHandler {
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ResultResponse> HttpMessageConversionException(HttpMessageConversionException e) {
+		log.info("Server Error Msg = {}", e.getMessage());
 		ResultResponse response = ResultResponse.builder()
 			.status(ErrorCode.TypeError.getCode())
 			.message("Enum 또는 LocalDateTime 등 json 데이터 타입을 체크하세요.")

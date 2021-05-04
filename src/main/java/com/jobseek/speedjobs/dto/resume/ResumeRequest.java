@@ -6,6 +6,7 @@ import com.jobseek.speedjobs.domain.resume.Open;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
+import com.jobseek.speedjobs.domain.resume.details.ResumeTag;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.util.List;
@@ -48,12 +49,16 @@ public class ResumeRequest {
 
 	private List<Certificate> certificateList;
 
+	private List<Long> tagIds;
+
 	public ResumeRequest(Open open, String coverLetter, String title, String name, String gender,
 		String contact, LocalDate birth, String address, String githubUrl, String blogUrl,
 		String resumeImage,
 		List<Career> careerList,
 		List<Scholar> scholarList,
-		List<Certificate> certificateList) {
+		List<Certificate> certificateList,
+		List<Long> tagIds
+		) {
 		this.open = open;
 		this.coverLetter = coverLetter;
 		this.title = title;
@@ -68,6 +73,7 @@ public class ResumeRequest {
 		this.careerList = careerList;
 		this.scholarList = scholarList;
 		this.certificateList = certificateList;
+		this.tagIds = tagIds;
 	}
 
 	public Resume toEntity() {

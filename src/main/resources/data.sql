@@ -189,6 +189,49 @@ values ('서버/백엔드', 'POSITION'),
        ('Spring boot', 'SKILL'),
        ('ElasticSearch', 'SKILL');
 
+-- -- RESUME
+insert into resumes(created_date, modified_date, address, birth, blog_url, contact, cover_letter, gender, github_url, name, open, resume_image, title, member_id)
+values ('2020-01-02 00:00:00', '2020-01-03 00:00:00', '서울시 강북구 번동', null, null, '010-1234-5678', '하이방가방가', 'M', null, '잡식이', 'NO', 'https://www.naver.com', '잡스피드 이력서', 1);
+insert into career (resume_id, company_name, in_date, out_date, position)
+values (1, '잡식컴퍼니', '2020-01-02', '2021-12-15', '사장'),
+       (1, '잡식컴퍼니', '2020-01-05', '2021-11-15', '부하');
+insert into certificate (resume_id, cert_date, cert_name, cert_number, degree, institute, score)
+values (1, '2011-08-23', '컴퓨터활용능력1급', '111-11-11111', 1, '잡식컴퍼니', 0),
+       (1, '2018-05-30', '토익', '222-22-22222', 0, '토익컴퍼니', 800);
+insert into scholar (resume_id, education, in_date, major, out_date, school_name)
+values (1, 'HIGH', '2014-03-02', '이과', '2017-02-21', '양명고'),
+       (1, 'UNIVERSITY', '2017-03-02', '컴퓨터공학과', '2020-03-21', '서울대');
+insert into resume_tags (resume_id, tag_id)
+values (1, 1), (1, 3), (1, 5);
+
+insert into resumes(created_date, modified_date, address, birth, blog_url, contact, cover_letter, gender, github_url, name, open, resume_image, title, member_id)
+values ('2020-01-02 00:00:00', '2020-01-03 00:00:00', '서울시 강북구 번동', null, null, '010-1234-5678', '하이방가방가', 'M', null, '잡식이', 'NO', 'https://www.naver.com', '잡스피드 이력서', 1);
+insert into career (resume_id, company_name, in_date, out_date, position)
+values (2, '잡식컴퍼니', '2020-01-02', '2021-12-15', '사장'),
+       (2, '잡식컴퍼니', '2020-01-05', '2021-11-15', '부하');
+insert into certificate (resume_id, cert_date, cert_name, cert_number, degree, institute, score)
+values (2, '2011-08-23', '컴퓨터활용능력1급', '111-11-11111', 1, '잡식컴퍼니', 0),
+       (2, '2018-05-30', '토익', '222-22-22222', 0, '토익컴퍼니', 990);
+insert into scholar (resume_id, education, in_date, major, out_date, school_name)
+values (2, 'HIGH', '2014-03-02', '이과', '2017-02-21', '양명고'),
+       (2, 'UNIVERSITY', '2017-03-02', '컴퓨터공학과', '2020-03-21', '서울대');
+insert into resume_tags (resume_id, tag_id)
+values (2, 1), (2, 3), (2, 5);
+
+insert into resumes(created_date, modified_date, address, birth, blog_url, contact, cover_letter, gender, github_url, name, open, resume_image, title, member_id)
+values ('2020-01-02 00:00:00', '2020-01-03 00:00:00', '서울시 강남구 서초동', null, null, '010-5252-3321', '빠이염', 'F', null, '잡순이', 'NO', 'https://www.naver.com', '잡스피드 이력서', 2);
+insert into career (resume_id, company_name, in_date, out_date, position)
+values (3, '잡식컴퍼니', '2020-01-02', '2021-12-15', '사장'),
+       (3, '잡식컴퍼니', '2020-01-05', '2021-11-15', '부하');
+insert into certificate (resume_id, cert_date, cert_name, cert_number, degree, institute, score)
+values (3, '2011-08-23', '컴퓨터활용능력1급', '111-11-11111', 1, '잡식컴퍼니', 0),
+       (3, '2018-05-30', '토익', '222-22-22222', 0, '토익컴퍼니', 800);
+insert into scholar (resume_id, education, in_date, major, out_date, school_name)
+values (3, 'HIGH', '2014-03-02', '이과', '2017-02-21', '양명고'),
+       (3, 'UNIVERSITY', '2017-03-02', '컴퓨터공학과', '2020-03-21', '서울대');
+insert into resume_tags (resume_id, tag_id)
+values (3, 1), (3, 3), (3, 5);
+
 -- -- POST
 insert into posts (post_id, created_date, modified_date, content, title, view_count, comment_count,
                    favorite_count, user_id)
