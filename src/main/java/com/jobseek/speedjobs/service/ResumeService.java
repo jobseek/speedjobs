@@ -15,6 +15,7 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeResponse;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,35 +94,26 @@ public class ResumeService {
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 이력서입니다."));
 		Member member = memberRepository.findById(user.getId())
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-		if (user.getId() != resume.getMember().getId()) {
+		if (user != resume.getMember()) {
 			throw new UnAuthorizedException("본인만 지원할 수 있습니다.");
 		}
 		boolean duplicatedCheck = recruit.getApplies().stream()
-			.map(Apply::getMemberId)
-			.anyMatch(o -> o == resume.getMember().getId());
+			.anyMatch(apply -> Objects.equals(apply.getMemberId(), user.getId()));
 		if (!duplicatedCheck) {
 			resume.applyTo(recruit);
 		} else {
 			throw new DuplicatedException("이미 지원한 공고입니다.");
 		}
-
 	}
 
 	@Transactional
 	public void cancelApply(Long recruitId, User user) {
 		Recruit recruit = recruitRepository.findById(recruitId)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 공고입니다."));
-		if (user.getId() != recruit.getCompany().getId() || !user.isAdmin()) {
-			throw new UnAuthorizedException("관리자 또는 본인만 삭제할 수 있습니다.");
-		} else {
-			Resume.cancelApplyFrom(recruit);
-		}
-//		if (applyRepository.findByRecruitId(recruitId).size() == 0) {
-//			throw new UnAuthorizedException("지원한 적이 없는 공고입니다.");
-//		} else {
-//			Resume.cancelApplyFrom(recruit);
-//		}
+		Member member = memberRepository.findById(user.getId())
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+		Apply apply = applyRepository.findByRecruitAndMember(recruitId, user.getId())
+			.orElseThrow(() -> new UnAuthorizedException("지원한 적이 없는 공고입니다."));
+		applyRepository.delete(apply);
 	}
-
-
 }

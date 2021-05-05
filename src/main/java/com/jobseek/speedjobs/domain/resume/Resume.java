@@ -1,6 +1,5 @@
 package com.jobseek.speedjobs.domain.resume;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
@@ -17,7 +16,6 @@ import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -186,15 +184,9 @@ public class Resume extends BaseTimeEntity {
 	public static void cancelApplyFrom(Recruit recruit) {
 		if (recruit.getApplies().size() == 0) {
 			throw new UnAuthorizedException("지원한 적이 없는 공고입니다.");
- 		} else {
+		} else {
 			recruit.getApplies().clear();
 		}
-	}
-
-	private boolean duplicatedApplyCheck(Recruit recruit) {
-		return this.getApplies().stream()
-			.map(Apply::getRecruit)
-			.anyMatch(find -> find.equals(recruit));
 	}
 
 }
