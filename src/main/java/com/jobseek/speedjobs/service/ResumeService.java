@@ -10,15 +10,19 @@ import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
 import com.jobseek.speedjobs.domain.resume.Apply;
 import com.jobseek.speedjobs.domain.resume.ApplyRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
+import com.jobseek.speedjobs.domain.resume.ResumeQueryRepository;
 import com.jobseek.speedjobs.domain.resume.ResumeRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeResponse;
+import com.jobseek.speedjobs.dto.resume.ResumeSearchCondition;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,7 @@ public class ResumeService {
 	private final ResumeRepository resumeRepository;
 	private final MemberRepository memberRepository;
 	private final RecruitRepository recruitRepository;
+	private final ResumeQueryRepository resumeQueryRepository;
 	private final ApplyRepository applyRepository;
 
 	@Transactional
@@ -80,11 +85,11 @@ public class ResumeService {
 		return ResumeResponse.of(resume);
 	}
 
-	public List<ResumeResponse> findAll() {
-		return resumeRepository.findAll().stream()
-			.map(ResumeResponse::new)
-			.collect(Collectors.toList());
-	}
+//	public List<ResumeResponse> findAll() {
+//		return resumeRepository.findAll().stream()
+//			.map(ResumeResponse::new)
+//			.collect(Collectors.toList());
+//	}
 
 	@Transactional
 	public void apply(Long recruitId, Long resumeId, User user) {
@@ -115,5 +120,11 @@ public class ResumeService {
 		Apply apply = applyRepository.findByRecruitAndMember(recruitId, user.getId())
 			.orElseThrow(() -> new UnAuthorizedException("지원한 적이 없는 공고입니다."));
 		applyRepository.delete(apply);
+	}
+
+	public Page<ResumeResponse> findAll(ResumeSearchCondition condition, Pageable pageable,
+		User user) {
+		return resumeQueryRepository.findAll(condition, pageable, user)
+			.map(ResumeResponse::of);
 	}
 }

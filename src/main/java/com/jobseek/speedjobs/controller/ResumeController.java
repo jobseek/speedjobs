@@ -4,6 +4,7 @@ import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeResponse;
+import com.jobseek.speedjobs.dto.resume.ResumeSearchCondition;
 import com.jobseek.speedjobs.service.ResumeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,8 @@ import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,11 +66,19 @@ public class ResumeController {
 		return ResponseEntity.ok().body(resumeService.findById(resumeId));
 	}
 
+//	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")
+//	@PreAuthorize("hasRole('MEMBER')")
+//	@GetMapping
+//	public ResponseEntity<List<ResumeResponse>> findAllResumes() {
+//		return ResponseEntity.ok().body(resumeService.findAll());
+//	}
+
 	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")
 	@PreAuthorize("hasRole('MEMBER')")
 	@GetMapping
-	public ResponseEntity<List<ResumeResponse>> findAllResumes() {
-		return ResponseEntity.ok().body(resumeService.findAll());
+	public ResponseEntity<Page<ResumeResponse>> findAll(Pageable pageable,
+		ResumeSearchCondition condition, @LoginUser User user) {
+		return ResponseEntity.ok().body(resumeService.findAll(condition, pageable, user));
 	}
 
 }

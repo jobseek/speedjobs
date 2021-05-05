@@ -151,7 +151,21 @@ GET http://{{host}}/resume/1
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
-### 5. 이력서 전체 조회
+### 다른멤버 로그인
+POST http://{{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "member2@member.com",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); %}
+
+### 5. 이력서 전체 조회(페이징 + 조건)
 GET http://{{host}}/resume
+#GET http://{{host}}/resume?open=NO
+#GET http://{{host}}/resume?open=YES
+#GET http://{{host}}/resume?title=테스트
 Accept: application/json
 Authorization: Bearer {{accessToken}}
