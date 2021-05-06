@@ -49,14 +49,17 @@ public class Apply {
 
 	private Long memberId;
 
+	private Long companyId;
+
 	@CreatedDate
 	private LocalDateTime createdDate;
 
 	@Builder
-	public Apply(Resume resume, Recruit recruit, Long memberId) {
+	public Apply(Resume resume, Recruit recruit, Long memberId, Long companyId) {
 		this.resume = resume;
 		this.recruit = recruit;
 		this.memberId = memberId;
+		this.companyId = companyId;
 	}
 
 }

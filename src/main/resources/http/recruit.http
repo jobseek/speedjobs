@@ -95,26 +95,7 @@ Content-Type: application/json
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
 
-### 다른멤버 로그인
-POST http://{{host}}/auth/login
-Content-Type: application/json
-
-{
-  "email": "member2@member.com",
-  "password": "{{password}}"
-}
-
-> {% client.global.set("accessToken", response.body.accessToken); %}
-
-### 9. 공고 지원
-POST http://{{host}}/recruit/1/resume/1
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
-
-### 11. 지원 취소
-DELETE http://{{host}}/recruit/1/resume
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
+###
 
 #GET http://{{host}}/recruit
 #GET http://{{host}}/recruit?page=0&size=3&sort=id,DESC

@@ -107,6 +107,7 @@ public class PostService {
 
 	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable,
 		User user) {
+//		postQueryRepository.findAll(condition, pageable);
 		return postQueryRepository.findAll(condition, pageable)
 			.map(post -> PostListResponse.of(post, user));
 	}

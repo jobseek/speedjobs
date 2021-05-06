@@ -176,6 +176,7 @@ public class Resume extends BaseTimeEntity {
 			.resume(this)
 			.recruit(recruit)
 			.memberId(this.getMember().getId())
+			.companyId(recruit.getCompany().getId())
 			.build();
 		this.getApplies().add(apply);
 		recruit.getApplies().add(apply);
