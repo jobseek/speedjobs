@@ -2,7 +2,8 @@ package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.dto.apply.ApplyResponse;
+import com.jobseek.speedjobs.dto.apply.CompanyResponse;
+import com.jobseek.speedjobs.dto.apply.MemberResponse;
 import com.jobseek.speedjobs.service.ApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,14 +26,14 @@ public class ApplyController {
 
 	@ApiOperation(value = "지원한 내역 조회", notes = "이력서로 지원한 공고들을 조회한다.(개인)")
 	@GetMapping("/member/{resumeId}")
-	public ResponseEntity<Page<ApplyResponse>> findRecruitByMember(@PathVariable Long resumeId,
+	public ResponseEntity<Page<CompanyResponse>> findRecruitByMember(@PathVariable Long resumeId,
 		@LoginUser User user, Pageable pageable) {
 		return ResponseEntity.ok().body(applyService.findRecruits(resumeId, user, pageable));
 	}
 
 	@ApiOperation(value = "지원된 내역 조회", notes = "공고에 지원된 이력서들을 조회한다.(기업)")
 	@GetMapping("/company/{recruitId}")
-	public ResponseEntity<Page<ApplyResponse>> findResumeByCompany(@PathVariable Long recruitId,
+	public ResponseEntity<Page<MemberResponse>> findResumeByCompany(@PathVariable Long recruitId,
 		@LoginUser User user, Pageable pageable) {
 		return ResponseEntity.ok().body(applyService.findResumes(recruitId, user, pageable));
 	}
