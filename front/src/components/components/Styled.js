@@ -467,44 +467,6 @@ export const TextAreaLength = styled.input`
   }
 `;
 
-export const TextAreaCombine = ({ cols, rows }) => {
-  const [textLength, setTextLength] = useState('');
-  const [result, setResult] = useState(0);
-
-  function calc() {
-    setResult(textLength.length);
-  }
-
-  const onChangeHandler = (e) => {
-    if (e.target.value.length <= 500) {
-      setTextLength(e.target.value);
-    } else {
-      alert('500자 이내로 작성해주세요');
-    }
-  };
-
-  return (
-    <div
-      className={'container-fluid'}
-      style={{ padding: '0 0p 0px 30px', width: '100%' }}
-    >
-      <TextArea
-        id="content"
-        cols={cols}
-        rows={rows}
-        value={textLength}
-        onChange={(e) => onChangeHandler(e)}
-        onKeyPress={calc}
-        onKeyDown={calc}
-        onKeyUp={calc}
-      />
-      <div style={{ textAlign: 'right' }}>
-        <TextAreaLength id="result" type="number" value={result} readOnly />
-      </div>
-    </div>
-  );
-};
-
 // SideMenu Styled
 export const MyButton = styled.div`
   border: #707070;

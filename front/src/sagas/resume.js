@@ -17,9 +17,6 @@ function resumeAddApi(action) {
 }
 
 function* resumeAdd(action) {
-  console.log('=== action ===', action);
-  console.log('=== action.data ===', action.data);
-
   try {
     const resume = yield call(resumeAddApi, action);
     yield put({
@@ -36,7 +33,6 @@ function* resumeAdd(action) {
 
 // ========== 이력서 조회 ==========
 function resumeGetAPI(data) {
-  console.log('=== data.data.id ===', data.data.id);
   const id = data.data.id;
   return axios.get(`/resume/${id}`).catch((err) => {
     throw err;

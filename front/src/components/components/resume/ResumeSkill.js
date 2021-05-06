@@ -11,7 +11,6 @@ export default function ResumeSkill() {
     if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.SKILL);
       // const res = [];
-      console.log(temp);
       // temp.forEach((item) => {
       //   res.concat([...res, { ...item, item }]);
       //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
@@ -19,7 +18,6 @@ export default function ResumeSkill() {
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
-      console.log(tt);
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);
