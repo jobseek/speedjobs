@@ -14,9 +14,9 @@ public interface ApplyRepository extends JpaRepository<Apply, Long> {
 
 	List<Apply> findByRecruitId(Long recruitId);
 
-	Page<Apply> findAllByCompanyIdAndRecruitId(Long companyId, Long RecruitId, Pageable pageable);
+	Page<Apply> findResumesByCompanyIdAndRecruitId(Long companyId, Long RecruitId, Pageable pageable);
 
-	Page<Apply> findAllByMemberIdAndResumeId(Long memberId, Long ResumeId, Pageable pageable);
+	Page<Apply> findRecruitsByMemberIdAndResumeId(Long memberId, Long ResumeId, Pageable pageable);
 
 	@Query("select a from Apply a where a.recruit.id=:recruitId and a.memberId=:memberId")
 	Optional<Apply> findByRecruitAndMember(@Param("recruitId") Long recruitId, @Param("memberId") Long memberId);

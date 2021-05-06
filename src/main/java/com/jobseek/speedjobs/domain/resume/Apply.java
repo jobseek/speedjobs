@@ -39,6 +39,13 @@ public class Apply {
 	@Column(name = "apply_id")
 	private Long id;
 
+	private Long memberId;
+
+	private Long companyId;
+
+	@CreatedDate
+	private LocalDateTime createdDate;
+
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "resume_id")
 	private Resume resume;
@@ -46,13 +53,6 @@ public class Apply {
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "recruit_id")
 	private Recruit recruit;
-
-	private Long memberId;
-
-	private Long companyId;
-
-	@CreatedDate
-	private LocalDateTime createdDate;
 
 	@Builder
 	public Apply(Resume resume, Recruit recruit, Long memberId, Long companyId) {

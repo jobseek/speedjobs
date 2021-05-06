@@ -21,7 +21,7 @@ Content-Type: application/json
 > {% client.global.set("accessToken", response.body.accessToken); %}
 
 ### 공고 지원
-POST http://{{host}}/recruit/2/resume/3
+POST http://{{host}}/recruit/2/resume/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -53,11 +53,11 @@ Content-Type: application/json
 > {% client.global.set("accessToken", response.body.accessToken); %}
 
 ### 지원한 내역 조회(멤버) => 이력서 id로 조회
-GET http://{{host}}/apply/member/3
+GET http://{{host}}/apply/member/1
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 지원된 내역 조회(기업) => 공고 id로 조회
-GET http://{{host}}/apply/company/3
+GET http://{{host}}/apply/company/1
 Accept: application/json
 Authorization: Bearer {{accessToken}}

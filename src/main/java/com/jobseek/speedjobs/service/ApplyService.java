@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -30,29 +31,35 @@ public class ApplyService {
 	private final ResumeRepository resumeRepository;
 	private final RecruitRepository recruitRepository;
 
-	public Page<ApplyResponse> findRecruit(Long resumeId, User user, Pageable pageable) {
+	/**
+	* 멤버가 지원한 공고들을 조회
+	*/
+	public Page<ApplyResponse> findRecruits(Long resumeId, User user, Pageable pageable) {
 		Resume resume = resumeRepository.findById(resumeId)
 			.orElseThrow(() -> new NotFoundException("해당 이력서가 없습니다."));
-		Page<ApplyResponse> resultMap = applyRepository
-			.findAllByMemberIdAndResumeId(user.getId(), resumeId, pageable)
+		Page<ApplyResponse> page = applyRepository
+			.findRecruitsByMemberIdAndResumeId(user.getId(), resumeId, pageable)
 			.map(ApplyResponse::of);
-		if (resultMap.getContent().size() == 0) {
+		if (ObjectUtils.isEmpty(page.getContent())) {
 			throw new UnAuthorizedException("본인이 지원한 공고만 조회 가능합니다.");
 		} else {
-			return resultMap;
+			return page;
 		}
 	}
 
-	public Page<ApplyResponse> findResume(Long recruitId, User user, Pageable pageable) {
+	/**
+	* 공고에 지원된 이력서들을 조회
+	*/
+	public Page<ApplyResponse> findResumes(Long recruitId, User user, Pageable pageable) {
 		Recruit recruit = recruitRepository.findById(recruitId)
 			.orElseThrow(() -> new NotFoundException("해당 공고가 없습니다."));
-		Page<ApplyResponse> resultMap = applyRepository
-			.findAllByCompanyIdAndRecruitId(user.getId(), recruitId, pageable)
+		Page<ApplyResponse> page = applyRepository
+			.findResumesByCompanyIdAndRecruitId(user.getId(), recruitId, pageable)
 			.map(ApplyResponse::of);
-		if (resultMap.getContent().size() == 0) {
+		if (ObjectUtils.isEmpty(page.getContent())) {
 			throw new UnAuthorizedException("자신의 회사가 올린 공고만 조회 가능합니다.");
 		} else {
-			return resultMap;
+			return page;
 		}
 	}
 

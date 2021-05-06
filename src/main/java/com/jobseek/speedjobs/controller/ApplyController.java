@@ -27,14 +27,14 @@ public class ApplyController {
 	@GetMapping("/member/{resumeId}")
 	public ResponseEntity<Page<ApplyResponse>> findRecruitByMember(@PathVariable Long resumeId,
 		@LoginUser User user, Pageable pageable) {
-		return ResponseEntity.ok().body(applyService.findRecruit(resumeId, user, pageable));
+		return ResponseEntity.ok().body(applyService.findRecruits(resumeId, user, pageable));
 	}
 
 	@ApiOperation(value = "지원된 내역 조회", notes = "공고에 지원된 이력서들을 조회한다.(기업)")
 	@GetMapping("/company/{recruitId}")
 	public ResponseEntity<Page<ApplyResponse>> findResumeByCompany(@PathVariable Long recruitId,
 		@LoginUser User user, Pageable pageable) {
-		return ResponseEntity.ok().body(applyService.findResume(recruitId, user, pageable));
+		return ResponseEntity.ok().body(applyService.findResumes(recruitId, user, pageable));
 	}
 
 }
