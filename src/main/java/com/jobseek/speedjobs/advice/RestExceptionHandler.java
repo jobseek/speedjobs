@@ -15,6 +15,7 @@ import com.jobseek.speedjobs.domain.user.exception.NotFoundRoleException;
 import com.jobseek.speedjobs.domain.user.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.user.exception.SignUpRuleException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -144,5 +145,13 @@ public class RestExceptionHandler {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 
+	@ExceptionHandler(SQLException.class)
+	public ResponseEntity<ResultResponse> SQLException(SQLException e) {
+		ResultResponse response = ResultResponse.builder()
+			.status(ErrorCode.SQLError.getCode())
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	}
 
 }
