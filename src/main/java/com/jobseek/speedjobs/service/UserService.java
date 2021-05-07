@@ -146,7 +146,19 @@ public class UserService {
 	}
 
 	public Page<UserListResponse> findAll(UserSearchCondition condition, Pageable pageable) {
-		return userQueryRepository.findAll(condition, pageable).map(UserListResponse::of);
+		return userQueryRepository.findAll(condition, pageable)
+			.map(user -> {
+					if (memberRepository.findById(user.getId()).isPresent()) {
+						Member member = memberRepository.findById(user.getId()).get();
+						return UserListResponse.of(user, member);
+					} else if (companyRepository.findById(user.getId()).isPresent()) {
+						Company company = companyRepository.findById(user.getId()).get();
+						return UserListResponse.of(user, company);
+					} else {
+						return null;
+					}
+				}
+			);
 	}
 
 	private void validateUserSaveRequest(UserSaveRequest request) {

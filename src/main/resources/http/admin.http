@@ -13,3 +13,8 @@ Content-Type: application/json
 PATCH http://{{host}}/user/signup/company/32
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
+
+### 회원 전체 조회
+GET http://{{host}}/user?page=1
+Accept: application/json
+Authorization: Bearer {{accessToken}}
