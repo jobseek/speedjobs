@@ -35,32 +35,30 @@ export const loginInterceptor = (
         !error.config.__isRetryRequest
       ) {
         originalReq.__isRetryRequest = true;
-        const res = fetch(`http://${address()}:8081/api/auth/reissue`, {
+        fetch(`http://${address()}:8081/api/auth/reissue`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${refresh['REFRESH_TOKEN']}`,
           },
           redirect: 'follow',
         })
-          .then((response) => response.json())
           .then((response) => {
-            if (response.status === 403 || response.status === 500) {
-              throw new Error(response.status);
-            }
+            if (!response.ok) throw new Error('유저정보 불러오기 실패');
+            return response.json();
+          })
+          .then((response) => {
             originalReq.headers[
               'Authorization'
             ] = `Bearer ${response.accessToken}`;
             axios.defaults.headers.common[
               'Authorization'
             ] = `Bearer ${response.accessToken}`;
-            return axios(originalReq);
+            resolve(axios(originalReq));
           })
           .catch((err) => {
-            reject(err);
+            reject(error);
           });
-        resolve(res);
       }
-      reject(error);
     });
   };
   const IDS = { request: 0, response: 0 };

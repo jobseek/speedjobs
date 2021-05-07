@@ -101,7 +101,6 @@ export default function Login(props) {
               disabled={!user.needLogin}
               changeHandler={onChangeHandler}
               onKeyDown={(e) => {
-                console.log('key');
                 if (e.key === 'Enter') onClickHandler(e);
               }}
             ></Input>

@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 import styled, { css } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { POP_INIT } from '../../../reducers/admin';
 
 const Alert = styled(animated.div)`
   width: 100%;
@@ -23,25 +25,20 @@ const Alert = styled(animated.div)`
     `}
 `;
 
-const StatusBar = styled.div`
+const StatusBar = styled(animated.div)`
   position: absolute;
   bottom: 0;
-  background-color: #f2d411;
+  background: linear-gradient(
+    0.25turn,
+    transparent 10%,
+    #f2d411,
+    transparent 90%
+  );
   height: 8px;
   left: 50%;
   transform: translateX(-50%);
   width: 0%;
   transition: width ease-out 400ms;
-  ${(props) =>
-    props.barEnter &&
-    css`
-      width: 0%;
-    `}
-  ${(props) =>
-    props.barDone &&
-    css`
-      width: calc(100% - 20px);
-    `}
 `;
 
 const Wrapper = styled.div`
@@ -60,45 +57,60 @@ const Wrapper = styled.div`
 export default function AdminAlert({ children, enter, done, error }) {
   const [ani, set] = useState(true);
   const [end, setEnd] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const timeOut = useRef(0);
+  const dispatch = useDispatch();
+  const toggleFlag = useCallback(() => {
+    clearTimeout(timeOut.current);
+    timeOut.current = setTimeout(() => {
+      setToggle((p) => !p);
+    }, 1500);
+  }, [setToggle]);
+  // 시작 이펙트
   useEffect(() => {
     if (enter === true) {
       set(true);
+      toggleFlag();
     }
-  }, [enter]);
+  }, [enter, toggleFlag, dispatch]);
+
+  // 끝 이펙트
   useEffect(() => {
-    if (done === true) {
+    if (end === true && !toggle) {
+      setEnd(false);
+      dispatch({
+        type: POP_INIT,
+      });
+    } else if (done === true && toggle) {
       set(false);
-      setTimeout(() => setEnd(true), 1000);
-      setTimeout(() => setEnd(false), 1800);
+      setEnd(true);
+      toggleFlag();
+    } else if (error !== undefined && error !== null && toggle) {
+      set(false);
+      setEnd(true);
+      toggleFlag();
     }
-  }, [done]);
+  }, [done, error, toggle, dispatch, end, toggleFlag]);
 
   const style = useSpring({
-    marginTop: '0px',
-    from: { marginTop: '100px' },
+    marginTop: ani ? '0px' : '100px',
+    from: { marginTop: ani ? '100px' : '0px' },
+    config: { duration: 500 },
+    delay: ani ? 0 : 800,
   });
 
-  const endStyle = useSpring({
-    marginTop: '100px',
-    from: { marginTop: '0px' },
-    delay: 1000,
-  });
-
-  const barEndStyle = useSpring({
-    width: '0%',
-    from: { width: '100%' },
-    delay: 800,
+  const barStyle = useSpring({
+    width: end ? '0%' : '96%',
+    from: { width: end ? '96%' : '0%' },
+    config: { duration: 300 },
+    delay: end ? 0 : 500,
   });
   return (
     <>
       <Wrapper>
-        <Alert style={ani ? style : endStyle} popError={error !== undefined}>
-          {error !== undefined ? error : children}
-          <StatusBar
-            barEnter={enter}
-            barDone={end}
-            style={end ? {} : barEndStyle}
-          ></StatusBar>
+        <Alert style={style} popError={error !== undefined && error !== null}>
+          {error !== undefined && error !== null ? error : children}
+          {error === null && <StatusBar style={barStyle}></StatusBar>}
         </Alert>
       </Wrapper>
     </>

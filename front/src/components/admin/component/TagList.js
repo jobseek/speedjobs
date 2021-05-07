@@ -1,9 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { HiPlus, MdDelete, MdEdit } from 'react-icons/all';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/Notification/Loading';
-import { TAG_ADD_REQUEST, TAG_GET_REQUEST } from '../../../reducers/tag';
+import {
+  TAG_ADD_REQUEST,
+  TAG_DELETE_REQUEST,
+  TAG_EDIT_REQUEST,
+  TAG_ERROR_RESOLVED,
+  TAG_GET_REQUEST,
+} from '../../../reducers/tag';
+import {
+  ERROR,
+  POP_ALERT_DONE,
+  POP_ALERT_REQUEST,
+} from '../../../reducers/admin';
 
 const AdminStyledInput = styled.input`
   flex: 1;
@@ -63,10 +80,15 @@ export const AdminStyledCol = styled.div`
 
 export default function TagList(props) {
   const [tagList, set] = useState([]);
+  const inputRef = useRef();
   const [loading, setLoading] = useState(false);
   const tags = useSelector((state) => state.tag);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState([]);
+  const initInput = useMemo(
+    () => ({ id: -1, name: '', type: 'SKILL', selected: false }),
+    []
+  );
   const [input, setInput] = useState({
     id: -1,
     name: '',
@@ -107,6 +129,11 @@ export default function TagList(props) {
         type: TAG_ADD_REQUEST,
         data: { name: temp.name, type: temp.type },
       });
+      dispatch({
+        type: POP_ALERT_REQUEST,
+        data: { message: '태그를 추가중입니다' },
+      });
+      setInput({ ...initInput });
     } else {
       set((p) => {
         return [
@@ -123,14 +150,65 @@ export default function TagList(props) {
     }
   };
 
-  // const deleteHandler = useCallback((e) => {}, [selected]);
+  const deleteHandler = useCallback(
+    (e) => {
+      if (input.id >= 0) {
+        dispatch({
+          type: TAG_DELETE_REQUEST,
+          data: { id: input.id },
+        });
+        dispatch({
+          type: POP_ALERT_REQUEST,
+          data: { message: '태그를 삭제중입니다' },
+        });
+        setInput({ ...initInput });
+        setSelected([]);
+      }
+    },
+    [initInput, setInput, setSelected, dispatch, input]
+  );
 
+  const onEditHandler = useCallback(
+    (e) => {
+      if (input.id >= 0) {
+        dispatch({
+          type: TAG_EDIT_REQUEST,
+          data: { id: input.id, name: input.name, type: input.type },
+        });
+        dispatch({
+          type: POP_ALERT_REQUEST,
+          data: { message: '태그를 수정중입니다' },
+        });
+        setInput({ ...initInput });
+        setSelected([]);
+      }
+    },
+    [initInput, setInput, setSelected, dispatch, input]
+  );
   useEffect(() => {
-    console.log('hi');
     if (tags.tagAddDone || tags.tagDeleteDone || tags.tagEditDone) {
-      console.log('patch');
+      let message = '';
+      if (tags.tagAddDone) message += '추가가';
+      else if (tags.tagDeleteDone) message += '삭제가';
+      else if (tags.tagEditDone) message += '수정이';
+      dispatch({
+        type: POP_ALERT_DONE,
+        data: { message: `${message} 완료되었습니다` },
+      });
       dispatch({
         type: TAG_GET_REQUEST,
+      });
+    } else if (tags.tagAddFail || tags.tagEditFail || tags.tagDeleteFail) {
+      let message = '';
+      if (tags.tagAddFail) message += '추가';
+      else if (tags.tagDeleteFail) message += '삭제';
+      else if (tags.tagEditFail) message += '수정';
+      dispatch({
+        type: ERROR,
+        error: `${message} 오류 발생`,
+      });
+      dispatch({
+        type: TAG_ERROR_RESOLVED,
       });
     }
     if (!tags.tagGetLoading) {
@@ -142,6 +220,7 @@ export default function TagList(props) {
           .concat(sList.map((s) => ({ ...s, type: 'SKILL', selected: false })))
       );
       setLoading(false);
+      if (inputRef.current !== null) inputRef.current.focus();
     } else if (
       tags.tagDeleteLoading ||
       tags.tagEditLoading ||
@@ -159,10 +238,15 @@ export default function TagList(props) {
         <>
           <div style={{ display: 'flex', height: '35px' }}>
             <AdminStyledInput
+              onKeyPress={(e) => {
+                if (e.key === 'Enter')
+                  selected.length === 0 ? onSubmitHandler(e) : onEditHandler(e);
+              }}
               onChange={onChangeHandler}
               value={input.name}
               name={'name'}
               placeholder={'태그이름'}
+              ref={inputRef}
             ></AdminStyledInput>
             <AdminStyledSelect
               onChange={onChangeHandler}
@@ -172,10 +256,19 @@ export default function TagList(props) {
               <option>SKILL</option>
               <option>POSITION</option>
             </AdminStyledSelect>
-            <AdminStyledButton show={true} onClick={onSubmitHandler}>
+            <AdminStyledButton
+              show={true}
+              onClick={(e) => {
+                selected.length === 0 ? onSubmitHandler(e) : onEditHandler(e);
+              }}
+            >
               {selected.length === 0 ? <HiPlus></HiPlus> : <MdEdit></MdEdit>}
             </AdminStyledButton>
-            <AdminStyledButton show={selected.length !== 0} warning>
+            <AdminStyledButton
+              show={selected.length !== 0}
+              warning
+              onClick={deleteHandler}
+            >
               <MdDelete></MdDelete>
             </AdminStyledButton>
           </div>

@@ -173,6 +173,11 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
           fav,
         },
       });
+    if (target === 'recruit')
+      history.push({
+        pathname: `/recruit/detail/${id}`,
+        state: {},
+      });
     setToggle('none');
   };
 

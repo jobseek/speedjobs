@@ -1,57 +1,33 @@
-import React, { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
 import InfoCard from '../component/InfoCard';
 import { Content, Header } from '../component/adminStyled';
 import { AdminStyledCol, AdminStyledRow } from '../component/TagList';
 import CompanyInfo from '../component/CompanyInfo';
-
-const dummy = [
-  {
-    name: '네이버',
-    email: 'naver@com',
-    id: 0,
-    scale: '100',
-    location: [130, 120],
-    contact: '01022222222',
-  },
-  {
-    name: '네이버',
-    email: 'naver@com',
-    id: 1,
-    scale: '100',
-    location: [130, 120],
-    contact: '01022222222',
-  },
-  {
-    name: '네이버',
-    email: 'naver@com',
-    id: 2,
-    scale: '100',
-    location: [130, 120],
-    contact: '01022222222',
-  },
-  {
-    name: '네이버',
-    email: 'naver@com',
-    id: 3,
-    scale: '100',
-    location: [130, 120],
-    contact: '01022222222',
-  },
-  {
-    name: '네이버',
-    email: 'naver@com',
-    id: 4,
-    scale: '100',
-    location: [130, 120],
-    contact: '01022222222',
-  },
-];
+import { USER_GET_DONE, USER_GET_REQUEST } from '../../../reducers/admin';
 
 export default function CompanySetting(props) {
   const [selected, set] = useState(-1);
+  const [userList, setUserList] = useState([]);
+  const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin);
   const onClickHandler = useCallback((e) => {
     set(e.id);
   }, []);
+  useEffect(() => {
+    dispatch({
+      type: USER_GET_REQUEST,
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (admin.getUserDone) {
+      setUserList(admin.getUserList.content);
+      dispatch({
+        type: USER_GET_DONE,
+      });
+    }
+  }, [admin.getUserDone, admin.getUserList, dispatch, setUserList]);
   return (
     <>
       <div className={'row'}>
@@ -66,7 +42,7 @@ export default function CompanySetting(props) {
                   <div className={'col-4'}>연락처</div>
                 </AdminStyledRow>
                 <div style={{ overflowY: 'scroll', height: '80vh' }}>
-                  {dummy.map((company) => (
+                  {userList?.map((company) => (
                     <AdminStyledCol
                       onClick={() => onClickHandler(company)}
                       selected={company.id === selected}

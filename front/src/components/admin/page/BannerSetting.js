@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Content, Header } from '../component/adminStyled';
 import InfoCard from '../component/InfoCard';
 import TagList from '../component/TagList';
+import { GET_BANNER_REQUEST } from '../../../reducers/admin';
 
 const Img = styled.img`
   background-color: white;
@@ -22,6 +24,8 @@ const ImgContainer = styled.div`
 
 export default function BannerSetting(props) {
   const [src, set] = useState([]);
+  const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin);
   const dropHandler = (e) => {
     e.preventDefault();
     // const reader = new FileReader();
@@ -38,6 +42,20 @@ export default function BannerSetting(props) {
       reader.readAsDataURL(f);
     }
   };
+
+  // 배너불러오기
+  useEffect(() => {
+    dispatch({
+      type: GET_BANNER_REQUEST,
+    });
+  }, [dispatch]);
+
+  // 배너 불러오기 완료
+  useEffect(() => {
+    if (admin.getBannerList !== null) {
+      console.log(admin.getBannerList);
+    }
+  }, [admin.getBannerList]);
 
   const dragOver = (e) => {
     e.preventDefault();

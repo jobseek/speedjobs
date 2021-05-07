@@ -72,8 +72,6 @@ export default function SideBar({ toggle, setToggle, set }) {
         <SideDiv onClick={() => set('Company')}>기업회원승인</SideDiv>
         <SideSpan>기업회원 회원가입 승인</SideSpan>
         <SideDiv onClick={() => logoutRequest()}>로그아웃</SideDiv>
-        <SideDiv>게시글 관리</SideDiv>
-        <SideDiv>게시글 관리</SideDiv>
       </SideBarBody>
       {/* <SideBarToggle toggled={toggle}> */}
       {/*   <Squeeze size={18} toggled={toggle} toggle={setToggle}></Squeeze> */}

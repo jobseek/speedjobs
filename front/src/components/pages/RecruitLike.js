@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   ProfileDiv,
-  StyledButton,
   StyledHeaderDiv,
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import Tags from '../components/Tags';
 import PostList from '../components/Post/PostList';
 import { GET_LIKE_DONE, GET_LIKE_REQUEST } from '../../reducers/like';
+import TagShower from '../components/tag/TagShower';
+import TagSelector from '../components/tag/TagSelector';
 
 export default function CommunityLike(props) {
   const targetRef = useRef();
@@ -38,7 +38,9 @@ export default function CommunityLike(props) {
       <div className={'container text-left'}>
         <StyledHeaderDiv padding title={'공고 찜목록'}>
           <div style={{ flex: '0 0' }}>
-            <StyledButton wide>수정</StyledButton>
+            <TagSelector button tagList={taglist} setTagList={setTaglist}>
+              직무
+            </TagSelector>
           </div>
         </StyledHeaderDiv>
         <div className="container" style={{ marginTop: '70px' }}>
@@ -53,9 +55,7 @@ export default function CommunityLike(props) {
               className={'col-12 col-lg-10'}
               style={{ paddingLeft: '30px' }}
             >
-              <Tags tagList={taglist} selected={setTaglist}>
-                직무
-              </Tags>
+              <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
               <PostList
                 type={'recruit'}
                 targetRef={targetRef}

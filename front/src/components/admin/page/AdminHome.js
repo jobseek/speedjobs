@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
-import React, { useState } from 'react';
+import { v4 } from 'uuid';
+import React, { useEffect, useState } from 'react';
 import { CoverAll, PageContainer } from '../component/adminStyled';
 import SideBar from '../component/SideBar';
 import AdminMain from './AdminMain';
@@ -11,6 +12,28 @@ export default function AdminHome(props) {
   const [toggle, setToggle] = useState(false);
   const [now, set] = useState('Main');
   const admin = useSelector((state) => state.admin);
+  const [pop, setPop] = useState([]);
+  const mapPop = pop.map((p) => (
+    <AdminAlert
+      id={p}
+      enter={admin.popEnter}
+      done={admin.popDone}
+      error={admin.error}
+    >
+      {admin.alertMessage}
+    </AdminAlert>
+  ));
+  useEffect(() => {
+    if (admin?.pop) {
+      setPop([v4()]);
+    }
+  }, [admin?.pop]);
+  useEffect(() => {
+    if (admin?.initDone) {
+      setPop([]);
+    }
+  }, [admin?.initDone]);
+
   return (
     <>
       <CoverAll style={{ textAlign: 'left' }}>
@@ -20,15 +43,7 @@ export default function AdminHome(props) {
           {now === 'Company' && <CompanySetting></CompanySetting>}
         </PageContainer>
         <SideBar toggle={toggle} setToggle={setToggle} set={set}></SideBar>
-        {admin?.pop && (
-          <AdminAlert
-            enter={admin.popEnter}
-            done={admin.popDone}
-            error={admin.error}
-          >
-            {admin.alertMessage}
-          </AdminAlert>
-        )}
+        {mapPop}
       </CoverAll>
     </>
   );

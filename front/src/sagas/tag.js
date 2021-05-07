@@ -34,7 +34,8 @@ function* getTag(action) {
   }
 }
 function editTagApi(tag) {
-  return axios.put(`/tag/${tag.id}`, { name: tag.name, type: tag.type });
+  console.log(tag);
+  return axios.put(`/tag/${tag.id}`, { tagName: tag.name, tagType: tag.type });
 }
 
 function* editTag(action) {

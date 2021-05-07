@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Plus } from '@styled-icons/octicons';
@@ -783,12 +783,15 @@ export const SearchInput = ({ placeholder, onChange, value }) => {
 // 게시판 검색
 export const SearchBox = ({ value, onChange, onClick }) => {
   // 드롭다운 선택
-  const initialList = [
-    { name: '제목', state: false },
-    { name: '내용', state: false },
-    { name: '제목+내용', state: false },
-    { name: '작성자', state: false },
-  ];
+  const initialList = useMemo(
+    () => [
+      { name: '제목', state: false },
+      { name: '내용', state: false },
+      { name: '제목+내용', state: false },
+      { name: '작성자', state: false },
+    ],
+    []
+  );
   const [list, setList] = useState([...initialList]);
   const [dropTop, setDropTop] = useState([{ name: '검색', state: true }]);
   const [click, setClick] = useState(false);
@@ -801,7 +804,7 @@ export const SearchBox = ({ value, onChange, onClick }) => {
       setClick(false);
       setList([...initialList]);
     }
-  }, [click, initialList]);
+  }, [click, initialList, list]);
 
   const DropList = list
     .filter((i) => !i.state)

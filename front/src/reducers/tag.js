@@ -6,6 +6,8 @@ export const initialState = {
   tagGetData: null,
   tagGetError: null,
   tagEditLoading: false,
+  tagEditFail: false,
+  tagDeleteFail: false,
   tagData: null,
   tagEditDone: false,
   tagDeleteLoading: false,
@@ -65,6 +67,9 @@ const reducer = (state = initialState, action) =>
         draft.tagGetError = null;
         draft.error = null;
         draft.tag = null;
+        draft.tagAddFail = false;
+        draft.tagEditFail = false;
+        draft.tagDeleteFail = false;
         break;
       case TAG_EDIT_REQUEST:
         draft.tag = action.data;
@@ -81,6 +86,7 @@ const reducer = (state = initialState, action) =>
       case TAG_EDIT_FAIL:
         draft.error = action.error;
         draft.tagEditLoading = false;
+        draft.tagEditFail = true;
         break;
       case TAG_DELETE_REQUEST:
         draft.tag = action.data;
@@ -97,6 +103,7 @@ const reducer = (state = initialState, action) =>
       case TAG_DELETE_FAIL:
         draft.tagDeleteLoading = false;
         draft.error = action.error;
+        draft.tagDeleteFail = true;
         break;
       case TAG_ADD_REQUEST:
         draft.tagAddLoading = true;
@@ -105,6 +112,7 @@ const reducer = (state = initialState, action) =>
       case TAG_ADD_FAIL:
         draft.error = action.error;
         draft.tagAddLoading = false;
+        draft.tagAddFail = true;
         break;
       case TAG_ADD_SUCCESS:
         draft.tagAddDone = true;

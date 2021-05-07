@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { TagBody } from '../Styled';
+import { StyledButton, TagBody } from '../Styled';
 import { TagDrop, TagsInDrop } from '../Tags';
 
-export default function TagSelector({ tagList, setTagList, children, sm }) {
+export default function TagSelector({
+  tagList,
+  setTagList,
+  children,
+  sm,
+  button,
+}) {
   const dropRef = useRef();
   const [show, setShow] = useState(false);
   const onClickHandler = useCallback(() => {
@@ -46,10 +52,23 @@ export default function TagSelector({ tagList, setTagList, children, sm }) {
     });
   return (
     <span ref={dropRef}>
-      <TagBody sm={sm} tagType onClick={() => onClickHandler()}>
-        {children}
-        {show && <TagDrop>{tagToDrop}</TagDrop>}
-      </TagBody>
+      {button === undefined && (
+        <TagBody sm={sm} tagType onClick={() => onClickHandler()}>
+          {children}
+          {show && <TagDrop>{tagToDrop}</TagDrop>}
+        </TagBody>
+      )}
+      {button && (
+        <StyledButton
+          wide
+          style={{ position: 'relative' }}
+          white
+          onClick={() => onClickHandler()}
+        >
+          {children}
+          {show && <TagDrop>{tagToDrop}</TagDrop>}
+        </StyledButton>
+      )}
     </span>
   );
 }
