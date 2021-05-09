@@ -6,6 +6,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,4 +42,15 @@ public class Message extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@ManyToOne(fetch = LAZY, cascade = ALL)
+	@JoinColumn(name = "recruit_id")
+	private Recruit recruit;
+
+	public static Message of(String content, User user, Recruit recruit) {
+		return Message.builder()
+			.content(content)
+			.user(user)
+			.recruit(recruit)
+			.build();
+	}
 }
