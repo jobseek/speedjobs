@@ -745,12 +745,15 @@ export const SearchInput = ({ placeholder, onChange, value }) => {
 // 게시판 검색
 export const SearchBox = ({ onInput, onClick, setForm }) => {
   // 드롭다운 선택
-  const initialList = useMemo(()=>[
-    { name: '제    목', state: false, target: 'title' },
-    { name: '내    용', state: false, target: 'content' },
-    { name: '제목+내용', state: false, target: '' },
-    { name: '작 성 자', state: false, target: 'author' },
-  ],[]);
+  const initialList = useMemo(
+    () => [
+      { name: '제    목', state: false, target: 'title' },
+      { name: '내    용', state: false, target: 'content' },
+      { name: '제목+내용', state: false, target: '' },
+      { name: '작 성 자', state: false, target: 'author' },
+    ],
+    []
+  );
   const [list, setList] = useState([...initialList]);
   const [dropTop, setDropTop] = useState([
     { name: '제    목', state: true, target: 'title' },
