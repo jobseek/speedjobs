@@ -1,6 +1,5 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.dto.auth.TokenRequest;
 import com.jobseek.speedjobs.dto.auth.TokenResponse;
 import com.jobseek.speedjobs.service.AuthService;

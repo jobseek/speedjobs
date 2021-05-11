@@ -49,7 +49,7 @@ public class UserController {
 	@PostMapping("/signup/member")
 	public ResponseEntity<Void> registerMember(
 		@Validated(UserValidateGroup.member.class) @RequestBody UserSaveRequest userSaveRequest) {
-		userService.sendRegisterEmail(userSaveRequest);
+		userService.sendRegisterMail(userSaveRequest);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -58,7 +58,7 @@ public class UserController {
 	@PostMapping("/signup/company")
 	public ResponseEntity<Void> sendCompanyEmail(
 		@Valid @RequestBody UserSaveRequest userSaveRequest) {
-		userService.sendRegisterEmail(userSaveRequest);
+		userService.sendRegisterMail(userSaveRequest);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -85,7 +85,6 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "개인회원 상세정보 조회", notes = "개인회원의 상세정보를 조회한다.")
-	@PreAuthorize("hasRole('MEMBER')")
 	@GetMapping("/member/{userId}")
 	public ResponseEntity<MemberInfoResponse> findMemberDetail(@PathVariable Long userId,
 		@LoginUser User user) {
@@ -93,7 +92,6 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "기업회원 상세정보 조회", notes = "기업회원의 상세정보를 조회한다.")
-	@PreAuthorize("hasRole('COMPANY')")
 	@GetMapping("/company/{userId}")
 	public ResponseEntity<CompanyInfoResponse> findCompanyDetail(@PathVariable Long userId,
 		@LoginUser User user) {
@@ -101,7 +99,6 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "개인회원 정보 수정", notes = "자신의 정보를 수정한다.")
-	@PreAuthorize("hasRole('MEMBER')")
 	@PatchMapping("/member/{userId}")
 	public ResponseEntity<Void> updateMemberInfo(@PathVariable Long userId,
 		@RequestBody MemberUpdateRequest memberUpdateRequest) {
@@ -110,7 +107,6 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "기업회원 정보 수정", notes = "자신의 정보를 수정한다.")
-	@PreAuthorize("hasRole('COMPANY')")
 	@PatchMapping("/company/{userId}")
 	public ResponseEntity<Void> updateCompanyInfo(@PathVariable Long userId,
 		@RequestBody CompanyUpdateRequest companyUpdateRequest) {
@@ -119,7 +115,6 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long userId,
 		@Valid @RequestBody UserCheckRequest userCheckRequest, @LoginUser User user) {

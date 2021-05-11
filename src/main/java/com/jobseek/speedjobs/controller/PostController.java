@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @Api(tags = {"Post"})
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +39,6 @@ public class PostController {
 	private final CommentService commentService;
 
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@PostMapping
 	public ResponseEntity<Void> savePost(@LoginUser User user,
 		@Valid @RequestBody PostRequest postRequest) {
@@ -49,7 +47,6 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@DeleteMapping("/{postId}")
 	public ResponseEntity<Void> deletePost(@PathVariable Long postId, @LoginUser User user) {
 		postService.delete(postId, user);
@@ -57,7 +54,6 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 수정", notes = "게시글을 수정한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@PutMapping("/{postId}")
 	public ResponseEntity<Void> updatePost(@PathVariable Long postId, @LoginUser User user,
 		@Valid @RequestBody PostRequest postRequest) {
@@ -82,7 +78,6 @@ public class PostController {
 	 * 찜하기
 	 */
 	@ApiOperation(value = "게시글 찜하기", notes = "게시글을 찜한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@PostMapping("/{postId}/favorite")
 	public ResponseEntity<Void> savePostFavorite(@PathVariable Long postId, @LoginUser User user) {
 		postService.savePostFavorite(postId, user);
@@ -90,7 +85,6 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 찜하기 취소", notes = "게시글을 찜목록에서 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@DeleteMapping("/{postId}/favorite")
 	public ResponseEntity<Void> deletePostFavorite(@PathVariable Long postId,
 		@LoginUser User user) {
@@ -99,7 +93,6 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 찜 목록 조회하기", notes = "게시글 찜 목록을 조회한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@GetMapping("/favorites")
 	public ResponseEntity<Page<PostListResponse>> findPostFavorites(@LoginUser User user,
 		final Pageable pageable) {
@@ -110,7 +103,6 @@ public class PostController {
 	 * 댓글 등록, 수정, 삭제, 조회
 	 */
 	@ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping("/{postId}/comment")
 	public ResponseEntity<Void> saveComment(@LoginUser User user,
 		@Valid @RequestBody CommentRequest commentRequest,
@@ -120,7 +112,6 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PutMapping("/{postId}/comment/{commentId}")
 	public ResponseEntity<Void> updateComment(@Valid @RequestBody CommentRequest commentRequest,
 		@PathVariable Long postId, @PathVariable Long commentId, @LoginUser User user) {
@@ -129,7 +120,6 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@DeleteMapping("/{postId}/comment/{commentId}")
 	public ResponseEntity<Void> deleteComment(@LoginUser User user, @PathVariable Long postId,
 		@PathVariable Long commentId) {

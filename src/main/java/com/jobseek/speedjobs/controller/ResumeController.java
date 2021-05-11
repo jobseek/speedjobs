@@ -9,7 +9,6 @@ import com.jobseek.speedjobs.service.ResumeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,16 +33,14 @@ public class ResumeController {
 	private final ResumeService resumeService;
 
 	@ApiOperation(value = "이력서 추가", notes = "이력서를 등록한다.")
-	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping
-	public ResponseEntity<Void> save(@LoginUser User user,
-		@Valid @RequestBody ResumeRequest resumeRequest) {
+	public ResponseEntity<Void> save(@Valid @RequestBody ResumeRequest resumeRequest,
+		@LoginUser User user) {
 		Long id = resumeService.save(user, resumeRequest);
 		return ResponseEntity.created(URI.create("/api/resume/" + id)).build();
 	}
 
 	@ApiOperation(value = "이력서 수정", notes = "이력서를 수정한다.")
-	@PreAuthorize("hasRole('MEMBER')")
 	@PutMapping("/{resumeId}")
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
 		@RequestBody ResumeRequest resumeRequest) {
@@ -52,7 +49,6 @@ public class ResumeController {
 	}
 
 	@ApiOperation(value = "이력서 삭제", notes = "이력서를 삭제한다.")
-	@PreAuthorize("hasRole('MEMBER')")
 	@DeleteMapping("/{resumeId}")
 	public ResponseEntity<Void> delete(@PathVariable Long resumeId, @LoginUser User user) {
 		resumeService.delete(resumeId, user);
@@ -60,7 +56,7 @@ public class ResumeController {
 	}
 
 	@ApiOperation(value = "이력서 단건 조회", notes = "이력서를 조회한다.")
-	@PreAuthorize("hasRole('MEMBER')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
 	@GetMapping("/{resumeId}")
 	public ResponseEntity<ResumeResponse> findResume(@PathVariable Long resumeId) {
 		return ResponseEntity.ok().body(resumeService.findById(resumeId));
