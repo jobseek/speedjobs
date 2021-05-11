@@ -25,6 +25,7 @@ function logInAPI(data) {
 }
 
 function getUserApi(data) {
+  console.log(data);
   return axios.get('/user/me', {
     headers: {
       Authorization: `Bearer ${data.accessToken}`,
@@ -32,12 +33,17 @@ function getUserApi(data) {
   });
 }
 function getUserOnly(data) {
-  return axios.get('/user/me');
+  console.log(data);
+  return axios.get('/user/me', {
+    headers: {
+      Authorization: `Bearer ${data.accessToken}`,
+    },
+  });
 }
 
 function* getMe(action) {
   try {
-    const result = yield call(getUserOnly);
+    const result = yield call(getUserOnly, action.data);
     yield put({
       type: ME_SUCCESS,
       data: result.data,

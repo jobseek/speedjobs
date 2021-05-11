@@ -5,13 +5,7 @@ export default function hello() {
   return null;
 }
 
-export const loginInterceptor = (
-  refresh,
-  removeRefresh,
-  prevIDS,
-  dispatch,
-  needLogin
-) => {
+export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
   axios.interceptors.request.eject(prevIDS.request);
   axios.interceptors.response.eject(prevIDS.response);
   const requestInterceptorConfig = (config) => {
@@ -19,28 +13,20 @@ export const loginInterceptor = (
       config.headers['Authorization'] = `Bearer ${refresh['REFRESH_TOKEN']}`;
       return config;
     }
-    // if (config.headers['Authorization'] === undefined && !needLogin) {
-    //   console.log('?');
-    //   config.headers['Authorization'] = `Bearer ${refresh['ACCESS_TOKEN']}`;
-    //   return config;
-    // }
     return config;
   };
   const responseInterceptorError = (error) => {
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
-      if (
-        (error.response.status === 403 || error.response.status === 500) &&
-        error.config &&
-        !error.config.__isRetryRequest
-      ) {
+      console.log(error);
+      if (error.response.status === 401 && !error.config?.__isRetryRequest) {
         originalReq.__isRetryRequest = true;
         fetch(`http://${address()}:8081/api/auth/reissue`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${refresh['REFRESH_TOKEN']}`,
           },
-          redirect: 'follow',
+          credentials: 'include',
         })
           .then((response) => {
             if (!response.ok) throw new Error('유저정보 불러오기 실패');

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCookies } from 'react-cookie';
@@ -62,6 +62,7 @@ function App() {
       prev.response = IDS.response;
       return prev;
     });
+    afterUpdate();
   }, [
     refresh,
     removeRefresh,
@@ -71,7 +72,7 @@ function App() {
     user.needLogin,
   ]);
   //  유저 상태 유지
-  useEffect(() => {
+  const afterUpdate = useCallback(() => {
     if (
       !user.needLogin &&
       !user.meDone &&
@@ -80,6 +81,7 @@ function App() {
     ) {
       dispatch({
         type: ME_REQUEST,
+        data: { accessToken: refresh['ACCESS_TOKEN'] },
       });
     }
   }, [dispatch, user.meDone, refresh, user.needLogin, user.logInWelcomed]);

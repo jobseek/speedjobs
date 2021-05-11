@@ -88,8 +88,7 @@ const StyledButtonInside = styled.div`
     css`
       position: absolute;
       right: 0;
-    `} 
-  
+    `}
   &:hover {
     background-color: #f2d411;
   }
@@ -133,7 +132,7 @@ const StyledButtonInside = styled.div`
         background-color: #ff5454;
       }
     `}
-  
+
   ${(props) =>
     props.mid &&
     css`
@@ -196,7 +195,6 @@ export const StyledHeaderDivInside = styled.div`
         padding-left: 0;
       }
     `}
-
   ${(props) =>
     props.fix &&
     css`
@@ -348,9 +346,11 @@ export const StyledLike = styled.div`
   //border: grey 1px solid;
   display: none;
   padding: 10px 0 0 0;
+
   & > * {
     margin-bottom: 5px;
   }
+
   @media (min-width: 576px) {
     display: none;
   }
@@ -601,6 +601,7 @@ export const InputTextResume = styled.input`
   border: 1px solid silver;
   padding: 0 20px 3px;
   margin-bottom: 5px;
+
   &:focus {
     outline: none;
   }
@@ -610,13 +611,13 @@ export const Wrapper = styled.div`
   display: inline-block;
   color: gray;
   flex: ${(props) => props.flex};
+
   ${(props) =>
     props.margin &&
     css`
       margin-top: 15px;
       margin-right: 10px;
     `}
-
   ${(props) =>
     props.basic &&
     css`
@@ -692,6 +693,7 @@ export const MyPlus = styled.div`
   //margin-right: 50px;
   border-radius: 50%;
   transition: 0.1s background ease-in;
+
   &:hover {
     background: radial-gradient(gold, white, white);
   }
@@ -724,6 +726,7 @@ const SearchInputInside = styled.input`
   border-bottom: 1px solid #eee;
   padding: 0 0 4px 40px;
   font-size: 25px;
+
   &:focus {
     outline: none;
   }
@@ -793,7 +796,9 @@ export const SearchBox = ({ onInput, onClick, setForm }) => {
   const showRef = useRef();
   const ClickHandler = (e) => {
     if (showRef.current) {
-      if (show && !showRef.current.contains(e.target)) setShow(false);
+      if (show && !showRef.current.contains(e.target)) {
+        setShow(false);
+      }
     }
   };
   useEffect(() => {
@@ -815,7 +820,11 @@ export const SearchBox = ({ onInput, onClick, setForm }) => {
         maxLength="8"
       />
       <Search
-        style={{ verticalAlign: 'middle', cursor: 'pointer' }}
+        style={{
+          verticalAlign: 'middle',
+          cursor: 'pointer',
+          transform: 'translateY(-2px)',
+        }}
         onClick={() => onClick()}
       />
       {show && <CategoryDrop>{DropList}</CategoryDrop>}
@@ -826,9 +835,10 @@ export const SearchBox = ({ onInput, onClick, setForm }) => {
 const CategoryInput = styled.input`
   width: 100px;
   outline: none;
+  height: 100%;
   border: none;
   @media (max-width: 768px) {
-    width: 55px;
+    width: 75px;
     height: 20px;
   }
 `;
@@ -851,17 +861,18 @@ const CategoryDrop = styled.div`
 `;
 
 const Category = styled.div`
-  width: 75px;
+  width: 55px;
   cursor: pointer;
   padding-left: 10px;
   text-align: left;
+  padding-top: 4px;
   display: inline-block;
   border-radius: 5px;
   vertical-align: center;
   @media (max-width: 768px) {
-    width: 55px;
+    width: 35px;
     font-size: 12px;
-    padding-left: 0;
+    padding-top: 0;
   }
 `;
 
@@ -874,6 +885,7 @@ const SearchOutline = styled.div`
   border: 3px #7c7c7c solid;
   border-radius: 5px;
   vertical-align: top;
+  text-align: left;
   @media (max-width: 768px) {
     font-size: 13px;
     height: 28px;
