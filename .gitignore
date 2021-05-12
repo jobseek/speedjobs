@@ -40,3 +40,17 @@ out/
 .DS_Store
 *.yaml
 *.txt
+
+# underdogs
+src/main/resources/static
+application-*.yml
+application-*.properties
+
+#querydsl
+generated
+
+# Sonarlint plugin
+.idea/**/sonarlint/
+
+# SonarQube Plugin
+.idea/**/sonarIssues.xml

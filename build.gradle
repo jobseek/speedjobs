@@ -1,7 +1,19 @@
+buildscript {
+    def props = new Properties()
+    file('src/main/resources/application.yaml').withInputStream {
+        props.load(it)
+    }
+
+    ext {
+        sonarToken = props['sonarToken']
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id "org.sonarqube" version "3.0"
     id 'java'
 }
 
@@ -69,4 +81,22 @@ configurations {
 }
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+
+apply plugin: "org.sonarqube"
+sonarqube {
+    properties {
+        property "sonar.host.url", "http://localhost:9000/"
+        property "sonar.login", "${sonarToken}" // 로그인 id 또는 인증토큰
+        property "sonar.password", "" // 인증토큰 사용시는 공백
+//        property "sonar.sources", "src/"
+        property "sonar.sources", "."
+        property "sonar.language", "java, javascript"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.profile", "Sonar way"
+        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.exclusions", "**/frontend/**/*"
+        property "sonar.projectName", "speedjobs"
+        property "sonar.projectKey", "speedjobs"
+    }
 }

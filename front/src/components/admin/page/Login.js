@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
-import { useSpring, animated } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 import Input from '../component/Input';
 import { Button, CoverAll, LoginForm } from '../component/adminStyled';
 import { LOG_IN_REQUEST, LOG_OUT_REQUEST } from '../../../reducers/user';
 import AdminAlert from '../component/AdminAlert';
 
-export default function Login(props) {
+export default function Login() {
   const history = useHistory();
   const [err, setErr] = useState(false);
   const [hide, set] = useState(false);
@@ -96,7 +96,7 @@ export default function Login(props) {
               placeholder={'ADMIN ID'}
               changeHandler={onChangeHandler}
               disabled={!user.needLogin}
-            ></Input>
+            />
             <Input
               placeholder={'PASSWORD'}
               name={'password'}
@@ -107,7 +107,7 @@ export default function Login(props) {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') onClickHandler(e);
               }}
-            ></Input>
+            />
             <Button onClick={(e) => onClickHandler(e)}>LOGIN</Button>
           </animated.div>
         </LoginForm>

@@ -6,7 +6,6 @@ Content-Type: application/json
   "email": "{{admin_email}}",
   "password": "{{password}}",
   "provider": "LOCAL"
-
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
