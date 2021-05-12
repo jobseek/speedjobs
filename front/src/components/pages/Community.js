@@ -117,6 +117,7 @@ export default function Community(props) {
         .map((t) => t.id)
         .join(',');
       if (ids === '') {
+        // eslint-disable-next-line
         const { tagIds, ...res } = p;
         return { ...res };
       } else {
