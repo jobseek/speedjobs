@@ -20,7 +20,7 @@ import SideMenu from '../../components/SideMenu';
  * 3. 비밀번호 입력하는 input 태그에 onChangeHandler 이벤트를 걸어준다.
  * 4. 입력된 비밀번호를 회원탈퇴 버튼을 클릭했을 때 발생하는 onDeleteHandler 이벤트를 걸어준다.
  * 5. dispatch를 사용해 PROFILE_DELETE_REQUEST 리덕스 상태를 보내준다.(입력된 password form과 사용자 정보 user.me 함께)
- * 6. 입력된 비밀번호가 다른 경우(에러 400, 401) 알림창으로 '비밀번호가 다릅니다.' 띄운다.
+ * 6. 입력된 비밀번호가 다른 경우(에러 400, 403) 알림창으로 '비밀번호가 다릅니다.' 띄운다.
  * 7. 입력된 비밀번호가 맞은 경우 dispatch를 이용해서 LOG_OUT_REQUEST 상태를 보내 최종적으로 회원탈퇴와 로그아웃이 되도록 한다.
  */
 
@@ -49,7 +49,7 @@ export default function Withdrawal() {
   useEffect(() => {
     if (profile.profileDeleteError === 400) {
       console.log('비밀번호 형식에 맞지 않음');
-    } else if (profile.profileDeleteError === 401) {
+    } else if (profile.profileDeleteError === 403) {
       console.log('비밀번호가 다름');
     } else if (profile.profileDeleteDone) {
       dispatch({

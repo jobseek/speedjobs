@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 
 import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
+import com.jobseek.speedjobs.domain.message.Message;
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -66,6 +67,9 @@ public class User extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
 	private List<Comment> comments;
+
+	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+	private List<Message> messages;
 
 	@ManyToMany
 	@JoinTable(name = "post_favorites",
