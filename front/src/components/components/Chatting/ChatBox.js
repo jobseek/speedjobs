@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
 import SockJSClient from 'react-stomp';
 import { ArrowLeftSquareFill } from 'react-bootstrap-icons';
 import { StyledButton } from '../../components/Styled';
 import Message from './Message';
 import address from '../../../auth/address';
+import HistoryBox from './HistoryBox';
+import { GET_CHAT_REQUEST } from '../../../reducers/recruit';
 
 const Container = styled.div`
   border: 1px solid #d3d3d3;
@@ -20,28 +23,6 @@ const Container = styled.div`
     z-index: 30;
     display: ${(props) => props.pop};
   } ;
-`;
-
-const MsgHistory = styled.div`
-  position: relative;
-  height: 516px;
-  background-color: #ffffff;
-  overflow-y: auto;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  &::-webkit-scrollbar {
-    width: 3px;
-    background-color: white;
-  }
-  &::-webkit-scrollbar-thumb {
-    width: 3px;
-    background-color: grey;
-    border-radius: 20px;
-  }
-  @media (max-width: 992px) {
-    height: calc(100% - 100px);
-  }
 `;
 
 const TypeMsg = styled.div``;
@@ -82,20 +63,55 @@ const BackButton = styled(ArrowLeftSquareFill)`
   }
 `;
 
-export default function ChatBox(props) {
+export default function ChatBox({ recruitId, ...props }) {
   const chatRef = useRef();
-  const containerRef = useRef();
   const [msg, setMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const [msgHistory, setMsgHistory] = useState([]);
-  const { user } = useSelector((state) => state);
+  const [cookie, ,] = useCookies('REFRESH_TOKEN');
+  const { user, recruit } = useSelector((state) => state);
   const sendMessage = useCallback(() => {
-    const sendMsg = { roomId: 1, authorId: user.me.id, content: msg };
+    if (msg === '') return;
+    const sendMsg = { roomId: recruitId, authorId: user.me.id, content: msg };
     chatRef.current.sendMessage('/send/message', JSON.stringify(sendMsg));
     // setMsgHistory((p) => [...p, { out: true, content: sendMessage }]);
     setMsg('');
   }, [chatRef, msg, user.me?.id]);
+  const dispatch = useDispatch();
   // 메세지 리스트 로딩전에 먼저 유저정보를 가져와야함
-  // useEffect(()=>)
+  useEffect(() => {
+    // 유저정보 로딩이 완료되었거나 로그인이 안된 상태일경우
+    if (user.me !== null || cookie['REFRESH_TOKEN'] === undefined) {
+      dispatch({
+        type: GET_CHAT_REQUEST,
+        data: recruitId,
+      });
+      setLoading(true);
+    }
+  }, [user.me, cookie, dispatch]);
+  useEffect(() => {
+    if (recruit.getChatDone) {
+      setLoading(false);
+      const list = recruit.chat.content.map((c) => {
+        const temp = {
+          out: false,
+          income: false,
+          content: c.content,
+          authorId: c.authorId,
+          author: c.author,
+          id: c.id,
+        };
+        if (c.authorId === user.me?.id) temp.out = true;
+        else temp.income = true;
+        return temp;
+      });
+      console.log(list);
+      setMsgHistory([...list]);
+    } else if (recruit.getChatFail) {
+      setLoading(false);
+      console.log('fail');
+    }
+  }, [recruit.getChatDone, recruit.chat, recruit.getChatFail]);
   const getMessage = useCallback(
     (m, t) => {
       m.out = false;
@@ -114,25 +130,19 @@ export default function ChatBox(props) {
       {m.content}
     </Message>
   ));
-  useEffect(() => {
-    containerRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [mapMsgHistory]);
   return (
     <>
       <Container pop={props.pop}>
         <SockJSClient
           url={'http://' + address() + ':8081/chat'}
-          topics={['/channel/1']}
+          topics={[`/channel/${recruitId}`]}
           onMessage={getMessage}
           ref={chatRef}
         ></SockJSClient>
         <BackArea>
           <BackButton onClick={() => props.button()} />
         </BackArea>
-        <MsgHistory ref={containerRef}>
-          {mapMsgHistory}
-          <div ref={containerRef}></div>
-        </MsgHistory>
+        <HistoryBox loading={loading}>{mapMsgHistory}</HistoryBox>
         {user.me !== null && (
           <TypeMsg>
             <MsgWriteInput

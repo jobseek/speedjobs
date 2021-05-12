@@ -1,6 +1,9 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  GET_CHAT_FAIL,
+  GET_CHAT_REQUEST,
+  GET_CHAT_SUCCESS,
   RECRUIT_ADD_REQUEST,
   RECRUIT_ADD_SUCCESS,
   RECRUIT_GET_FAIL,
@@ -94,7 +97,28 @@ function* recruitAdd(action) {
     });
   }
 }
+function getChatApi(action) {
+  return axios.get(`/chat/${action.data}`);
+}
 
+function* getChat(action) {
+  try {
+    const result = yield call(getChatApi, action);
+    yield put({
+      type: GET_CHAT_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: GET_CHAT_FAIL,
+      data: error ?? 'error',
+    });
+  }
+}
+
+function* watchGetChat() {
+  yield takeLatest(GET_CHAT_REQUEST, getChat);
+}
 function* watchRecruitAdd() {
   yield takeLatest(RECRUIT_ADD_REQUEST, recruitAdd);
 }
@@ -109,6 +133,7 @@ function* watchRecruitList() {
 
 export default function* recruitSaga() {
   yield all([
+    fork(watchGetChat),
     fork(watchRecruitGet),
     fork(watchRecruitList),
     fork(watchRecruitAdd),

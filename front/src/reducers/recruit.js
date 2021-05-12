@@ -14,6 +14,11 @@ export const initialState = {
   recruitAddDone: false,
   recruitAddError: null,
   recruitAdd: null,
+  getChatLoading: false,
+  getChatDone: false,
+  getChatFail: false,
+  getChatError: null,
+  chat: null,
 };
 
 export const RECRUIT_GET_REQUEST = 'RECRUIT_GET_REQUEST';
@@ -31,6 +36,11 @@ export const RECRUIT_ADD_REQUEST = 'RECRUIT_ADD_REQUEST';
 export const RECRUIT_ADD_SUCCESS = 'RECRUIT_ADD_SUCCESS';
 export const RECRUIT_ADD_FAIL = 'RECRUIT_ADD_FAIL';
 export const RECRUIT_ADD_DONE = 'RECRUIT_ADD_DONE';
+
+export const GET_CHAT_REQUEST = 'GET_CHAT_REQUEST';
+export const GET_CHAT_SUCCESS = 'GET_CHAT_SUCCESS';
+export const GET_CHAT_DONE = 'GET_CHAT_DONE';
+export const GET_CHAT_FAIL = 'GET_CHAT_FAIL';
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -97,6 +107,24 @@ const reducer = (state = initialState, action) =>
         draft.recruitAdd = null;
         draft.recruitAddError = null;
         draft.recruitAddDone = false;
+        break;
+      case GET_CHAT_REQUEST:
+        draft.getChatLoading = true;
+        break;
+      case GET_CHAT_SUCCESS:
+        draft.getChatDone = true;
+        draft.chat = action.data;
+        draft.getChatLoading = false;
+        break;
+      case GET_CHAT_FAIL:
+        draft.getChatFail = true;
+        draft.getChatError = action.error;
+        draft.getChatLoading = false;
+        break;
+      case GET_CHAT_DONE:
+        draft.getChatDone = false;
+        draft.chat = null;
+        draft.getChatError = null;
         break;
       default:
         break;

@@ -1,8 +1,8 @@
 package com.jobseek.speedjobs.common.exception;
 
-public class UnauthorizedException extends RuntimeException {
+public class UnAuthorizedException extends RuntimeException {
 
-	public UnauthorizedException(String message) {
+	public UnAuthorizedException(String message) {
 		super("인증되지 않은 요청 : " + message);
 	}
 }

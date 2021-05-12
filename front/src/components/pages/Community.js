@@ -47,12 +47,14 @@ export default function Community(props) {
         page: page.current,
       },
     });
+    paging.current = true;
   };
   const rootRef = useRef();
   const { post, user } = useSelector((state) => state);
 
   // 태그 정보 불러오기
   const [, setLoading] = useState(false);
+  const paging = useRef(false);
   const [postList, setPostList] = useState([]);
   const [taglist, setTaglist] = useState([]);
   const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
@@ -66,7 +68,10 @@ export default function Community(props) {
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);
-
+  const [form, setForm] = useState({
+    size: 10,
+    page: 0,
+  });
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
@@ -88,7 +93,9 @@ export default function Community(props) {
     }
     if (post.postListDone) {
       setLoading((prev) => false);
-      setPostList((prev) => [...prev, ...post.postList.content]);
+      if (paging.current)
+        setPostList((prev) => [...prev, ...post.postList.content]);
+      else setPostList([...post.postList.content]);
       if (post.postList.last) {
         isLast.current = true;
       } else {
@@ -96,12 +103,36 @@ export default function Community(props) {
       }
       dispatch({ type: POST_LIST_DONE });
     }
-    if (post.postListSearchBar) {
-      setLoading(false);
-      setPostList([...post.postList.content]);
-      dispatch({ type: POST_LIST_DONE });
-    }
+    // if (post.postListSearchBar) {
+    //   setLoading(false);
+    //   setPostList([...post.postList.content]);
+    //   dispatch({ type: POST_LIST_DONE });
+    // }
   }, [post, setPostList, setLoading, page, dispatch]);
+
+  useEffect(() => {
+    setForm((p) => {
+      const ids = taglist
+        .filter((t) => t.selected)
+        .map((t) => t.id)
+        .join(',');
+      if (ids === '') {
+        const { tagIds, ...res } = p;
+        return { ...res };
+      } else {
+        return { ...p, tagIds: ids };
+      }
+    });
+  }, [taglist, dispatch]);
+
+  useEffect(() => {
+    console.log('form');
+    dispatch({
+      type: POST_LIST_REQUEST,
+      data: form,
+    });
+    paging.current = false;
+  }, [form, dispatch]);
 
   const mapPost = postList.map((pl) => (
     <Post
@@ -120,16 +151,12 @@ export default function Community(props) {
   ));
 
   // 게시물 검색하기
-  const [form, setForm] = useState({
-    size: 10,
-    page: 0,
-    searchBar: true,
-  });
+
   const OrderHandler = (sort) => {
     setForm({ ...form, order: sort });
   };
   useEffect(() => {
-    if (form.order !== undefined) {
+    if (form?.order !== undefined) {
       dispatch({
         type: POST_LIST_REQUEST,
         data: form,
@@ -140,7 +167,6 @@ export default function Community(props) {
     setForm((p) => ({
       size: p.size,
       page: p.page,
-      searchBar: p.searchBar,
       [i.target]: e.target.value,
     }));
   };
@@ -149,6 +175,7 @@ export default function Community(props) {
       type: POST_LIST_REQUEST,
       data: form,
     });
+    paging.current = false;
   };
 
   return (

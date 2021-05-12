@@ -161,7 +161,7 @@ export default function RecruitmentDetail(props) {
             style={{ padding: '15px 5px 0px' }}
           >
             <Chatting>
-              <ChatBox pop={pop} button={ButtonEvent} />
+              <ChatBox recruitId={id} pop={pop} button={ButtonEvent} />
               <ChatIcon onclick={ButtonEvent} />
             </Chatting>
             <KakaoMap></KakaoMap>

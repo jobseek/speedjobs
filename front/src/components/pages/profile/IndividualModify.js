@@ -90,18 +90,15 @@ export default function IndividualModify() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
-  const onChangeDate = useCallback(
-    (e) => {
-      const event = { target: { name: 'birth', value: e } };
-      if (event.target.name === 'birth') {
-        setForm((prev) => ({
-          ...prev,
-          [event.target.name]: moment(event.target.value).format('YYYY-MM-DD'),
-        }));
-      }
-    },
-    [form]
-  );
+  const onChangeDate = useCallback((e) => {
+    const event = { target: { name: 'birth', value: e } };
+    if (event.target.name === 'birth') {
+      setForm((prev) => ({
+        ...prev,
+        [event.target.name]: moment(event.target.value).format('YYYY-MM-DD'),
+      }));
+    }
+  }, []);
 
   const onSubmitHandler = useCallback(
     (e) => {

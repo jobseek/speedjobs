@@ -48,6 +48,19 @@ function App() {
   });
   const [refresh, setRefresh, removeRefresh] = useCookies(['REFRESH_TOKEN']);
   // 리프레시 토큰발급 함수 인터셉터 사용
+  const afterUpdate = useCallback(() => {
+    if (
+      !user.needLogin &&
+      !user.meDone &&
+      !user.logInWelcomed &&
+      refresh['REFRESH_TOKEN'] !== undefined
+    ) {
+      dispatch({
+        type: ME_REQUEST,
+        data: { accessToken: refresh['ACCESS_TOKEN'] },
+      });
+    }
+  }, [dispatch, user.meDone, refresh, user.needLogin, user.logInWelcomed]);
   useEffect(() => {
     setRefresh('toRefresh', 'toRefresh');
     removeRefresh('toRefresh');
@@ -66,25 +79,13 @@ function App() {
   }, [
     refresh,
     removeRefresh,
+    afterUpdate,
     setRefresh,
     user.logInDone,
     interceptorID,
     user.needLogin,
   ]);
   //  유저 상태 유지
-  const afterUpdate = useCallback(() => {
-    if (
-      !user.needLogin &&
-      !user.meDone &&
-      !user.logInWelcomed &&
-      refresh['REFRESH_TOKEN'] !== undefined
-    ) {
-      dispatch({
-        type: ME_REQUEST,
-        data: { accessToken: refresh['ACCESS_TOKEN'] },
-      });
-    }
-  }, [dispatch, user.meDone, refresh, user.needLogin, user.logInWelcomed]);
   // 메타데이터설정 아이폰일경우 화면크기 조정
   useEffect(() => {
     const meta = document.createElement('meta');

@@ -44,6 +44,9 @@ function getUserOnly(data) {
 function* getMe(action) {
   try {
     const result = yield call(getUserOnly, action.data);
+    yield (axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${action.data.accessToken}`);
     yield put({
       type: ME_SUCCESS,
       data: result.data,

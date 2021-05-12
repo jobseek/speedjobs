@@ -22,7 +22,7 @@ export default function AnnounceCard() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (recruit.recruitList) {
+    if (recruit.recruitListDone) {
       const arr = recruit.recruitList.content;
       const arr2 = arr.map((i) => {
         let thumb = i.thumbnail;
@@ -42,7 +42,7 @@ export default function AnnounceCard() {
         type: RECRUIT_LIST_DONE,
       });
     }
-  }, [dispatch, recruit.recruitList]);
+  }, [dispatch, recruit.recruitList, recruit.recruitListDone]);
 
   const cards = list.map((c, index) => {
     return (
