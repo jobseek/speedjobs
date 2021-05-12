@@ -79,7 +79,7 @@ export default function SignUp(props) {
       ) {
         dispatch({
           type: SIGN_UP_REQUEST,
-          data: form,
+          data: { ...form, nickname: form.name },
         });
         props.setClose(false);
       } else {

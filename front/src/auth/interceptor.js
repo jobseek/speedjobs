@@ -19,7 +19,11 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
       console.log(error);
-      if (error.response.status === 401 && !error.config?.__isRetryRequest) {
+      if (
+        error.response.status === 401 &&
+        error.config &&
+        !error.config?.__isRetryRequest
+      ) {
         originalReq.__isRetryRequest = true;
         fetch(`http://${address()}:8081/api/auth/reissue`, {
           method: 'GET',

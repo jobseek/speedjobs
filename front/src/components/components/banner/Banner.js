@@ -47,8 +47,8 @@ export default function Banner(props) {
       [
         ...prev,
         {
-          src:
-            bannerList[bannerList.length - 1 - (cnt % bannerList.length)].src,
+          src: bannerList[bannerList.length - 1 - (cnt % bannerList.length)]
+            .src,
           key: v4(),
           order: bannerList.length - 1,
         },

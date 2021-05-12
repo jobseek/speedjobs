@@ -13,7 +13,11 @@ export default function Login(props) {
   const [err, setErr] = useState(false);
   const [hide, set] = useState(false);
   const dispatch = useDispatch();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    provider: 'LOCAL',
+  });
   const user = useSelector((state) => state.user);
   const [refresh, ,] = useCookies('REFRESH_TOKEN');
   const [pop, setPop] = useState(false);
