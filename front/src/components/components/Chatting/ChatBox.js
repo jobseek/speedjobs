@@ -104,7 +104,6 @@ export default function ChatBox(props) {
       console.log(m.authorId);
       if (m.authorId === user.me?.id) m.out = true;
       else m.income = true;
-      console.log(m);
       setMsgHistory((p) => [...p, m]);
     },
     [setMsgHistory, user.me?.id]
