@@ -24,8 +24,4 @@ public class TokenRequest {
 	private Provider provider;
 
 	private String oauthId;
-
-	public void setProvider(Provider provider) {
-		this.provider = provider;
-	}
 }

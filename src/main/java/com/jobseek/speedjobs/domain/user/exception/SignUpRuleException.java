@@ -1,6 +1,8 @@
 package com.jobseek.speedjobs.domain.user.exception;
 
-public class SignUpRuleException extends RuntimeException {
+import com.jobseek.speedjobs.common.exception.BadRequestException;
+
+public class SignUpRuleException extends BadRequestException {
 
 	public SignUpRuleException(String message) {
 		super(message);

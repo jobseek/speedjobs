@@ -1,13 +1,13 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.domain.user.exception.InvalidTokenException;
+import com.jobseek.speedjobs.config.auth.exception.InvalidTokenException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
-import com.jobseek.speedjobs.domain.user.exception.OAuth2RegistrationException;
+import com.jobseek.speedjobs.config.auth.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
-import com.jobseek.speedjobs.domain.user.exception.NotFoundOAuth2Exception;
+import com.jobseek.speedjobs.config.auth.exception.OAuth2NotFoundException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
 import com.jobseek.speedjobs.dto.auth.TokenRequest;
 import com.jobseek.speedjobs.dto.auth.TokenResponse;
@@ -15,7 +15,6 @@ import com.jobseek.speedjobs.dto.user.UserTokenDto;
 import com.jobseek.speedjobs.utils.CookieUtil;
 import com.jobseek.speedjobs.utils.JwtUtil;
 import com.jobseek.speedjobs.utils.RedisUtil;
-import java.util.Arrays;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,11 +45,10 @@ public class AuthService {
 			if (!passwordEncoder.matches(tokenRequest.getPassword(), user.getPassword())) {
 				throw new WrongPasswordException("비밀번호가 서로 일치하지 않습니다.");
 			}
-		} else if (Arrays.stream(Provider.values())
-			.anyMatch(p -> p.name().equals(provider.name()))) {
-			String oAuthId = tokenRequest.getOauthId();
-			user = memberRepository.findByProviderAndOauthId(provider, oAuthId)
-				.orElseThrow(() -> new NotFoundOAuth2Exception("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
+		} else if (Provider.contains(provider)) {
+			String oauthId = tokenRequest.getOauthId();
+			user = memberRepository.findByProviderAndOauthId(provider, oauthId)
+				.orElseThrow(() -> new OAuth2NotFoundException("해당 OAuth2 ID를 갖는 유저가 존재하지 않습니다."));
 		} else {
 			throw new OAuth2RegistrationException("해당 소셜 로그인은 현재 지원하지 않습니다.");
 		}

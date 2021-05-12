@@ -6,7 +6,7 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
+import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -88,7 +88,7 @@ public class Resume extends BaseTimeEntity {
 	private List<Career> careerList = new ArrayList<>();
 
 	@ElementCollection
-	@CollectionTable(name = "resumeTags", joinColumns = @JoinColumn(name = "resume_id"))
+	@CollectionTable(name = "resume_tags", joinColumns = @JoinColumn(name = "resume_id"))
 	private List<Long> tagId = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", cascade = {PERSIST, MERGE}, orphanRemoval = true)
@@ -184,7 +184,7 @@ public class Resume extends BaseTimeEntity {
 
 	public static void cancelApplyFrom(Recruit recruit) {
 		if (recruit.getApplies().size() == 0) {
-			throw new UnAuthorizedException("지원한 적이 없는 공고입니다.");
+			throw new ForbiddenException("지원하지 않은 공고입니다.");
 		} else {
 			recruit.getApplies().clear();
 		}

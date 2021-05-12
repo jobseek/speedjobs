@@ -2,7 +2,7 @@ package com.jobseek.speedjobs.domain.user;
 
 import static javax.persistence.CascadeType.ALL;
 
-import com.jobseek.speedjobs.common.exception.UnMatchedException;
+import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.Post;
@@ -126,7 +126,7 @@ public class User extends BaseTimeEntity {
 
 	public void validateMe(Long id) {
 		if (!this.id.equals(id)) {
-			throw new UnMatchedException("본인이 아닙니다. 자신의 id로 재 로그인 필요");
+			throw new ForbiddenException("본인만이 해당 요청을 수행할 수 있습니다.");
 		}
 	}
 }

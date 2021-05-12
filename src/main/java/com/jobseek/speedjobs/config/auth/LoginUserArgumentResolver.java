@@ -32,5 +32,4 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		}
 		return userService.findOne((Long) principal);
 	}
-
 }

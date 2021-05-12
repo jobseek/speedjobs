@@ -1,11 +1,6 @@
 package com.jobseek.speedjobs.service;
 
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
-
 import com.jobseek.speedjobs.common.exception.NotFoundException;
-import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
-import com.jobseek.speedjobs.config.auth.LoginUserArgumentResolver;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -57,9 +52,7 @@ public class RecruitService {
 	public void update(Long recruitId, User user, RecruitRequest recruitRequest) {
 		Recruit recruit = findOne(recruitId);
 		Company company = recruit.getCompany();
-		if (company != user) {
-			throw new UnAuthorizedException("권한이 없습니다.");
-		}
+		company.validateMe(user.getId());
 		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.update(recruitRequest.toEntity(company), tags);
 	}
@@ -68,11 +61,11 @@ public class RecruitService {
 	@Transactional
 	public void delete(Long recruitId, User user) {
 		Recruit recruit = findOne(recruitId);
-		if (user.isAdmin() || recruit.getCompany() == user) {
-			recruitRepository.delete(recruit);
-			return;
+		Company company = recruit.getCompany();
+		if (!user.isAdmin()) {
+			company.validateMe(user.getId());
 		}
-		throw new UnAuthorizedException("관리자 또는 본인만 삭제할 수 있습니다");
+		recruitRepository.delete(recruit);
 	}
 
 	@Transactional
@@ -134,7 +127,7 @@ public class RecruitService {
 			.collect(Collectors.toList());
 	}
 
-	private Recruit findOne(Long recruitId) {
+	public Recruit findOne(Long recruitId) {
 		return recruitRepository.findById(recruitId)
 			.orElseThrow(() -> new NotFoundException("해당 공고가 존재하지 않습니다."));
 	}

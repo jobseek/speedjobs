@@ -6,7 +6,6 @@ import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
-import com.jobseek.speedjobs.common.exception.UnMatchedException;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
@@ -15,8 +14,8 @@ import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserDto;
 import com.jobseek.speedjobs.domain.user.UserQueryRepository;
 import com.jobseek.speedjobs.domain.user.UserRepository;
-import com.jobseek.speedjobs.domain.user.exception.NotFoundKeyException;
-import com.jobseek.speedjobs.domain.user.exception.NotFoundRoleException;
+import com.jobseek.speedjobs.domain.user.exception.KeyNotFoundException;
+import com.jobseek.speedjobs.domain.user.exception.RoleNotFoundException;
 import com.jobseek.speedjobs.domain.user.exception.SignUpRuleException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
@@ -60,19 +59,12 @@ public class UserService {
 	@Value("${back-url}")
 	private String backUrl;
 
-	public User findOne(Long userId) {
-		return userRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다. id=" + userId));
-	}
-
-	public String sendRegisterEmail(UserSaveRequest request) {
+	public String sendRegisterMail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
 		redisUtil.set(key, request, 30 * 60 * 1000);
-		String subject = "[speedjobs] 가입완료를 위해 이메일 인증을 해주세요.";
-		String content = "아래 버튼을 클릭하여 인증을 완료해주세요";
 		String src = backUrl + "/user/signup/confirm/" + key;
-		mailUtil.sendEmail(request.getEmail(), subject, content, src);
+		mailUtil.sendMail(request.getEmail(), MailUtil.REGISTER_FILENAME, src);
 		return key;
 	}
 
@@ -80,41 +72,35 @@ public class UserService {
 	public void approveCompany(Long userId) {
 		User user = findOne(userId);
 		user.changeRole(ROLE_COMPANY);
-		String subject = "[speedjobs] 기업회원으로 가입되었습니다.";
-		String content = "스피드잡스를 통해 역량 높은 인재를 채용하세요.";
-		String src = frontUrl;
-		mailUtil.sendEmail(user.getEmail(), subject, content, src);
+		mailUtil.sendMail(user.getEmail(), MailUtil.APPROVAL_FILENAME, frontUrl);
 	}
 
 	@Transactional
 	public Long saveCustomUser(String key) {
 		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key)
-			.orElseThrow(() -> new NotFoundKeyException("이미 처리된 요청이거나 시간초과되었습니다."));
+			.orElseThrow(() -> new KeyNotFoundException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
 		UserDto userDto = request.getUserDto(passwordEncoder);
-		userDto.setNickname(request.getName());
 		if (userDto.getRole() == ROLE_MEMBER) {
 			Member member = userDto.createMember();
 			return memberRepository.save(member).getId();
 		} else if (userDto.getRole() == ROLE_GUEST) {
-			Company guest = userDto.createGUEST();
+			Company guest = userDto.createGuest();
 			return companyRepository.save(guest).getId();
 		} else {
-			throw new NotFoundRoleException("존재하지 않는 역할입니다.");
+			throw new RoleNotFoundException("존재하지 않는 역할입니다.");
 		}
 	}
 
 	public MemberInfoResponse findMemberInfo(Long userId, User user) {
 		user.validateMe(userId);
-		Member member = memberRepository.findById(userId)
-			.orElseThrow(() -> new UnMatchedException("개인회원이 아닙니다."));
+		Member member = findMember(userId);
 		return MemberInfoResponse.of(member);
 	}
 
 	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
 		user.validateMe(userId);
-		Company company = companyRepository.findById(userId)
-			.orElseThrow(() -> new UnMatchedException("기업회원이 아닙니다."));
+		Company company = findCompany(userId);
 		return CompanyInfoResponse.of(company);
 	}
 
@@ -194,5 +180,20 @@ public class UserService {
 		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 			throw new WrongPasswordException("비밀번호가 틀렸습니다.");
 		}
+	}
+
+	public User findOne(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 회원입니다."));
+	}
+
+	public Member findMember(Long userId) {
+		return memberRepository.findById(userId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 개인회원입니다."));
+	}
+
+	public Company findCompany(Long userId) {
+		return companyRepository.findById(userId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
 	}
 }

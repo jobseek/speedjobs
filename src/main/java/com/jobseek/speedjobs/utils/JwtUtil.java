@@ -1,5 +1,7 @@
 package com.jobseek.speedjobs.utils;
 
+import com.jobseek.speedjobs.config.auth.exception.ExpiredTokenException;
+import com.jobseek.speedjobs.config.auth.exception.InvalidTokenException;
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.dto.user.UserTokenDto;
 import io.jsonwebtoken.Claims;
@@ -88,22 +90,14 @@ public class JwtUtil {
 		return token == null ? null : token.substring("Bearer ".length());
 	}
 
-	public boolean validateToken(String token) {
+	public void validateToken(String token) {
 		try {
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-			return true;
-		} catch (SignatureException ex) {
-			log.error("Invalid JWT signature");
-		} catch (MalformedJwtException ex) {
-			log.error("Invalid JWT token");
-		} catch (ExpiredJwtException ex) {
-			log.error("Expired JWT token");
-		} catch (UnsupportedJwtException ex) {
-			log.error("Unsupported JWT token");
-		} catch (IllegalArgumentException ex) {
-			log.error("JWT claims string is empty.");
+		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+			throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+		} catch (ExpiredJwtException e) {
+			throw new ExpiredTokenException("이미 만료된 토큰입니다.");
 		}
-		return false;
 	}
 
 	public Long getRefreshValidity() {

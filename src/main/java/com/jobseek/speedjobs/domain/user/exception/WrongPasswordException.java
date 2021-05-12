@@ -1,6 +1,8 @@
 package com.jobseek.speedjobs.domain.user.exception;
 
-public class WrongPasswordException extends RuntimeException{
+import com.jobseek.speedjobs.common.exception.ForbiddenException;
+
+public class WrongPasswordException extends ForbiddenException {
 
 	public WrongPasswordException(String message) {
 		super(message);

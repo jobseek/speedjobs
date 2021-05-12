@@ -1,11 +1,9 @@
 package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.common.exception.NotFoundException;
-import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
 import com.jobseek.speedjobs.domain.post.Comment;
 import com.jobseek.speedjobs.domain.post.CommentRepository;
 import com.jobseek.speedjobs.domain.post.Post;
-import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.CommentRequest;
 import com.jobseek.speedjobs.dto.post.CommentResponse;
@@ -24,11 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
 	private final CommentRepository commentRepository;
-	private final PostRepository postRepository;
+	private final PostService postService;
 
 	@Transactional
 	public Long saveComment(CommentRequest commentRequest, User user, Long postId) {
-		Post post = findPost(postId);
+		Post post = postService.findOne(postId);
 		Comment comment = commentRequest.of(user, post);
 		comment.addComment(post);
 		return commentRepository.save(comment).getId();
@@ -50,7 +48,7 @@ public class CommentService {
 	}
 
 	public Page<CommentResponse> findByPage(Long postId, User user, Pageable pageable) {
-		List<Comment> comments = findPost(postId).getComments();
+		List<Comment> comments = postService.findOne(postId).getComments();
 		return new PageImpl<>(comments.stream()
 			.map(comment -> CommentResponse.of(comment, user))
 			.collect(Collectors.toList()), pageable, comments.size());
@@ -68,20 +66,14 @@ public class CommentService {
 		comment.removeFavorite(user);
 	}
 
-	private Post findPost(Long postId) {
-		return postRepository.findById(postId)
-			.orElseThrow(() -> new NotFoundException("해당 게시글이 존재하지 않습니다. postId=" + postId));
+	private void validateUser(Comment comment, User user) {
+		if (!user.isAdmin()) {
+			comment.getUser().validateMe(user.getId());
+		}
 	}
 
 	private Comment findOne(Long commentId) {
 		return commentRepository.findById(commentId)
 			.orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않습니다."));
 	}
-
-	private void validateUser(Comment comment, User user) {
-		if (!user.isAdmin() && user != comment.getUser()) {
-			throw new UnAuthorizedException("댓글을 지울 수 있는 권한이 없습니다.");
-		}
-	}
-
 }

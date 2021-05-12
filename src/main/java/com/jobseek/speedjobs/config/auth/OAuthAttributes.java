@@ -4,7 +4,7 @@ import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.UserDto;
-import com.jobseek.speedjobs.domain.user.exception.OAuth2RegistrationException;
+import com.jobseek.speedjobs.config.auth.exception.OAuth2RegistrationException;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;

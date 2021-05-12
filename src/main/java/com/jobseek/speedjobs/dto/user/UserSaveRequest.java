@@ -28,6 +28,10 @@ public class UserSaveRequest {
 	@Size(min = 2, max = 15)
 	private String name;
 
+	@NotBlank(groups = UserValidateGroup.member.class)
+	@Size(min = 2, max = 15)
+	private String nickname;
+
 	@Size(max = 40)
 	@Email(groups = UserValidateGroup.member.class)
 	private String email;
@@ -57,6 +61,7 @@ public class UserSaveRequest {
 	public UserDto getUserDto(PasswordEncoder passwordEncoder) {
 		return UserDto.builder()
 			.name(name)
+			.nickname(nickname)
 			.email(email)
 			.password(passwordEncoder.encode(password))
 			.provider(Provider.LOCAL)

@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.config.auth;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,8 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException exception) throws IOException, ServletException {
-		log.info("OAuth Exception 발생 - {}", exception);
+		AuthenticationException e) throws IOException {
+		log.info("AuthenticationException - {}", e.getMessage());
 		redirectStrategy.sendRedirect(request, response, frontUrl);
 	}
 }

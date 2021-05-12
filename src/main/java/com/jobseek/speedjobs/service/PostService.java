@@ -1,12 +1,10 @@
 package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.common.exception.NotFoundException;
-import com.jobseek.speedjobs.common.exception.UnAuthorizedException;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.post.PostQueryRepository;
 import com.jobseek.speedjobs.domain.post.PostRepository;
 import com.jobseek.speedjobs.domain.tag.Tag;
-import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.PostListResponse;
 import com.jobseek.speedjobs.dto.post.PostRequest;
@@ -30,7 +28,7 @@ public class PostService {
 
 	private final PostQueryRepository postQueryRepository;
 	private final PostRepository postRepository;
-	private final TagRepository tagRepository;
+	private final TagService tagService;
 
 	@Transactional
 	public Long save(PostRequest postRequest, User user) {
@@ -44,9 +42,7 @@ public class PostService {
 	@Transactional
 	public void update(Long postId, User user, PostRequest postRequest) {
 		Post post = findOne(postId);
-		if (post.getUser() != user) {
-			throw new UnAuthorizedException("권한이 없습니다.");
-		}
+		post.getUser().validateMe(user.getId());
 		List<Tag> tags = findTagsById(postRequest.getTagIds());
 		post.update(postRequest.toEntity(), tags);
 	}
@@ -54,8 +50,8 @@ public class PostService {
 	@Transactional
 	public void delete(Long postId, User user) {
 		Post post = findOne(postId);
-		if (!user.isAdmin() && post.getUser() != user) {
-			throw new UnAuthorizedException("권한이 없습니다.");
+		if (!user.isAdmin()) {
+			post.getUser().validateMe(user.getId());
 		}
 		postRepository.delete(post);
 	}
@@ -71,8 +67,7 @@ public class PostService {
 
 	private List<Tag> findTagsById(List<Long> tagIds) {
 		return tagIds.stream()
-			.map(tagId -> tagRepository.findById(tagId)
-				.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다.")))
+			.map(tagService::findOne)
 			.collect(Collectors.toList());
 	}
 
@@ -100,15 +95,14 @@ public class PostService {
 			.collect(Collectors.toList()), pageable, posts.size());
 	}
 
-	private Post findOne(Long postId) {
-		return postRepository.findById(postId)
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
-	}
-
 	public Page<PostListResponse> findAll(PostSearchCondition condition, Pageable pageable,
 		User user) {
-//		postQueryRepository.findAll(condition, pageable);
 		return postQueryRepository.findAll(condition, pageable)
 			.map(post -> PostListResponse.of(post, user));
+	}
+
+	public Post findOne(Long postId) {
+		return postRepository.findById(postId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
 	}
 }

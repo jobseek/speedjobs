@@ -49,7 +49,7 @@ public class TagService {
 		tag.changeTag(request.getTagType(), request.getTagName());
 	}
 
-	private Tag findOne(Long tagId) {
+	public Tag findOne(Long tagId) {
 		return tagRepository.findById(tagId)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다."));
 	}

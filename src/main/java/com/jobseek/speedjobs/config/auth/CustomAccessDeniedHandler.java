@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.config.auth;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +14,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
-		AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		log.info("CustomAccessDeniedHandler 발생");
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		AccessDeniedException e) throws IOException {
+		log.error("AccessDeniedException - {}", e.getMessage());
+		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 }
