@@ -41,9 +41,8 @@ export default function ResumeTotal() {
   }, [dispatch, resume, setResumeList]);
 
   const mapResume = resumeList.map((rl) => (
-    <>
+    <div key={rl.id}>
       <ResumeWow
-        key={rl.id}
         id={rl.id}
         title={rl.title}
         open={rl.open}
@@ -51,7 +50,7 @@ export default function ResumeTotal() {
           rl.createdDate[0] + '/' + rl.createdDate[1] + '/' + rl.createdDate[2]
         }
       />
-    </>
+    </div>
   ));
 
   return (
