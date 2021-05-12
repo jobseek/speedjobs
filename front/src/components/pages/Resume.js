@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 } from 'uuid';
+import { useHistory } from 'react-router';
 import {
+  PostTitleInput,
   ProfileDiv,
   StyledButton,
   StyledHeaderDiv,
@@ -8,9 +11,10 @@ import {
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
 import ResumeContents from '../components/resume/ResumeContents';
-import { RESUME_ADD_REQUEST } from '../../reducers/resume';
+import { RESUME_ADD_REQUEST, RESUME_LIST_REQUEST } from '../../reducers/resume';
 
 export default function Resume() {
+  const history = useHistory();
   const [item, setItem] = useState({
     education: 'HIGH',
     schoolName: '',
@@ -120,7 +124,8 @@ export default function Resume() {
   };
   const user = useSelector((state) => state.user);
   const [form, setForm] = useState({
-    open: '',
+    createDate: new Date(),
+    open: 'NO',
     name: '',
     gender: '',
     contact: '',
@@ -129,6 +134,7 @@ export default function Resume() {
     githubUrl: '',
     resumeImage: '',
     coverLetter: '',
+    tagIds: [],
     scholarList: [
       {
         item,
@@ -137,6 +143,26 @@ export default function Resume() {
         item2,
       },
       { item3 },
+    ],
+    certificateList: [
+      {
+        index: v4(),
+        certName: '',
+        certNumber: '',
+        institute: '',
+        certDate: '',
+        score: '',
+        degree: '',
+      },
+    ],
+    careerList: [
+      {
+        index: v4(),
+        companyName: '',
+        position: '',
+        inDate: '',
+        outDate: '',
+      },
     ],
   });
 
@@ -148,9 +174,10 @@ export default function Resume() {
         type: RESUME_ADD_REQUEST,
         data: form,
       });
+      dispatch({ type: RESUME_LIST_REQUEST, data: user.me });
+      history.push('/resume/total');
     },
-
-    [dispatch, form, user.me?.id]
+    [dispatch, form, user.me, history]
   );
 
   const onChangeHandler = useCallback((e) => {
@@ -160,7 +187,13 @@ export default function Resume() {
   return (
     <>
       <div className="container text-left">
-        <StyledHeaderDiv padding title={'이력서'}>
+        <StyledHeaderDiv padding>
+          <PostTitleInput
+            onChange={(e) => onChangeHandler(e)}
+            name={'title'}
+            placeholder={'이력서 제목을 입력해주세요'}
+            maxLength="20"
+          />
           <div style={{ flex: '0 0' }}>
             <StyledButton wide onClick={onSubmitHandler}>
               등록

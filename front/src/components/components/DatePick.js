@@ -10,6 +10,8 @@ const StyledDatePicker = styled(DatePicker)`
   background-color: #fbfbfb;
   height: 35px;
   padding-left: 15px;
+  margin-right: 5px;
+  width: 295px;
   border: 1px solid silver;
   &:focus {
     outline: none;

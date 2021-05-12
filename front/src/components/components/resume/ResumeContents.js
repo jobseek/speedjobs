@@ -51,14 +51,14 @@ export default function ResumeContents({
           item2={item2}
           item3={item3}
         />
-        <ResumeCertificate />
-        <ResumeCareer />
+        <ResumeCertificate form={form} setForm={setForm} />
+        <ResumeCareer form={form} setForm={setForm} />
         <ResumeSelf
           onChangeIntro={onChangeIntro}
           setForm={setForm}
           form={form}
         />
-        <ResumeSkill />
+        <ResumeSkill form={form} setForm={setForm} />
       </div>
     </>
   );

@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { ResumeTitles } from './Styled';
 
 const StyledDatePicker = styled(DatePicker)`
-  width: 200px;
+  width: 220px;
   border-radius: 5px;
   background-color: #fbfbfb;
+  margin-right: 5px;
   height: 35px;
   padding-left: 15px;
   border: 1px solid silver;
@@ -22,7 +23,7 @@ export default function DatePick({ item, setItems, start, end }) {
   const [endDate, setEndDate] = useState(item.date);
   return (
     <>
-      <div style={{ display: 'inline-block', margin: '0 5px 5px 0' }}>
+      <div style={{ display: 'inline-block', margin: '0 0 5px 0' }}>
         <ResumeTitles>&nbsp;{start}</ResumeTitles>
         <StyledDatePicker
           locale={ko}

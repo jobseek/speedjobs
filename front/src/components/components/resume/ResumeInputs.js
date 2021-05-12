@@ -11,6 +11,7 @@ export default function ResumeInputs({
   onChange,
   value,
   name,
+  disabled,
 }) {
   return (
     <Wrapper basic={basic} sns={sns} item={item} margin={margin} flex={flex}>
@@ -21,6 +22,7 @@ export default function ResumeInputs({
           onChange={onChange}
           value={value}
           name={name}
+          disabled={disabled}
         />
       </ResumeItems>
     </Wrapper>

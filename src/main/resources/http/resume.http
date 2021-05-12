@@ -148,7 +148,7 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 4. 이력서 단건 조회
-GET http://{{host}}/resume/1
+GET http://{{host}}/resume/18
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 

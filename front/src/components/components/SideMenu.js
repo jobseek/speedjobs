@@ -11,7 +11,7 @@ export default function SideMenu() {
         {user.me?.role === 'ROLE_COMPANY' ? (
           <MyLink to={'/resume/submit'}>이력서</MyLink>
         ) : (
-          <MyLink to={'/resume/list'}>이력서</MyLink>
+          <MyLink to={'/resume/total'}>이력서</MyLink>
         )}
       </MyButton>
       <MyHr />

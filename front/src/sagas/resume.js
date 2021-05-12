@@ -61,8 +61,7 @@ function* resumeAdd(action) {
 
 // ========== 이력서 조회 ==========
 function resumeGetAPI(data) {
-  const id = data.data.id;
-  return axios.get(`/resume/${id}`).catch((err) => {
+  return axios.get(`/resume/${data.data}`).catch((err) => {
     throw err;
   });
 }

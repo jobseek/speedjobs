@@ -1,60 +1,139 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { v4 } from 'uuid';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from 'date-fns/esm/locale';
+import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
 import ResumeInputs from './ResumeInputs';
-import { Add, MyPlus, Subtract, Warning } from '../Styled';
-import Tags from '../Tags';
-import DatePickRange from '../DatePickRange';
+import { Add, MyPlus, ResumeTitles, Subtract, Warning } from '../Styled';
 
-export default function ResumeCareer() {
-  const [, setForce] = useState(false);
-  const forceUp = () => {
-    setForce((prev) => !prev);
-  };
-  const [taglist, setTaglist] = useState([]);
-  const tagss = useSelector((state) => state.tag);
-  useEffect(() => {
-    if (tagss.tagGetData) {
-      const temp = Array.from(tagss.tagGetData.tags.POSITION);
-      // const res = [];
-      // temp.forEach((item) => {
-      //   res.concat([...res, { ...item, item }]);
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      // });
-      const tt = temp.map((t) => {
-        return { ...t, selected: false };
+const StyledDatePicker = styled(DatePicker)`
+  width: 220px;
+  height: 35px;
+  border-radius: 5px;
+  background-color: #fdfdfd;
+  border: 1px solid silver;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding-left: 15px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export default function ResumeCareer({ form, setForm }) {
+  const itemList = form.careerList.map((item) => {
+    return (
+      <div key={item.index}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+          <ResumeInputs
+            flex={'1'}
+            itemName={'회사이름'}
+            value={item.companyName}
+            name={'companyName'}
+            onChange={(e) => onChangeCareer(e, item.index)}
+          />
+          <ResumeInputs
+            flex={'1'}
+            itemName={'직급'}
+            value={item.position}
+            name={'position'}
+            onChange={(e) => onChangeCareer(e, item.index)}
+          />
+          <div style={{ display: 'inline-block', margin: '0 0 5px 0' }}>
+            <ResumeTitles>&nbsp;입사날짜</ResumeTitles>
+            <StyledDatePicker
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              selected={item.inDate}
+              selectsStart
+              startDate={item.inDate}
+              endDate={item.outDate}
+              onChange={(date) => onChangeInDate(date, item.index)}
+              peekMonthDropdown
+              showYearDropdown
+            />
+          </div>
+          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
+            <ResumeTitles>&nbsp;퇴사일자</ResumeTitles>
+            <StyledDatePicker
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              selected={item.outDate}
+              selectsEnd
+              startDate={item.inDate}
+              endDate={item.outDate}
+              onChange={(date) => onChangeOutDate(date, item.index)}
+              peekMonthDropdown
+              showYearDropdown
+            />
+          </div>
+        </div>
+      </div>
+    );
+  });
+
+  const onChangeCareer = useCallback(
+    (e, index) => {
+      setForm((p) => {
+        p.careerList[p.careerList.findIndex((x) => x.index === index)][
+          e.target.name
+        ] = e.target.value;
+        return { ...p };
       });
-      setTaglist((p) => [...p, ...tt]);
-    }
-  }, [tagss.tagGetData]);
-  const cnt = useRef(1);
-  const [items, setItems] = useState([{ id: 0 }]);
-  const itemList = items.map((item, index) => (
-    <div key={index}>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <ResumeInputs item name={'회사이름'} />
-        <ResumeInputs item name={'직급'} />
-        <DatePickRange
-          start={'입사날짜'}
-          end={'퇴사날짜'}
-          item={item}
-          setItems={setItems}
-        />
-      </div>
-      <div style={{ paddingTop: '26px' }}>
-        <Tags tagList={taglist}>직무</Tags>
-      </div>
-    </div>
-  ));
-  const test = () => {
-    setItems([...items, { id: cnt.current }]);
-  };
-  const test2 = () => {
-    setItems((prev) => {
-      return prev.slice(0, prev.length - 1);
+    },
+    [setForm]
+  );
+
+  const onChangeInDate = useCallback(
+    (date, index) => {
+      setForm((p) => {
+        p.careerList[p.careerList.findIndex((x) => x.index === index)][
+          'inDate'
+        ] = date;
+        return { ...p };
+      });
+    },
+    [setForm]
+  );
+
+  const onChangeOutDate = useCallback(
+    (date, index) => {
+      setForm((p) => {
+        p.careerList[p.careerList.findIndex((x) => x.index === index)][
+          'outDate'
+        ] = date;
+        return { ...p };
+      });
+    },
+    [setForm]
+  );
+
+  const test = useCallback(() => {
+    setForm((p) => {
+      return {
+        ...p,
+        careerList: [
+          ...p.careerList,
+          {
+            index: v4(),
+            companyName: '',
+            position: '',
+            inDate: '',
+            outDate: '',
+          },
+        ],
+      };
     });
-    forceUp();
-  };
+  }, [setForm]);
+
+  const test2 = useCallback(() => {
+    setForm((prev) => {
+      const next = prev.careerList.slice(0, prev.careerList.length - 1);
+      return { ...prev, careerList: next };
+    });
+  }, [setForm]);
 
   return (
     <>
@@ -72,7 +151,7 @@ export default function ResumeCareer() {
             &nbsp;&nbsp;버튼을 누르면 추가할 수 있습니다.
           </Warning>
         </h5>
-        <div style={{ display: 'inline-block' }}>{itemList}</div>
+        <div style={{ display: 'inline-block', width: '100%' }}>{itemList}</div>
       </div>
     </>
   );

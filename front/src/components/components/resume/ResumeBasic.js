@@ -67,6 +67,7 @@ export default function ResumeBasic({
           [event.target.name]: event.target.value,
         }));
       }
+      console.log(event);
     },
     [setForm]
   );

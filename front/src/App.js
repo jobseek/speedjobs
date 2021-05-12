@@ -15,7 +15,7 @@ import PostDetail from './components/pages/PostDetail';
 import Profile from './components/pages/profile/Profile';
 import Withdrawal from './components/pages/profile/Withdrawal';
 import Resume from './components/pages/Resume';
-import ResumeList from './components/pages/ResumeList';
+import ResumeTotal from './components/pages/ResumeTotal';
 import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
@@ -30,6 +30,7 @@ import IndividualModify from './components/pages/profile/IndividualModify';
 import CorporateModify from './components/pages/profile/CorporateModify';
 import { TAG_GET_REQUEST } from './reducers/tag';
 import PostModify from './components/pages/PostModify';
+import ResumeDetails from './components/pages/ResumeDetails';
 import SubmitList from './components/pages/SubmitList';
 import MyRecruitments from './components/pages/MyRecruitments';
 import MyPosts from './components/pages/MyPosts';
@@ -129,8 +130,9 @@ function App() {
             component={CorporateModify}
           />
           <Route exact path={'/resume'} component={Resume} />
-          <Route exact path={'/resume/list'} component={ResumeList} />
+          <Route exact path={'/resume/total'} component={ResumeTotal} />
           <Route exact path={'/resume/submit'} component={SubmitList} />
+          <Route exact path={'/resume/resume/:id'} component={ResumeDetails} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />

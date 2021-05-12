@@ -7,9 +7,10 @@ import ResumeInputs from './ResumeInputs';
 import { MyEducation, ResumeTitles, Warning } from '../Styled';
 
 const MyDatePicker = styled(DatePicker)`
-  width: 200px;
+  width: 220px;
   border-radius: 5px;
   background-color: #fbfbfb;
+  margin-right: 5px;
   height: 35px;
   padding-left: 15px;
   border: 1px solid silver;
@@ -71,16 +72,18 @@ export default function ResumeEducation({
         <MyEducation>고등학교</MyEducation>
         <div style={{ display: 'flex', flexFlow: 'wrap' }}>
           <ResumeInputs
+            flex={'1'}
             itemName={'학교이름'}
             name={'schoolName'}
             onChange={(e) => onChangeHighSchool(e)}
           />
           <ResumeInputs
+            flex={'1'}
             itemName={'전공'}
             name={'major'}
             onChange={(e) => onChangeHighSchool(e)}
           />
-          <div style={{ display: 'inline-block', margin: '0 5px 5px 0' }}>
+          <div style={{ display: 'inline-block' }}>
             <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
             <MyDatePicker
               locale={ko}
@@ -114,16 +117,18 @@ export default function ResumeEducation({
         <MyEducation>대학교</MyEducation>
         <div style={{ display: 'flex', flexFlow: 'wrap' }}>
           <ResumeInputs
+            flex={'1'}
             itemName={'학교이름'}
             name={'schoolName'}
             onChange={(e) => onChangeUniversity(e)}
           />
           <ResumeInputs
+            flex={'1'}
             itemName={'전공'}
             name={'major'}
             onChange={(e) => onChangeUniversity(e)}
           />
-          <div style={{ display: 'inline-block', margin: '0 5px 5px 0' }}>
+          <div style={{ display: 'inline-block' }}>
             <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
             <MyDatePicker
               locale={ko}
@@ -157,16 +162,18 @@ export default function ResumeEducation({
         <MyEducation>대학원</MyEducation>
         <div style={{ display: 'flex', flexFlow: 'wrap' }}>
           <ResumeInputs
+            flex={'1'}
             itemName={'학교이름'}
             name={'schoolName'}
             onChange={(e) => onChangeGraduate(e)}
           />
           <ResumeInputs
+            flex={'1'}
             itemName={'전공'}
             name={'major'}
             onChange={(e) => onChangeGraduate(e)}
           />
-          <div style={{ display: 'inline-block', margin: '0 5px 5px 0' }}>
+          <div style={{ display: 'inline-block' }}>
             <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
             <MyDatePicker
               locale={ko}

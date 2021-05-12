@@ -1,46 +1,150 @@
-import React, { useCallback, useRef, useState } from 'react';
-import DatePick from '../DatePick';
+import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
+import { v4 } from 'uuid';
+import { ko } from 'date-fns/esm/locale';
+import React, { useCallback } from 'react';
 import ResumeInputs from './ResumeInputs';
-import { Add, MyPlus, Subtract, Warning } from '../Styled';
+import { Add, MyPlus, ResumeTitles, Subtract, Warning } from '../Styled';
 
-export default function ResumeCertificate() {
-  const [, setForce] = useState(false);
-  const forceUp = () => {
-    setForce((prev) => !prev);
-  };
-  const cnt = useRef(1);
-  const [items, setItems] = useState([{ id: 1, date: null }]);
-  const itemList = items.map((item, index) => {
+const StyledDatePicker = styled(DatePicker)`
+  width: 295px;
+  height: 35px;
+  border-radius: 5px;
+  background-color: #fdfdfd;
+  border: 1px solid silver;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding-left: 15px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export default function ResumeCertificate({ form, setForm }) {
+  const itemList = form.certificateList.map((item) => {
     return (
-      <div key={index} style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <ResumeInputs item name={'이름'} />
-        <ResumeInputs item name={'발급기관'} />
-        <ResumeInputs item name={'발급번호'} />
-        <div style={{ display: 'inline-block' }}>
-          <DatePick item={item} setItems={setItems} />
+      <div key={item.index} style={{ width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'nowrap',
+            width: '100%',
+          }}
+        >
+          <ResumeInputs
+            flex={'1'}
+            itemName={'이름'}
+            value={item.certName}
+            name={'certName'}
+            onChange={(e) => onChangeCertificate(e, item.index)}
+          />
+          <ResumeInputs
+            flex={'1'}
+            itemName={'급수'}
+            value={item.degree}
+            name={'degree'}
+            onChange={(e) => onChangeCertificate(e, item.index)}
+          />
+          <ResumeInputs
+            flex={'1'}
+            itemName={'점수'}
+            value={item.score}
+            name={'score'}
+            onChange={(e) => onChangeCertificate(e, item.index)}
+          />
+        </div>
+        <div
+          key={item.index}
+          style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}
+        >
+          <ResumeInputs
+            flex={'1'}
+            itemName={'발급기관'}
+            value={item.institute}
+            name={'institute'}
+            onChange={(e) => onChangeCertificate(e, item.index)}
+          />
+          <ResumeInputs
+            flex={'1'}
+            itemName={'발급번호'}
+            value={item.certNumber}
+            name={'certNumber'}
+            onChange={(e) => onChangeCertificate(e, item.index)}
+          />
+          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
+            <ResumeTitles>&nbsp;발급일자</ResumeTitles>
+            <StyledDatePicker
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              selected={item.certDate}
+              onChange={(date) => onChangeDate(date, item.index)}
+              peekMonthDropdown
+              showYearDropdown
+            />
+          </div>
         </div>
       </div>
     );
   });
-
-  const test = () => {
-    setItems([...items, { id: cnt, date: null }]);
-    cnt.current++;
-    console.log(cnt.current);
-  };
-  const test2 = useCallback(() => {
-    setItems((prev) => {
-      return prev.slice(0, prev.length - 1);
+  const onChangeCertificate = useCallback(
+    (e, index) => {
+      setForm((p) => {
+        p.certificateList[
+          p.certificateList.findIndex((x) => x.index === index)
+        ][e.target.name] = e.target.value;
+        return { ...p };
+      });
+    },
+    [setForm]
+  );
+  const onChangeDate = useCallback(
+    (date, index) => {
+      setForm((p) => {
+        p.certificateList[
+          p.certificateList.findIndex((x) => x.index === index)
+        ]['certDate'] = date;
+        return { ...p };
+      });
+    },
+    [setForm]
+  );
+  const add = useCallback(() => {
+    setForm((p) => {
+      return {
+        ...p,
+        certificateList: [
+          ...p.certificateList,
+          {
+            index: v4(),
+            certName: '',
+            certNumber: '',
+            institute: '',
+            certDate: '',
+            score: '',
+            degree: '',
+          },
+        ],
+      };
     });
-    forceUp();
-  }, []);
+  }, [setForm]);
+  const test2 = useCallback(() => {
+    setForm((prev) => {
+      const next = prev.certificateList.slice(
+        0,
+        prev.certificateList.length - 1
+      );
+      return { ...prev, certificateList: next };
+    });
+  }, [setForm]);
+
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
         <MyPlus onClick={() => test2()}>
           <Subtract />
         </MyPlus>
-        <MyPlus onClick={() => test()}>
+        <MyPlus onClick={() => add()}>
           <Add />
         </MyPlus>
         <div>
@@ -52,7 +156,7 @@ export default function ResumeCertificate() {
             </Warning>
           </h5>
         </div>
-        <div style={{ display: 'inline-block' }}>{itemList}</div>
+        <div style={{ display: 'inline-block', width: '100%' }}>{itemList}</div>
       </div>
     </>
   );
