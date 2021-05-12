@@ -76,7 +76,7 @@ export default function ChatBox({ recruitId, ...props }) {
     chatRef.current.sendMessage('/send/message', JSON.stringify(sendMsg));
     // setMsgHistory((p) => [...p, { out: true, content: sendMessage }]);
     setMsg('');
-  }, [chatRef, msg, user.me?.id, recruitId]);
+  }, [chatRef, msg, user.me?.id]);
   const dispatch = useDispatch();
   // 메세지 리스트 로딩전에 먼저 유저정보를 가져와야함
   useEffect(() => {
@@ -88,7 +88,7 @@ export default function ChatBox({ recruitId, ...props }) {
       });
       setLoading(true);
     }
-  }, [user.me, cookie, dispatch, recruitId]);
+  }, [user.me, cookie, dispatch]);
   useEffect(() => {
     if (recruit.getChatDone) {
       setLoading(false);
@@ -111,7 +111,7 @@ export default function ChatBox({ recruitId, ...props }) {
       setLoading(false);
       console.log('fail');
     }
-  }, [recruit.getChatDone, recruit.chat, recruit.getChatFail, user.me?.id]);
+  }, [recruit.getChatDone, recruit.chat, recruit.getChatFail]);
   const getMessage = useCallback(
     (m, t) => {
       m.out = false;
