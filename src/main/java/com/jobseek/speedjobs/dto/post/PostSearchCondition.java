@@ -1,15 +1,16 @@
 package com.jobseek.speedjobs.dto.post;
 
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Builder
-@Data
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostSearchCondition {
 
 	private List<Long> tagIds;

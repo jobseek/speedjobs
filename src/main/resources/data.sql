@@ -201,8 +201,8 @@ values (1, '2011-08-23', '컴퓨터활용능력1급', '111-11-11111', 1, '잡식
 insert into scholar (resume_id, education, in_date, major, out_date, school_name)
 values (1, 'HIGH', '2014-03-02', '이과', '2017-02-21', '양명고'),
        (1, 'UNIVERSITY', '2017-03-02', '컴퓨터공학과', '2020-03-21', '서울대');
-insert into resume_tags (resume_id, tag_id)
-values (1, 1), (1, 3), (1, 5);
+insert into resume_tags (resume_id, tag_id, name, type)
+values (1, 19, 'C', 'SKILL'), (1, 20, 'C++', 'SKILL'), (1, 21, 'C#', 'SKILL');
 
 insert into resumes(created_date, modified_date, address, birth, blog_url, contact, cover_letter, gender, github_url, name, open, resume_image, title, member_id)
 values ('2020-01-02 00:00:00', '2020-01-03 00:00:00', '서울시 강북구 번동', null, null, '010-1234-5678', '하이방가방가', 'M', null, '잡식이', 'NO', 'https://www.naver.com', '잡스피드 이력서', 1);
@@ -215,8 +215,8 @@ values (2, '2011-08-23', '컴퓨터활용능력1급', '111-11-11111', 1, '잡식
 insert into scholar (resume_id, education, in_date, major, out_date, school_name)
 values (2, 'HIGH', '2014-03-02', '이과', '2017-02-21', '양명고'),
        (2, 'UNIVERSITY', '2017-03-02', '컴퓨터공학과', '2020-03-21', '서울대');
-insert into resume_tags (resume_id, tag_id)
-values (2, 1), (2, 3), (2, 5);
+insert into resume_tags (resume_id, tag_id, name, type)
+values (2, 22, 'Go', 'SKILL'), (2, 24, 'Java', 'SKILL'), (2, 25, 'Kotlin', 'SKILL');
 
 insert into resumes(created_date, modified_date, address, birth, blog_url, contact, cover_letter, gender, github_url, name, open, resume_image, title, member_id)
 values ('2020-01-02 00:00:00', '2020-01-03 00:00:00', '서울시 강남구 서초동', null, null, '010-5252-3321', '빠이염', 'F', null, '잡순이', 'NO', 'https://www.naver.com', '잡스피드 이력서', 2);

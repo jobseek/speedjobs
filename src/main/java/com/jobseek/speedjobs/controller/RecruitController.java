@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.config.auth.LoginUser;
-import com.jobseek.speedjobs.config.auth.LoginUserArgumentResolver;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

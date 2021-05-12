@@ -6,11 +6,9 @@ import com.jobseek.speedjobs.domain.resume.Open;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
-import com.jobseek.speedjobs.domain.resume.details.ResumeTag;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.util.List;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PRIVATE)
 public class ResumeRequest {
 
-//	@NotNull
+	@NotNull
 	private Open open;
 
-//	@NotBlank
 	private String coverLetter;
 
 	private String title;
@@ -43,22 +40,22 @@ public class ResumeRequest {
 
 	private String resumeImage;
 
-	private List<Career> careerList;
+	private List<Career> careers;
 
-	private List<Scholar> scholarList;
+	private List<Scholar> scholars;
 
-	private List<Certificate> certificateList;
+	private List<Certificate> certificates;
 
 	private List<Long> tagIds;
 
 	public ResumeRequest(Open open, String coverLetter, String title, String name, String gender,
 		String contact, LocalDate birth, String address, String githubUrl, String blogUrl,
 		String resumeImage,
-		List<Career> careerList,
-		List<Scholar> scholarList,
-		List<Certificate> certificateList,
+		List<Career> careers,
+		List<Scholar> scholars,
+		List<Certificate> certificates,
 		List<Long> tagIds
-		) {
+	) {
 		this.open = open;
 		this.coverLetter = coverLetter;
 		this.title = title;
@@ -70,9 +67,9 @@ public class ResumeRequest {
 		this.githubUrl = githubUrl;
 		this.blogUrl = blogUrl;
 		this.resumeImage = resumeImage;
-		this.careerList = careerList;
-		this.scholarList = scholarList;
-		this.certificateList = certificateList;
+		this.careers = careers;
+		this.scholars = scholars;
+		this.certificates = certificates;
 		this.tagIds = tagIds;
 	}
 

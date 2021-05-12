@@ -4,6 +4,7 @@ import com.jobseek.speedjobs.domain.resume.Open;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
+import com.jobseek.speedjobs.domain.resume.details.ResumeTag;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,9 +33,10 @@ public class ResumeResponse {
 	private String blogUrl;
 	private String githubUrl;
 	private String resumeImage;
-	private List<Certificate> certificateList;
-	private List<Scholar> scholarList;
-	private List<Career> careerList;
+	private List<Certificate> certificates;
+	private List<Scholar> scholars;
+	private List<Career> careers;
+	private List<ResumeTag> tags;
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
 
@@ -52,11 +54,13 @@ public class ResumeResponse {
 			.blogUrl(resume.getBlogUrl())
 			.githubUrl(resume.getGithubUrl())
 			.resumeImage(resume.getResumeImage())
-			.certificateList(resume.getCertificateList())
-			.scholarList(resume.getScholarList())
-			.careerList(resume.getCareerList())
+			.certificates(resume.getCertificates())
+			.scholars(resume.getScholars())
+			.careers(resume.getCareers())
+			.tags(resume.getTags())
 			.createdDate(resume.getCreatedDate())
 			.modifiedDate(resume.getModifiedDate())
 			.build();
 	}
+
 }

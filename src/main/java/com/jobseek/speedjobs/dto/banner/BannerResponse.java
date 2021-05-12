@@ -2,11 +2,16 @@ package com.jobseek.speedjobs.dto.banner;
 
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.domain.banner.Banner;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
-@Data
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BannerResponse {
 
 	private Long id;

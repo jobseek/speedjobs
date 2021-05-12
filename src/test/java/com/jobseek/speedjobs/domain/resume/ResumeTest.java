@@ -1,19 +1,15 @@
 package com.jobseek.speedjobs.domain.resume;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
-import com.jobseek.speedjobs.domain.resume.details.ResumeTag;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +57,9 @@ class ResumeTest {
 		List<Certificate> certificates = new ArrayList<>();
 		List<Scholar> scholars = new ArrayList<>();
 		List<Career> careers = new ArrayList<>();
-		List<Long> tagIds = new ArrayList<>();
 
 		certificates.add(certificate);
-		resume.addMoreInfo(careers, scholars, certificates, tagIds);
+		resume.addMoreInfo(careers, scholars, certificates);
 
 		// then(1)
 		assertThat(resume.getMember()).isEqualTo(null);

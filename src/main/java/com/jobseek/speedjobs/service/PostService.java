@@ -34,7 +34,7 @@ public class PostService {
 	public Long save(PostRequest postRequest, User user) {
 		Post post = postRequest.toEntity();
 		post.setUser(user);
-		List<Tag> tags = findTagsById(postRequest.getTagIds());
+		List<Tag> tags = tagService.findTagsById(postRequest.getTagIds());
 		post.addTags(tags);
 		return postRepository.save(post).getId();
 	}
@@ -43,7 +43,7 @@ public class PostService {
 	public void update(Long postId, User user, PostRequest postRequest) {
 		Post post = findOne(postId);
 		post.getUser().validateMe(user.getId());
-		List<Tag> tags = findTagsById(postRequest.getTagIds());
+		List<Tag> tags = tagService.findTagsById(postRequest.getTagIds());
 		post.update(postRequest.toEntity(), tags);
 	}
 
@@ -63,12 +63,6 @@ public class PostService {
 			post.increaseViewCount();
 		}
 		return PostResponse.of(post, user);
-	}
-
-	private List<Tag> findTagsById(List<Long> tagIds) {
-		return tagIds.stream()
-			.map(tagService::findOne)
-			.collect(Collectors.toList());
 	}
 
 	/**

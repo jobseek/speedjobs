@@ -1,11 +1,9 @@
 package com.jobseek.speedjobs.domain.resume;
 
-import static com.jobseek.speedjobs.domain.member.QMember.*;
-import static com.jobseek.speedjobs.domain.resume.QApply.*;
-import static com.jobseek.speedjobs.domain.resume.QResume.*;
+import static com.jobseek.speedjobs.domain.member.QMember.member;
+import static com.jobseek.speedjobs.domain.resume.QApply.apply;
+import static com.jobseek.speedjobs.domain.resume.QResume.resume;
 
-import com.jobseek.speedjobs.domain.member.QMember;
-import com.jobseek.speedjobs.domain.user.QUser;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeSearchCondition;
 import com.jobseek.speedjobs.utils.QueryDslUtil;

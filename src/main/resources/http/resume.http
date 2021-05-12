@@ -26,7 +26,7 @@ Authorization: Bearer {{accessToken}}
   "blogUrl": "https://www.naver.com",
   "githubUrl": "https://www.naver.com",
   "resumeImage": "https://www.naver.com",
-  "careerList": [
+  "careers": [
     {
       "companyName": "잡식컴퍼니",
       "position": "사장",
@@ -40,7 +40,7 @@ Authorization: Bearer {{accessToken}}
       "outDate": "2021-11-15"
     }
   ],
-  "scholarList": [
+  "scholars": [
     {
       "education": "HIGH",
       "schoolName": "양명고",
@@ -56,7 +56,7 @@ Authorization: Bearer {{accessToken}}
       "outDate": "2020-03-21"
     }
   ],
-  "certificateList": [
+  "certificates": [
     {
       "certName": "컴퓨터활용능력1급",
       "certNumber": "111-11-11111",
@@ -74,11 +74,11 @@ Authorization: Bearer {{accessToken}}
       "degree": null
     }
   ],
-  "tagIds": [1,3,5]
+  "tagIds": [19,24,25]
 }
 
 #### 2. 이력서 수정
-PUT http://{{host}}/resume/1
+PUT http://{{host}}/resume/4
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -89,7 +89,7 @@ Authorization: Bearer {{accessToken}}
   "blogUrl": "https://www.naver.com",
   "githubUrl": "https://www.naver.com",
   "resumeImage": "https://www.naver.com",
-  "careerList": [
+  "careers": [
     {
       "companyName": "스피드잡스",
       "position": "사장",
@@ -97,7 +97,7 @@ Authorization: Bearer {{accessToken}}
       "outDate": "2021-12-15"
     }
   ],
-  "scholarList": [
+  "scholars": [
     {
       "education": "HIGH",
       "schoolName": "못먹어도고",
@@ -113,7 +113,7 @@ Authorization: Bearer {{accessToken}}
       "outDate": "2020-03-21"
     }
   ],
-  "certificateList": [
+  "certificates": [
     {
       "certName": "컴퓨터활용능력1급",
       "certNumber": "111-11-11111",
@@ -139,11 +139,11 @@ Authorization: Bearer {{accessToken}}
       "degree": null
     }
   ],
-  "tagIds": [3,8,10]
+  "tagIds": [24,27,30,31]
 }
 
 ### 3. 이력서 삭제
-DELETE http://{{host}}/resume/1
+DELETE http://{{host}}/resume/3
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 

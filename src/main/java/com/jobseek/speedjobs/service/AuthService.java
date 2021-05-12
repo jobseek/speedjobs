@@ -1,13 +1,13 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.config.auth.exception.InvalidTokenException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
+import com.jobseek.speedjobs.config.auth.exception.InvalidTokenException;
+import com.jobseek.speedjobs.config.auth.exception.OAuth2NotFoundException;
 import com.jobseek.speedjobs.config.auth.exception.OAuth2RegistrationException;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.domain.user.UserRepository;
-import com.jobseek.speedjobs.config.auth.exception.OAuth2NotFoundException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
 import com.jobseek.speedjobs.dto.auth.TokenRequest;
 import com.jobseek.speedjobs.dto.auth.TokenResponse;

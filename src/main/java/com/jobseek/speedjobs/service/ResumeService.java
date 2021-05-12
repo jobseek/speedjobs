@@ -10,10 +10,12 @@ import com.jobseek.speedjobs.domain.resume.ApplyRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.ResumeQueryRepository;
 import com.jobseek.speedjobs.domain.resume.ResumeRepository;
+import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeResponse;
 import com.jobseek.speedjobs.dto.resume.ResumeSearchCondition;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,7 @@ public class ResumeService {
 	private final ResumeRepository resumeRepository;
 	private final ResumeQueryRepository resumeQueryRepository;
 	private final ApplyRepository applyRepository;
+	private final TagService tagService;
 	private final UserService userService;
 	private final RecruitService recruitService;
 
@@ -40,11 +43,12 @@ public class ResumeService {
 		Member member = userService.findMember(user.getId());
 		resume.setMember(member);
 		resume.addMoreInfo(
-			resumeRequest.getCareerList(),
-			resumeRequest.getScholarList(),
-			resumeRequest.getCertificateList(),
-			resumeRequest.getTagIds()
+			resumeRequest.getCareers(),
+			resumeRequest.getScholars(),
+			resumeRequest.getCertificates()
 		);
+		List<Tag> tags = getTags(resumeRequest);
+		resume.addTags(tags);
 		return resumeRepository.save(resume).getId();
 	}
 
@@ -53,12 +57,13 @@ public class ResumeService {
 		Resume resume = findOne(resumeId);
 		resume.getMember().validateMe(user.getId());
 		resume.update(resumeRequest.toEntity());
-		resume.updateInfo(
-			resumeRequest.getCareerList(),
-			resumeRequest.getScholarList(),
-			resumeRequest.getCertificateList(),
-			resumeRequest.getTagIds()
+		resume.updateMoreInfo(
+			resumeRequest.getCareers(),
+			resumeRequest.getScholars(),
+			resumeRequest.getCertificates()
 		);
+		List<Tag> tags = getTags(resumeRequest);
+		resume.updateTags(tags);
 	}
 
 	@Transactional
@@ -68,16 +73,16 @@ public class ResumeService {
 		resumeRepository.delete(resume);
 	}
 
+	public Page<ResumeResponse> findAll(ResumeSearchCondition condition, Pageable pageable,
+		User user) {
+		return resumeQueryRepository.findAll(condition, pageable, user)
+			.map(ResumeResponse::of);
+	}
+
 	public ResumeResponse findById(Long resumeId) {
 		Resume resume = findOne(resumeId);
 		return ResumeResponse.of(resume);
 	}
-
-//	public List<ResumeResponse> findAll() {
-//		return resumeRepository.findAll().stream()
-//			.map(ResumeResponse::new)
-//			.collect(Collectors.toList());
-//	}
 
 	@Transactional
 	public void apply(Long recruitId, Long resumeId, User user) {
@@ -100,14 +105,12 @@ public class ResumeService {
 		applyRepository.delete(apply);
 	}
 
-	public Page<ResumeResponse> findAll(ResumeSearchCondition condition, Pageable pageable,
-		User user) {
-		return resumeQueryRepository.findAll(condition, pageable, user)
-			.map(ResumeResponse::of);
-	}
-
 	public Resume findOne(Long id) {
 		return resumeRepository.findById(id)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 이력서입니다."));
+	}
+
+	private List<Tag> getTags(ResumeRequest resumeRequest) {
+		return tagService.findTagsById(resumeRequest.getTagIds());
 	}
 }

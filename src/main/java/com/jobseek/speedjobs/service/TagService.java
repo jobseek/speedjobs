@@ -6,6 +6,7 @@ import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.dto.tag.TagRequest;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -52,5 +53,11 @@ public class TagService {
 	public Tag findOne(Long tagId) {
 		return tagRepository.findById(tagId)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다."));
+	}
+
+	public List<Tag> findTagsById(List<Long> tagIds) {
+		return tagIds.stream()
+			.map(this::findOne)
+			.collect(Collectors.toList());
 	}
 }

@@ -1,13 +1,18 @@
 package com.jobseek.speedjobs.dto.user.company;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
-import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-@Data
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompanyUpdateRequest {
 
 	//유저

@@ -6,16 +6,18 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.resume.details.Career;
 import com.jobseek.speedjobs.domain.resume.details.Certificate;
+import com.jobseek.speedjobs.domain.resume.details.ResumeTag;
 import com.jobseek.speedjobs.domain.resume.details.Scholar;
+import com.jobseek.speedjobs.domain.tag.Tag;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -33,14 +35,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "resumes")
-@Slf4j
 public class Resume extends BaseTimeEntity {
 
 	@Id
@@ -77,19 +77,19 @@ public class Resume extends BaseTimeEntity {
 
 	@ElementCollection
 	@CollectionTable(name = "certificate", joinColumns = @JoinColumn(name = "resume_id"))
-	private List<Certificate> certificateList = new ArrayList<>();
+	private List<Certificate> certificates = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "scholar", joinColumns = @JoinColumn(name = "resume_id"))
-	private List<Scholar> scholarList = new ArrayList<>();
+	private List<Scholar> scholars = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "career", joinColumns = @JoinColumn(name = "resume_id"))
-	private List<Career> careerList = new ArrayList<>();
+	private List<Career> careers = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "resume_tags", joinColumns = @JoinColumn(name = "resume_id"))
-	private List<Long> tagId = new ArrayList<>();
+	private List<ResumeTag> tags = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", cascade = {PERSIST, MERGE}, orphanRemoval = true)
 	private final List<Apply> applies = new ArrayList<>();
@@ -126,36 +126,18 @@ public class Resume extends BaseTimeEntity {
 	}
 
 	public void addMoreInfo(List<Career> careers, List<Scholar> scholars,
-		List<Certificate> certificates, List<Long> resumeTags) {
-		if (careers != null) {
-			this.careerList.addAll(careers);
-		}
-		if (scholars != null) {
-			this.scholarList.addAll(scholars);
-		}
-		if (certificates != null) {
-			this.certificateList.addAll(certificates);
-		}
-		if (resumeTags != null) {
-			this.tagId.addAll(resumeTags);
-		}
+		List<Certificate> certificates) {
+		Optional.ofNullable(careers).ifPresent(i -> this.careers.addAll(i));
+		Optional.ofNullable(scholars).ifPresent(i -> this.scholars.addAll(i));
+		Optional.ofNullable(certificates).ifPresent(i -> this.certificates.addAll(i));
 	}
 
-	public void updateInfo(List<Career> careers, List<Scholar> scholars,
-		List<Certificate> certificates, List<Long> resumeTags) {
-		if (careers != null) {
-			this.careerList.clear();
-		}
-		if (scholars != null) {
-			this.scholarList.clear();
-		}
-		if (certificates != null) {
-			this.certificateList.clear();
-		}
-		if (resumeTags != null) {
-			this.tagId.clear();
-		}
-		addMoreInfo(careers, scholars, certificates, resumeTags);
+	public void updateMoreInfo(List<Career> careers, List<Scholar> scholars,
+		List<Certificate> certificates) {
+		Optional.ofNullable(careers).ifPresent(i -> this.careers.clear());
+		Optional.ofNullable(scholars).ifPresent(i -> this.scholars.clear());
+		Optional.ofNullable(certificates).ifPresent(i -> this.certificates.clear());
+		addMoreInfo(careers, scholars, certificates);
 	}
 
 	public void update(Resume resume) {
@@ -165,9 +147,9 @@ public class Resume extends BaseTimeEntity {
 		this.blogUrl = resume.getBlogUrl();
 		this.githubUrl = resume.getGithubUrl();
 		this.resumeImage = resume.getResumeImage();
-		this.certificateList = resume.getCertificateList();
-		this.scholarList = resume.getScholarList();
-		this.careerList = resume.getCareerList();
+		this.certificates = resume.getCertificates();
+		this.scholars = resume.getScholars();
+		this.careers = resume.getCareers();
 	}
 
 	// 로직
@@ -182,12 +164,20 @@ public class Resume extends BaseTimeEntity {
 		recruit.getApplies().add(apply);
 	}
 
-	public static void cancelApplyFrom(Recruit recruit) {
-		if (recruit.getApplies().size() == 0) {
-			throw new ForbiddenException("지원하지 않은 공고입니다.");
-		} else {
-			recruit.getApplies().clear();
+	public void addTags(List<Tag> tags) {
+		for (Tag tag : tags) {
+			ResumeTag resumeTag = ResumeTag.builder()
+				.id(tag.getId())
+				.name(tag.getName())
+				.type(tag.getType())
+				.build();
+			this.tags.add(resumeTag);
 		}
+	}
+
+	public void updateTags(List<Tag> tags) {
+		this.tags.clear();
+		addTags(tags);
 	}
 
 }

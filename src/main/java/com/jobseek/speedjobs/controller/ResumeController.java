@@ -56,21 +56,14 @@ public class ResumeController {
 	}
 
 	@ApiOperation(value = "이력서 단건 조회", notes = "이력서를 조회한다.")
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@GetMapping("/{resumeId}")
 	public ResponseEntity<ResumeResponse> findResume(@PathVariable Long resumeId) {
 		return ResponseEntity.ok().body(resumeService.findById(resumeId));
 	}
 
-//	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")
-//	@PreAuthorize("hasRole('MEMBER')")
-//	@GetMapping
-//	public ResponseEntity<List<ResumeResponse>> findAllResumes() {
-//		return ResponseEntity.ok().body(resumeService.findAll());
-//	}
-
 	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")
-	@PreAuthorize("hasRole('MEMBER')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<ResumeResponse>> findAll(Pageable pageable,
 		ResumeSearchCondition condition, @LoginUser User user) {

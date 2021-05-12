@@ -1,5 +1,13 @@
 package com.jobseek.speedjobs.config;
 
+import com.jobseek.speedjobs.config.auth.CustomAccessDeniedHandler;
+import com.jobseek.speedjobs.config.auth.CustomAuthenticationEntryPoint;
+import com.jobseek.speedjobs.config.auth.CustomOAuth2UserService;
+import com.jobseek.speedjobs.config.auth.JwtAuthenticationFilter;
+import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationFailureHandler;
+import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationSuccessHandler;
+import com.jobseek.speedjobs.utils.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,16 +15,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.jobseek.speedjobs.config.auth.CustomAccessDeniedHandler;
-import com.jobseek.speedjobs.config.auth.CustomAuthenticationEntryPoint;
-import com.jobseek.speedjobs.config.auth.JwtAuthenticationFilter;
-import com.jobseek.speedjobs.config.auth.CustomOAuth2UserService;
-import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationFailureHandler;
-import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationSuccessHandler;
-import com.jobseek.speedjobs.utils.JwtUtil;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
