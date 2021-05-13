@@ -1,10 +1,20 @@
 import React, { useCallback } from 'react';
+import { LockFill, UnlockFill } from '@styled-icons/bootstrap';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Blank } from '../../pages/Community';
+
+const MyLock = styled(LockFill)`
+  width: 25px;
+  color: red;
+`;
+
+const MyUnlock = styled(UnlockFill)`
+  width: 25px;
+  color: #7c7c7c;
+`;
 
 const ResumeTitle = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   margin-top: 10px;
   font-size: 25px;
   font-weight: lighter;
@@ -20,6 +30,7 @@ export default function ResumeWow({ id, title, open, createdDate }) {
   const onClickHandler = useCallback(() => {
     history.push(`/resume/resume/${id}`);
   }, [history, id]);
+
   return (
     <>
       <div
@@ -30,8 +41,18 @@ export default function ResumeWow({ id, title, open, createdDate }) {
           padding: '10px',
         }}
       >
-        <ResumeTitle onClick={onClickHandler}>{title}</ResumeTitle>
-        <Blank />
+        <ResumeTitle onClick={onClickHandler}>
+          {open === 'NO' ? (
+            <span>
+              <MyLock />
+            </span>
+          ) : (
+            <span>
+              <MyUnlock />
+            </span>
+          )}
+          &nbsp;&nbsp;{title}
+        </ResumeTitle>
         <div
           style={{
             position: 'absolute',
@@ -40,8 +61,8 @@ export default function ResumeWow({ id, title, open, createdDate }) {
             textAlign: 'end',
           }}
         >
-          <div>공개여부 : {open}</div>
-          <div>작성일 : {createdDate}</div>
+          <div>작성 : {createdDate}</div>
+          <div>수정 : {createdDate}</div>
         </div>
       </div>
     </>

@@ -37,7 +37,7 @@ export default function ResumeEducation({
   useEffect(() => {
     setForm((p) => ({
       ...p,
-      scholarList: [
+      scholars: [
         {
           education: item.education,
           schoolName: item.schoolName,

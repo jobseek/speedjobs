@@ -22,7 +22,7 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 export default function ResumeCertificate({ form, setForm }) {
-  const itemList = form.certificateList.map((item) => {
+  const itemList = form.certificates.map((item) => {
     return (
       <div key={item.index} style={{ width: '100%' }}>
         <div
@@ -90,9 +90,9 @@ export default function ResumeCertificate({ form, setForm }) {
   const onChangeCertificate = useCallback(
     (e, index) => {
       setForm((p) => {
-        p.certificateList[
-          p.certificateList.findIndex((x) => x.index === index)
-        ][e.target.name] = e.target.value;
+        p.certificates[p.certificates.findIndex((x) => x.index === index)][
+          e.target.name
+        ] = e.target.value;
         return { ...p };
       });
     },
@@ -101,9 +101,9 @@ export default function ResumeCertificate({ form, setForm }) {
   const onChangeDate = useCallback(
     (date, index) => {
       setForm((p) => {
-        p.certificateList[
-          p.certificateList.findIndex((x) => x.index === index)
-        ]['certDate'] = date;
+        p.certificates[p.certificates.findIndex((x) => x.index === index)][
+          'certDate'
+        ] = date;
         return { ...p };
       });
     },
@@ -113,8 +113,8 @@ export default function ResumeCertificate({ form, setForm }) {
     setForm((p) => {
       return {
         ...p,
-        certificateList: [
-          ...p.certificateList,
+        certificates: [
+          ...p.certificates,
           {
             index: v4(),
             certName: '',
@@ -130,11 +130,8 @@ export default function ResumeCertificate({ form, setForm }) {
   }, [setForm]);
   const test2 = useCallback(() => {
     setForm((prev) => {
-      const next = prev.certificateList.slice(
-        0,
-        prev.certificateList.length - 1
-      );
-      return { ...prev, certificateList: next };
+      const next = prev.certificates.slice(0, prev.certificates.length - 1);
+      return { ...prev, certificates: next };
     });
   }, [setForm]);
 

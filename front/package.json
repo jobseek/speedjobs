@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@styled-icons/bootstrap": "^10.33.0",
     "@styled-icons/fluentui-system-filled": "^10.33.0",
     "@testing-library/jest-dom": "^5.11.4",

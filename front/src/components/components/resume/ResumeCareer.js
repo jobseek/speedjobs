@@ -23,7 +23,7 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 export default function ResumeCareer({ form, setForm }) {
-  const itemList = form.careerList.map((item) => {
+  const itemList = form.careers.map((item) => {
     return (
       <div key={item.index}>
         <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
@@ -77,7 +77,7 @@ export default function ResumeCareer({ form, setForm }) {
   const onChangeCareer = useCallback(
     (e, index) => {
       setForm((p) => {
-        p.careerList[p.careerList.findIndex((x) => x.index === index)][
+        p.careers[p.careers.findIndex((x) => x.index === index)][
           e.target.name
         ] = e.target.value;
         return { ...p };
@@ -89,9 +89,8 @@ export default function ResumeCareer({ form, setForm }) {
   const onChangeInDate = useCallback(
     (date, index) => {
       setForm((p) => {
-        p.careerList[p.careerList.findIndex((x) => x.index === index)][
-          'inDate'
-        ] = date;
+        p.careers[p.careers.findIndex((x) => x.index === index)]['inDate'] =
+          date;
         return { ...p };
       });
     },
@@ -101,9 +100,8 @@ export default function ResumeCareer({ form, setForm }) {
   const onChangeOutDate = useCallback(
     (date, index) => {
       setForm((p) => {
-        p.careerList[p.careerList.findIndex((x) => x.index === index)][
-          'outDate'
-        ] = date;
+        p.careers[p.careers.findIndex((x) => x.index === index)]['outDate'] =
+          date;
         return { ...p };
       });
     },
@@ -114,8 +112,8 @@ export default function ResumeCareer({ form, setForm }) {
     setForm((p) => {
       return {
         ...p,
-        careerList: [
-          ...p.careerList,
+        careers: [
+          ...p.careers,
           {
             index: v4(),
             companyName: '',
@@ -130,8 +128,8 @@ export default function ResumeCareer({ form, setForm }) {
 
   const test2 = useCallback(() => {
     setForm((prev) => {
-      const next = prev.careerList.slice(0, prev.careerList.length - 1);
-      return { ...prev, careerList: next };
+      const next = prev.careers.slice(0, prev.careers.length - 1);
+      return { ...prev, careers: next };
     });
   }, [setForm]);
 

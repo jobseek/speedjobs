@@ -134,8 +134,8 @@ export default function Resume() {
     githubUrl: '',
     resumeImage: '',
     coverLetter: '',
-    tagIds: [],
-    scholarList: [
+    tags: [],
+    scholars: [
       {
         item,
       },
@@ -144,7 +144,7 @@ export default function Resume() {
       },
       { item3 },
     ],
-    certificateList: [
+    certificates: [
       {
         index: v4(),
         certName: '',
@@ -155,7 +155,7 @@ export default function Resume() {
         degree: '',
       },
     ],
-    careerList: [
+    careers: [
       {
         index: v4(),
         companyName: '',

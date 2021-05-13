@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import {
   MyEducation,
   PostTitleInput,
@@ -18,12 +18,17 @@ import {
   Warning,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import { RESUME_GET_REQUEST } from '../../reducers/resume';
+import {
+  RESUME_DELETE_DONE,
+  RESUME_DELETE_REQUEST,
+  RESUME_GET_REQUEST,
+} from '../../reducers/resume';
 import ResumeInputs from '../components/resume/ResumeInputs';
 import ResumeGender from '../components/resume/ResumeGender';
 
 export default function ResumeDetails() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { id } = useParams();
   const [, setMyResume] = useState(false);
   const user = useSelector((state) => state.user);
@@ -39,8 +44,8 @@ export default function ResumeDetails() {
     githubUrl: '',
     resumeImage: '',
     coverLetter: '',
-    tagIds: [],
-    scholarList: [
+    tags: [],
+    scholars: [
       {
         education: 'HIGH',
         schoolName: '',
@@ -63,7 +68,7 @@ export default function ResumeDetails() {
         outDate: '',
       },
     ],
-    certificateList: [
+    certificates: [
       {
         index: v4(),
         certName: '',
@@ -74,7 +79,7 @@ export default function ResumeDetails() {
         degree: '',
       },
     ],
-    careerList: [
+    careers: [
       {
         index: v4(),
         companyName: '',
@@ -118,7 +123,7 @@ export default function ResumeDetails() {
     }
   }, [resume.resumeGet, setContent]);
 
-  const careerList = content.careerList.map((x) => {
+  const careers = content.careers.map((x) => {
     return (
       <div key={x.index}>
         <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
@@ -155,7 +160,7 @@ export default function ResumeDetails() {
       </div>
     );
   });
-  const certificateList = content.certificateList.map((y) => {
+  const certificates = content.certificates.map((y) => {
     return (
       <div key={y.index} style={{ width: '100%' }}>
         <div
@@ -218,13 +223,34 @@ export default function ResumeDetails() {
     );
   });
 
+  const DeleteHandler = () => {
+    dispatch({
+      type: RESUME_DELETE_REQUEST,
+      data: id,
+    });
+  };
+
+  useEffect(() => {
+    if (resume.resumeDeleteDone) {
+      dispatch({
+        type: RESUME_DELETE_DONE,
+      });
+      history.push('/resume/total');
+    }
+  });
+
   return (
     <>
       <div className="container text-left">
         <StyledHeaderDiv padding>
           <PostTitleInput name={'title'} value={content.title} disabled />
           <div style={{ flex: '0 0' }}>
-            <StyledButton wide>수정</StyledButton>
+            <StyledButton mid>수정</StyledButton>
+          </div>
+          <div style={{ flex: '0 0' }}>
+            <StyledButton mid onClick={() => DeleteHandler()}>
+              삭제
+            </StyledButton>
           </div>
         </StyledHeaderDiv>
         <div className="container" style={{ marginTop: '70px' }}>
@@ -345,14 +371,14 @@ export default function ResumeDetails() {
                       flex={'1'}
                       itemName={'학교이름'}
                       name={'schoolName'}
-                      value={content?.scholarList[0].schoolName || ''}
+                      value={content?.scholars[0].schoolName || ''}
                       disabled
                     />
                     <ResumeInputs
                       flex={'1'}
                       itemName={'전공'}
                       name={'major'}
-                      value={content?.scholarList[0].major || ''}
+                      value={content?.scholars[0].major || ''}
                       disabled
                     />
                     <div style={{ display: 'inline-block' }}>
@@ -360,7 +386,7 @@ export default function ResumeDetails() {
                         itemName={'입학날짜'}
                         basic
                         name={'contact'}
-                        value={content?.scholarList[0].inDate || ''}
+                        value={content?.scholars[0].inDate || ''}
                         disabled
                       />
                     </div>
@@ -371,7 +397,7 @@ export default function ResumeDetails() {
                         itemName={'졸업날짜'}
                         basic
                         name={'contact'}
-                        value={content?.scholarList[0].outDate || ''}
+                        value={content?.scholars[0].outDate || ''}
                         disabled
                       />
                     </div>
@@ -383,21 +409,21 @@ export default function ResumeDetails() {
                       flex={'1'}
                       itemName={'학교이름'}
                       name={'schoolName'}
-                      value={content.scholarList[1].schoolName}
+                      value={content.scholars[1].schoolName}
                       disabled
                     />
                     <ResumeInputs
                       flex={'1'}
                       itemName={'전공'}
                       name={'major'}
-                      value={content.scholarList[1].major}
+                      value={content.scholars[1].major}
                       disabled
                     />
                     <div style={{ display: 'inline-block' }}>
                       <ResumeInputs
                         itemName={'입학날짜'}
                         basic
-                        value={content?.scholarList[1].inDate || ''}
+                        value={content?.scholars[1].inDate || ''}
                         disabled
                       />
                     </div>
@@ -407,7 +433,7 @@ export default function ResumeDetails() {
                       <ResumeInputs
                         itemName={'졸업날짜'}
                         basic
-                        value={content?.scholarList[1].outDate || ''}
+                        value={content?.scholars[1].outDate || ''}
                         disabled
                       />
                     </div>
@@ -419,21 +445,21 @@ export default function ResumeDetails() {
                       flex={'1'}
                       itemName={'학교이름'}
                       name={'schoolName'}
-                      value={content.scholarList[2]?.schoolName || ''}
+                      value={content.scholars[2]?.schoolName || ''}
                       disabled
                     />
                     <ResumeInputs
                       flex={'1'}
                       itemName={'전공'}
                       name={'major'}
-                      value={content.scholarList[2]?.major || ''}
+                      value={content.scholars[2]?.major || ''}
                       disabled
                     />
                     <div style={{ display: 'inline-block' }}>
                       <ResumeInputs
                         itemName={'입학날짜'}
                         basic
-                        value={content?.scholarList[2]?.inDate || ''}
+                        value={content?.scholars[2]?.inDate || ''}
                         disabled
                       />
                     </div>
@@ -443,7 +469,7 @@ export default function ResumeDetails() {
                       <ResumeInputs
                         itemName={'졸업날짜'}
                         basic
-                        value={content?.scholarList[2]?.outDate || ''}
+                        value={content?.scholars[2]?.outDate || ''}
                         disabled
                       />
                     </div>
@@ -452,13 +478,13 @@ export default function ResumeDetails() {
                 <div style={{ marginBottom: '40px' }}>
                   <h5>자격증</h5>
                   <div style={{ display: 'inline-block', width: '100%' }}>
-                    {certificateList}
+                    {certificates}
                   </div>
                 </div>
                 <div style={{ marginBottom: '40px' }}>
                   <h5 style={{ display: 'inline-block' }}>경력</h5>
                   <div style={{ display: 'inline-block', width: '100%' }}>
-                    {careerList}
+                    {careers}
                   </div>
                 </div>
                 <div style={{ marginBottom: '20px' }}>
@@ -477,7 +503,7 @@ export default function ResumeDetails() {
                 </div>
                 <h5>Skill</h5>
                 <div>
-                  {content.tagIds.map((t) => (
+                  {content.tags.map((t) => (
                     <TagBody grey>{t.name}</TagBody>
                   ))}
                 </div>

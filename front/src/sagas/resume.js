@@ -7,6 +7,9 @@ import {
   RESUME_APPLY_FAIL,
   RESUME_APPLY_REQUEST,
   RESUME_APPLY_SUCCESS,
+  RESUME_DELETE_FAIL,
+  RESUME_DELETE_REQUEST,
+  RESUME_DELETE_SUCCESS,
   RESUME_GET_FAIL,
   RESUME_GET_REQUEST,
   RESUME_GET_SUCCESS,
@@ -16,7 +19,7 @@ import {
 } from '../reducers/resume';
 
 // ========== 이력서 목록 ==========
-function resumeListAPI(data) {
+function resumeListAPI() {
   return axios.get('/resume').catch((error) => {
     throw error;
   });
@@ -104,6 +107,29 @@ function* resumeApply(action) {
   }
 }
 
+// ========= 이력서 삭제 =========
+function resumeDeleteApi(data) {
+  const res = axios.delete(`/resume/${data}`).catch((error) => {
+    throw error;
+  });
+  return res;
+}
+
+function* resumeDelete(action) {
+  try {
+    const result = yield call(resumeDeleteApi, action.data);
+    yield put({
+      type: RESUME_DELETE_SUCCESS,
+      data: result,
+    });
+  } catch (error) {
+    yield put({
+      type: RESUME_DELETE_FAIL,
+      data: 'error' ?? action.error,
+    });
+  }
+}
+
 function* watchResumeList() {
   yield takeLatest(RESUME_LIST_REQUEST, resumeList);
 }
@@ -117,11 +143,16 @@ function* watchResumeApply() {
   yield takeLatest(RESUME_APPLY_REQUEST, resumeApply);
 }
 
+function* watchResumeDelete() {
+  yield takeLatest(RESUME_DELETE_REQUEST, resumeDelete);
+}
+
 export default function* resumeSaga() {
   yield all([
     fork(watchResumeList),
     fork(watchResumeAdd),
     fork(watchResumeGet),
     fork(watchResumeApply),
+    fork(watchResumeDelete),
   ]);
 }
