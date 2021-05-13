@@ -74,8 +74,18 @@ public class ResumeRequest {
 	}
 
 	public Resume toEntity() {
-		return Resume
-			.createResume(open, coverLetter, title, name, gender, contact, birth, address, blogUrl,
-				githubUrl, resumeImage);
+		return Resume.builder()
+			.open(open)
+			.coverLetter(coverLetter)
+			.title(title)
+			.name(name)
+			.gender(gender)
+			.contact(contact)
+			.birth(birth)
+			.address(address)
+			.blogUrl(blogUrl)
+			.githubUrl(githubUrl)
+			.resumeImage(resumeImage)
+			.build();
 	}
 }

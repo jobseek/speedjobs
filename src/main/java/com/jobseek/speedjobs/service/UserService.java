@@ -62,7 +62,7 @@ public class UserService {
 	public String sendRegisterMail(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
-		redisUtil.set(key, request, 30 * 60 * 1000);
+		redisUtil.set(key, request, 30 * 60 * 1000L);
 		String src = backUrl + "/user/signup/confirm/" + key;
 		mailUtil.sendMail(request.getEmail(), MailUtil.REGISTER_FILENAME, src);
 		return key;
@@ -93,40 +93,37 @@ public class UserService {
 	}
 
 	public MemberInfoResponse findMemberInfo(Long userId, User user) {
-		user.validateMe(userId);
 		Member member = findMember(userId);
 		return MemberInfoResponse.of(member);
 	}
 
 	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
-		user.validateMe(userId);
 		Company company = findCompany(userId);
 		return CompanyInfoResponse.of(company);
 	}
 
 	@Transactional
 	public void updateMemberInfo(Long userId, MemberUpdateRequest request) {
-		memberRepository.findById(userId)
-			.map(member -> member.updateCustomMemberInfo(request.getName(), request.getNickname(),
-				request.getPicture(), request.getContact(), request.getBirth(),
-				request.getBio(), request.getGender()))
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 개인회원입니다."));
+		Member member = findMember(userId);
+		member.updateCustomMemberInfo(request.getName(), request.getNickname(),
+			request.getPicture(), request.getContact(), request.getBirth(),
+			request.getBio(), request.getGender());
 	}
 
 	@Transactional
 	public void updateCompanyInfo(Long userId, CompanyUpdateRequest request) {
-		companyRepository.findById(userId)
-			.map(company -> company.updateCompanyInfo(request.getName(), request.getNickname(),
-				request.getPicture(), request.getContact(), request.getCompanyName(),
-				request.getScale(), request.toCompanyDetail()))
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
+		Company company = findCompany(userId);
+		company.updateCompanyInfo(request.getName(), request.getNickname(),
+			request.getPicture(), request.getContact(), request.getCompanyName(),
+			request.getScale(), request.toCompanyDetail());
 	}
 
 	@Transactional
 	public void delete(UserCheckRequest userCheckRequest, Long targetId, User user) {
-		user.validateMe(targetId);
 		User target = findOne(targetId);
-		validatePassword(userCheckRequest, target);
+		if (!user.isAdmin()) {
+			validatePassword(userCheckRequest, target);
+		}
 		userRepository.delete(target);
 	}
 

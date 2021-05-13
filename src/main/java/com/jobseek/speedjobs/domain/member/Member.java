@@ -53,13 +53,12 @@ public class Member extends User {
 		this.provider = provider;
 	}
 
-	public Member updateCustomMemberInfo(String name, String nickname, String picture,
+	public void updateCustomMemberInfo(String name, String nickname, String picture,
 		String contact, LocalDate birth, String bio, String gender) {
 		updateCustomUserInfo(name, nickname, picture, contact);
 		this.birth = birth;
 		this.bio = bio;
 		this.gender = gender;
-		return this;
 	}
 
 }

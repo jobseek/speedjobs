@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
   "email": "{{member_email}}",
-  "password": "{{password}}"
+  "password": "{{password}}",
+  "provider": "LOCAL"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
@@ -15,7 +16,8 @@ Content-Type: application/json
 
 {
   "email": "member2@member.com",
-  "password": "{{password}}"
+  "password": "{{password}}",
+  "provider": "LOCAL"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
@@ -36,7 +38,8 @@ Content-Type: application/json
 
 {
   "email": "{{company_email}}",
-  "password": "{{password}}"
+  "password": "{{password}}",
+  "provider": "LOCAL"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}
@@ -47,7 +50,8 @@ Content-Type: application/json
 
 {
   "email": "company17@company.com",
-  "password": "{{password}}"
+  "password": "{{password}}",
+  "provider": "LOCAL"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken); %}

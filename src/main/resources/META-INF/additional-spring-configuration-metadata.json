@@ -29,6 +29,11 @@
       "name": "back_url",
       "type": "java.lang.String",
       "description": "Description for back_url."
+    },
+    {
+      "name": "sonarToken",
+      "type": "java.lang.String",
+      "description": "Description for sonarToken."
     }
   ]
 }

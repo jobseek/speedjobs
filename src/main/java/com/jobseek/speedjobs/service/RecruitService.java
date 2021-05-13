@@ -2,13 +2,11 @@ package com.jobseek.speedjobs.service;
 
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.RecruitQueryRepository;
 import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
 import com.jobseek.speedjobs.domain.recruit.Status;
 import com.jobseek.speedjobs.domain.tag.Tag;
-import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.recruit.RecruitListResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
@@ -33,19 +31,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class RecruitService {
 
 	private final RecruitRepository recruitRepository;
-	private final CompanyRepository companyRepository;
-	private final TagRepository tagRepository;
 	private final RecruitQueryRepository recruitQueryRepository;
+	private final TagService tagService;
+	private final UserService userService;
 
 	@Transactional
 	public Long save(RecruitRequest recruitRequest, User user) {
-		Company company = companyRepository.findById(user.getId())
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
+		Company company = userService.findCompany(user.getId());
+		List<Tag> tags = tagService.findTagsById(recruitRequest.getTagIds());
 		Recruit recruit = recruitRequest.toEntity(company);
-		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
 		recruit.addTags(tags);
 		return recruitRepository.save(recruit).getId();
-		// DB가 뻗을시 에러 처리 + 트랜잭션 안에서 에러 처리
 	}
 
 	@Transactional
@@ -53,7 +49,7 @@ public class RecruitService {
 		Recruit recruit = findOne(recruitId);
 		Company company = recruit.getCompany();
 		company.validateMe(user.getId());
-		List<Tag> tags = findTagsById(recruitRequest.getTagIds());
+		List<Tag> tags = tagService.findTagsById(recruitRequest.getTagIds());
 		recruit.update(recruitRequest.toEntity(company), tags);
 	}
 
@@ -75,13 +71,6 @@ public class RecruitService {
 			recruit.increaseViewCount();
 		}
 		return RecruitResponse.of(recruit, user);
-	}
-
-	public Page<RecruitResponse> findByPage(Pageable pageable, User user) {
-		Page<Recruit> page = recruitRepository.findAll(pageable);
-		return new PageImpl<>(page.stream()
-			.map(recruit -> RecruitResponse.of(recruit, user))
-			.collect(Collectors.toList()), pageable, page.getTotalElements());
 	}
 
 	public Page<RecruitResponse> findAll(RecruitSearchCondition condition, Pageable pageable,
@@ -118,13 +107,6 @@ public class RecruitService {
 		return new PageImpl<>(recruits.stream()
 			.map(recruit -> RecruitListResponse.of(recruit, user))
 			.collect(Collectors.toList()), pageable, recruits.size());
-	}
-
-	private List<Tag> findTagsById(List<Long> tagIds) {
-		return tagIds.stream()
-			.map(tagId -> tagRepository.findById(tagId)
-				.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다.")))
-			.collect(Collectors.toList());
 	}
 
 	public Recruit findOne(Long recruitId) {

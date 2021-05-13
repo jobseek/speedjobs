@@ -43,7 +43,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### 3. 게시글 삭제
-DELETE http://{{host}}/post/3
+DELETE http://{{host}}/post/1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -66,7 +66,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 6. 댓글 등록
-POST http://{{host}}/post/9/comment
+POST http://{{host}}/post/8/comment
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 

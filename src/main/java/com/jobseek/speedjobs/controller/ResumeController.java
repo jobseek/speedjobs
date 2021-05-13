@@ -32,7 +32,8 @@ public class ResumeController {
 
 	private final ResumeService resumeService;
 
-	@ApiOperation(value = "이력서 추가", notes = "이력서를 등록한다.")
+	@ApiOperation(value = "이력서 등록", notes = "이력서를 등록한다.")
+	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping
 	public ResponseEntity<Void> save(@Valid @RequestBody ResumeRequest resumeRequest,
 		@LoginUser User user) {
@@ -41,6 +42,7 @@ public class ResumeController {
 	}
 
 	@ApiOperation(value = "이력서 수정", notes = "이력서를 수정한다.")
+	@PreAuthorize("hasRole('MEMBER')")
 	@PutMapping("/{resumeId}")
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
 		@RequestBody ResumeRequest resumeRequest) {
@@ -49,6 +51,7 @@ public class ResumeController {
 	}
 
 	@ApiOperation(value = "이력서 삭제", notes = "이력서를 삭제한다.")
+	@PreAuthorize("hasRole('MEMBER')")
 	@DeleteMapping("/{resumeId}")
 	public ResponseEntity<Void> delete(@PathVariable Long resumeId, @LoginUser User user) {
 		resumeService.delete(resumeId, user);
@@ -69,5 +72,4 @@ public class ResumeController {
 		ResumeSearchCondition condition, @LoginUser User user) {
 		return ResponseEntity.ok().body(resumeService.findAll(condition, pageable, user));
 	}
-
 }

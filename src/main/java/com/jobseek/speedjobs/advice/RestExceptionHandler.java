@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,7 +42,7 @@ public class RestExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
 
-	@ExceptionHandler(UnauthorizedException.class)
+	@ExceptionHandler({UnauthorizedException.class, AccessDeniedException.class})
 	public ResponseEntity<ErrorResponse> UnauthorizedException(UnauthorizedException e) {
 		ErrorResponse response = new ErrorResponse(e.getMessage());
 		log.error("UnauthorizedException - {}", e.getMessage());

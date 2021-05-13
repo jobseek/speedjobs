@@ -16,7 +16,6 @@ import com.jobseek.speedjobs.dto.resume.ResumeRequest;
 import com.jobseek.speedjobs.dto.resume.ResumeResponse;
 import com.jobseek.speedjobs.dto.resume.ResumeSearchCondition;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,10 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
+@Service
 public class ResumeService {
 
 	private final ResumeRepository resumeRepository;
@@ -89,19 +88,16 @@ public class ResumeService {
 		Recruit recruit = recruitService.findOne(recruitId);
 		Resume resume = findOne(resumeId);
 		resume.getMember().validateMe(user.getId());
-		boolean duplicatedCheck = recruit.getApplies().stream()
-			.anyMatch(apply -> Objects.equals(apply.getMemberId(), user.getId()));
-		if (!duplicatedCheck) {
-			resume.applyTo(recruit);
-		} else {
+		if (recruit.applied(user.getId())) {
 			throw new DuplicatedException("이미 지원한 공고입니다.");
 		}
+		resume.applyTo(recruit);
 	}
 
 	@Transactional
 	public void cancelApply(Long recruitId, User user) {
 		Apply apply = applyRepository.findByRecruitAndMember(recruitId, user.getId())
-			.orElseThrow(() -> new BadRequestException("지원한 적이 없는 공고입니다."));
+			.orElseThrow(() -> new BadRequestException("지원하지 않은 공고입니다."));
 		applyRepository.delete(apply);
 	}
 

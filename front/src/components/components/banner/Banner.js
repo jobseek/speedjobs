@@ -31,12 +31,7 @@ export default function Banner(props) {
   const [list, setList] = useState(bannerList);
 
   const mapImg = list.map((i) => (
-    <BannerImg
-      now={i.order}
-      src={i.src}
-      key={i.key}
-      zIndex={list.indexOf(i)}
-    ></BannerImg>
+    <BannerImg now={i.order} src={i.src} key={i.key} zIndex={list.indexOf(i)} />
   ));
 
   useEffect(() => {
@@ -47,8 +42,8 @@ export default function Banner(props) {
       [
         ...prev,
         {
-          src:
-            bannerList[bannerList.length - 1 - (cnt % bannerList.length)].src,
+          src: bannerList[bannerList.length - 1 - (cnt % bannerList.length)]
+            .src,
           key: v4(),
           order: bannerList.length - 1,
         },

@@ -8,6 +8,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
+import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.company.Company;
@@ -145,6 +146,10 @@ public class Recruit extends BaseTimeEntity {
 			return false;
 		}
 		return user.getRecruitFavorites().contains(this);
+	}
+
+	public boolean applied(Long userId) {
+		return applies.stream().anyMatch(apply -> apply.getMemberId().equals(userId));
 	}
 }
 

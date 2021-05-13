@@ -45,13 +45,12 @@ public class Company extends User {
 		this.companyDetail = companyDetail;
 	}
 
-	public Company updateCompanyInfo(String name, String nickname, String picture, String contact,
+	public void updateCompanyInfo(String name, String nickname, String picture, String contact,
 		String companyName, int scale, CompanyDetail companyDetail) {
 		updateCustomUserInfo(name, nickname, picture, contact);
 		this.companyName = companyName;
 		this.scale = scale;
 		this.companyDetail = companyDetail;
-		return this;
 	}
 
 }

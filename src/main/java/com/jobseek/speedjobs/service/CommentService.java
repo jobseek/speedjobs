@@ -27,22 +27,24 @@ public class CommentService {
 	@Transactional
 	public Long saveComment(CommentRequest commentRequest, User user, Long postId) {
 		Post post = postService.findOne(postId);
+		post.increaseCommentCount();
 		Comment comment = commentRequest.of(user, post);
-		comment.addComment(post);
 		return commentRepository.save(comment).getId();
 	}
 
 	@Transactional
 	public void updateComment(CommentRequest commentRequest, User user, Long commentId) {
 		Comment comment = findOne(commentId);
-		validateUser(comment, user);
+		comment.getUser().validateMe(user.getId());
 		comment.updateComment(commentRequest.toEntity());
 	}
 
 	@Transactional
 	public void deleteComment(User user, Long commentId) {
 		Comment comment = findOne(commentId);
-		validateUser(comment, user);
+		if (!user.isAdmin()) {
+			comment.getUser().validateMe(user.getId());
+		}
 		comment.getPost().decreaseCommentCount();
 		commentRepository.delete(comment);
 	}
@@ -55,21 +57,15 @@ public class CommentService {
 	}
 
 	@Transactional
-    public void saveCommentFavorite(Long commentId, User user) {
+	public void saveCommentFavorite(Long commentId, User user) {
 		Comment comment = findOne(commentId);
 		comment.addFavorite(user);
-    }
+	}
 
 	@Transactional
 	public void deleteCommentFavorite(Long commentId, User user) {
 		Comment comment = findOne(commentId);
 		comment.removeFavorite(user);
-	}
-
-	private void validateUser(Comment comment, User user) {
-		if (!user.isAdmin()) {
-			comment.getUser().validateMe(user.getId());
-		}
 	}
 
 	private Comment findOne(Long commentId) {

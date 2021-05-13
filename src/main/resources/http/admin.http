@@ -3,8 +3,8 @@ POST http://{{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@admin.com",
-  "password": "jobseek2021!",
+  "email": "{{admin_email}}",
+  "password": "{{password}}",
   "provider": "LOCAL"
 }
 

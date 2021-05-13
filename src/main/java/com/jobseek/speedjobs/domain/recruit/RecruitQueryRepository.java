@@ -13,7 +13,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +50,7 @@ public class RecruitQueryRepository {
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.orderBy(orders.toArray(new OrderSpecifier[0]))
-			.fetch().stream().distinct().collect(Collectors.toList());
+			.fetch();
 
 		return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
 	}

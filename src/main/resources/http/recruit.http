@@ -70,7 +70,7 @@ Authorization: Bearer {{accessToken}}
 #GET http://{{host}}/recruit?page=1&size=4&sort=viewCount,DESC
 #GET http://{{host}}/recruit?title=엔지니어
 #GET http://{{host}}/recruit?openDate=2021-04-01&closeDate=2021-04-30
-GET http://{{host}}/recruit?tagIds=1,2,3&page=0&size=3&sort=id,DESC
+GET http://{{host}}/recruit?title=엔지니어&page=0&size=10&sort=id,DESC
 Accept: application/json
 
 ### 6. 공고 찜하기
@@ -84,27 +84,3 @@ Authorization: Bearer {{accessToken}}
 ### 8. 찜 목록 조회
 GET http://{{host}}/recruit/favorites?page=0&size=2&sort=id,DESC
 Authorization: Bearer {{accessToken}}
-
-### 멤버 로그인
-POST http://{{host}}/auth/login
-Content-Type: application/json
-
-{
-  "email": "{{member_email}}",
-  "password": "{{password}}"
-}
-
-> {% client.global.set("accessToken", response.body.accessToken); %}
-
-###
-
-#GET http://{{host}}/recruit
-#GET http://{{host}}/recruit?page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?tagIds=1,2,3,10&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?status=END,EARLY&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?experience=TWO&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?content=국내&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?companyName=삼&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?companyName=삼&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?address=강남&page=0&size=3&sort=id,DESC
-#GET http://{{host}}/recruit?avgSalary=5000&page=0&size=3&sort=id,DESC
