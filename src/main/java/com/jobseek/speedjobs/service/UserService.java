@@ -7,6 +7,7 @@ import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.company.CompanyQueryRepository;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
@@ -47,8 +48,9 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final UserQueryRepository userQueryRepository;
-	private final MemberRepository memberRepository;
 	private final CompanyRepository companyRepository;
+	private final CompanyQueryRepository companyQueryRepository;
+	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 	private final MailUtil mailUtil;
@@ -165,6 +167,10 @@ public class UserService {
 				!Pattern.matches(registrationNumReg, request.getRegistrationNumber())
 			) {
 				throw new SignUpRuleException("회원가입 형식에 맞지 않습니다.");
+			}
+			if (companyQueryRepository.existsByCompanyNameOrRegistrationNumber(
+				request.getCompanyName(), request.getRegistrationNumber())) {
+				throw new DuplicatedException("이미 존재하는 기업회원입니다.");
 			}
 		}
 

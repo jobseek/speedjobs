@@ -8,6 +8,7 @@ import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "companies")
 public class Company extends User {
 
+	@Column(unique = true)
 	private String companyName;
 
 	private String logoImage;

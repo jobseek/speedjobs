@@ -46,7 +46,7 @@ Content-Type: application/json
 }
 
 ### 5. 회원가입(기업)
-POST http://{{host}}/user/signup/company/32
+POST http://{{host}}/user/signup/company
 Content-Type: application/json
 
 {
@@ -56,7 +56,7 @@ Content-Type: application/json
   "contact": "010-1234-5678",
   "role": "ROLE_GUEST",
   "companyName": "잡식컴퍼니",
-  "registrationNumber": "223-45-67890",
+  "registrationNumber": "123-45-67890",
   "homepage": "https://www.jobseek.com"
 }
 
