@@ -41,12 +41,19 @@ public class RecruitSearchCondition {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate closeDate;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate createdDate;
+
 	public LocalDateTime getOpenDateTime() {
 		return openDate == null ? null : openDate.atStartOfDay();
 	}
 
 	public LocalDateTime getCloseDateTime() {
 		return closeDate == null ? null : closeDate.atStartOfDay().plusDays(1L).minusSeconds(1L);
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate == null ? null : createdDate.atStartOfDay();
 	}
 
 }

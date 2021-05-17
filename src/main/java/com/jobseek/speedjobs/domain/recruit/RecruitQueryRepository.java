@@ -1,6 +1,7 @@
 package com.jobseek.speedjobs.domain.recruit;
 
 import static com.jobseek.speedjobs.domain.company.QCompany.company;
+import static com.jobseek.speedjobs.domain.post.QPost.post;
 import static com.jobseek.speedjobs.domain.recruit.QRecruit.recruit;
 import static com.jobseek.speedjobs.domain.tag.QTag.tag;
 import static com.jobseek.speedjobs.utils.QueryDslUtil.getAllOrderSpecifiers;
@@ -43,8 +44,9 @@ public class RecruitQueryRepository {
 				goeRating(condition.getRating()),
 				betweenDateTime(condition.getOpenDateTime(), condition.getCloseDateTime()),
 				loeExperience(condition.getExperience()),
-				containsStatus(condition.getStatus())
-			);
+				containsStatus(condition.getStatus()),
+				afterCreatedDate(condition.getCreatedDate())
+				);
 
 		List<Recruit> content = query
 			.offset(pageable.getOffset())
@@ -108,6 +110,10 @@ public class RecruitQueryRepository {
 
 	private BooleanExpression containsStatus(List<Status> status) {
 		return ObjectUtils.isEmpty(status) ? null : recruit.status.in(status);
+	}
+
+	private BooleanExpression afterCreatedDate(LocalDateTime createdDate) {
+		return ObjectUtils.isEmpty(createdDate) ? null : recruit.createdDate.after(createdDate);
 	}
 
 }

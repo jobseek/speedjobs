@@ -10,6 +10,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 @SuppressWarnings("rawtypes")
@@ -37,6 +39,7 @@ public class PostQueryRepository {
 			.where(
 				containsTagIds(condition.getTagIds()),
 				containsAuthor(condition.getAuthor()),
+				afterCreatedDate(condition.getCreatedDate()),
 				containsTitleOrContent(condition.getTitle(), condition.getContent())
 			);
 
@@ -70,6 +73,10 @@ public class PostQueryRepository {
 			return Objects.requireNonNull(containsTitle(title)).or(containsContent(content));
 		}
 		return StringUtils.hasText(title) ? containsTitle(title) : containsContent(content);
+	}
+
+	private BooleanExpression afterCreatedDate(LocalDateTime createdDate) {
+		return ObjectUtils.isEmpty(createdDate) ? null : post.createdDate.after(createdDate);
 	}
 
 }
