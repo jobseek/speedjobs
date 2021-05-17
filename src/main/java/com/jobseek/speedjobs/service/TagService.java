@@ -24,8 +24,8 @@ public class TagService {
 
 	@Transactional
 	@CacheEvict(value = "tags", allEntries = true)
-	public void saveTag(TagRequest request) {
-		tagRepository.save(request.toEntity());
+	public Long saveTag(TagRequest request) {
+		return tagRepository.save(request.toEntity()).getId();
 	}
 
 	@Cacheable(value = "tags")

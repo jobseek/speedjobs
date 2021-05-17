@@ -48,7 +48,8 @@ public class Tag {
 	private final List<Recruit> recruits = new ArrayList<>();
 
 	@Builder
-	public Tag(Type type, String name) {
+	public Tag(Type type, Long id, String name) {
+		this.id = id;
 		this.type = type;
 		this.name = name;
 	}

@@ -29,9 +29,9 @@ public class TagController {
 	@ApiOperation(value = "태그 등록", notes = "태그를 등록한다.")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Void> saveTag(@Valid @RequestBody TagRequest tagRequest) {
-		tagService.saveTag(tagRequest);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<Long> saveTag(@Valid @RequestBody TagRequest tagRequest) {
+//		tagService.saveTag(tagRequest);
+		return ResponseEntity.ok().body(tagService.saveTag(tagRequest));
 	}
 
 	@ApiOperation(value = "태그 조회", notes = "태그를 조회한다.")
