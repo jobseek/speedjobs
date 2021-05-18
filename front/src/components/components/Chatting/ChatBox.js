@@ -55,9 +55,11 @@ const BackButton = styled(ArrowLeftSquareFill)`
   width: 30px;
   color: #f2d411;
   display: none;
+
   &:hover {
     color: black;
   }
+
   @media (max-width: 992px) {
     display: inline-block;
   }
@@ -71,12 +73,13 @@ export default function ChatBox({ recruitId, ...props }) {
   const [cookie, ,] = useCookies('REFRESH_TOKEN');
   const { user, recruit } = useSelector((state) => state);
   const sendMessage = useCallback(() => {
-    if (msg === '') return;
+    if (msg === '') {
+      return;
+    }
     const sendMsg = { roomId: recruitId, authorId: user.me.id, content: msg };
     chatRef.current.sendMessage('/send/message', JSON.stringify(sendMsg));
-    // setMsgHistory((p) => [...p, { out: true, content: sendMessage }]);
     setMsg('');
-  }, [chatRef, msg, user.me?.id]);
+  }, [chatRef, msg, user.me?.id, recruitId]);
   const dispatch = useDispatch();
   // 메세지 리스트 로딩전에 먼저 유저정보를 가져와야함
   useEffect(() => {
@@ -88,7 +91,7 @@ export default function ChatBox({ recruitId, ...props }) {
       });
       setLoading(true);
     }
-  }, [user.me, cookie, dispatch]);
+  }, [user.me, cookie, dispatch, recruitId]);
   useEffect(() => {
     if (recruit.getChatDone) {
       setLoading(false);
@@ -101,8 +104,11 @@ export default function ChatBox({ recruitId, ...props }) {
           author: c.author,
           id: c.id,
         };
-        if (c.authorId === user.me?.id) temp.out = true;
-        else temp.income = true;
+        if (c.authorId === user.me?.id) {
+          temp.out = true;
+        } else {
+          temp.income = true;
+        }
         return temp;
       });
       console.log(list);
@@ -111,15 +117,18 @@ export default function ChatBox({ recruitId, ...props }) {
       setLoading(false);
       console.log('fail');
     }
-  }, [recruit.getChatDone, recruit.chat, recruit.getChatFail]);
+  }, [recruit.getChatDone, recruit.chat, recruit.getChatFail, user.me?.id]);
   const getMessage = useCallback(
     (m, t) => {
       m.out = false;
       m.income = false;
       console.log(user.me?.id);
       console.log(m.authorId);
-      if (m.authorId === user.me?.id) m.out = true;
-      else m.income = true;
+      if (m.authorId === user.me?.id) {
+        m.out = true;
+      } else {
+        m.income = true;
+      }
       console.log(m);
       setMsgHistory((p) => [...p, m]);
     },
@@ -151,7 +160,9 @@ export default function ChatBox({ recruitId, ...props }) {
               onChange={(e) => setMsg(e.target.value)}
               onKeyPress={(e) => {
                 console.log('hi');
-                if (e.key === 'Enter') sendMessage();
+                if (e.key === 'Enter') {
+                  sendMessage();
+                }
               }}
               onMessage={getMessage}
               className="write_msg"

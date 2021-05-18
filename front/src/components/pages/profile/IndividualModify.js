@@ -71,7 +71,9 @@ export default function IndividualModify() {
   });
 
   useEffect(() => {
-    if (user.me === null) return;
+    if (user.me === null) {
+      return;
+    }
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
   }, [user.me, dispatch]);
 
@@ -103,7 +105,9 @@ export default function IndividualModify() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) return;
+      if (user.me.id === null) {
+        return;
+      }
       dispatch({
         type: PROFILE_UPDATE_REQUEST,
         data: form,

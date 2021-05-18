@@ -163,7 +163,7 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
   ]);
 
   const onClickHandler = ({ author, tags, date, fav, id, target }) => {
-    if (target === 'community')
+    if (target === 'community') {
       history.push({
         pathname: `/community/post/${id}`,
         state: {
@@ -173,11 +173,13 @@ export default function SearchArea({ typed, setTyped, setToggle }) {
           fav,
         },
       });
-    if (target === 'recruit')
+    }
+    if (target === 'recruit') {
       history.push({
         pathname: `/recruit/detail/${id}`,
         state: {},
       });
+    }
     setToggle('none');
   };
 

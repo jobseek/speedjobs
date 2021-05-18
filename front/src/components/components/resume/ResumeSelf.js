@@ -7,6 +7,7 @@ export default function ResumeSelf({ onChangeIntro, form }) {
   function calc() {
     setResult(form.coverLetter.length);
   }
+
   return (
     <>
       <div style={{ marginBottom: '20px' }}>

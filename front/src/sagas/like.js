@@ -13,14 +13,15 @@ import {
 } from '../reducers/like';
 
 function addLikeApi(action) {
-  if (action.data.type === 'community')
+  if (action.data.type === 'community') {
     return axios.post(`/post/${action.data.id}/favorite`, {
       data: action.data,
     });
-  else
+  } else {
     return axios.post(`/recruit/${action.data.id}/favorite`, {
       data: action.data,
     });
+  }
 }
 
 function* addLike(action) {
@@ -38,14 +39,15 @@ function* addLike(action) {
 }
 
 function unLikeApi(action) {
-  if (action.data.type === 'community')
+  if (action.data.type === 'community') {
     return axios.delete(`/post/${action.data.id}/favorite`, {
       data: action.data,
     });
-  else
+  } else {
     return axios.delete(`/recruit/${action.data.id}/favorite`, {
       data: action.data,
     });
+  }
 }
 
 function* unLike(action) {
@@ -61,15 +63,17 @@ function* unLike(action) {
     });
   }
 }
+
 function getLikeApi(action) {
-  if (action.data.type === 'community')
+  if (action.data.type === 'community') {
     return axios.get(
       `/post/favorites?size=${action.data.size}&page=${action.data.page}&sort=id,DESC`
     );
-  else
+  } else {
     return axios.get(
       `recruit/favorites?size=${action.data.size}&page=${action.data.page}&sort=id,DESC`
     );
+  }
 }
 
 function* getLike(action) {
@@ -86,6 +90,7 @@ function* getLike(action) {
     });
   }
 }
+
 function* watchAddLike() {
   yield takeLatest(ADD_LIKE_REQUEST, addLike);
 }
@@ -97,6 +102,7 @@ function* watchUnLike() {
 function* watchGetLike() {
   yield takeLatest(GET_LIKE_REQUEST, getLike);
 }
+
 export default function* likeSaga() {
   yield all([fork(watchAddLike), fork(watchUnLike), fork(watchGetLike)]);
 }

@@ -51,7 +51,9 @@ export default function CorporateModify() {
   });
 
   useEffect(() => {
-    if (user.me === null) return;
+    if (user.me === null) {
+      return;
+    }
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
   }, [user.me, dispatch]);
 
@@ -73,7 +75,9 @@ export default function CorporateModify() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) return;
+      if (user.me.id === null) {
+        return;
+      }
       dispatch({
         type: PROFILE_UPDATE_REQUEST,
         data: form,

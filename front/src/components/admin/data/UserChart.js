@@ -1,39 +1,42 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  datasets: [
-    {
+function UserChart({ userData }) {
+  const [chartData, setChartData] = useState({});
+  const initData = useMemo(
+    () => ({
       label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
+      data: [12, 19, 3],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
+        'rgba(242, 212, 17)',
+        'rgb(159,159,159)',
+        'rgb(250,123,123)',
       ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
-
-export default function UserChart(props) {
+    }),
+    []
+  );
+  const data = useMemo(
+    () => ({
+      labels: ['기존회원', '기업회원', '승인대기'],
+      datasets: [],
+    }),
+    []
+  );
+  useEffect(() => {
+    console.log(userData);
+    if (userData === undefined || userData.length === 0) return;
+    const datasets = { ...initData, data: userData };
+    const fullData = { ...data, datasets: [datasets] };
+    console.log(fullData);
+    console.log('set loading false');
+    setChartData(fullData);
+  }, [userData, data, initData]);
+  // data 는 기업회원 기업회원 그리고 승인대기 회원 순으로 작성해야 합니다
   return (
     <>
       <div style={{ width: '100%', height: '100%' }}>
         <Doughnut
-          data={data}
+          data={chartData}
           height={50}
           width={100}
           options={{ maintainAspectRatio: false }}
@@ -42,3 +45,5 @@ export default function UserChart(props) {
     </>
   );
 }
+
+export default React.memo(UserChart);

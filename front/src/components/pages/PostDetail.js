@@ -64,17 +64,20 @@ export default function PostDetail(props) {
   // 자신의 포스트인지 확인한다음에 수정 삭제버튼 노출
   useEffect(() => {
     if (user.me !== null && post.post) {
-      if (user.me.id === post.post.authorId) setMyPost(true);
+      if (user.me.id === post.post.authorId) {
+        setMyPost(true);
+      }
     }
   }, [user.meDone, post.post, user.me]);
 
   // 게시글 내용 불러오기
   useEffect(() => {
-    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null)
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
       dispatch({
         type: POST_GET_REQUEST,
         data: id,
       });
+    }
   }, [dispatch, id, user.me, refresh]);
 
   // 게시글이 불러와졌다면 내용 세팅
@@ -117,9 +120,15 @@ export default function PostDetail(props) {
 
   // 찜하기 기능 관련 이펙트
   useEffect(() => {
-    if (like.data === null) return;
-    if (!like.addLikeDone && !like.unLikeDone) return;
-    if (like.data.id !== id) return;
+    if (like.data === null) {
+      return;
+    }
+    if (!like.addLikeDone && !like.unLikeDone) {
+      return;
+    }
+    if (like.data.id !== id) {
+      return;
+    }
     if (like.addLikeDone) {
       setFav(true);
     } else if (like.unLikeDone) {
@@ -175,8 +184,11 @@ export default function PostDetail(props) {
               white={!fav}
               grey={fav}
               onClick={(e) => {
-                if (fav) unFavClick(e);
-                else favClick(e);
+                if (fav) {
+                  unFavClick(e);
+                } else {
+                  favClick(e);
+                }
               }}
             >
               찜하기

@@ -29,8 +29,9 @@ export default function Login() {
 
   const onChangeHandler = useCallback(
     (e) => {
-      if (e.target !== undefined)
+      if (e.target !== undefined) {
         setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+      }
     },
     [setForm]
   );
@@ -86,7 +87,7 @@ export default function Login() {
         <LoginForm
           style={leftSpring}
           onSubmit={(e) => onClickHandler(e)}
-          red={err}
+          rederror={err ? 1 : 0}
         >
           <animated.div style={hideSpring}>
             <div style={{ marginBottom: '40px' }}>Admin Login</div>
@@ -105,7 +106,9 @@ export default function Login() {
               disabled={!user.needLogin}
               changeHandler={onChangeHandler}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') onClickHandler(e);
+                if (e.key === 'Enter') {
+                  onClickHandler(e);
+                }
               }}
             />
             <Button onClick={(e) => onClickHandler(e)}>LOGIN</Button>

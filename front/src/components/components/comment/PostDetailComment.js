@@ -81,6 +81,7 @@ export default function PostDetailComment(props) {
     comment.commentGetDone,
     comment.commentAddData,
     comment.commentDeleteData,
+    comment.commentGetData?.content,
     dispatch,
     props.id,
   ]);

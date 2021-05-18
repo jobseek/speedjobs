@@ -17,6 +17,10 @@ export const initialState = {
   getBannerDone: false,
   getBannerFail: false,
   getBannerList: null,
+  companyAllowLoading: false,
+  companyAllowDone: false,
+  companyAllowFail: false,
+  companyInfo: null,
 };
 export const POP_ALERT_REQUEST = 'POP_ALERT_REQUEST';
 export const POP_ALERT_DONE = 'POP_ALERT_DONE';
@@ -31,6 +35,11 @@ export const GET_BANNER_REQUEST = 'GET_BANNER_REQUEST';
 export const GET_BANNER_SUCCESS = 'GET_BANNER_SUCCESS';
 export const GET_BANNER_DONE = 'GET_BANNER_DONE';
 export const GET_BANNER_FAIL = 'GET_BANNER_FAIL';
+
+export const COMPANY_ALLOW_REQUEST = 'COMPANY_ALLOW_REQUEST';
+export const COMPANY_ALLOW_SUCCESS = 'COMPANY_ALLOW_SUCCESS';
+export const COMPANY_ALLOW_DONE = 'COMPANY_ALLOW_DONE';
+export const COMPANY_ALLOW_FAIL = 'COMPANY_ALLOW_FAIL';
 
 export const ERROR = 'ERROR';
 
@@ -101,6 +110,25 @@ const reducer = (state = initialState, action) =>
         draft.getUserDone = false;
         draft.getBannerList = false;
         draft.adminError = null;
+        break;
+      case COMPANY_ALLOW_REQUEST:
+        draft.companyAllowLoading = true;
+        draft.companyInfo = action.data;
+        break;
+      case COMPANY_ALLOW_SUCCESS:
+        draft.companyAllowLoading = false;
+        draft.companyAllowDone = true;
+        break;
+      case COMPANY_ALLOW_FAIL:
+        draft.companyAllowLoading = false;
+        draft.companyAllowFail = true;
+        draft.adminError = action.error ?? 'error';
+        break;
+      case COMPANY_ALLOW_DONE:
+        draft.companyAllowFail = false;
+        draft.companyAllowDone = false;
+        draft.adminError = null;
+        draft.companyInfo = null;
         break;
       default:
         break;

@@ -120,9 +120,15 @@ export default function RecruitmentDetail(props) {
   }, [pop]);
 
   useEffect(() => {
-    if (like.data === null) return;
-    if (!like.addLikeDone && !like.unLikeDone) return;
-    if (like.data.id !== id) return;
+    if (like.data === null) {
+      return;
+    }
+    if (!like.addLikeDone && !like.unLikeDone) {
+      return;
+    }
+    if (like.data.id !== id) {
+      return;
+    }
     if (like.addLikeDone) {
       setIsFav(true);
     } else if (like.unLikeDone) {
@@ -191,7 +197,12 @@ export default function RecruitmentDetail(props) {
         type: RESUME_APPLY_DONE,
       });
     }
-  }, [dispatch, resume.resumeApplyDone, resume.resumeListDone]);
+  }, [
+    dispatch,
+    resume.resumeApplyDone,
+    resume.resumeListDone,
+    resume.resumeList?.content,
+  ]);
   const resumeArr = resumeList.map((item) => (
     <Resume
       id={item.id}
@@ -263,8 +274,11 @@ export default function RecruitmentDetail(props) {
               white={!isFav}
               grey={isFav}
               onClick={(e) => {
-                if (isFav) unFavClick(e);
-                else favClick(e);
+                if (isFav) {
+                  unFavClick(e);
+                } else {
+                  favClick(e);
+                }
               }}
             >
               찜하기

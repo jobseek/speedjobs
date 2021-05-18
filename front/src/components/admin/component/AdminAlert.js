@@ -17,7 +17,7 @@ const Alert = styled(animated.div)`
   margin-top: 100px;
   text-align: center;
   ${(props) =>
-    props.popError &&
+    props.poperror &&
     css`
       background-color: #f69a9a;
       color: white;
@@ -76,6 +76,7 @@ export default function AdminAlert({ children, enter, done, error }) {
 
   // 끝 이펙트
   useEffect(() => {
+    console.log(end, toggle);
     if (end === true && !toggle) {
       setEnd(false);
       dispatch({
@@ -91,6 +92,12 @@ export default function AdminAlert({ children, enter, done, error }) {
       toggleFlag();
     }
   }, [done, error, toggle, dispatch, end, toggleFlag]);
+
+  useEffect(() => {
+    return () => {
+      set(false);
+    };
+  }, []);
 
   const style = useSpring({
     marginTop: ani ? '0px' : '100px',
@@ -108,7 +115,10 @@ export default function AdminAlert({ children, enter, done, error }) {
   return (
     <>
       <Wrapper>
-        <Alert style={style} popError={error !== undefined && error !== null}>
+        <Alert
+          style={style}
+          poperror={error !== undefined && error !== null ? 1 : 0}
+        >
           {error !== undefined && error !== null ? error : children}
           {error === null && <StatusBar style={barStyle}></StatusBar>}
         </Alert>

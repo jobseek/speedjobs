@@ -41,7 +41,9 @@ export default function CorporateDetails() {
   });
 
   useEffect(() => {
-    if (user.me === null) return;
+    if (user.me === null) {
+      return;
+    }
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
   }, [user.me, dispatch]);
 

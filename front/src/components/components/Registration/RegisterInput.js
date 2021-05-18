@@ -54,7 +54,11 @@ export default function RegisterInput(props) {
           maxLength={props.maxLength}
           onChange={props.onChange}
           onKeyUp={props.onChange}
-          style={{ marginBottom: '15px', height: '25px', paddingBottom: '2px' }}
+          style={{
+            marginBottom: '15px',
+            height: '25px',
+            paddingBottom: '2px',
+          }}
         />
       </RegInput>
     </>

@@ -84,7 +84,9 @@ export default function NavMenu(props) {
     setToggle((p) => !p);
   };
   const clickHandler = (e) => {
-    if (toggle && !MenuRef.current.contains(e.target)) setToggle(false);
+    if (toggle && !MenuRef.current.contains(e.target)) {
+      setToggle(false);
+    }
   };
   const mapProps = [
     {

@@ -33,6 +33,7 @@ export default function Recruitment() {
   const page = useRef(0);
   const prevY = useRef(99999);
   const isLast = useRef(false);
+  const paging = useRef(false);
   const targetRef = useRef();
   const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
   const observe = useRef(
@@ -63,8 +64,8 @@ export default function Recruitment() {
   const rootRef = useRef();
   const { user, recruit } = useSelector((state) => state);
   const me = useState({ ...user.me });
-  const paging = useRef(false);
   const [, setLoading] = useState(false);
+
   const [recruitList, setRecruitList] = useState([]);
   const [taglist, setTaglist] = useState([]);
   const tagss = useSelector((state) => state.tag);
@@ -99,9 +100,11 @@ export default function Recruitment() {
     }
     if (recruit.recruitListDone) {
       setLoading((prev) => false);
-      if (paging.current)
+      if (paging.current) {
         setRecruitList((prev) => [...prev, ...recruit.recruitList.content]);
-      else setRecruitList([...recruit.recruitList.content]);
+      } else {
+        setRecruitList([...recruit.recruitList.content]);
+      }
       if (recruit.recruitList.last) {
         isLast.current = true;
       } else {
@@ -118,6 +121,7 @@ export default function Recruitment() {
         .map((t) => t.id)
         .join(',');
       if (ids === '') {
+        // eslint-disable-next-line
         const { tagIds, ...res } = p;
         return { ...res };
       } else {
@@ -125,6 +129,15 @@ export default function Recruitment() {
       }
     });
   }, [taglist, dispatch]);
+
+  useEffect(() => {
+    dispatch({
+      type: RECRUIT_LIST_REQUEST,
+      data: form,
+    });
+    paging.current = false;
+    // eslint-disable-next-line
+  }, [form.tagIds, dispatch]);
 
   const mapRecruit = recruitList.map((pl) => (
     <Post

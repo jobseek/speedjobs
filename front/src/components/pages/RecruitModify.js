@@ -12,7 +12,6 @@ import {
   RECRUIT_GET_DONE,
   RECRUIT_GET_REQUEST,
   RECRUIT_MODIFY_DONE,
-  RECRUIT_MODIFY_REQUEST,
 } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
@@ -50,7 +49,7 @@ export default function RecruitModify() {
         // dispatch({ type: RECRUIT_MODIFY_REQUEST, data: form });
       }
     },
-    [form, dispatch]
+    [form]
   );
 
   // 화면 렌더링 후 원래 공고글 정보 불러오기
@@ -59,7 +58,7 @@ export default function RecruitModify() {
       type: RECRUIT_GET_REQUEST,
       data: id,
     });
-  }, []);
+  }, [dispatch, id]);
   useEffect(() => {
     if (recruit.recruitGetDone) {
       setForm((p) => ({ ...p, ...recruit.recruit }));

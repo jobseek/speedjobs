@@ -131,33 +131,41 @@ const reducer = (state = initialState, action) =>
       case COMMENT_FAV_REQUEST:
         draft.commentFavLoading = true;
         draft.commentFavDone = false;
-        draft.commentFavData = null;
+        draft.commentFavData = action.data;
         draft.commentFavError = null;
         break;
       case COMMENT_FAV_SUCCESS:
         draft.commentFavLoading = false;
         draft.commentFavDone = true;
-        draft.commentFavData = action.data;
         break;
       case COMMENT_FAV_FAIL:
         draft.commentFavLoading = false;
         draft.commentFavError = action.error;
+        draft.commentFavData = null;
         break;
 
       case COMMENT_HATE_REQUEST:
         draft.commentHateLoading = true;
         draft.commentHateDone = false;
-        draft.commentHateData = null;
+        draft.commentHateData = action.data;
         draft.commentHateError = null;
         break;
       case COMMENT_HATE_SUCCESS:
         draft.commentHateLoading = false;
         draft.commentHateDone = true;
-        draft.commentHateData = action.data;
         break;
       case COMMENT_HATE_FAIL:
         draft.commentHateLoading = false;
         draft.commentHateError = action.error;
+        draft.commentHateData = null;
+        break;
+      case COMMENT_HATE_DONE:
+        draft.commentHateError = null;
+        draft.commentHateDone = false;
+        draft.commentFavDone = false;
+        draft.commentFavError = null;
+        draft.commentFavData = null;
+        draft.commentHateData = null;
         break;
 
       case COMMENT_GET_DONE:

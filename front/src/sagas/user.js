@@ -16,11 +16,7 @@ import {
 } from '../reducers/user';
 
 function logInAPI(data) {
-  const res = axios
-    .post('/auth/login', data)
-    .then((response) => response)
-    .catch((err) => new Error(err));
-  return res;
+  return axios.post('/auth/login', data);
 }
 
 function getUserApi(data) {
@@ -31,6 +27,7 @@ function getUserApi(data) {
     },
   });
 }
+
 function getUserOnly(data) {
   console.log(data);
   return axios.get('/user/me', {
@@ -53,7 +50,7 @@ function* getMe(action) {
   } catch (error) {
     yield put({
       type: ME_FAILURE,
-      error: '에러' ?? error.response.data,
+      error: error.response.data.message ?? '서버를 확인해주세요',
     });
   }
 }
@@ -73,10 +70,11 @@ function* logIn(action) {
       data: userInfo.data,
     });
   } catch (error) {
-    console.error(error);
+    console.log(error.message);
+    console.log(error.response);
     yield put({
       type: LOG_IN_FAILURE,
-      error: '에러' ?? error.response.data,
+      error: error.response.data.message ?? '서버를 확인해주세요',
     });
   }
 }
@@ -136,7 +134,7 @@ function* signUp(action) {
   } catch (error) {
     yield put({
       type: SIGN_UP_FAILURE,
-      error: '포스팅중 예외발생. 서버를 확인하세요' ?? error.response.data,
+      error: error.response.data.message ?? '서버를 확인해주세요',
     });
   }
 }

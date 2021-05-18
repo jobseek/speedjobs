@@ -118,7 +118,6 @@ function* favComment(action) {
     console.log('result= ', result);
     yield put({
       type: COMMENT_FAV_SUCCESS,
-      data: result,
     });
   } catch (error) {
     yield put({
@@ -135,10 +134,9 @@ function favCommentAPI(data) {
 // 댓글 좋아요 취소
 function* hateComment(action) {
   try {
-    const result = yield call(hateCommentAPI, action.data);
+    yield call(hateCommentAPI, action.data);
     yield put({
       type: COMMENT_HATE_SUCCESS,
-      data: result,
     });
   } catch (error) {
     yield put({

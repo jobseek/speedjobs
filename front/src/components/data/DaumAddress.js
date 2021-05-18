@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { StyledButton } from '../components/Styled';
 
@@ -50,7 +50,7 @@ export default function DaumAddress({ onChange }) {
   useEffect(() => {
     console.log(fullAddress);
     onChange(fullAddress);
-  }, [fullAddress]);
+  }, [fullAddress, onChange]);
 
   // const showRef = useRef();
   // const ClickHandler = (e) => {

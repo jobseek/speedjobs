@@ -6,7 +6,7 @@
   width: 100%;
 }
 
-body,html{
+body, html {
   /*overflow-x: hidden;*/
   /*min-width: 485px;*/
   width: 100%;
@@ -15,7 +15,7 @@ body,html{
   box-sizing: border-box;
   font-family: 'Noto Sans KR', sans-serif;
   font-family: 'Quicksand', sans-serif;
-  font-weight:700;
+  font-weight: 700;
   user-select: none;
 }
 

@@ -77,6 +77,7 @@ function* postAdd(action) {
     });
   }
 }
+
 function postGetApi(action) {
   return axios.get(`/post/${action.data}`).catch((err) => {
     throw err;
@@ -148,12 +149,15 @@ function* postModify(action) {
 function* watchPostAdd() {
   yield takeLatest(POST_ADD_REQUEST, postAdd);
 }
+
 function* watchPostGet() {
   yield takeLatest(POST_GET_REQUEST, postGet);
 }
+
 function* watchPostList() {
   yield takeLatest(POST_LIST_REQUEST, getPostList);
 }
+
 function* watchPostDelete() {
   yield takeLatest(POST_DELETE_REQUEST, postDelete);
 }

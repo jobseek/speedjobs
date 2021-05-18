@@ -98,12 +98,16 @@ export default function PostModify() {
           ...(post.post.tags.SKILL ?? []).map((t) => t.id),
         ];
         const tt = temp.map((t) => {
-          if (tempFromPost.indexOf(t.id) >= 0) return { ...t, selected: true };
+          if (tempFromPost.indexOf(t.id) >= 0) {
+            return { ...t, selected: true };
+          }
           return { ...t, selected: false };
         });
         setTagList((p) => [...p, ...tt]);
         const tt2 = temp2.map((t) => {
-          if (tempFromPost.indexOf(t.id) >= 0) return { ...t, selected: true };
+          if (tempFromPost.indexOf(t.id) >= 0) {
+            return { ...t, selected: true };
+          }
           return { ...t, selected: false };
         });
         setTagList2((p) => [...p, ...tt2]);

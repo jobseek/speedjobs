@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Check } from 'react-bootstrap-icons';
 
 const Alert = styled.div`
   @media (max-width: 500px) {
@@ -8,10 +7,8 @@ const Alert = styled.div`
     min-height: 45px;
     font-size: 15px;
   }
-  height: 50px;
-  min-width: 250px;
+  display: inline-block;
   opacity: 1;
-  display: flex;
   justify-content: center;
   align-items: center;
   color: ${(props) => props.color};
@@ -21,7 +18,7 @@ const Alert = styled.div`
   margin-bottom: 10px;
   animation: Bye 500ms linear 3s;
   animation-fill-mode: forwards;
-  padding: 0 5px 0 5px;
+  padding: 13px 13px;
   p {
     margin: 0;
   }
@@ -38,18 +35,12 @@ const Alert = styled.div`
   }
 `;
 
-const CheckMark = styled(Check)`
-  display: inline;
-  width: 25px;
-  height: 25px;
-`;
-
 export default function PopUp({ type, text }) {
   const typeArr = {
     warn: {
       backColor: 'red',
       color: 'white',
-      text: '오류가 발생하였습니다: ' + text,
+      text,
     },
     post: {
       backColor: '#f5df4d',
@@ -100,9 +91,11 @@ export default function PopUp({ type, text }) {
 
   return (
     <>
-      <Alert color={typeArr[type].color} backColor={typeArr[type].backColor}>
-        <p>{typeArr[type].text}</p> <CheckMark />
-      </Alert>
+      <div>
+        <Alert color={typeArr[type].color} backColor={typeArr[type].backColor}>
+          <p>{typeArr[type].text}</p>
+        </Alert>
+      </div>
     </>
   );
 }

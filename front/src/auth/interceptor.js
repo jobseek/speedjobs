@@ -18,7 +18,6 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
   const responseInterceptorError = (error) => {
     return new Promise((resolve, reject) => {
       const originalReq = error.config;
-      console.log(error);
       if (
         error.response.status === 401 &&
         error.config &&
@@ -33,7 +32,9 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
           credentials: 'include',
         })
           .then((response) => {
-            if (!response.ok) throw new Error('유저정보 불러오기 실패');
+            if (!response.ok) {
+              throw new Error('유저정보 불러오기 실패');
+            }
             return response.json();
           })
           .then((response) => {
@@ -49,6 +50,7 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
             reject(error);
           });
       }
+      reject(error);
     });
   };
   const IDS = { request: 0, response: 0 };

@@ -96,16 +96,19 @@ export default function ResumeDetails() {
 
   useEffect(() => {
     if (user.me !== null && resume.resumeGet) {
-      if (user.me.id === resume.resumeGet.authorId) setMyResume(true);
+      if (user.me.id === resume.resumeGet.authorId) {
+        setMyResume(true);
+      }
     }
   }, [user.meDone, resume.resumeGet, user.me]);
 
   useEffect(() => {
-    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null)
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null) {
       dispatch({
         type: RESUME_GET_REQUEST,
         data: id,
       });
+    }
   }, [dispatch, id, user.me, refresh]);
 
   useEffect(() => {

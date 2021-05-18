@@ -57,8 +57,11 @@ const DropLinksCompany = [
 export const mappedLinkUser = (change, role, isLogin, toggle, dispatch) => {
   const Drop = () => {
     if (isLogin) {
-      if (role === 'ROLE_MEMBER') return DropLinksUser;
-      else return DropLinksCompany;
+      if (role === 'ROLE_MEMBER') {
+        return DropLinksUser;
+      } else {
+        return DropLinksCompany;
+      }
     } else {
       return DropLinks;
     }
@@ -74,7 +77,9 @@ export const mappedLinkUser = (change, role, isLogin, toggle, dispatch) => {
       <MenuLink
         to={link.to}
         onClick={(e) => {
-          if (link.onClick) link.onClick(e, dispatch);
+          if (link.onClick) {
+            link.onClick(e, dispatch);
+          }
           toggle();
         }}
       >
@@ -121,8 +126,11 @@ export const MapMenu = ({ change }) => {
 export const mappedDrop = (role, change, isLogin, toggle, dispatch) => {
   const Drop = () => {
     if (isLogin) {
-      if (role === 'ROLE_MEMBER') return DropLinksUser;
-      else return DropLinksCompany;
+      if (role === 'ROLE_MEMBER') {
+        return DropLinksUser;
+      } else {
+        return DropLinksCompany;
+      }
     } else {
       return DropLinks;
     }
@@ -138,7 +146,9 @@ export const mappedDrop = (role, change, isLogin, toggle, dispatch) => {
       <DropLink
         to={link.to}
         onClick={(e) => {
-          if (link.onClick) link.onClick(e, dispatch);
+          if (link.onClick) {
+            link.onClick(e, dispatch);
+          }
           toggle();
         }}
       >

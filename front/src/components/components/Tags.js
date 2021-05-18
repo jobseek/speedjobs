@@ -41,7 +41,9 @@ export default function Tags({ tagList, children, sm, selected }) {
   const dropRef = useRef();
   const ClickHandler = (e) => {
     if (dropRef.current) {
-      if (show && !dropRef.current.contains(e.target)) setShow(false);
+      if (show && !dropRef.current.contains(e.target)) {
+        setShow(false);
+      }
     }
   };
 

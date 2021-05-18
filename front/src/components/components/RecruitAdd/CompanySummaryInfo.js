@@ -18,12 +18,12 @@ export default function CompanySummaryInfo() {
       type: COMPANY_GET_REQUEST,
       data: { id: user.me.id },
     });
-  }, []);
+  }, [dispatch, user.me?.id]);
   useEffect(() => {
     if (company.companyGetDone) {
       setInfo(company.companyGetData);
     }
-  }, [company.companyGetDone]);
+  }, [company.companyGetDone, company.companyGetData]);
 
   return (
     <>

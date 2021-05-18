@@ -1,6 +1,8 @@
 export default function hangul(kor) {
   const check = /[ㄱ-ㅎ|ㅏ-ㅣ가-힣]/;
-  if (!kor.match(check)) return kor;
+  if (!kor.match(check)) {
+    return kor;
+  }
   const f = [
     'ㄱ',
     'ㄲ',

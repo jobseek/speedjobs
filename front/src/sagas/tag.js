@@ -33,6 +33,7 @@ function* getTag(action) {
     });
   }
 }
+
 function editTagApi(tag) {
   console.log(tag);
   return axios.put(`/tag/${tag.id}`, { tagName: tag.name, tagType: tag.type });
@@ -47,10 +48,11 @@ function* editTag(action) {
   } catch (error) {
     yield put({
       type: TAG_EDIT_FAIL,
-      data: '에러' ?? error.response.data,
+      error: error.response.data.message ?? '서버를 확인해주세요',
     });
   }
 }
+
 function deleteTagApi(tag) {
   return axios.delete(`/tag/${tag.id}`);
 }
@@ -65,7 +67,7 @@ function* deleteTag(action) {
   } catch (error) {
     yield put({
       type: TAG_DELETE_FAIL,
-      data: '에러' ?? error.response.data,
+      error: error.response.data.message ?? '서버를 확인해주세요',
     });
   }
 }
@@ -85,16 +87,19 @@ function* addTag(action) {
   } catch (error) {
     yield put({
       type: TAG_ADD_FAIL,
-      data: '에러' ?? error.response.data,
+      error: error.response.data.message ?? '서버를 확인해주세요',
     });
   }
 }
+
 function* watchTagGet() {
   yield takeLatest(TAG_GET_REQUEST, getTag);
 }
+
 function* watchTagEdit() {
   yield takeLatest(TAG_EDIT_REQUEST, editTag);
 }
+
 function* watchTagDelete() {
   yield takeLatest(TAG_DELETE_REQUEST, deleteTag);
 }

@@ -94,7 +94,9 @@ export default function ResumeBasic({
   }, [profile.profileGetData, setForm]);
 
   useEffect(() => {
-    if (user.me === null) return;
+    if (user.me === null) {
+      return;
+    }
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
   }, [user.me, dispatch]);
 

@@ -1,46 +1,72 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { StyledButton } from '../../components/Styled';
+import {
+  COMPANY_ALLOW_DONE,
+  COMPANY_ALLOW_REQUEST,
+} from '../../../reducers/admin';
 
-const Info = styled.div`
+export const Info = styled.div`
   display: flex;
   border-bottom: 1px solid #a1a1a1;
   padding: 5px;
   margin-bottom: 10px;
 `;
-const Data = styled.div`
+export const Data = styled.div`
   flex: 1;
   text-align: center;
 `;
-const DataName = styled.div`
+export const DataName = styled.div`
   flex: 0 0 100px;
 `;
 
-export default function CompanyInfo({ id }) {
+export default function CompanyInfo({ info, set, refresh }) {
+  const dispatch = useDispatch();
+  const { admin } = useSelector((state) => state);
+
+  const companyAllow = useCallback(() => {
+    dispatch({
+      type: COMPANY_ALLOW_REQUEST,
+      data: info,
+    });
+  }, [info, dispatch]);
+
+  useEffect(() => {
+    if (admin.companyAllowDone || admin.companyAllowFail) {
+      if (admin.companyAllowDone) {
+        set(-1);
+        refresh(true);
+      }
+      dispatch({
+        type: COMPANY_ALLOW_DONE,
+      });
+    }
+  }, [admin.companyAllowDone, admin.companyAllowFail, dispatch, refresh, set]);
   return (
     <>
       <div>
-        <h3>네이버</h3>
+        <h3>{info.companyName}</h3>
         <div style={{ marginBottom: '20px' }}></div>
         <Info>
           <DataName>회사이메일</DataName>
-          <Data>1@1.com</Data>
+          <Data>{info.email}</Data>
         </Info>
         <Info>
           <DataName>기업홈페이지</DataName>
-          <Data>naver.com</Data>
+          <Data>{info.homepage}</Data>
         </Info>
         <Info>
           <DataName>사업자등록번호</DataName>
-          <Data>12344</Data>
+          <Data>{info.registrationNumber}</Data>
         </Info>
         <Info>
           <DataName>담당자 이름</DataName>
-          <Data>홍길동</Data>
+          <Data>{info.name}</Data>
         </Info>
         <Info>
           <DataName>담당자 연락처</DataName>
-          <Data>0101010101</Data>
+          <Data>{info.contact}</Data>
         </Info>
       </div>
       <div
@@ -50,7 +76,7 @@ export default function CompanyInfo({ id }) {
           bottom: '25px',
         }}
       >
-        <StyledButton>확인</StyledButton>
+        <StyledButton onClick={() => companyAllow()}>확인</StyledButton>
         <StyledButton grey>삭제</StyledButton>
       </div>
     </>

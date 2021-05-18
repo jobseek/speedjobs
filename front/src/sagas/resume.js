@@ -133,12 +133,15 @@ function* resumeDelete(action) {
 function* watchResumeList() {
   yield takeLatest(RESUME_LIST_REQUEST, resumeList);
 }
+
 function* watchResumeAdd() {
   yield takeLatest(RESUME_ADD_REQUEST, resumeAdd);
 }
+
 function* watchResumeGet() {
   yield takeLatest(RESUME_GET_REQUEST, resumeGet);
 }
+
 function* watchResumeApply() {
   yield takeLatest(RESUME_APPLY_REQUEST, resumeApply);
 }

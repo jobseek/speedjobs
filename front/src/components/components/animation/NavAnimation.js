@@ -23,8 +23,11 @@ export default function NavAnimation({ children, toggle }) {
     animation ? 0.3 : 0.1,
   ]);
   useEffect(() => {
-    if (toggle) set(true);
-    else set(false);
+    if (toggle) {
+      set(true);
+    } else {
+      set(false);
+    }
   }, [toggle]);
 
   return (

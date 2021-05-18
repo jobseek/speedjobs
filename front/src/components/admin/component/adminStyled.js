@@ -83,7 +83,7 @@ export const LoginForm = styled(animated.div)`
   box-shadow: none;
   transition: box-shadow ease-in-out 500ms;
   ${(props) =>
-    props.red &&
+    props.rederror &&
     css`
       box-shadow: red 0px 0px 50px;
     `}

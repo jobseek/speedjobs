@@ -8,26 +8,38 @@ import { USER_GET_DONE, USER_GET_REQUEST } from '../../../reducers/admin';
 
 export default function CompanySetting(props) {
   const [selected, set] = useState(-1);
+  const [refresh, setRefresh] = useState(true);
   const [userList, setUserList] = useState([]);
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
   const onClickHandler = useCallback((e) => {
-    set(e.id);
+    set(e);
   }, []);
   useEffect(() => {
-    dispatch({
-      type: USER_GET_REQUEST,
-    });
-  }, [dispatch]);
+    if (refresh) {
+      dispatch({
+        type: USER_GET_REQUEST,
+        data: 'ROLE_GUEST',
+      });
+    }
+  }, [dispatch, refresh]);
+
+  useEffect(() => {
+    return () => {
+      setUserList([]);
+    };
+  }, []);
 
   useEffect(() => {
     if (admin.getUserDone) {
+      console.log(admin.getUserList.content);
       setUserList(admin.getUserList.content);
       dispatch({
         type: USER_GET_DONE,
       });
+      setRefresh(false);
     }
-  }, [admin.getUserDone, admin.getUserList, dispatch, setUserList]);
+  }, [admin.getUserDone, admin.getUserList, dispatch, setUserList, refresh]);
   return (
     <>
       <div className={'row'}>
@@ -42,18 +54,24 @@ export default function CompanySetting(props) {
                   <div className={'col-4'}>연락처</div>
                 </AdminStyledRow>
                 <div style={{ overflowY: 'scroll', height: '80vh' }}>
-                  {userList?.map((company) => (
-                    <AdminStyledCol
-                      onClick={() => onClickHandler(company)}
-                      selected={company.id === selected}
-                      id={company.id}
-                      className={'row m-0'}
-                    >
-                      <div className={'col-4'}>{company.name}</div>
-                      <div className={'col-4'}>{company.email}</div>
-                      <div className={'col-4'}>{company.contact}</div>
-                    </AdminStyledCol>
-                  ))}
+                  {userList.length === 0 ? (
+                    <div style={{ textAlign: 'center' }}>
+                      승인 대기목록이 없습니다
+                    </div>
+                  ) : (
+                    userList?.map((company) => (
+                      <AdminStyledCol
+                        onClick={() => onClickHandler(company)}
+                        selected={company?.id === selected.id}
+                        id={company?.id}
+                        className={'row m-0'}
+                      >
+                        <div className={'col-4'}>{company.name}</div>
+                        <div className={'col-4'}>{company.email}</div>
+                        <div className={'col-4'}>{company.contact}</div>
+                      </AdminStyledCol>
+                    ))
+                  )}
                 </div>
               </div>
             </Content>
@@ -66,7 +84,11 @@ export default function CompanySetting(props) {
               {selected === -1 ? (
                 '기업회원을 선택해주세요'
               ) : (
-                <CompanyInfo id={selected}></CompanyInfo>
+                <CompanyInfo
+                  info={selected}
+                  set={set}
+                  refresh={setRefresh}
+                ></CompanyInfo>
               )}
             </Content>
           </InfoCard>

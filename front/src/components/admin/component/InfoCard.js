@@ -7,6 +7,7 @@ const Card = styled(animated.div)`
   height: ${(props) => (props.height ? `${props.height}` : '100%')};
   border-radius: 15px;
   background-color: white;
+  box-sizing: border-box;
 `;
 
 export default function InfoCard({ index = 0, children, height, styleProps }) {

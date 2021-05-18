@@ -18,7 +18,9 @@ export default function TagSelector({
   const ClickHandler = useCallback(
     (e) => {
       if (dropRef.current) {
-        if (show && !dropRef.current.contains(e.target)) setShow(false);
+        if (show && !dropRef.current.contains(e.target)) {
+          setShow(false);
+        }
       }
     },
     [setShow, dropRef, show]

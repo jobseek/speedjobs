@@ -169,7 +169,9 @@ export default function Resume() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) return;
+      if (user.me.id === null) {
+        return;
+      }
       dispatch({
         type: RESUME_ADD_REQUEST,
         data: form,

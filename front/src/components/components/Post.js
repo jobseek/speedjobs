@@ -63,9 +63,15 @@ export default function Post({
   }, [date, history, id, tags, type, writer, inFav]);
 
   useEffect(() => {
-    if (like.data === null) return;
-    if (!like.addLikeDone && !like.unLikeDone) return;
-    if (like.data.id !== id) return;
+    if (like.data === null) {
+      return;
+    }
+    if (!like.addLikeDone && !like.unLikeDone) {
+      return;
+    }
+    if (like.data.id !== id) {
+      return;
+    }
     if (like.addLikeDone) {
       set(true);
       setCnt((p) => p + 1);

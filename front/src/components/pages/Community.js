@@ -17,10 +17,6 @@ export const Blank = styled.div`
 `;
 
 export default function Community(props) {
-  const [form, setForm] = useState({
-    size: 10,
-    page: 0,
-  });
   const postOrder = [
     { name: '조회순', sort: 'viewCount' },
     { name: '추천순', sort: 'favoriteCount' },
@@ -83,7 +79,10 @@ export default function Community(props) {
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);
-
+  const [form, setForm] = useState({
+    size: 10,
+    page: 0,
+  });
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
@@ -105,9 +104,11 @@ export default function Community(props) {
     }
     if (post.postListDone) {
       setLoading((prev) => false);
-      if (paging.current)
+      if (paging.current) {
         setPostList((prev) => [...prev, ...post.postList.content]);
-      else setPostList([...post.postList.content]);
+      } else {
+        setPostList([...post.postList.content]);
+      }
       if (post.postList.last) {
         isLast.current = true;
       } else {
@@ -115,6 +116,11 @@ export default function Community(props) {
       }
       dispatch({ type: POST_LIST_DONE });
     }
+    // if (post.postListSearchBar) {
+    //   setLoading(false);
+    //   setPostList([...post.postList.content]);
+    //   dispatch({ type: POST_LIST_DONE });
+    // }
   }, [post, setPostList, setLoading, page, dispatch]);
 
   useEffect(() => {
@@ -124,6 +130,7 @@ export default function Community(props) {
         .map((t) => t.id)
         .join(',');
       if (ids === '') {
+        // eslint-disable-next-line
         const { tagIds, ...res } = p;
         return { ...res };
       } else {
@@ -131,6 +138,15 @@ export default function Community(props) {
       }
     });
   }, [taglist, dispatch]);
+
+  useEffect(() => {
+    dispatch({
+      type: POST_LIST_REQUEST,
+      data: form,
+    });
+    paging.current = false;
+    // eslint-disable-next-line
+  }, [form.tagIds, dispatch]);
 
   const mapPost = postList.map((pl) => (
     <Post

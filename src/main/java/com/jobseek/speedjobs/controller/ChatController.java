@@ -22,7 +22,7 @@ public class ChatController {
 
 	private final ChatService chatService;
 
-	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
+//	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@MessageMapping("/message")
 	public void saveMessage(MessageRequest messageRequest) {
 		chatService.saveMessage(messageRequest);

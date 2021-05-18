@@ -1,6 +1,9 @@
 import { all, takeLatest, put } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  COMPANY_ALLOW_FAIL,
+  COMPANY_ALLOW_REQUEST,
+  COMPANY_ALLOW_SUCCESS,
   ERROR,
   GET_BANNER_FAIL,
   GET_BANNER_REQUEST,
@@ -33,8 +36,13 @@ function* alertDone(message) {
   });
 }
 
-function getUserApi() {
-  return axios.get('/user?role=ROLE_GUEST&size=9999&page=0&sort.sorted=true');
+function getUserApi(action) {
+  let role = '';
+  console.log(action.data);
+  if (action.data !== undefined) {
+    role = 'role=' + action.data + '&';
+  }
+  return axios.get(`/user?${role}size=9999&page=0&sort.sorted=true`);
 }
 
 function* getUser(action) {
@@ -78,6 +86,30 @@ function* getBanner(action) {
   }
 }
 
+function companyAllowApi(action) {
+  return axios.patch(`/user/signup/company/${action.data.id}`);
+}
+
+function* companyAllow(action) {
+  try {
+    yield alert('승인중입니다');
+    yield companyAllowApi(action);
+    yield put({
+      type: COMPANY_ALLOW_SUCCESS,
+    });
+  } catch (error) {
+    yield alert(error, '승인중 문제가 발생하였습니다');
+    yield put({
+      type: COMPANY_ALLOW_FAIL,
+      data: error.message ?? 'error',
+    });
+  }
+}
+
+function* watchCompanyAllow() {
+  yield takeLatest(COMPANY_ALLOW_REQUEST, companyAllow);
+}
+
 function* watchGetBanner() {
   yield takeLatest(GET_BANNER_REQUEST, getBanner);
 }
@@ -87,5 +119,5 @@ function* watchGetUser() {
 }
 
 export default function* adminSaga() {
-  yield all([watchGetUser(), watchGetBanner()]);
+  yield all([watchGetUser(), watchGetBanner(), watchCompanyAllow()]);
 }

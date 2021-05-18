@@ -76,8 +76,9 @@ export default function NavDrop(props) {
   };
   const clickHandler = useCallback(
     (e) => {
-      if (toggle === 'block' && !DropRef.current.contains(e.target))
+      if (toggle === 'block' && !DropRef.current.contains(e.target)) {
         setToggle('none');
+      }
     },
     [toggle]
   );

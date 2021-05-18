@@ -7,6 +7,8 @@ import AdminMain from './AdminMain';
 import BannerSetting from './BannerSetting';
 import CompanySetting from './CompanySetting';
 import AdminAlert from '../component/AdminAlert';
+import PostSetting from './PostSetting';
+import MemberSetting from './MemberSetting';
 
 export default function AdminHome(props) {
   const [toggle, setToggle] = useState(false);
@@ -15,7 +17,7 @@ export default function AdminHome(props) {
   const [pop, setPop] = useState([]);
   const mapPop = pop.map((p) => (
     <AdminAlert
-      id={p}
+      key={p}
       enter={admin.popEnter}
       done={admin.popDone}
       error={admin.error}
@@ -41,6 +43,8 @@ export default function AdminHome(props) {
           {now === 'Main' && <AdminMain></AdminMain>}
           {now === 'Banner' && <BannerSetting></BannerSetting>}
           {now === 'Company' && <CompanySetting></CompanySetting>}
+          {now === 'Post' && <PostSetting></PostSetting>}
+          {now === 'Member' && <MemberSetting></MemberSetting>}
         </PageContainer>
         <SideBar toggle={toggle} setToggle={setToggle} set={set}></SideBar>
         {mapPop}

@@ -104,7 +104,9 @@ export default function TagList(props) {
       if (!tag.selected) {
         tag.selected = true;
         setSelected((p) => {
-          if (p.length !== 0) tagList[tagList.indexOf(p[0])].selected = false;
+          if (p.length !== 0) {
+            tagList[tagList.indexOf(p[0])].selected = false;
+          }
           return [tag];
         });
         setInput(tag);
@@ -112,8 +114,9 @@ export default function TagList(props) {
         tag.selected = false;
         setSelected((p) => {
           const ret = selected.filter((s) => s.selected);
-          if (ret.length === 0)
+          if (ret.length === 0) {
             setInput({ id: -1, name: '', selected: false, type: 'SKILL' });
+          }
           return ret;
         });
       }
@@ -188,9 +191,13 @@ export default function TagList(props) {
   useEffect(() => {
     if (tags.tagAddDone || tags.tagDeleteDone || tags.tagEditDone) {
       let message = '';
-      if (tags.tagAddDone) message += '추가가';
-      else if (tags.tagDeleteDone) message += '삭제가';
-      else if (tags.tagEditDone) message += '수정이';
+      if (tags.tagAddDone) {
+        message += '추가가';
+      } else if (tags.tagDeleteDone) {
+        message += '삭제가';
+      } else if (tags.tagEditDone) {
+        message += '수정이';
+      }
       dispatch({
         type: POP_ALERT_DONE,
         data: { message: `${message} 완료되었습니다` },
@@ -200,9 +207,13 @@ export default function TagList(props) {
       });
     } else if (tags.tagAddFail || tags.tagEditFail || tags.tagDeleteFail) {
       let message = '';
-      if (tags.tagAddFail) message += '추가';
-      else if (tags.tagDeleteFail) message += '삭제';
-      else if (tags.tagEditFail) message += '수정';
+      if (tags.tagAddFail) {
+        message += '추가';
+      } else if (tags.tagDeleteFail) {
+        message += '삭제';
+      } else if (tags.tagEditFail) {
+        message += '수정';
+      }
       dispatch({
         type: ERROR,
         error: `${message} 오류 발생`,
@@ -220,7 +231,9 @@ export default function TagList(props) {
           .concat(sList.map((s) => ({ ...s, type: 'SKILL', selected: false })))
       );
       setLoading(false);
-      if (inputRef.current !== null) inputRef.current.focus();
+      if (inputRef.current !== null) {
+        inputRef.current.focus();
+      }
     } else if (
       tags.tagDeleteLoading ||
       tags.tagEditLoading ||
@@ -239,8 +252,9 @@ export default function TagList(props) {
           <div style={{ display: 'flex', height: '35px' }}>
             <AdminStyledInput
               onKeyPress={(e) => {
-                if (e.key === 'Enter')
+                if (e.key === 'Enter') {
                   selected.length === 0 ? onSubmitHandler(e) : onEditHandler(e);
+                }
               }}
               onChange={onChangeHandler}
               value={input.name}
@@ -283,6 +297,7 @@ export default function TagList(props) {
               {tagList.map((tag) => (
                 <AdminStyledCol
                   id={tag.id}
+                  key={tag.id}
                   className={'row m-0'}
                   onClick={() => onClickHandler(tag)}
                   selected={tag.selected}

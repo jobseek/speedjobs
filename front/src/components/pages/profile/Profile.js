@@ -26,7 +26,9 @@ export default function Profile() {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (user.me === null) return;
+    if (user.me === null) {
+      return;
+    }
     dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
     setRole(user.me.role);
   }, [user.me, dispatch]);
