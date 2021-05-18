@@ -118,7 +118,6 @@ export default function ResumeDetails() {
         resumeTemp.resumeImage =
           'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      console.log('=== resumeTemp ===', resumeTemp);
       setContent((p) => ({
         ...p,
         ...resumeTemp,
@@ -165,14 +164,8 @@ export default function ResumeDetails() {
   });
   const certificates = content.certificates.map((y) => {
     return (
-      <div key={y.index} style={{ width: '100%' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'nowrap',
-            width: '100%',
-          }}
-        >
+      <div key={y.index}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'이름'}
@@ -195,10 +188,7 @@ export default function ResumeDetails() {
             disabled
           />
         </div>
-        <div
-          key={y.index}
-          style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}
-        >
+        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'발급기관'}
@@ -248,7 +238,9 @@ export default function ResumeDetails() {
         <StyledHeaderDiv padding>
           <PostTitleInput name={'title'} value={content.title} disabled />
           <div style={{ flex: '0 0' }}>
-            <StyledButton mid>수정</StyledButton>
+            <StyledButton mid onClick={() => history.push(`../modify/${id}`)}>
+              수정
+            </StyledButton>
           </div>
           <div style={{ flex: '0 0' }}>
             <StyledButton mid onClick={() => DeleteHandler()}>

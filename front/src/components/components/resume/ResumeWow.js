@@ -25,7 +25,13 @@ const ResumeTitle = styled.div`
   white-space: nowrap;
 `;
 
-export default function ResumeWow({ id, title, open, createdDate }) {
+export default function ResumeWow({
+  id,
+  title,
+  open,
+  createdDate,
+  modifiedDate,
+}) {
   const history = useHistory();
   const onClickHandler = useCallback(() => {
     history.push(`/resume/resume/${id}`);
@@ -62,7 +68,7 @@ export default function ResumeWow({ id, title, open, createdDate }) {
           }}
         >
           <div>작성 : {createdDate}</div>
-          <div>수정 : {createdDate}</div>
+          <div>수정 : {modifiedDate}</div>
         </div>
       </div>
     </>

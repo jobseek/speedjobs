@@ -1,7 +1,5 @@
-import { useHistory } from 'react-router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,7 +14,6 @@ import {
   Warning,
 } from '../Styled';
 import ResumeInputs from './ResumeInputs';
-import { PROFILE_GET_REQUEST } from '../../../reducers/profile';
 import ResumeGender from './ResumeGender';
 
 const Toggle1 = styled(ToggleOff)`
@@ -44,21 +41,8 @@ const StyledDatePicker = styled(DatePicker)`
     outline: none;
   }
 `;
-export default function ResumeBasic({
-  onChange,
-  bookMark,
-  bookMark1,
-  setForm,
-  form,
-}) {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const profile = useSelector((state) => state.profile);
-  const [img, setImage] = useState(
-    'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
-  );
-  const [setStartDate] = useState(new Date());
+export default function ResumeBasicMd({ onChange, bookMark, setForm, form }) {
+  const inputRef = useRef();
 
   const onChangeHandler2 = useCallback(
     (e) => {
@@ -73,70 +57,39 @@ export default function ResumeBasic({
     [setForm]
   );
 
-  useEffect(() => {
-    if (profile.profileGetData) {
-      const profileTemp = { ...profile.profileGetData };
-      if (profile.profileGetData.picture === null) {
-        profileTemp.picture =
-          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
-      }
-      if (profileTemp.birth === null) {
-        alert('이력서에 필요한 추가정보를 입력해주세요.(성별/연락처/생년월일)');
-        history.push('/profile/individual/modify');
-      }
-      setForm((p) => ({
-        ...p,
-        name: profileTemp.name,
-        contact: profileTemp.contact,
-        gender: profileTemp.gender,
-        birth: new Date(
-          profileTemp.birth[0],
-          profileTemp.birth[1],
-          profileTemp.birth[2]
-        ),
-      }));
-    }
-  }, [profile.profileGetData, setForm, history]);
+  const onButtonClick = (e) => {
+    e.preventDefault();
+    inputRef.current.click();
+  };
 
-  useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
-  }, [user.me, dispatch]);
-
-  const onChange2 = async (e) => {
+  const onFileChange = async (e) => {
     const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('files', e.target.files[0]);
+
+    const data = new FormData();
+    data.append('files', e.target.files[0]);
 
     const url = await axios
-      .post('/file', formData)
+      .post('/file', data)
       .then((res) => res.data.files[0].url)
       .catch(
         () =>
-          'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
+          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
       );
+
     if (file === undefined) {
-      setImage(img);
+      console.log('=== 이미지 업로드 실패(파일 미선택) ===');
     } else if (
       file.type !== 'image/jpeg' &&
       file.type !== 'image/png' &&
       file.type !== 'image/gif'
     ) {
       alert('이미지 파일만 등록할 수 있습니다.');
-      setImage(img);
     } else if (file.size > 1024 * 1024 * 10) {
-      alert('1MB 이하 이미지만 가능합니다.');
-      setImage(img);
+      alert('10MB 이하 이미지만 가능합니다.');
     } else {
-      setImage(url);
-      form.resumeImage = url;
+      e.target = { name: 'resumeImage', value: url.toString() };
+      onChange(e);
     }
-  };
-  const hiddenFileInput = React.useRef(null);
-  const handleClick = async () => {
-    hiddenFileInput.current.click();
   };
 
   return (
@@ -156,8 +109,12 @@ export default function ResumeBasic({
               top: '9px',
             }}
           >
-            {bookMark1 ? <Private>공개</Private> : <Private>비공개</Private>}
-            {bookMark1 ? (
+            {form.open === 'YES' ? (
+              <Private>공개</Private>
+            ) : (
+              <Private>비공개</Private>
+            )}
+            {form.open === 'YES' ? (
               <Toggle2
                 onClick={() => bookMark()}
                 onChange={(e) => onChange(e)}
@@ -177,17 +134,18 @@ export default function ResumeBasic({
             margin: '25px auto',
           }}
         >
-          <ResumeImg
-            onClick={handleClick}
-            src={img}
-            alt="resumeImg"
-            style={{ cursor: 'pointer' }}
-          />
           <input
             type="file"
-            ref={hiddenFileInput}
-            onChange={onChange2}
+            ref={inputRef}
+            onChange={onFileChange}
             style={{ display: 'none' }}
+          />
+          <ResumeImg
+            onClick={onButtonClick}
+            onChange={(e) => onChange(e)}
+            src={form.resumeImage || ''}
+            alt="resumeImg"
+            style={{ cursor: 'pointer' }}
           />
         </div>
 
@@ -198,7 +156,7 @@ export default function ResumeBasic({
               flex={'1 0 200px'}
               onChange={(e) => onChange(e)}
               name={'name'}
-              value={form?.name || ''}
+              value={form.name || ''}
             />
             <div style={{ width: '205px' }}>
               <ResumeTitles>&nbsp;성별</ResumeTitles>
@@ -230,7 +188,6 @@ export default function ResumeBasic({
                 locale={ko}
                 dateFormat="yyyy-MM-dd"
                 selected={form?.birth}
-                onSelect={(e) => setStartDate(e)}
                 onChange={(e) => onChangeHandler2(e)}
                 peekMonthDropdown
                 showYearDropdown
@@ -244,7 +201,7 @@ export default function ResumeBasic({
             basic
             onChange={(e) => onChange(e)}
             name={'address'}
-            value={form?.address || ''}
+            value={form.address || ''}
           />
         </div>
         <ResumeInputs

@@ -107,6 +107,6 @@ public class ResumeService {
 	}
 
 	private List<Tag> getTags(ResumeRequest resumeRequest) {
-		return tagService.findTagsById(resumeRequest.getTagIds());
+		return tagService.findTagsById(resumeRequest.getTags());
 	}
 }

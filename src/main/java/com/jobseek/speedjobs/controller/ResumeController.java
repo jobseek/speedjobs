@@ -45,7 +45,7 @@ public class ResumeController {
 	@PreAuthorize("hasRole('MEMBER')")
 	@PutMapping("/{resumeId}")
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
-		@RequestBody ResumeRequest resumeRequest) {
+		@Valid @RequestBody ResumeRequest resumeRequest) {
 		resumeService.update(resumeId, user, resumeRequest);
 		return ResponseEntity.created(URI.create("/api/resume/" + resumeId)).build();
 	}

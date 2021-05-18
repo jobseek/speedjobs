@@ -141,15 +141,20 @@ public class Resume extends BaseTimeEntity {
 	}
 
 	public void update(Resume resume) {
-		this.open = resume.getOpen();
-		this.coverLetter = resume.getCoverLetter();
-		this.address = resume.getAddress();
-		this.blogUrl = resume.getBlogUrl();
-		this.githubUrl = resume.getGithubUrl();
-		this.resumeImage = resume.getResumeImage();
-		this.certificates = resume.getCertificates();
-		this.scholars = resume.getScholars();
-		this.careers = resume.getCareers();
+		this.open = resume.open;
+		this.coverLetter = resume.coverLetter;
+		this.title = resume.title;
+		this.name = resume.name;
+		this.gender = resume.gender;
+		this.contact = resume.contact;
+		this.birth = resume.birth;
+		this.address = resume.address;
+		this.githubUrl = resume.githubUrl;
+		this.blogUrl = resume.blogUrl;
+		this.resumeImage = resume.resumeImage;
+		this.certificates = resume.certificates;
+		this.scholars = resume.scholars;
+		this.careers = resume.careers;
 	}
 
 	// 로직

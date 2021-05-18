@@ -49,6 +49,13 @@ export default function ResumeTotal() {
         createdDate={
           rl.createdDate[0] + '/' + rl.createdDate[1] + '/' + rl.createdDate[2]
         }
+        modifiedDate={
+          rl.modifiedDate[0] +
+          '/' +
+          rl.modifiedDate[1] +
+          '/' +
+          rl.modifiedDate[2]
+        }
       />
     </div>
   ));

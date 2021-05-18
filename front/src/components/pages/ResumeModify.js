@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
-import { useHistory } from 'react-router';
+import { useParams, useHistory } from 'react-router';
+
 import {
   PostTitleInput,
   ProfileDiv,
@@ -10,11 +12,39 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import ResumeContents from '../components/resume/ResumeContents';
-import { RESUME_ADD_REQUEST, RESUME_LIST_REQUEST } from '../../reducers/resume';
+import ResumeContentsMd from '../components/resume/ResumeContentsMd';
+import {
+  RESUME_GET_REQUEST,
+  RESUME_LIST_REQUEST,
+  RESUME_MODIFY_REQUEST,
+} from '../../reducers/resume';
 
 export default function Resume() {
   const history = useHistory();
+  const { id } = useParams();
+  const [, setMyResume] = useState(false);
+  const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
+  const user = useSelector((state) => state.user);
+  const resume = useSelector((state) => state.resume);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setMyResume(false);
+  }, []);
+
+  useEffect(() => {
+    if (user.me !== null && resume.resumeGet) {
+      if (user.me.id === resume.resumeGet.authorId) setMyResume(true);
+    }
+  }, [user.meDone, resume.resumeGet, user.me]);
+  useEffect(() => {
+    if (refresh['REFRESH_TOKEN'] === undefined || user.me !== null)
+      dispatch({
+        type: RESUME_GET_REQUEST,
+        data: id,
+      });
+  }, [dispatch, id, user.me, refresh]);
+
   const [item, setItem] = useState({
     education: 'HIGH',
     schoolName: '',
@@ -103,7 +133,6 @@ export default function Resume() {
     }
   }, []);
 
-  const dispatch = useDispatch();
   const [bookmark, setBookmark] = useState(false);
 
   const onChangeIntro = (e) => {
@@ -122,7 +151,6 @@ export default function Resume() {
       form.open = 'NO';
     }
   };
-  const user = useSelector((state) => state.user);
   const [form, setForm] = useState({
     open: 'NO',
     name: '',
@@ -165,20 +193,119 @@ export default function Resume() {
     ],
   });
 
+  useEffect(() => {
+    dispatch({
+      type: RESUME_GET_REQUEST,
+      data: id,
+    });
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (resume.resumeGetDone) {
+      const resumeTemp = { ...resume.resumeGet };
+      setForm((p) => ({
+        ...p,
+        ...resumeTemp,
+        birth: new Date(
+          resumeTemp.birth[0],
+          resumeTemp.birth[1],
+          resumeTemp.birth[2]
+        ),
+        tags: resume.resumeGet.tags,
+        careers: resumeTemp.careers.map((x) => {
+          if (x.inDate !== null && x.outDate !== null) {
+            const inDate = new Date(x.inDate[0], x.inDate[1], x.inDate[2]);
+            const outDate = new Date(x.outDate[0], x.outDate[1], x.outDate[2]);
+            return { ...x, inDate, outDate };
+          }
+          return { ...x };
+        }),
+        certificates: resumeTemp.certificates.map((x) => {
+          if (x.certDate !== null) {
+            const certDate = new Date(
+              x.certDate[0],
+              x.certDate[1],
+              x.certDate[2]
+            );
+            return { ...x, certDate };
+          }
+          return { ...x };
+        }),
+      }));
+      if (
+        resumeTemp.scholars[0].inDate !== null &&
+        resumeTemp.scholars[0].outDate !== null
+      )
+        setItem((p) => ({
+          ...p,
+          education: resumeTemp.scholars[0].education,
+          schoolName: resumeTemp.scholars[0].schoolName,
+          major: resumeTemp.scholars[0].major,
+          inDate: new Date(
+            resumeTemp.scholars[0].inDate[0],
+            resumeTemp.scholars[0].inDate[1],
+            resumeTemp.scholars[0].inDate[2]
+          ),
+          outDate: new Date(
+            resumeTemp.scholars[0].outDate[0],
+            resumeTemp.scholars[0].outDate[1],
+            resumeTemp.scholars[0].outDate[2]
+          ),
+        }));
+      if (
+        resumeTemp.scholars[1].inDate !== null &&
+        resumeTemp.scholars[1].outDate !== null
+      )
+        setItem2((p) => ({
+          ...p,
+          education: resumeTemp.scholars[1].education,
+          schoolName: resumeTemp.scholars[1].schoolName,
+          major: resumeTemp.scholars[1].major,
+          inDate: new Date(
+            resumeTemp.scholars[1].inDate[0],
+            resumeTemp.scholars[1].inDate[1],
+            resumeTemp.scholars[1].inDate[2]
+          ),
+          outDate: new Date(
+            resumeTemp.scholars[1].outDate[0],
+            resumeTemp.scholars[1].outDate[1],
+            resumeTemp.scholars[1].outDate[2]
+          ),
+        }));
+      if (
+        resumeTemp.scholars[2].inDate !== null &&
+        resumeTemp.scholars[2].outDate !== null
+      )
+        setItem3((p) => ({
+          ...p,
+          education: resumeTemp.scholars[2].education,
+          schoolName: resumeTemp.scholars[2].schoolName,
+          major: resumeTemp.scholars[2].major,
+          inDate: new Date(
+            resumeTemp.scholars[2].inDate[0],
+            resumeTemp.scholars[2].inDate[1],
+            resumeTemp.scholars[2].inDate[2]
+          ),
+          outDate: new Date(
+            resumeTemp.scholars[2].outDate[0],
+            resumeTemp.scholars[2].outDate[1],
+            resumeTemp.scholars[2].outDate[2]
+          ),
+        }));
+    }
+  }, [resume.resumeGetDone, setForm, resume.resumeGet]);
+
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) {
-        return;
-      }
       dispatch({
-        type: RESUME_ADD_REQUEST,
+        type: RESUME_MODIFY_REQUEST,
         data: form,
       });
       dispatch({ type: RESUME_LIST_REQUEST, data: user.me });
       history.push('/resume/total');
     },
-    [dispatch, form, user.me, history]
+    [dispatch, form, history, user.me]
   );
 
   const onChangeHandler = useCallback((e) => {
@@ -192,12 +319,13 @@ export default function Resume() {
           <PostTitleInput
             onChange={(e) => onChangeHandler(e)}
             name={'title'}
+            value={form.title || ''}
             placeholder={'이력서 제목을 입력해주세요'}
             maxLength="20"
           />
           <div style={{ flex: '0 0' }}>
             <StyledButton wide onClick={onSubmitHandler}>
-              등록
+              수정
             </StyledButton>
           </div>
         </StyledHeaderDiv>
@@ -210,7 +338,7 @@ export default function Resume() {
               <SideMenu />
             </StyledLeftLayout>
             <ProfileDiv className={'col-12 col-lg-10 p-0'}>
-              <ResumeContents
+              <ResumeContentsMd
                 onChange={onChangeHandler}
                 bookMark={handleBookmark}
                 bookMark1={bookmark}
@@ -229,6 +357,7 @@ export default function Resume() {
                 item={item}
                 item2={item2}
                 item3={item3}
+                id={id}
               />
             </ProfileDiv>
           </div>

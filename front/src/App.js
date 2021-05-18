@@ -34,6 +34,7 @@ import ResumeDetails from './components/pages/ResumeDetails';
 import SubmitList from './components/pages/SubmitList';
 import MyRecruitments from './components/pages/MyRecruitments';
 import MyPosts from './components/pages/MyPosts';
+import ResumeModify from './components/pages/ResumeModify';
 import RecruitModify from './components/pages/RecruitModify';
 
 const Container = styled.div`
@@ -134,6 +135,7 @@ function App() {
           <Route exact path={'/resume/total'} component={ResumeTotal} />
           <Route exact path={'/resume/submit'} component={SubmitList} />
           <Route exact path={'/resume/resume/:id'} component={ResumeDetails} />
+          <Route exact path={'/resume/modify/:id'} component={ResumeModify} />
           <Route exact path={'/likelist/community'} component={CommuLike} />
           <Route exact path={'/likelist/recruit'} component={RecruitLike} />
           <Route exact path={'/registration'} component={MemberRegistration} />

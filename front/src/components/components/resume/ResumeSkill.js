@@ -13,7 +13,7 @@ export default function ResumeSkill({ setForm }) {
   }, [tagList]);
 
   useEffect(() => {
-    setForm((p) => ({ ...p, tagIds: totalTag }));
+    setForm((p) => ({ ...p, tags: totalTag }));
   }, [totalTag, setForm]);
 
   useEffect(() => {

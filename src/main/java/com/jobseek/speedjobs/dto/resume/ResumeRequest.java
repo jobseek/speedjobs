@@ -46,7 +46,7 @@ public class ResumeRequest {
 
 	private List<Certificate> certificates;
 
-	private List<Long> tagIds;
+	private List<Long> tags;
 
 	public ResumeRequest(Open open, String coverLetter, String title, String name, String gender,
 		String contact, LocalDate birth, String address, String githubUrl, String blogUrl,
@@ -54,7 +54,7 @@ public class ResumeRequest {
 		List<Career> careers,
 		List<Scholar> scholars,
 		List<Certificate> certificates,
-		List<Long> tagIds
+		List<Long> tags
 	) {
 		this.open = open;
 		this.coverLetter = coverLetter;
@@ -70,7 +70,7 @@ public class ResumeRequest {
 		this.careers = careers;
 		this.scholars = scholars;
 		this.certificates = certificates;
-		this.tagIds = tagIds;
+		this.tags = tags;
 	}
 
 	public Resume toEntity() {
