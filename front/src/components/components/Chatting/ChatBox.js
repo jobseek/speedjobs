@@ -143,11 +143,11 @@ export default function ChatBox({ recruitId, ...props }) {
     <>
       <Container pop={props.pop}>
         <SockJSClient
-          url={'http://' + address() + ':8081/chat'}
+          url={address() + '/chat'}
           topics={[`/channel/${recruitId}`]}
           onMessage={getMessage}
           ref={chatRef}
-        ></SockJSClient>
+        />
         <BackArea>
           <BackButton onClick={() => props.button()} />
         </BackArea>
@@ -167,7 +167,7 @@ export default function ChatBox({ recruitId, ...props }) {
               onMessage={getMessage}
               className="write_msg"
               placeholder="Type a message"
-            ></MsgWriteInput>
+            />
             <StyledButton
               style={{
                 display: 'flex',

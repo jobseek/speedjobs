@@ -48,16 +48,16 @@ export default function Sns(props) {
       <MySns>
         <hr />
         <div className="logo">
-          <a href={`http://${address()}:8081/oauth2/authorization/google`}>
+          <a href={`${address()}/oauth2/authorization/google`}>
             <Google onClick={() => props.setSns(true)} />
           </a>
-          <a href={`http://${address()}:8081/oauth2/authorization/kakao`}>
+          <a href={`${address()}/oauth2/authorization/kakao`}>
             <Kakaotalk onClick={() => props.setSns(true)} />
           </a>
-          <a href={`http://${address()}:8081/oauth2/authorization/github`}>
+          <a href={`${address()}/oauth2/authorization/github`}>
             <Github onClick={() => props.setSns(true)} />
           </a>
-          <a href={`http://${address()}:8081/oauth2/authorization/naver`}>
+          <a href={`${address()}/oauth2/authorization/naver`}>
             <Naver onClick={() => props.setSns(true)} />
           </a>
         </div>

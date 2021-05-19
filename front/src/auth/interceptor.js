@@ -24,7 +24,7 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
         !error.config?.__isRetryRequest
       ) {
         originalReq.__isRetryRequest = true;
-        fetch(`http://${address()}:8081/api/auth/reissue`, {
+        fetch(`${address()}/api/auth/reissue`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${refresh['REFRESH_TOKEN']}`,

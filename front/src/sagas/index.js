@@ -13,7 +13,7 @@ import companySaga from './company';
 import likeSaga from './like';
 import adminSaga from './admin';
 
-axios.defaults.baseURL = `http://${address()}:8081/api`;
+axios.defaults.baseURL = `${address()}/api`;
 axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
