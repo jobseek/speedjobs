@@ -62,7 +62,7 @@ export default function CorporateModify() {
       const profileTemp = { ...profile.profileGetData };
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
-          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
       setForm({ ...profileTemp });
     }

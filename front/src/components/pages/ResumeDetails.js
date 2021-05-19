@@ -116,7 +116,7 @@ export default function ResumeDetails() {
       const resumeTemp = { ...resume.resumeGet };
       if (resume.resumeGet.resumeImage === null) {
         resumeTemp.resumeImage =
-          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
       setContent((p) => ({
         ...p,

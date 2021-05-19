@@ -78,7 +78,7 @@ export default function ResumeBasic({
       const profileTemp = { ...profile.profileGetData };
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
-          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
       if (profileTemp.birth === null) {
         alert('이력서에 필요한 추가정보를 입력해주세요.(성별/연락처/생년월일)');

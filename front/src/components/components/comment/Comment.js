@@ -147,7 +147,7 @@ export default function Comment({
 }) {
   // 댓글 작성자 기본이미지 설정
   const [image, setImage] = useState(
-    'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   );
   useEffect(() => {
     if (img !== null) {
@@ -272,7 +272,7 @@ export default function Comment({
 export function CommentsForm(props) {
   const user = useSelector((state) => state.user);
   const [img, setImg] = useState(
-    'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   );
   const [result, setResult] = useState('0/300');
   const [comForm, setComForm] = useState({

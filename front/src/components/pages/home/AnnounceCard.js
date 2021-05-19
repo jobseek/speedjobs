@@ -28,7 +28,7 @@ export default function AnnounceCard() {
         let thumb = i.thumbnail;
         if (i.thumbnail === null) {
           thumb =
-            'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+            'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
         }
         return {
           id: i.id,

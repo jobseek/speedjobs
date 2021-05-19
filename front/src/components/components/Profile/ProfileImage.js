@@ -50,7 +50,7 @@ export default function ProfileImage({ onChange, value }) {
       .then((res) => res.data.files[0].url)
       .catch(
         () =>
-          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
       );
 
     /**
