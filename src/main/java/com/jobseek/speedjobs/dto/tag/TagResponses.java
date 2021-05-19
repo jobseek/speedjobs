@@ -36,7 +36,7 @@ public class TagResponses implements Serializable {
 	}
 
 	@Getter
-	private static class TagResponse implements Serializable {
+	public static class TagResponse implements Serializable {
 
 		private final Long id;
 		private final String name;
