@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProfileInputs from './ProfileInputs';
 import { InputText, MyImage, ProfileImg, TextArea } from '../Styled';
-import { PROFILE_GET_REQUEST } from '../../../reducers/profile';
 
 const StyledInputText = styled(InputText)`
   border: none;
@@ -24,8 +23,6 @@ const StyledTextarea = styled(TextArea)`
  */
 
 export default function IndividualDetails() {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
   const [item, setItem] = useState({
     bio: '',
@@ -39,22 +36,15 @@ export default function IndividualDetails() {
   });
 
   useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
-  }, [user.me, dispatch]);
-
-  useEffect(() => {
-    if (profile.profileGetData) {
+    if (profile.profileGetDone) {
       const profileTemp = { ...profile.profileGetData };
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      setItem({ ...profileTemp });
+      setItem((p) => ({ ...p, ...profileTemp }));
     }
-  }, [profile.profileGetData]);
+  }, [profile.profileGetDone, profile.profileGetData]);
 
   return (
     <div className="container">

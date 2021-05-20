@@ -41,22 +41,18 @@ export default function CorporateDetails() {
   });
 
   useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
+    if (user.me === null) return;
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
   }, [user.me, dispatch]);
 
   useEffect(() => {
-    console.log('=== profile.profileGetData ===', profile.profileGetData);
     if (profile.profileGetData) {
       const profileTemp = { ...profile.profileGetData };
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      console.log('=== profileTemp ===', profileTemp);
-      setItem({ ...profileTemp });
+      setItem((p) => ({ ...p, ...profileTemp }));
     }
   }, [profile.profileGetData]);
 

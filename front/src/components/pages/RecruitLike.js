@@ -11,7 +11,7 @@ import { GET_LIKE_DONE, GET_LIKE_REQUEST } from '../../reducers/like';
 import TagShower from '../components/tag/TagShower';
 import TagSelector from '../components/tag/TagSelector';
 
-export default function CommunityLike(props) {
+export default function CommunityLike() {
   const targetRef = useRef();
   const { like } = useSelector((state) => state);
   const [taglist, setTaglist] = useState([]);
@@ -19,16 +19,9 @@ export default function CommunityLike(props) {
   useEffect(() => {
     if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.POSITION);
-      // const res = [];
-      console.log(temp);
-      // temp.forEach((item) => {
-      //   res.concat([...res, { ...item, item }]);
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      // });
       const tt = temp.map((t) => {
         return { ...t, selected: false };
       });
-      console.log(tt);
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);
@@ -55,7 +48,7 @@ export default function CommunityLike(props) {
               className={'col-12 col-lg-10'}
               style={{ paddingLeft: '30px' }}
             >
-              <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
+              <TagShower tagList={taglist} setTagList={setTaglist} />
               <PostList
                 type={'recruit'}
                 targetRef={targetRef}
@@ -64,8 +57,8 @@ export default function CommunityLike(props) {
                 list={like.list}
                 typeRequest={GET_LIKE_REQUEST}
                 typeDone={GET_LIKE_DONE}
-              ></PostList>
-              <div ref={targetRef}></div>
+              />
+              <div ref={targetRef} />
               {/* {mapPost}*/}
             </ProfileDiv>
           </div>

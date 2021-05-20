@@ -24,17 +24,18 @@ export default function Profile() {
   const dispatch = useDispatch();
   const [role, setRole] = useState('');
   const user = useSelector((state) => state.user);
+  const profile = useSelector((state) => state.profile);
+
+  console.log(profile);
 
   useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
+    if (user.me === null) return;
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
     setRole(user.me.role);
   }, [user.me, dispatch]);
 
   return (
-    <form>
+    <>
       <div className="container text-left">
         <StyledHeaderDiv padding title={'계정관리'}>
           <div style={{ flex: '0 0' }}>
@@ -72,6 +73,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-    </form>
+    </>
   );
 }

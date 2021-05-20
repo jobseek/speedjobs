@@ -12,17 +12,19 @@ import {
   PROFILE_UPDATE_SUCCESS,
 } from '../reducers/profile';
 
-function getProfileApi(data) {
-  if (data.role === 'ROLE_COMPANY') {
-    return axios.get(`/user/company/${data.id}`);
+function getProfileApi(action) {
+  const role = action.me.role;
+  const me = action.me.id;
+  if (role === 'ROLE_MEMBER') {
+    return axios.get(`/user/member/${me}`);
   } else {
-    return axios.get(`/user/member/${data.id}`);
+    return axios.get(`/user/company/${me}`);
   }
 }
 
 function* getProfile(action) {
   try {
-    const result = yield call(getProfileApi, action.data);
+    const result = yield call(getProfileApi, action);
     yield put({
       type: PROFILE_GET_SUCCESS,
       data: result.data,

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,6 +19,57 @@ import ProfileInputs from '../../components/Profile/ProfileInputs';
 import ProfileTextarea from '../../components/Profile/ProfileTextarea';
 import { ME_REQUEST } from '../../../reducers/user';
 
+const DropDownContainer = styled('div')`
+  position: relative;
+  margin: 0 auto;
+`;
+
+const DropDownHeader = styled('div')`
+  width: 100%;
+  border-radius: 27px;
+  margin-bottom: 10px;
+  padding: 3px 20px 3px;
+  height: 35px;
+  font-weight: 500;
+  border: 1px solid silver;
+  cursor: pointer;
+`;
+
+const DropDownListContainer = styled('div')``;
+
+const DropDownList = styled('ul')`
+  width: 100%;
+  border-radius: 27px;
+  position: absolute;
+  padding-left: 20px;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  box-sizing: border-box;
+  font-weight: 500;
+  z-index: 1;
+  overflow-y: scroll;
+  height: 150px;
+
+  &:first-child {
+    padding-top: 0.8em;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ListItem = styled('li')`
+  list-style: none;
+  margin-bottom: 0.8em;
+  cursor: pointer;
+
+  &:hover {
+    color: black;
+    font-weight: bold;
+  }
+`;
+
 /**
  * 기업회원 수정 페이지
  * 1. dispatch => PROFILE_GET_REQUEST 액션 발생
@@ -31,11 +83,36 @@ import { ME_REQUEST } from '../../../reducers/user';
  * 9. Redux_Saga에 변경된 데이터 form, role을 확인하기위한 user.me, 사용자 고유 id를 확인하기 위한 user.me.id를 같이 보내준다.
  * 10. 리덕스가 PROFILE_UPDATE_SUCCESS를 보내주면 성공적으로 수정이 완료되었기 때문에 useHistory를 이용해서 조회 페이지로 가게 한다.
  */
-
 export default function CorporateModify() {
+  const [options] = useState([
+    { id: 0, avgSalary: '3,000 이상' },
+    { id: 1, avgSalary: '3,500 이상' },
+    { id: 2, avgSalary: '4,000 이상' },
+    { id: 3, avgSalary: '4,500 이상' },
+    { id: 4, avgSalary: '5,000 이상' },
+    { id: 5, avgSalary: '5,500 이상' },
+    { id: 6, avgSalary: '6,000 이상' },
+    { id: 7, avgSalary: '6,500 이상' },
+    { id: 8, avgSalary: '7,000 이상' },
+    { id: 9, avgSalary: '7,500 이상' },
+    { id: 10, avgSalary: '8,000 이상' },
+  ]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const toggling = () => setIsOpen(!isOpen);
+
+  const onOptionClicked = (value) => () => {
+    setSelectedOption(value);
+    setIsOpen(false);
+    console.log(selectedOption);
+  };
+
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector((state) => state.user);
+
   const profile = useSelector((state) => state.profile);
   const [form, setForm] = useState({
     companyName: '',
@@ -48,13 +125,12 @@ export default function CorporateModify() {
     scale: '',
     homepage: '',
     address: '',
+    avgSalary: '',
   });
 
   useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
+    if (user.me === null) return;
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
   }, [user.me, dispatch]);
 
   useEffect(() => {
@@ -64,7 +140,7 @@ export default function CorporateModify() {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      setForm({ ...profileTemp });
+      setForm((p) => ({ ...p, ...profileTemp }));
     }
   }, [profile.profileGetData]);
 
@@ -76,16 +152,13 @@ export default function CorporateModify() {
     (e) => {
       e.preventDefault();
       if (user.me.id === null) {
-        return;
+        dispatch({ type: ME_REQUEST });
       }
       dispatch({
         type: PROFILE_UPDATE_REQUEST,
         data: form,
-        data2: user.me,
-        me: user.me.id,
+        me: user.me,
       });
-      // 회원정보 수정하고 조회 페이지로 넘어갈 때 새로고침해야 수정된 정보를 볼 수 있는 오류 해결
-      dispatch({ type: ME_REQUEST });
       history.push('/profile');
     },
     [dispatch, form, user.me, history]
@@ -186,14 +259,24 @@ export default function CorporateModify() {
               type="text"
               value={form.scale || ''}
             />
-            {/* 회사 주소*/}
-            <ProfileInputs name={'회사 주소'} />
-            <InputText
-              onChange={(e) => onChangeInput(e)}
-              name={'address'}
-              type="text"
-              value={form.address || ''}
-            />
+            {/* 평균 연봉*/}
+            <ProfileInputs name={'평균 연봉'} />
+            <DropDownContainer>
+              <DropDownHeader onClick={toggling}>
+                {selectedOption || '3,000 이상'}
+              </DropDownHeader>
+              {isOpen && (
+                <DropDownListContainer>
+                  <DropDownList>
+                    {options.map((option) => (
+                      <ListItem onClick={onOptionClicked(option.avgSalary)}>
+                        {option.avgSalary}
+                      </ListItem>
+                    ))}
+                  </DropDownList>
+                </DropDownListContainer>
+              )}
+            </DropDownContainer>
             {/* 회사 소개*/}
             <ProfileInputs name={'회사 소개'} />
             <ProfileTextarea

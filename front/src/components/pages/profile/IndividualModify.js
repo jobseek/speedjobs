@@ -71,10 +71,8 @@ export default function IndividualModify() {
   });
 
   useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
+    if (user.me === null) return;
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
   }, [user.me, dispatch]);
 
   useEffect(() => {
@@ -84,7 +82,7 @@ export default function IndividualModify() {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      setForm({ ...profileTemp });
+      setForm((p) => ({ ...p, ...profileTemp }));
     }
   }, [profile.profileGetData]);
 
@@ -106,16 +104,13 @@ export default function IndividualModify() {
     (e) => {
       e.preventDefault();
       if (user.me.id === null) {
-        return;
+        dispatch({ type: ME_REQUEST });
       }
       dispatch({
         type: PROFILE_UPDATE_REQUEST,
         data: form,
-        data2: user.me,
-        me: user.me.id,
+        me: user.me,
       });
-      // 회원정보 수정하고 조회 페이지로 넘어갈 때 새로고침해야 수정된 정보를 볼 수 있는 오류 해결
-      dispatch({ type: ME_REQUEST });
       history.push('/profile');
     },
 
