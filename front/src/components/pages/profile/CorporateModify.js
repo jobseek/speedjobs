@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {useHistory} from 'react-router';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PROFILE_GET_REQUEST,
   PROFILE_UPDATE_REQUEST,
@@ -16,7 +16,7 @@ import SideMenu from '../../components/SideMenu';
 import ProfileImage from '../../components/Profile/ProfileImage';
 import ProfileInputs from '../../components/Profile/ProfileInputs';
 import ProfileTextarea from '../../components/Profile/ProfileTextarea';
-import {ME_REQUEST} from '../../../reducers/user';
+import { ME_REQUEST } from '../../../reducers/user';
 
 /**
  * 기업회원 수정 페이지

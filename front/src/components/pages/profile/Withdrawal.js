@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PROFILE_DELETE_DONE,
   PROFILE_DELETE_REQUEST,
 } from '../../../reducers/profile';
-import {LOG_OUT_REQUEST} from '../../../reducers/user';
+import { LOG_OUT_REQUEST } from '../../../reducers/user';
 import {
   ProfileDiv,
   StyledButton,

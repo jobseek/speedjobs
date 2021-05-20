@@ -17,7 +17,8 @@ import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.dto.tag.TagRequest;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
-import com.sun.tools.javac.util.List;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -134,7 +135,7 @@ class TagServiceTest {
 			.type(Type.SKILL)
 			.name("테스트 태그2")
 			.build();
-		List<Tag> expected = List.of(t1, t2);
+		List<Tag> expected = Arrays.asList(t1, t2);
 		given(tagRepository.findAll()).willReturn(expected);
 
 		// when

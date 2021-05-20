@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useCookies} from 'react-cookie';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
 import Post from '../Post';
 
 // 글불러오는 컴포넌트.

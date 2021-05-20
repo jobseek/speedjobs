@@ -1,8 +1,8 @@
-import {useDispatch} from 'react-redux';
-import React, {useEffect} from 'react';
+import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Email from '../svg/Email';
-import {StyledButton} from '../Styled';
+import { StyledButton } from '../Styled';
 // import { SIGN_UP_DONE } from '../../../reducers/user';
 
 const StyledModal = styled.div`

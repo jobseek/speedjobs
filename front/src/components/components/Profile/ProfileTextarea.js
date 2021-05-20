@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {TextArea, TextAreaLength} from '../Styled';
+import React, { useState } from 'react';
+import { TextArea, TextAreaLength } from '../Styled';
 
 /**
  * 한 줄 소개, 회사 소개 컴포넌트

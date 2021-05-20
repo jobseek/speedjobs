@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {PersonCircle, Search} from 'react-bootstrap-icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { PersonCircle, Search } from 'react-bootstrap-icons';
 import styled from 'styled-components';
-import {useDispatch, useSelector} from 'react-redux';
-import {useCookies} from 'react-cookie';
-import {useHistory} from 'react-router';
-import {v4} from 'uuid';
-import NavDrop, {Background} from '../components/Nav/NavDrop';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import { useHistory } from 'react-router';
+import { v4 } from 'uuid';
+import NavDrop, { Background } from '../components/Nav/NavDrop';
 import NavSearch from '../components/Nav/NavSearch';
 import NavMenu from '../components/Nav/NavMenu';
 import PopUp from '../components/Notification/PopUp';
@@ -17,8 +17,8 @@ import {
   LOG_OUT_DONE,
   SIGN_UP_DONE,
 } from '../../reducers/user';
-import {POST_ADD_DONE} from '../../reducers/post';
-import {RECRUIT_ADD_DONE} from '../../reducers/recruit';
+import { POST_ADD_DONE } from '../../reducers/post';
+import { RECRUIT_ADD_DONE } from '../../reducers/recruit';
 import {
   PROFILE_DELETE_DONE,
   PROFILE_DELETE_FAIL,

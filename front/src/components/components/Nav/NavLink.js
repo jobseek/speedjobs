@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import styled, {css} from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 import * as PropTypes from 'prop-types';
 // 메인이 아닐경우 밑줄 x
