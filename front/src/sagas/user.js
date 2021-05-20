@@ -14,6 +14,7 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
 } from '../reducers/user';
+import setCookie from '../auth/setCookie';
 
 function logInAPI(data) {
   return axios.post('/auth/login', data);
@@ -64,6 +65,8 @@ function* logIn(action) {
     yield (axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${result.data.accessToken}`);
+    setCookie('ACCESS_TOKEN', result.data.accessToken, 'access');
+    setCookie('REFRESH_TOKEN', result.data.refreshToken, 'refresh');
 
     yield put({
       type: LOG_IN_SUCCESS,

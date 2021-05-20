@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
@@ -9,6 +9,7 @@ import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 import TagSelector from '../components/tag/TagSelector';
 import TagShower from '../components/tag/TagShower';
+import { RECRUIT_LIST_REQUEST } from '../../reducers/recruit';
 
 export const Blank = styled.div`
   display: inline-block;
@@ -30,7 +31,6 @@ export default function Community(props) {
   ];
   const history = useHistory();
   const dispatch = useDispatch();
-  const page = useRef(0);
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const targetRef = useRef();
@@ -40,26 +40,30 @@ export default function Community(props) {
         const firstEntry = entries[0];
         const y = firstEntry.boundingClientRect.y;
         if (prevY.current > y && !isLast.current) {
-          loadMore();
+          if (prevY.current !== 99999) loadMore();
         }
         prevY.current = y;
       },
       { threshold: 1 }
     )
   );
+  const newObserve = () => {
+    observe.current.unobserve(targetRef.current);
+    return new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        const y = firstEntry.boundingClientRect.y;
+        if (prevY.current > y && !isLast.current) {
+          if (prevY.current !== 99999) loadMore();
+        }
+        prevY.current = y;
+      },
+      { threshold: 1 }
+    );
+  };
 
   // 게시물 목록 불러오기
-  const loadMore = () => {
-    console.log(page.current);
-    dispatch({
-      type: POST_LIST_REQUEST,
-      data: {
-        size: 10,
-        page: page.current,
-      },
-    });
-    paging.current = true;
-  };
+
   const rootRef = useRef();
   const { post, user } = useSelector((state) => state);
 
@@ -96,7 +100,7 @@ export default function Community(props) {
         currentObserver.unobserve(divElm);
       }
     };
-  }, [user.me, refresh]);
+  }, [user.me, refresh, form, observe.current]);
 
   useEffect(() => {
     if (post.postListLoading) {
@@ -111,17 +115,12 @@ export default function Community(props) {
       }
       if (post.postList.last) {
         isLast.current = true;
-      } else {
-        page.current++;
+        paging.current = false;
       }
       dispatch({ type: POST_LIST_DONE });
+      observe.current = newObserve();
     }
-    // if (post.postListSearchBar) {
-    //   setLoading(false);
-    //   setPostList([...post.postList.content]);
-    //   dispatch({ type: POST_LIST_DONE });
-    // }
-  }, [post, setPostList, setLoading, page, dispatch]);
+  }, [post, setPostList, setLoading, dispatch]);
 
   useEffect(() => {
     setForm((p) => {
@@ -132,9 +131,9 @@ export default function Community(props) {
       if (ids === '') {
         // eslint-disable-next-line
         const { tagIds, ...res } = p;
-        return { ...res };
+        return { ...res, page: 0 };
       } else {
-        return { ...p, tagIds: ids };
+        return { ...p, page: 0, tagIds: ids };
       }
     });
   }, [taglist, dispatch]);
@@ -145,8 +144,10 @@ export default function Community(props) {
       data: form,
     });
     paging.current = false;
+    isLast.current = false;
+    observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
-  }, [form.tagIds, dispatch]);
+  }, [form.tagIds, dispatch, form.order]);
 
   const mapPost = postList.map((pl) => (
     <Post
@@ -166,21 +167,12 @@ export default function Community(props) {
 
   // 게시물 검색하기
   const OrderHandler = (sort) => {
-    setForm({ ...form, order: sort });
+    setForm({ ...form, order: sort, page: 0 });
   };
-  useEffect(() => {
-    if (form?.order !== undefined) {
-      dispatch({
-        type: POST_LIST_REQUEST,
-        data: form,
-      });
-    }
-    paging.current = false;
-  }, [dispatch, form]);
   const InputHandler = (e, i) => {
     setForm((p) => ({
       size: p.size,
-      page: p.page,
+      page: 0,
       [i.target]: e.target.value,
     }));
   };
@@ -189,11 +181,19 @@ export default function Community(props) {
       type: POST_LIST_REQUEST,
       data: form,
     });
+    isLast.current = false;
     paging.current = false;
   };
   const EnterHandler = (e) => {
     if (e.key === 'Enter') SearchHandler();
   };
+  const loadMore = useCallback(() => {
+    dispatch({
+      type: POST_LIST_REQUEST,
+      data: { ...form, page: form.page + 1 },
+    });
+    paging.current = true;
+  }, [paging.current, dispatch, form]);
 
   return (
     <>

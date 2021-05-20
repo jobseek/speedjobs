@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useCookies } from 'react-cookie';
@@ -30,7 +30,6 @@ export default function Recruitment() {
   ];
   const history = useHistory();
   const dispatch = useDispatch();
-  const page = useRef(0);
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const paging = useRef(false);
@@ -42,23 +41,26 @@ export default function Recruitment() {
         const firstEntry = entries[0];
         const y = firstEntry.boundingClientRect.y;
         if (prevY.current > y && !isLast.current) {
-          loadMore();
+          if (prevY.current !== 99999) loadMore();
         }
         prevY.current = y;
       },
       { threshold: 1 }
     )
   );
-
-  const loadMore = () => {
-    dispatch({
-      type: RECRUIT_LIST_REQUEST,
-      data: {
-        size: 10,
-        page: page.current,
+  const newObserve = () => {
+    observe.current.unobserve(targetRef.current);
+    return new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        const y = firstEntry.boundingClientRect.y;
+        if (prevY.current > y && !isLast.current) {
+          if (prevY.current !== 99999) loadMore();
+        }
+        prevY.current = y;
       },
-    });
-    paging.current = true;
+      { threshold: 1 }
+    );
   };
 
   const rootRef = useRef();
@@ -92,7 +94,7 @@ export default function Recruitment() {
         currentObserver.unobserve(divElm);
       }
     };
-  }, [user.me, refresh]);
+  }, [user.me, refresh, observe.current]);
 
   useEffect(() => {
     if (recruit.recruitListLoading) {
@@ -107,12 +109,12 @@ export default function Recruitment() {
       }
       if (recruit.recruitList.last) {
         isLast.current = true;
-      } else {
-        page.current++;
+        paging.current = false;
       }
       dispatch({ type: RECRUIT_LIST_DONE });
+      observe.current = newObserve();
     }
-  }, [recruit, setRecruitList, setLoading, page, dispatch]);
+  }, [recruit, setRecruitList, setLoading, dispatch]);
 
   useEffect(() => {
     setForm((p) => {
@@ -123,9 +125,9 @@ export default function Recruitment() {
       if (ids === '') {
         // eslint-disable-next-line
         const { tagIds, ...res } = p;
-        return { ...res };
+        return { ...res, page: 0 };
       } else {
-        return { ...p, tagIds: ids };
+        return { ...p, page: 0, tagIds: ids };
       }
     });
   }, [taglist, dispatch]);
@@ -136,8 +138,10 @@ export default function Recruitment() {
       data: form,
     });
     paging.current = false;
+    isLast.current = false;
+    observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
-  }, [form.tagIds, dispatch]);
+  }, [form.tagIds, dispatch, form.order]);
 
   const mapRecruit = recruitList.map((pl) => (
     <Post
@@ -156,21 +160,13 @@ export default function Recruitment() {
 
   // 게시물 검색하기
   const OrderHandler = (sort) => {
-    setForm({ ...form, order: sort });
+    setForm({ ...form, order: sort, page: 0 });
   };
-  useEffect(() => {
-    if (form?.order !== undefined) {
-      dispatch({
-        type: RECRUIT_LIST_REQUEST,
-        data: form,
-      });
-    }
-    paging.current = false;
-  }, [dispatch, form]);
+
   const InputHandler = (e, i) => {
     setForm((p) => ({
       size: p.size,
-      page: p.page,
+      page: 0,
       [i.target]: e.target.value,
     }));
   };
@@ -179,12 +175,20 @@ export default function Recruitment() {
       type: RECRUIT_LIST_REQUEST,
       data: form,
     });
+    isLast.current = false;
     paging.current = false;
   };
   const EnterHandler = (e) => {
     if (e.key === 'Enter') SearchHandler();
   };
 
+  const loadMore = useCallback(() => {
+    dispatch({
+      type: RECRUIT_LIST_REQUEST,
+      data: { ...form, page: form.page + 1 },
+    });
+    paging.current = true;
+  }, [paging.current, dispatch, form]);
   return (
     <>
       <Banner />

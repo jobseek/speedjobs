@@ -1,5 +1,6 @@
 import axios from 'axios';
 import address from './address';
+import setCookie from './setCookie';
 
 export default function hello() {
   return null;
@@ -38,6 +39,7 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
             return response.json();
           })
           .then((response) => {
+            setCookie('ACCESS_TOKEN', response.accessToken, 'access');
             originalReq.headers[
               'Authorization'
             ] = `Bearer ${response.accessToken}`;

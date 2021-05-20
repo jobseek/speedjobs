@@ -230,7 +230,7 @@ export default function PostDetail(props) {
               </StyledButton>
             </div>
           )}
-          {user.me.role === 'ROLE_ADMIN' && (
+          {user.me?.role === 'ROLE_ADMIN' && (
             <div style={{ textAlign: 'right' }}>
               <StyledButton white onClick={() => DeleteHandler()}>
                 삭제
