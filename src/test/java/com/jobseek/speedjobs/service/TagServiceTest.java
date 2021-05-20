@@ -154,7 +154,7 @@ class TagServiceTest {
 	@DisplayName("없는 태그 id 조회 시 예외 발생")
 	@Test
 	void read_Invalid_Tag_id() {
-		given(tagRepository.findById(anyLong()))
+		given(tagRepository.findById(99L))
 			.willThrow(new NotFoundException("존재하지 않는 태그입니다."));
 		assertThrows(NotFoundException.class, () -> tagRepository.findById(99L));
 	}

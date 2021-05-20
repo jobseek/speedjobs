@@ -1,34 +1,44 @@
 package com.jobseek.speedjobs.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.jobseek.speedjobs.domain.recruit.RecruitQueryRepository;
 import com.jobseek.speedjobs.domain.recruit.RecruitRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @ExtendWith(MockitoExtension.class)
 class RecruitServiceTest {
 
-	@MockBean
+	@Mock
 	RecruitRepository recruitRepository;
-	@MockBean
+
+	@Mock
 	RecruitQueryRepository recruitQueryRepository;
-	@MockBean
+
+	@Mock
 	TagService tagService;
-	@MockBean
+
+	@Mock
 	UserService userService;
-	private RecruitService recruitService;
+
+	RecruitService recruitService;
 
 	@BeforeEach
 	void setUp() {
-		recruitService = new RecruitService(recruitRepository, recruitQueryRepository, tagService, userService);
+		recruitService = new RecruitService(recruitRepository, recruitQueryRepository, tagService,
+			userService);
 	}
 
+	@DisplayName("서비스 생성 테스트")
 	@Test
-	public void test() {
-		recruitService.findOne(1L);
+	void createService() {
+		assertNotNull(recruitService);
 	}
+
 
 }
