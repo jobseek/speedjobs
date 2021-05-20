@@ -39,7 +39,6 @@ out/
 ### Setting ###
 .DS_Store
 *.yaml
-*.txt
 
 # underdogs
 src/main/resources/static
