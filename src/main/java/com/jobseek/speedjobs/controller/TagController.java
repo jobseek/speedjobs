@@ -30,7 +30,6 @@ public class TagController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Long> saveTag(@Valid @RequestBody TagRequest tagRequest) {
-//		tagService.saveTag(tagRequest);
 		return ResponseEntity.ok().body(tagService.saveTag(tagRequest));
 	}
 
