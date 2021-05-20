@@ -17,14 +17,17 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @PrimaryKeyJoinColumn(name = "user_id")
 @Table(name = "members")
+@SuperBuilder
 public class Member extends User {
 
 	private String gender;
