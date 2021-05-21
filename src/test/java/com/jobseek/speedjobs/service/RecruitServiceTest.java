@@ -99,18 +99,19 @@ class RecruitServiceTest {
 			.tagIds(Arrays.asList(1L,2L,3L))
 			.build();
 
-//		Company company = Company.builder()
-//			.password("jobseek2021!")
-//			.contact("010-1234-5678")
-//			.nickname("잡식회사")
-//			.role(Role.ROLE_COMPANY)
-//			.name("잡식회사")
-//			.email("company@company.com")
-//			.build();
-//		System.out.println("아이디 : " + company.getId());
+		User company = User.builder()
+			.password("jobseek2021!")
+			.contact("010-1234-5678")
+			.nickname("잡식회사")
+			.role(Role.ROLE_COMPANY)
+			.name("잡식회사")
+			.email("company@company.com")
+			.build();
+
 		given(recruitRepository.save(any(Recruit.class))).willReturn(expected);
 		Recruit save = recruitRepository.save(expected);
+		Long savedRecruit = recruitService.save(recruitRequest, company);
 		assertEquals(expected.getId(),save.getId());
-
+		assertEquals(expected.getId(),savedRecruit);
 	}
 }
