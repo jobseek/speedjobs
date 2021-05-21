@@ -24,9 +24,6 @@ export default function Profile() {
   const dispatch = useDispatch();
   const [role, setRole] = useState('');
   const user = useSelector((state) => state.user);
-  const profile = useSelector((state) => state.profile);
-
-  console.log(profile);
 
   useEffect(() => {
     if (user.me === null) return;

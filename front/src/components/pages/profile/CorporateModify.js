@@ -85,29 +85,23 @@ const ListItem = styled('li')`
  */
 export default function CorporateModify() {
   const [options] = useState([
-    { id: 0, avgSalary: '3,000 이상' },
-    { id: 1, avgSalary: '3,500 이상' },
-    { id: 2, avgSalary: '4,000 이상' },
-    { id: 3, avgSalary: '4,500 이상' },
-    { id: 4, avgSalary: '5,000 이상' },
-    { id: 5, avgSalary: '5,500 이상' },
-    { id: 6, avgSalary: '6,000 이상' },
-    { id: 7, avgSalary: '6,500 이상' },
-    { id: 8, avgSalary: '7,000 이상' },
-    { id: 9, avgSalary: '7,500 이상' },
-    { id: 10, avgSalary: '8,000 이상' },
+    { id: 0, avgSalary: 3000, name: '3,000 이상' },
+    { id: 1, avgSalary: 3500, name: '3,500 이상' },
+    { id: 2, avgSalary: 4000, name: '4,000 이상' },
+    { id: 3, avgSalary: 4500, name: '4,500 이상' },
+    { id: 4, avgSalary: 5000, name: '5,000 이상' },
+    { id: 5, avgSalary: 5500, name: '5,500 이상' },
+    { id: 6, avgSalary: 6000, name: '6,000 이상' },
+    { id: 7, avgSalary: 6500, name: '6,500 이상' },
+    { id: 8, avgSalary: 7000, name: '7,000 이상' },
+    { id: 9, avgSalary: 7500, name: '7,500 이상' },
+    { id: 10, avgSalary: 8000, name: '8,000 이상' },
   ]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const toggling = () => setIsOpen(!isOpen);
-
-  const onOptionClicked = (value) => () => {
-    setSelectedOption(value);
-    setIsOpen(false);
-    console.log(selectedOption);
-  };
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -128,25 +122,15 @@ export default function CorporateModify() {
     avgSalary: '',
   });
 
-  useEffect(() => {
-    if (user.me === null) return;
-    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
-  }, [user.me, dispatch]);
-
-  useEffect(() => {
-    if (profile.profileGetData) {
-      const profileTemp = { ...profile.profileGetData };
-      if (profile.profileGetData.picture === null) {
-        profileTemp.picture =
-          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
-      }
-      setForm((p) => ({ ...p, ...profileTemp }));
-    }
-  }, [profile.profileGetData]);
-
   const onChangeInput = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
+
+  const onOptionClicked = (value, name) => () => {
+    setSelectedOption(name);
+    setForm((p) => ({ ...p, avgSalary: value }));
+    setIsOpen(false);
+  };
 
   const onSubmitHandler = useCallback(
     (e) => {
@@ -163,6 +147,22 @@ export default function CorporateModify() {
     },
     [dispatch, form, user.me, history]
   );
+
+  useEffect(() => {
+    if (user.me === null) return;
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
+  }, [user.me, dispatch]);
+
+  useEffect(() => {
+    if (profile.profileGetData) {
+      const profileTemp = { ...profile.profileGetData };
+      if (profile.profileGetData.picture === null) {
+        profileTemp.picture =
+          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+      }
+      setForm((p) => ({ ...p, ...profileTemp }));
+    }
+  }, [profile.profileGetData]);
 
   return (
     <div className="container text-left">
@@ -269,8 +269,11 @@ export default function CorporateModify() {
                 <DropDownListContainer>
                   <DropDownList>
                     {options.map((option) => (
-                      <ListItem onClick={onOptionClicked(option.avgSalary)}>
-                        {option.avgSalary}
+                      <ListItem
+                        key={option.id}
+                        onClick={onOptionClicked(option.avgSalary, option.name)}
+                      >
+                        {option.name}
                       </ListItem>
                     ))}
                   </DropDownList>
