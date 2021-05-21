@@ -28,7 +28,7 @@ public class RecruitListResponse {
 	private LocalDateTime closeDate;
 	private Status status;
 	private String thumbnail;
-	private int experience;
+	private Integer experience;
 	private Position position;
 	private Map<Type, List<TagMap>> tags;
 	private LocalDateTime createdDate;

@@ -5,6 +5,7 @@ import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.common.exception.UnauthorizedException;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +68,7 @@ public class RestExceptionHandler {
 	public ResponseEntity<ErrorResponse> Exception(Exception e) {
 		ErrorResponse response = new ErrorResponse(e.getMessage());
 		log.error("Exception - {}", e.getMessage());
+		log.error(Arrays.toString(e.getStackTrace()));
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 }

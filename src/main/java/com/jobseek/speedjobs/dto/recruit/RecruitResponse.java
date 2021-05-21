@@ -45,7 +45,7 @@ public class RecruitResponse {
 	private String description;
 	private String homepage;
 	private String address;
-	private int avgSalary;
+	private Integer avgSalary;
 	private Double latitude;
 	private Double longitude;
 

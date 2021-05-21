@@ -61,7 +61,7 @@ public class Recruit extends BaseTimeEntity {
 
 	private String thumbnail;
 
-	private int experience;
+	private Integer experience;
 
 	private int viewCount;
 
