@@ -94,12 +94,12 @@ public class UserService {
 		}
 	}
 
-	public MemberInfoResponse findMemberInfo(Long userId, User user) {
+	public MemberInfoResponse findMemberInfo(Long userId) {
 		Member member = findMember(userId);
 		return MemberInfoResponse.of(member);
 	}
 
-	public CompanyInfoResponse findCompanyInfo(Long userId, User user) {
+	public CompanyInfoResponse findCompanyInfo(Long userId) {
 		Company company = findCompany(userId);
 		return CompanyInfoResponse.of(company);
 	}
@@ -117,7 +117,7 @@ public class UserService {
 		Company company = findCompany(userId);
 		company.updateCompanyInfo(request.getName(), request.getNickname(),
 			request.getPicture(), request.getContact(), request.getCompanyName(),
-			request.getScale(), request.toCompanyDetail());
+			request.getScale(), request.getCompanyDetail());
 	}
 
 	@Transactional

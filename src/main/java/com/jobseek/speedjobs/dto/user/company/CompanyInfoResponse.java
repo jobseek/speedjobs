@@ -14,28 +14,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompanyInfoResponse {
 
-	private Long id;
+	// user
 	private String name;
+	private String nickname;
 	private String email;
 	private String contact;
 	private String picture;
 
-	//company
+	// company
 	private String companyName;
 	private String logoImage;
-	private int scale;
+	private Integer scale;
 
-	//detail
+	// detail
 	private String registrationNumber;
-	private String homepage;
 	private String description;
+	private String homepage;
+	private String address;
+	private Integer avgSalary;
+	private Double latitude;
+	private Double longitude;
 
 	public static CompanyInfoResponse of(Company company) {
 		CompanyDetail detail = company.getCompanyDetail();
 
 		return CompanyInfoResponse.builder()
-			.id(company.getId())
 			.name(company.getName())
+			.nickname(company.getNickname())
 			.email(company.getEmail())
 			.contact(company.getContact())
 			.picture(company.getPicture())
@@ -43,7 +48,12 @@ public class CompanyInfoResponse {
 			.logoImage(company.getLogoImage())
 			.scale(company.getScale())
 			.registrationNumber(detail.getRegistrationNumber())
+			.description(detail.getDescription())
 			.homepage(detail.getHomepage())
-			.description(detail.getDescription()).build();
+			.address(detail.getAddress())
+			.avgSalary(detail.getAvgSalary())
+			.latitude(detail.getLatitude())
+			.longitude(detail.getLongitude())
+			.build();
 	}
 }

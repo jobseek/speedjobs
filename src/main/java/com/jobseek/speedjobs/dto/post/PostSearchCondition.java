@@ -16,6 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostSearchCondition {
 
+	private Long authorId;
+
 	private List<Long> tagIds;
 
 	private String author;

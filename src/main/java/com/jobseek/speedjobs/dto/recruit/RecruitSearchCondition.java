@@ -17,6 +17,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecruitSearchCondition {
 
+	private Long companyId;
+
 	private List<Long> tagIds;
 
 	private String title;
@@ -30,8 +32,6 @@ public class RecruitSearchCondition {
 	private String address;
 
 	private Integer avgSalary;
-
-	private Double rating;
 
 	private List<Status> status;
 

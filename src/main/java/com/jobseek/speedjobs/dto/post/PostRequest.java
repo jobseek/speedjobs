@@ -28,6 +28,6 @@ public class PostRequest {
 	}
 
 	public Post toEntity() {
-		return Post.createPost(title, content);
+		return Post.from(title, content);
 	}
 }

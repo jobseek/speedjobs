@@ -80,7 +80,7 @@ public class Post extends BaseTimeEntity {
 		this.postDetail = postDetail;
 	}
 
-	public static Post createPost(String title, String content) {
+	public static Post from(String title, String content) {
 		return new Post(title, PostDetail.from(content));
 	}
 

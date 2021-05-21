@@ -34,12 +34,9 @@ public class CompanyDetail {
 
 	private Double longitude; // 경도
 
-	private Double rating; // 평가점수
-
 	public static CompanyDetail from(String registrationNumber, String description,
-		String homepage, String address, Integer avgSalary, Double latitude, Double longitude,
-		Double rating) {
+		String homepage, String address, Integer avgSalary, Double latitude, Double longitude) {
 		return new CompanyDetail(registrationNumber, description,
-			homepage, address, avgSalary, latitude, longitude, rating);
+			homepage, address, avgSalary, latitude, longitude);
 	}
 }

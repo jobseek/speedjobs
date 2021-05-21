@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+@SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
 @Repository
 public class UserQueryRepository {

@@ -48,7 +48,6 @@ public class UserListResponse {
 	private String homepage;
 	private Double latitude;
 	private Double longitude;
-	private Double rating;
 	private String registrationNumber;
 	private String logoImage;
 
@@ -88,7 +87,6 @@ public class UserListResponse {
 			.homepage(company.getCompanyDetail().getHomepage())
 			.latitude(company.getCompanyDetail().getLatitude())
 			.longitude(company.getCompanyDetail().getLongitude())
-			.rating(company.getCompanyDetail().getRating())
 			.registrationNumber(company.getCompanyDetail().getRegistrationNumber())
 			.logoImage(company.getLogoImage())
 			.build();

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+@SuppressWarnings("rawtypes")
 @Repository
 @RequiredArgsConstructor
 public class RecruitQueryRepository {
@@ -35,12 +36,12 @@ public class RecruitQueryRepository {
 			.leftJoin(recruit.tags, tag).fetchJoin()
 			.leftJoin(recruit.company, company).fetchJoin()
 			.where(
+				eqCompanyId(condition.getCompanyId()),
 				containsTagIds(condition.getTagIds()),
 				containsTitleOrCompanyName(condition.getTitle(), condition.getCompanyName()),
 				containsContent(condition.getContent()),
 				containsAddress(condition.getAddress()),
 				goeAvgSalary(condition.getAvgSalary()),
-				goeRating(condition.getRating()),
 				betweenDateTime(condition.getOpenDateTime(), condition.getCloseDateTime()),
 				loeExperience(condition.getExperience()),
 				containsStatus(condition.getStatus()),
@@ -54,6 +55,10 @@ public class RecruitQueryRepository {
 			.fetch();
 
 		return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
+	}
+
+	private BooleanExpression eqCompanyId(Long companyId) {
+		return ObjectUtils.isEmpty(companyId) ? null : recruit.company.id.eq(companyId);
 	}
 
 	private BooleanExpression containsTagIds(List<Long> tagIds) {
@@ -89,10 +94,6 @@ public class RecruitQueryRepository {
 
 	private BooleanExpression goeAvgSalary(Integer avgSalary) {
 		return avgSalary == null ? null : recruit.company.companyDetail.avgSalary.goe(avgSalary);
-	}
-
-	private BooleanExpression goeRating(Double rating) {
-		return rating == null ? null : recruit.company.companyDetail.rating.goe(rating);
 	}
 
 	private BooleanExpression betweenDateTime(LocalDateTime openDateTime,

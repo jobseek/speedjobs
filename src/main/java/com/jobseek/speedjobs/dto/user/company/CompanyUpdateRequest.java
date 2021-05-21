@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.dto.user.company;
 
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,23 +25,41 @@ public class CompanyUpdateRequest {
 	@Length(min = 2, max = 15)
 	private String nickname;
 
+	@NotBlank
+	private String companyName;
+
 	private String password;
+
 	private String picture;
+
+	@NotBlank
 	private String contact;
 
-	private String companyName;
-	private int scale;
-	private String registrationNumber;
-	private String description;
-	private String homepage;
-	private String address;
-	private Integer avgSalary; // 단위: 만원
-	private Double latitude; // 위도
-	private Double longitude; // 경도
-	private Double rating; // 평가점수
+	@NotNull
+	private Integer scale;
 
-	public CompanyDetail toCompanyDetail() {
+	@NotBlank
+	private String registrationNumber;
+
+	private String description;
+
+	@NotBlank
+	private String homepage;
+
+	@NotBlank
+	private String address;
+
+	@NotNull
+	private Integer avgSalary;
+
+	@NotNull
+	private Double latitude;
+
+	@NotNull
+	private Double longitude;
+
+	public CompanyDetail getCompanyDetail() {
 		return CompanyDetail.from(registrationNumber, description, homepage, address, avgSalary,
-			latitude, longitude, rating);
+			latitude, longitude);
 	}
 }

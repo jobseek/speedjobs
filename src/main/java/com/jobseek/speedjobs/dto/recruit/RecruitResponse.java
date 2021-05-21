@@ -26,6 +26,8 @@ public class RecruitResponse {
 	private String title;
 	private LocalDateTime openDate;
 	private LocalDateTime closeDate;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
 	private Status status;
 	private String thumbnail;
 	private int experience;
@@ -43,12 +45,10 @@ public class RecruitResponse {
 	private String description;
 	private String homepage;
 	private String address;
-	private Integer avgSalary; // 단위: 만원
-	private Double latitude; // 위도
-	private Double longitude; // 경도
-	private Double rating; // 평가점수
+	private int avgSalary;
+	private Double latitude;
+	private Double longitude;
 
-	// 엔티티들의(of) Response(DTO)로 반환한다.
 	public static RecruitResponse of(Recruit recruit, User user) {
 		Company company = recruit.getCompany();
 		return RecruitResponse.builder()
@@ -56,6 +56,8 @@ public class RecruitResponse {
 			.title(recruit.getTitle())
 			.openDate(recruit.getOpenDate())
 			.closeDate(recruit.getCloseDate())
+			.createdDate(recruit.getCreatedDate())
+			.modifiedDate(recruit.getModifiedDate())
 			.status(recruit.getStatus())
 			.thumbnail(recruit.getThumbnail())
 			.experience(recruit.getExperience())
@@ -75,7 +77,6 @@ public class RecruitResponse {
 			.avgSalary(company.getCompanyDetail().getAvgSalary())
 			.latitude(company.getCompanyDetail().getLatitude())
 			.longitude(company.getCompanyDetail().getLongitude())
-			.rating(company.getCompanyDetail().getRating())
 			.build();
 	}
 }

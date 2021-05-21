@@ -37,6 +37,7 @@ public class PostQueryRepository {
 			.leftJoin(post.tags, tag).fetchJoin()
 			.leftJoin(post.user, user).fetchJoin()
 			.where(
+				eqAuthorId(condition.getAuthorId()),
 				containsTagIds(condition.getTagIds()),
 				containsAuthor(condition.getAuthor()),
 				afterCreatedDate(condition.getCreatedDate()),
@@ -50,6 +51,10 @@ public class PostQueryRepository {
 			.fetch();
 
 		return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
+	}
+
+	private BooleanExpression eqAuthorId(Long authorId) {
+		return ObjectUtils.isEmpty(authorId) ? null : post.user.id.eq(authorId);
 	}
 
 	private BooleanExpression containsTagIds(List<Long> tagIds) {
