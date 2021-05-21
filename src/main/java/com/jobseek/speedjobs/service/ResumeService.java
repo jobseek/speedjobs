@@ -88,7 +88,7 @@ public class ResumeService {
 		Recruit recruit = recruitService.findOne(recruitId);
 		Resume resume = findOne(resumeId);
 		resume.getMember().validateMe(user.getId());
-		if (recruit.applied(user.getId())) {
+		if (recruit.isApplied(user.getId())) {
 			throw new DuplicatedException("이미 지원한 공고입니다.");
 		}
 		resume.applyTo(recruit);

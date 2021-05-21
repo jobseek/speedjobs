@@ -40,6 +40,7 @@ public class RecruitService {
 		Company company = userService.findCompany(user.getId());
 		List<Tag> tags = tagService.findTagsById(recruitRequest.getTagIds());
 		Recruit recruit = recruitRequest.toEntity(company);
+		recruit.setStatus();
 		recruit.addTags(tags);
 		return recruitRepository.save(recruit).getId();
 	}
@@ -81,10 +82,13 @@ public class RecruitService {
 
 	@Transactional
 	@Scheduled(cron = "0 0 * * * *")
-	public void changeStatusOfFinishedRecruit() {
+	public void changeStatus() {
+		List<Recruit> toBeOpenRecruits = recruitRepository
+			.findAllByStatusAndOpenDateAfter(Status.STANDBY, LocalDateTime.now().minusMinutes(1L));
+		toBeOpenRecruits.forEach(recruit -> recruit.changeStatus(Status.PROCESS));
 		List<Recruit> recruits = recruitRepository
-			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now());
-		recruits.forEach(Recruit::changeStatus);
+			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now().plusMinutes(1L));
+		recruits.forEach(recruit -> recruit.changeStatus(Status.END));
 	}
 
 	/**

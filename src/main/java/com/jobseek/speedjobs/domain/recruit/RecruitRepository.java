@@ -10,5 +10,7 @@ public interface RecruitRepository extends JpaRepository<Recruit, Long> {
 	@Query("SELECT r FROM Recruit r ORDER BY r.id DESC")
 	List<Recruit> findAllDesc();
 
+	List<Recruit> findAllByStatusAndOpenDateAfter(Status status, LocalDateTime now);
+
 	List<Recruit> findAllByStatusAndCloseDateBefore(Status status, LocalDateTime now);
 }

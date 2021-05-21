@@ -7,6 +7,7 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.BadRequestException;
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
@@ -100,13 +101,13 @@ public class Recruit extends BaseTimeEntity {
 		this.title = recruit.getTitle();
 		this.openDate = recruit.getOpenDate();
 		this.closeDate = recruit.getCloseDate();
-		this.status = recruit.getStatus();
 		this.thumbnail = recruit.getThumbnail();
 		this.recruitDetail = recruit.getRecruitDetail();
+		setStatus();
 	}
 
-	public Recruit changeStatus() {
-		this.status = Status.END;
+	public Recruit changeStatus(Status status) {
+		this.status = status;
 		return this;
 	}
 
@@ -147,7 +148,21 @@ public class Recruit extends BaseTimeEntity {
 		return user.getRecruitFavorites().contains(this);
 	}
 
-	public boolean applied(Long userId) {
+	public boolean isApplied(Long userId) {
 		return applies.stream().anyMatch(apply -> apply.getMemberId().equals(userId));
+	}
+
+	public void setStatus() {
+		LocalDateTime now = LocalDateTime.now();
+
+		if (closeDate.getYear() == 9999) {
+			status = Status.REGULAR;
+		} else if (openDate.isAfter(now)) {
+			status = Status.STANDBY;
+		} else if (openDate.isBefore(now) && closeDate.isAfter(now)) {
+			status = Status.PROCESS;
+		} else {
+			throw new BadRequestException("공고 일자가 올바르지 않습니다.");
+		}
 	}
 }
