@@ -28,6 +28,8 @@ public class CompanyDetail {
 
 	private String address;
 
+	private String detailedAddress;
+
 	private Integer avgSalary; // 단위: 만원
 
 	private Double latitude; // 위도
@@ -35,8 +37,9 @@ public class CompanyDetail {
 	private Double longitude; // 경도
 
 	public static CompanyDetail from(String registrationNumber, String description,
-		String homepage, String address, Integer avgSalary, Double latitude, Double longitude) {
+		String homepage, String address, String detailedAddress, Integer avgSalary, Double latitude,
+		Double longitude) {
 		return new CompanyDetail(registrationNumber, description,
-			homepage, address, avgSalary, latitude, longitude);
+			homepage, address, detailedAddress, avgSalary, latitude, longitude);
 	}
 }

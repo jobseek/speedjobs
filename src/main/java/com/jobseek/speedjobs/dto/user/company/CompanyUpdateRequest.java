@@ -49,6 +49,8 @@ public class CompanyUpdateRequest {
 	@NotBlank
 	private String address;
 
+	private String detailedAddress;
+
 	@NotNull
 	private Integer avgSalary;
 
@@ -59,7 +61,7 @@ public class CompanyUpdateRequest {
 	private Double longitude;
 
 	public CompanyDetail getCompanyDetail() {
-		return CompanyDetail.from(registrationNumber, description, homepage, address, avgSalary,
-			latitude, longitude);
+		return CompanyDetail.from(registrationNumber, description, homepage, address,
+			detailedAddress, avgSalary, latitude, longitude);
 	}
 }

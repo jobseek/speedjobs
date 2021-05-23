@@ -67,7 +67,7 @@ public class UserSaveRequest {
 			.contact(contact)
 			.companyName(companyName)
 			.companyDetail(CompanyDetail.from(registrationNumber, null, homepage,
-				null, null, null, null))
+				null, null, null, null, null))
 			.build();
 	}
 

@@ -31,6 +31,7 @@ public class CompanyInfoResponse {
 	private String description;
 	private String homepage;
 	private String address;
+	private String detailedAddress;
 	private Integer avgSalary;
 	private Double latitude;
 	private Double longitude;
@@ -51,6 +52,7 @@ public class CompanyInfoResponse {
 			.description(detail.getDescription())
 			.homepage(detail.getHomepage())
 			.address(detail.getAddress())
+			.detailedAddress(detail.getDetailedAddress())
 			.avgSalary(detail.getAvgSalary())
 			.latitude(detail.getLatitude())
 			.longitude(detail.getLongitude())

@@ -98,10 +98,19 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "birth": "1992-05-30",
+  "name": "잡식",
+  "nickname": "잡식",
+  "companyName": "(주)잡식",
   "contact": "010-5229-7882",
-  "intro": "안냐세용",
-  "nickname": "boki"
+  "scale": 100,
+  "registrationNumber": "123-45-67890",
+  "homepage": "https://jobseek.com",
+  "address": "경기 성남시 분당구 불정로 6",
+  "detailedAddress": "2층",
+  "avgSalary": 5000,
+  "latitude": 37.5866076,
+  "longitude": 126.9726223,
+  "description": "안녕하세요. 잡식입니다."
 }
 
 ### 11. 회원탈퇴(본인)
