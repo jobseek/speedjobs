@@ -40,7 +40,6 @@ export default function ProfileImage({ onChange, value }) {
   const onFileChange = async (e) => {
     setLoading(true);
     const file = e.target.files[0];
-    console.log('=== 이미지 파일 정보 ===', file);
 
     const data = new FormData();
     data.append('files', e.target.files[0]);
@@ -53,27 +52,17 @@ export default function ProfileImage({ onChange, value }) {
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
       );
 
-    /**
-     * 이미지 업로드 조건
-     * 1. 이미지를 선택하지 않을 경우
-     * 2. 이미지 형식이 아닌 파일을 선택항 경우
-     * 3. 이미지 용량을 초과한 경우
-     * 4. 위의 조건을 모두 만족하지 않을 경우 이미지 업로드 성공
-     */
     if (file === undefined) {
-      console.log('=== 이미지 업로드 실패(파일 미선택) ===');
+      console.log('파일 미선택');
     } else if (
       file.type !== 'image/jpeg' &&
       file.type !== 'image/png' &&
       file.type !== 'image/gif'
     ) {
-      console.log('=== 이미지 업로드 실패(잘못된 파일 형식) ===');
       alert('이미지 파일만 등록할 수 있습니다.');
     } else if (file.size > 1024 * 1024 * 10) {
       alert('10MB 이하 이미지만 가능합니다.');
-      console.log('=== 이미지 업로드 실패(용량 초과) ===');
     } else {
-      console.log('=== 이미지 업로드 성공 ===');
       e.target = { name: 'picture', value: url.toString() };
       onChange(e);
     }

@@ -312,6 +312,8 @@ export default function Resume() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
+  console.log(form);
+
   return (
     <>
       <div className="container text-left">

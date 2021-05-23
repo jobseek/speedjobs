@@ -26,7 +26,7 @@ public class MemberUpdateRequest {
 	private String picture;
 	private String contact;
 	//멤버
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	@JsonFormat(timezone = "Asia/Seoul")
 	private LocalDate birth;
 	private String bio;
 	private String gender;

@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import KakaoMap from '../../data/KakaoMap';
 import DaumAddress from '../../data/DaumAddress';
 
-export default function AnnounceLocation(props) {
+export default function AnnounceLocation({ form, setForm }) {
   // 도로명주소
   const [addr, setAddr] = useState('');
-  //위도, 경도
   const [location, setLocation] = useState([]);
+
+  const value = location[0];
+  const value2 = location[1];
+
+  useEffect(() => {
+    setForm((p) => ({ ...p, latitude: value, longitude: value2 }));
+  }, [setForm, value2, value]);
 
   return (
     <>
-      <div style={{ margin: '15px 0' }}>
-        <DaumAddress onChange={setAddr} />
-        <KakaoMap location={setLocation} address={addr} />
-        {/* <div>{location[0] + ' ' + location[1]}</div> */}
+      <div style={{ marginBottom: '10px' }}>
+        <div>&nbsp;&nbsp;주소</div>
+        <DaumAddress
+          onChange={setAddr}
+          form={form}
+          setForm={setForm}
+          value={value}
+          value2={value2}
+        />
+        <KakaoMap location={setLocation} address={addr} setForm={setForm} />
       </div>
     </>
   );

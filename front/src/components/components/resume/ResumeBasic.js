@@ -58,7 +58,6 @@ export default function ResumeBasic({
   const [img, setImage] = useState(
     'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
   );
-  const [setStartDate] = useState(new Date());
 
   const onChangeHandler2 = useCallback(
     (e) => {
@@ -102,7 +101,7 @@ export default function ResumeBasic({
     if (user.me === null) {
       return;
     }
-    dispatch({ type: PROFILE_GET_REQUEST, data: user.me });
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
   }, [user.me, dispatch]);
 
   const onChange2 = async (e) => {
@@ -230,7 +229,6 @@ export default function ResumeBasic({
                 locale={ko}
                 dateFormat="yyyy-MM-dd"
                 selected={form?.birth}
-                onSelect={(e) => setStartDate(e)}
                 onChange={(e) => onChangeHandler2(e)}
                 peekMonthDropdown
                 showYearDropdown

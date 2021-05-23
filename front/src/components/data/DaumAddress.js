@@ -1,26 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
-import { StyledButton } from '../components/Styled';
+import { InputText } from '../components/Styled';
 
-export default function DaumAddress({ onChange }) {
+const MyInputText = styled(InputText)`
+  width: 100%;
+  display: inline-block;
+`;
+
+export default function DaumAddress({ onChange, setForm, value, value2 }) {
   const addressStyle = {
     boxShadow:
       '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
     border: '1px solid #eee',
     position: 'fixed',
     top: '200px',
-    width: '80%',
-    zIndex: '5',
+    width: '30%',
+    zIndex: '2',
   };
   const [isOpen, setIsOpen] = useState(false);
   const [fullAddress, setFullAddress] = useState('');
   const [address, setAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
-  const [exAddress, setExAddress] = useState('');
-  const [zipcode, setZipcode] = useState('');
+  const [, setExAddress] = useState('');
+  const [, setZipcode] = useState('');
+  const dropRef = useRef();
 
-  const onClickHandler = () => {
-    setIsOpen(!isOpen);
+  const onClickHandler = (e) => {
+    if (dropRef.current) {
+      if (isOpen && !dropRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
   };
 
   const handleComplete = (data) => {
@@ -44,52 +55,50 @@ export default function DaumAddress({ onChange }) {
     setZipcode(data.zonecode);
   };
   useEffect(() => {
-    if (detailAddress !== '') setFullAddress(address + ' ' + detailAddress);
-  }, [address, detailAddress]);
+    if (detailAddress !== '') {
+      setFullAddress(address + ', ' + detailAddress);
+      setForm((p) => ({
+        ...p,
+        address,
+        detailedAddress: detailAddress,
+        latitude: value,
+        longitude: value2,
+      }));
+    }
+  }, [address, detailAddress, setForm, value, value2]);
   useEffect(() => {
     onChange(fullAddress);
   }, [fullAddress, onChange]);
 
+  useEffect(() => {
+    addEventListener('click', onClickHandler, true);
+    return () => {
+      removeEventListener('click', onClickHandler, true);
+    };
+  });
+
   return (
-    <div>
+    <>
       <div>
-        <input
-          type="text"
-          name="postcode"
-          placeholder="우편번호"
-          defaultValue={zipcode}
-          style={{ width: '25%' }}
-        />
-        <StyledButton mid grey onClick={() => onClickHandler()}>
-          우편번호 찾기
-        </StyledButton>
         {isOpen && (
           <DaumPostcode style={addressStyle} onComplete={handleComplete} />
         )}
+        <div ref={dropRef} style={{ display: 'flex', flexWrap: 'nowrap' }}>
+          <MyInputText
+            type="text"
+            name="roadAddress"
+            placeholder="주소"
+            defaultValue={address}
+            onClick={() => setIsOpen(isOpen !== true)}
+          />
+          <MyInputText
+            type="text"
+            name="detailAddress"
+            placeholder="상세주소"
+            onChange={(e) => setDetailAddress(e.target.value)}
+          />
+        </div>
       </div>
-      <input
-        type="text"
-        name="roadAddress"
-        placeholder="주소"
-        defaultValue={address}
-        style={{ width: '100%' }}
-      />
-      <div style={{ marginBottom: '10px' }}>
-        <input
-          type="text"
-          name="detailAddress"
-          placeholder="상세주소"
-          onChange={(e) => setDetailAddress(e.target.value)}
-          style={{ width: '70%' }}
-        />
-        <input
-          type="text"
-          name="extraAddress"
-          placeholder="참고항목"
-          defaultValue={exAddress}
-          style={{ width: '30%' }}
-        />
-      </div>
-    </div>
+    </>
   );
 }

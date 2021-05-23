@@ -13,16 +13,6 @@ const StyledTextarea = styled(TextArea)`
   border: none;
 `;
 
-/**
- * 기업회원 상세 컴포넌트
- * 1. useSelector를 이용해서 profile 리덕스 상태를 불러온다.
- * 2. useState를 이용해서 input 값에 들어갈 변수들을 선언하고 빈문자열로 초기화한다.
- * 3. useEffect를 이용해서 profile.profileGetData 리덕스 상태를 조회한 결과를 profileTemp에 저장한다.
- *    - 단, 신규 회원은 개인정보 조회 시 profile.proflieGetDate.picture가 null이므로 이를 처리해주어야 한다.
- * 4. setItem <= profileTemp를 전개 연산자 이용해서 저장한다.
- * 5. 각 항목에 해당하는 item을 뿌려준다.
- */
-
 export default function CorporateDetails() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -35,6 +25,8 @@ export default function CorporateDetails() {
     nickname: '',
     homepage: '',
     address: '',
+    detailedAddress: '',
+    avgSalary: '',
     description: '',
     companyName: '',
     registrationNumber: '',
@@ -90,9 +82,16 @@ export default function CorporateDetails() {
       {/* 회사 규모*/}
       <ProfileInputs name={'회사 규모'} />
       <StyledInputText type="number" value={item.scale || ''} disabled />
+      {/* 평균 연봉*/}
+      <ProfileInputs name={'평균 연봉'} />
+      <StyledInputText type="number" value={item.avgSalary || ''} disabled />
       {/* 회사 주소*/}
       <ProfileInputs name={'회사 주소'} />
-      <StyledInputText type="number" value={item.address || ''} disabled />
+      <StyledInputText
+        type="text"
+        value={item.address + ', ' + item.detailedAddress || ''}
+        disabled
+      />
       {/* 회사 소개*/}
       <ProfileInputs name={'회사 소개'} />
       <StyledTextarea
