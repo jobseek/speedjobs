@@ -32,7 +32,7 @@ public class AuthService {
 	private final RedisUtil redisUtil;
 	private final PasswordEncoder passwordEncoder;
 
-	public TokenResponse login(TokenRequest tokenRequest, HttpServletResponse response) {
+	public TokenResponse login(TokenRequest tokenRequest) {
 		Provider provider = tokenRequest.getProvider();
 		User user;
 

@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/recruit")
 public class RecruitController {
 
+	private static final String RECRUIT_URL_PREFIX = "/api/recruit/";
+
 	private final RecruitService recruitService;
 	private final ResumeService resumeService;
 
@@ -41,7 +43,7 @@ public class RecruitController {
 	public ResponseEntity<Void> saveRecruit(@LoginUser User user,
 		@Valid @RequestBody RecruitRequest recruitRequest) {
 		Long id = recruitService.save(recruitRequest, user);
-		return ResponseEntity.created(URI.create("/api/recruit/" + id)).build();
+		return ResponseEntity.created(URI.create(RECRUIT_URL_PREFIX + id)).build();
 	}
 
 	@ApiOperation(value = "공고 수정", notes = "공고를 수정한다.")
@@ -50,7 +52,7 @@ public class RecruitController {
 	public ResponseEntity<Void> updateRecruit(@PathVariable Long recruitId, @LoginUser User user,
 		@Valid @RequestBody RecruitRequest recruitRequest) {
 		recruitService.update(recruitId, user, recruitRequest);
-		return ResponseEntity.created(URI.create("/api/recruit/" + recruitId)).build();
+		return ResponseEntity.created(URI.create(RECRUIT_URL_PREFIX + recruitId)).build();
 	}
 
 	@ApiOperation(value = "공고 삭제", notes = "공고를 삭제한다.")

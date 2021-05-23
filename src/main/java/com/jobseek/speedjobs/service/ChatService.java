@@ -39,4 +39,8 @@ public class ChatService {
 		return messageRepository.findAllByRecruitId(roomId, pageable)
 			.map(MessageResponse::from);
 	}
+
+    public void deleteMessage(Long messageId) {
+		messageRepository.deleteById(messageId);
+    }
 }

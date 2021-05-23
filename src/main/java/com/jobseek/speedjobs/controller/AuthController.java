@@ -26,9 +26,8 @@ public class AuthController {
 
 	@ApiOperation(value = "로그인")
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest tokenRequest,
-		HttpServletResponse response) {
-		return ResponseEntity.ok(authService.login(tokenRequest, response));
+	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest tokenRequest) {
+		return ResponseEntity.ok(authService.login(tokenRequest));
 	}
 
 	@ApiOperation(value = "로그아웃")

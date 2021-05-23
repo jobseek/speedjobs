@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/resume")
 public class ResumeController {
 
+	private static final String RESUME_URL_PREFIX = "/api/resume/";
+
 	private final ResumeService resumeService;
 
 	@ApiOperation(value = "이력서 등록", notes = "이력서를 등록한다.")
@@ -37,8 +39,8 @@ public class ResumeController {
 	@PostMapping
 	public ResponseEntity<Void> save(@Valid @RequestBody ResumeRequest resumeRequest,
 		@LoginUser User user) {
-		Long id = resumeService.save(user, resumeRequest);
-		return ResponseEntity.created(URI.create("/api/resume/" + id)).build();
+		Long resumeId = resumeService.save(user, resumeRequest);
+		return ResponseEntity.created(URI.create(RESUME_URL_PREFIX + resumeId)).build();
 	}
 
 	@ApiOperation(value = "이력서 수정", notes = "이력서를 수정한다.")
@@ -47,7 +49,7 @@ public class ResumeController {
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
 		@Valid @RequestBody ResumeRequest resumeRequest) {
 		resumeService.update(resumeId, user, resumeRequest);
-		return ResponseEntity.created(URI.create("/api/resume/" + resumeId)).build();
+		return ResponseEntity.created(URI.create(RESUME_URL_PREFIX + resumeId)).build();
 	}
 
 	@ApiOperation(value = "이력서 삭제", notes = "이력서를 삭제한다.")
