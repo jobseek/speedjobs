@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.config.auth;
 
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.dto.auth.TokenRequest;
+import com.jobseek.speedjobs.dto.auth.TokenResponse;
 import com.jobseek.speedjobs.service.AuthService;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RequiredArgsConstructor
 @Component
@@ -31,7 +33,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 			.oauthId(oauthId)
 			.provider(provider)
 			.build();
-		authService.login(tokenRequest, response);
-		response.sendRedirect(frontUrl);
+		TokenResponse tokenResponse = authService.login(tokenRequest);
+		String uri = UriComponentsBuilder.fromUriString(frontUrl + "login")
+			.queryParam("token", tokenResponse.getAccessToken())
+			.build()
+			.toUriString();
+		response.sendRedirect(uri);
 	}
 }

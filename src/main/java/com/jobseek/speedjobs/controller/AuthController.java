@@ -6,7 +6,6 @@ import com.jobseek.speedjobs.service.AuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +38,8 @@ public class AuthController {
 
 	@ApiOperation(value = "토큰 재발급", notes = "액세스 토큰이 만료되면 리프레시 토큰을 통해 재발급이 가능하다.")
 	@GetMapping("/reissue")
-	public ResponseEntity<TokenResponse> reissueToken(HttpServletRequest request,
-		HttpServletResponse response) {
-		return ResponseEntity.ok(authService.reissueToken(request, response));
+	public ResponseEntity<TokenResponse> reissueToken(HttpServletRequest request) {
+		return ResponseEntity.ok(authService.reissueToken(request));
 	}
 
 }

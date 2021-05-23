@@ -15,7 +15,6 @@ import com.jobseek.speedjobs.dto.user.UserTokenDto;
 import com.jobseek.speedjobs.utils.JwtUtil;
 import com.jobseek.speedjobs.utils.RedisUtil;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,7 +65,7 @@ public class AuthService {
 		}
 	}
 
-	public TokenResponse reissueToken(HttpServletRequest request, HttpServletResponse response) {
+	public TokenResponse reissueToken(HttpServletRequest request) {
 		String refreshToken = jwtUtil.getTokenFromRequest(request);
 
 		if (!jwtUtil.isRefreshToken(refreshToken) || !redisUtil.hasKey(refreshToken)) {
