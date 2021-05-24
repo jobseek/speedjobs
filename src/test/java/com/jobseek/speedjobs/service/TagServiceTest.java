@@ -8,8 +8,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.tag.Tag;
@@ -63,11 +65,12 @@ class TagServiceTest {
 			.tagType(Type.SKILL)
 			.tagName("테스트 태그")
 			.build();
-
-		given(tagRepository.save(any(Tag.class))).willReturn(expected);
+		when(tagRepository.save(any(Tag.class))).thenReturn(expected);
+//		given(tagRepository.save(any(Tag.class))).willReturn(expected);
 
 		// when
 		Long savedTag = tagService.saveTag(tagRequest);
+//		when(tagService.saveTag(tagRequest)).thenReturn(anyLong());
 
 		// then
 		assertAll(
@@ -108,7 +111,6 @@ class TagServiceTest {
 			.name("테스트 태그")
 			.build();
 		given(tagRepository.findById(anyLong())).willReturn(Optional.of(expected));
-		doNothing().when(tagRepository).deleteById(anyLong());
 
 		// when
 		tagService.deleteTag(1L);
@@ -117,7 +119,7 @@ class TagServiceTest {
 		assertAll(
 			() -> assertNotNull(tagService),
 			() -> assertEquals(Type.SKILL, tagRepository.findById(1L).get().getType()),
-			() -> verify(tagRepository).deleteById(eq(1L))
+			() -> verify(tagRepository).delete(eq(expected))
 		);
 	}
 

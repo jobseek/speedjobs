@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 
 import com.jobseek.speedjobs.domain.company.Company;
+import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.recruit.Position;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.RecruitDetail;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +71,7 @@ class RecruitServiceTest {
 			.id(1L)
 			.title("백엔드 신입 개발자 모집합니다.")
 			.openDate(LocalDateTime.now())
-			.closeDate(LocalDateTime.of(2021,6,20,0,0,0))
+			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
 			.status(Status.PROCESS)
 			.experience(1)
 			.viewCount(200)
@@ -91,12 +93,12 @@ class RecruitServiceTest {
 			.builder()
 			.title("백엔드 신입 개발자 모집합니다.")
 			.openDate(LocalDateTime.now())
-			.closeDate(LocalDateTime.of(2021,6,20,0,0,0))
+			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
 			.status(Status.PROCESS)
 			.experience(1)
 			.position(Position.PERMANENT)
 			.content("저희 회사 백엔드 모집해요.")
-			.tagIds(Arrays.asList(1L,2L,3L))
+			.tagIds(Arrays.asList(1L, 2L, 3L))
 			.build();
 
 		User company = User.builder()
@@ -107,11 +109,135 @@ class RecruitServiceTest {
 			.name("잡식회사")
 			.email("company@company.com")
 			.build();
-
 		given(recruitRepository.save(any(Recruit.class))).willReturn(expected);
-		Recruit save = recruitRepository.save(expected);
+
+		// when
 		Long savedRecruit = recruitService.save(recruitRequest, company);
-		assertEquals(expected.getId(),save.getId());
-		assertEquals(expected.getId(),savedRecruit);
+
+		// then
+		assertEquals(expected.getId(), savedRecruit);
+	}
+
+	@DisplayName("공고 수정 테스트")
+	@Test
+	void updateTest() {
+		// given
+		Long id = 1L;
+		Company company = Company.builder()
+			.password("jobseek2021!")
+			.contact("010-1234-5678")
+			.nickname("잡식회사")
+			.role(Role.ROLE_COMPANY)
+			.name("잡식회사")
+			.email("company@company.com")
+			.build();
+		RecruitRequest recruitRequest = RecruitRequest
+			.builder()
+			.title("프론트엔드 신입 개발자 모집합니다.")
+			.openDate(LocalDateTime.now())
+			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
+			.status(Status.PROCESS)
+			.experience(1)
+			.position(Position.PERMANENT)
+			.content("저희 회사 프론트엔드 모집해요.")
+			.tagIds(Arrays.asList(3L, 5L, 8L))
+			.build();
+		given(recruitRepository.findById(anyLong()))
+			.willReturn(Optional.of(recruitRequest.toEntity(company)));
+		recruitService.update(id, company, recruitRequest);
+//		recruitService.update(id,uesr,request);
+	}
+
+	@DisplayName("공고 삭제 테스트")
+	@Test
+	void deleteTest() {
+		// given
+		RecruitDetail recruitDetail = RecruitDetail.builder()
+			.position(Position.PERMANENT)
+			.content("저희 회사 백엔드 모집해요.")
+			.build();
+		User user = User.builder()
+			.password("jobseek2021!")
+			.contact("010-1234-5678")
+			.nickname("잡식회사")
+			.role(Role.ROLE_COMPANY)
+			.name("잡식회사")
+			.email("company@company.com")
+			.build();
+		Company company = Company.builder()
+			.password("jobseek2021!")
+			.contact("010-1234-5678")
+			.nickname("잡식회사")
+			.role(Role.ROLE_COMPANY)
+			.name("잡식회사")
+			.email("company@company.com")
+			.build();
+		Recruit recruit = Recruit.builder()
+			.id(1L)
+			.title("백엔드 신입 개발자 모집합니다.")
+			.openDate(LocalDateTime.now())
+			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
+			.status(Status.PROCESS)
+			.experience(1)
+			.viewCount(200)
+			.favoriteCount(100)
+			.recruitDetail(recruitDetail)
+			.company(company)
+			.build();
+		given(recruitRepository.findById(anyLong())).willReturn(Optional.of(recruit));
+
+		// when
+		recruitService.delete(1L, user);
+
+		// then
+		assertAll(
+			() -> assertNotNull(recruitService),
+			() -> assertEquals(Status.PROCESS, recruit.getStatus()),
+			() -> verify(recruitRepository).delete(eq(recruit))
+		);
+
+	}
+
+	@DisplayName("공고 단건 조회 테스트")
+	@Test
+	void searchTest() {
+		Long id = 1L;
+		// given
+		RecruitDetail recruitDetail = RecruitDetail.builder()
+			.position(Position.PERMANENT)
+			.content("저희 회사 백엔드 모집해요.")
+			.build();
+		User user = User.builder()
+			.password("jobseek2021!")
+			.contact("010-1234-5678")
+			.nickname("잡식회사")
+			.role(Role.ROLE_COMPANY)
+			.name("잡식회사")
+			.email("company@company.com")
+			.build();
+		Company company = Company.builder()
+			.password("jobseek2021!")
+			.contact("010-1234-5678")
+			.nickname("잡식회사")
+			.role(Role.ROLE_COMPANY)
+			.name("잡식회사")
+			.email("company@company.com")
+			.build();
+		Recruit recruit = Recruit.builder()
+			.id(1L)
+			.title("백엔드 신입 개발자 모집합니다.")
+			.openDate(LocalDateTime.now())
+			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
+			.status(Status.PROCESS)
+			.experience(1)
+			.viewCount(200)
+			.favoriteCount(100)
+			.recruitDetail(recruitDetail)
+			.company(company)
+			.build();
+		given(recruitRepository.findById(anyLong())).willReturn(Optional.of(recruit));
+
+		// when
+		recruitService.delete(1L, user);
 	}
 }
