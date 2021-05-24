@@ -1,12 +1,17 @@
 package com.jobseek.speedjobs.service;
 
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.anyLong;
+import static org.mockito.BDDMockito.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.times;
 
 import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.member.Member;
+import com.jobseek.speedjobs.domain.company.CompanyDetail;
 import com.jobseek.speedjobs.domain.recruit.Position;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.recruit.RecruitDetail;
@@ -18,6 +23,8 @@ import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.domain.user.Role;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
+import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
+import com.jobseek.speedjobs.dto.tag.TagMap;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,7 +101,6 @@ class RecruitServiceTest {
 			.title("백엔드 신입 개발자 모집합니다.")
 			.openDate(LocalDateTime.now())
 			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
-			.status(Status.PROCESS)
 			.experience(1)
 			.position(Position.PERMANENT)
 			.content("저희 회사 백엔드 모집해요.")
@@ -136,7 +142,6 @@ class RecruitServiceTest {
 			.title("프론트엔드 신입 개발자 모집합니다.")
 			.openDate(LocalDateTime.now())
 			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
-			.status(Status.PROCESS)
 			.experience(1)
 			.position(Position.PERMANENT)
 			.content("저희 회사 프론트엔드 모집해요.")
@@ -201,7 +206,6 @@ class RecruitServiceTest {
 	@DisplayName("공고 단건 조회 테스트")
 	@Test
 	void searchTest() {
-		Long id = 1L;
 		// given
 		RecruitDetail recruitDetail = RecruitDetail.builder()
 			.position(Position.PERMANENT)
@@ -215,6 +219,15 @@ class RecruitServiceTest {
 			.name("잡식회사")
 			.email("company@company.com")
 			.build();
+		CompanyDetail companyDetail = CompanyDetail.builder()
+			.longitude(30.0)
+			.latitude(30.0)
+			.description("기업소개")
+			.address("서울시 마포구")
+			.detailedAddress("지우로 3길")
+			.avgSalary(3000)
+			.homepage(null)
+			.build();
 		Company company = Company.builder()
 			.password("jobseek2021!")
 			.contact("010-1234-5678")
@@ -222,6 +235,7 @@ class RecruitServiceTest {
 			.role(Role.ROLE_COMPANY)
 			.name("잡식회사")
 			.email("company@company.com")
+			.companyDetail(companyDetail)
 			.build();
 		Recruit recruit = Recruit.builder()
 			.id(1L)
@@ -236,8 +250,43 @@ class RecruitServiceTest {
 			.company(company)
 			.build();
 		given(recruitRepository.findById(anyLong())).willReturn(Optional.of(recruit));
+		RecruitResponse expected = RecruitResponse.builder()
+			.id(recruit.getId())
+			.title(recruit.getTitle())
+			.openDate(recruit.getOpenDate())
+			.closeDate(recruit.getCloseDate())
+			.createdDate(recruit.getCreatedDate())
+			.modifiedDate(recruit.getModifiedDate())
+			.status(recruit.getStatus())
+			.thumbnail(recruit.getThumbnail())
+			.experience(recruit.getExperience())
+			.position(recruit.getRecruitDetail().getPosition())
+			.content(recruit.getRecruitDetail().getContent())
+			.tags(TagMap.toMap(recruit.getTags()))
+			.viewCount(recruit.getViewCount())
+			.favoriteCount(recruit.getFavoriteCount())
+			.favorite(recruit.favoriteOf(user))
+			.companyId(company.getId())
+			.companyName(company.getCompanyName())
+			.logoImage(company.getLogoImage())
+			.scale(company.getScale())
+			.description(company.getCompanyDetail().getDescription())
+			.homepage(company.getCompanyDetail().getHomepage())
+			.address(company.getCompanyDetail().getAddress())
+			.avgSalary(company.getCompanyDetail().getAvgSalary())
+			.latitude(company.getCompanyDetail().getLatitude())
+			.longitude(company.getCompanyDetail().getLongitude())
+			.build();
+		int beforeViewCount = recruit.getViewCount();
 
 		// when
-		recruitService.delete(1L, user);
+		recruitService.findById(1L, user);
+
+		// then
+		assertAll(
+			() -> assertNotNull(recruitService),
+			() -> assertEquals(Status.PROCESS, expected.getStatus()),
+			() -> assertEquals(beforeViewCount+1, recruit.getViewCount())
+		);
 	}
 }
