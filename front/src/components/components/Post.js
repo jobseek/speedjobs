@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TagBody } from './Styled';
-import { Blank } from '../pages/Community';
 import {
   ADD_LIKE_DONE,
   ADD_LIKE_REQUEST,
@@ -50,6 +49,18 @@ const PostShow = styled(EyeShow)`
   }
 `;
 
+const PostInfo = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  text-align: end;
+`;
+
+const Space = styled.div`
+  height: 13px;
+`;
+const PostInfoIcons = styled.div``;
+
 export default function Post({
   title,
   tags,
@@ -69,13 +80,8 @@ export default function Post({
   const history = useHistory();
   const dispatch = useDispatch();
   const like = useSelector((state) => state.like);
-  useEffect(() => {
-    if (media.matches) {
-      console.log('mobile');
-    }
-  }, [media.matches]);
   // 태그 맵
-  const mapTags = (media.matches ? tags?.slice(0, 2) : tags?.slice(0, 5)).map(
+  const mapTags = (media.matches ? tags?.slice(0, 1) : tags?.slice(0, 5)).map(
     (tag) => (
       <TagBody grey sm key={tag.id}>
         {tag.name}
@@ -148,53 +154,48 @@ export default function Post({
         }}
       >
         <PostTitle onClick={onClickHandler}>{title}</PostTitle>
-        <Blank />
+        <Space />
         {mapTags}
-        {tags.length > 2 && media.matches ? (
+        {tags.length > 1 && media.matches ? (
           <TagBody sm grey>
-            ...
+            +{tags.length - 1}
           </TagBody>
         ) : (
           ''
         )}
-        <div
-          style={{
-            position: 'absolute',
-            right: '20px',
-            top: '15px',
-            textAlign: 'end',
-          }}
-        >
+        <PostInfo>
           <div>
             <PostSubTitle>{writer}</PostSubTitle>
           </div>
           <div style={{ marginBottom: '20px' }}>
             <PostSubTitle>{date}</PostSubTitle>
           </div>
-          {type === 'community' && (
-            <div style={{ display: 'inline-block' }}>
+          <PostInfoIcons>
+            {type === 'community' && (
+              <div style={{ display: 'inline-block' }}>
+                <PostIcons>
+                  <ChatSquareQuote style={{ width: '25px' }} /> {commentCount}
+                </PostIcons>
+              </div>
+            )}
+            <div style={{ display: 'inline-block', marginLeft: '10px' }}>
               <PostIcons>
-                <ChatSquareQuote style={{ width: '25px' }} /> {commentCount}
+                <PostShow /> {viewCount}
               </PostIcons>
             </div>
-          )}
-          <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-            <PostIcons>
-              <PostShow /> {viewCount}
-            </PostIcons>
-          </div>
-          <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-            <PostIcons>
-              {inFav ? (
-                <HeartFill onClick={unFavClick}></HeartFill>
-              ) : (
-                <Heart onClick={favClick}></Heart>
-              )}
-              <span style={{ width: '1px', marginRight: '5px' }}></span>
-              {inFavCnt}
-            </PostIcons>
-          </div>
-        </div>
+            <div style={{ display: 'inline-block', marginLeft: '10px' }}>
+              <PostIcons>
+                {inFav ? (
+                  <HeartFill onClick={unFavClick}></HeartFill>
+                ) : (
+                  <Heart onClick={favClick}></Heart>
+                )}
+                <span style={{ width: '1px', marginRight: '5px' }}></span>
+                {inFavCnt}
+              </PostIcons>
+            </div>
+          </PostInfoIcons>
+        </PostInfo>
       </div>
     </>
   );

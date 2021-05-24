@@ -199,7 +199,7 @@ export default function PostDetail(props) {
         <div className={'container'}>
           <div
             style={{
-              fontSize: '15px',
+              fontSize: '13px',
               fontWeight: 'lighter',
               margin: '10px 0px 20px 0px',
             }}
@@ -219,7 +219,12 @@ export default function PostDetail(props) {
           {/* 본문*/}
           <div
             className={'container-fluid'}
-            style={{ whiteSpace: 'pre-line', width: '100%', padding: 0 }}
+            style={{
+              whiteSpace: 'pre-line',
+              width: '100%',
+              padding: 0,
+              fontSize: '14px',
+            }}
           >
             <autoheight-textarea>
               <PostTextarea value={content.content} />

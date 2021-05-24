@@ -32,6 +32,12 @@ const Chatting = styled.div`
   }
 `;
 
+const MapWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const Choice = styled.div`
   border-radius: 5px;
   position: fixed;
@@ -66,6 +72,7 @@ const Resume = styled.div`
 `;
 
 export default function RecruitmentDetail(props) {
+  const media = matchMedia('screen and (max-width: 768px)');
   const { id } = useParams();
   const history = useHistory();
   const [pop, setPop] = useState('none');
@@ -241,7 +248,10 @@ export default function RecruitmentDetail(props) {
         }}
       >
         {/* 제목 지원 찜하기 */}
-        <StyledHeaderDiv title={content.title ?? '.....'}>
+        <StyledHeaderDiv
+          mobile={media.matches}
+          title={content.title ?? '.....'}
+        >
           {choice && (
             <Choice ref={showRef}>
               <div>이력서 선택</div>
@@ -298,9 +308,11 @@ export default function RecruitmentDetail(props) {
               style={{
                 display: 'block',
                 borderBottom: '1px solid #eee',
+                fontWeight: 'lighter',
+                fontSize: '14px',
               }}
             >
-              <p>요약</p>
+              <p style={{ fontWeight: '700' }}>요약</p>
               <p>직무 : {tags.map((i) => i.name).join(', ')}</p>
               <p>
                 고용형태 :{' '}
@@ -316,7 +328,12 @@ export default function RecruitmentDetail(props) {
             </div>
             {/* 업무소개*/}
             <div
-              style={{ whiteSpace: 'pre-line', padding: '14px' }}
+              style={{
+                whiteSpace: 'pre-line',
+                padding: '14px',
+                fontSize: '14px',
+                fontWeight: 'lighter',
+              }}
               className={'container'}
             >
               {content.content ?? '....'}
@@ -333,7 +350,9 @@ export default function RecruitmentDetail(props) {
               <ChatBox recruitId={id} pop={pop} button={ButtonEvent} />
               <ChatIcon onclick={ButtonEvent} />
             </Chatting>
-            <KakaoMap></KakaoMap>
+            <MapWrapper>
+              <KakaoMap></KakaoMap>
+            </MapWrapper>
 
             {user.me?.nickname === content.companyName && (
               <div style={{ textAlign: 'right' }}>

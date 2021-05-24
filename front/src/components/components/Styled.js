@@ -44,10 +44,13 @@ const StyledButtonInside = styled.div`
     width: 70px;
     font-size: 11px;
   }
-  //@media (max-width: 576px) {
-  //  width: 60px;
-  //  font-size: 10px;
-  //}
+  @media (max-width: 576px) {
+    width: 50px;
+    letter-spacing: 0;
+    font-size: 7px;
+    height: 25px;
+    padding: 4px 5px;
+  }
 
   ${(props) =>
     props.sm &&
@@ -215,24 +218,30 @@ export const StyledHeaderDivInside = styled.div`
 
 export const HeaderTitle = styled.div`
   margin: 10px;
-  flex: 1;
   padding: 5px;
   font-size: 18px;
   text-align: left;
+  flex: 1;
+  @media (max-width: 758px) {
+    font-size: 13px;
+  }
 `;
 
-export const StyledHeaderDiv = ({ children, padding, fix, title }) => (
+export const StyledHeaderDiv = ({ children, padding, fix, title, mobile }) => (
   <>
     <StyledHeaderDivInside padding={padding} fix={fix}>
       <div
         style={{
-          borderBottom: '1px solid #eee ',
           display: 'flex',
-          flexWrap: 'nowrap',
           paddingBottom: '2px',
         }}
       >
-        {title !== undefined && <HeaderTitle>{title}</HeaderTitle>}
+        {title !== undefined && (
+          <HeaderTitle>
+            {mobile && title.length >= 13 ? title.slice(0, 13) + '...' : title}
+          </HeaderTitle>
+        )}
+
         {children}
       </div>
     </StyledHeaderDivInside>
@@ -858,9 +867,9 @@ const Category = styled.div`
   text-align: left;
   align-items: center;
   @media (max-width: 768px) {
-    width: 35px;
+    flex: 0 0 35px;
     font-size: 12px;
-    padding-top: 0;
+    padding: 0 5px;
   }
 `;
 
@@ -878,7 +887,7 @@ const SearchOutline = styled.div`
   @media (max-width: 768px) {
     font-size: 13px;
     height: 24px;
-    width: 200px;
+    width: 170px;
     margin-right: 10px;
   }
 `;
@@ -928,7 +937,8 @@ const OrderList = styled.div`
   //z-index: 2;
   @media (max-width: 768px) {
     font-size: 11px;
-    height: 25px;
+    height: 24px;
+    margin-top: 2px;
     padding: 3px 13px 0px;
   }
 
