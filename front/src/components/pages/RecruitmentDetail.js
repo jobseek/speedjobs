@@ -370,11 +370,10 @@ export default function RecruitmentDetail(props) {
             </Chatting>
             <MapWrapper>
               <KakaoMap
-              address={content.address}
-              location={setLocation}
-            ></KakaoMap>
+                address={content.address}
+                location={setLocation}
+              ></KakaoMap>
             </MapWrapper>
-
 
             {user.me?.id === content.companyId && (
               <div style={{ textAlign: 'right' }}>
