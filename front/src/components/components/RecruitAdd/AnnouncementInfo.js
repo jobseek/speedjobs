@@ -24,18 +24,36 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
   const experienceHandler = (sort) => {
     setForm((p) => ({ ...p, experience: sort }));
   };
+  // const [exTags, setExTags] = useState([]);
+  // useEffect(() => {
+  //   console.log('experience= ', form.experience);
+  //   console.log('experienceTags1= ', experienceTags);
+  //   if (form.experience !== '-1') {
+  //     const num = form.experience + 1;
+  //     const tmp = experienceTags[0];
+  //     experienceTags[0] = experienceTags[num];
+  //     experienceTags[num] = tmp;
+  //     console.log('experienceTag2= ', experienceTags);
+  //     setExTags(experienceTags);
+  //   } else {
+  //     setExTags(experienceTags);
+  //   }
+  // }, [form.experience]);
 
   // position 태그
-  const positionTags = [
+  const positionTags1 = [
     { name: '정규직', sort: 'PERMANENT' },
     { name: '계약직', sort: 'TEMPORARY' },
+  ];
+  const positionTags2 = [
+    { name: '계약직', sort: 'TEMPORARY' },
+    { name: '정규직', sort: 'PERMANENT' },
   ];
   const positionHandler = (sort) => {
     setForm((p) => ({ ...p, position: sort }));
   };
 
   // 직무 태그
-  const [click, setClick] = useState(false);
   const [taglist, setTaglist] = useState([]);
   const tagss = useSelector((state) => state.tag);
   useEffect(() => {
@@ -50,22 +68,24 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
     }
   }, [tagss.tagGetData, form.tags?.POSITION]);
   useEffect(() => {
-    if (click) {
-      setForm((p) => {
-        const ids = taglist.filter((t) => t.selected).map((t) => t.id);
-        if (ids === []) {
-          // eslint-disable-next-line
-          return { ...p };
-        } else {
-          return { ...p, tagIds: [...ids] };
-        }
-      });
-      setClick(!click);
-    }
-  }, [taglist, setForm, click]);
+    setForm((p) => {
+      const ids = taglist.filter((t) => t.selected).map((t) => t.id);
+      if (ids === []) {
+        // eslint-disable-next-line
+        return { ...p };
+      } else {
+        return { ...p, tagIds: [...ids] };
+      }
+    });
+  }, [taglist, setForm]);
 
   // thumbnail 입력
   const [src, setSrc] = useState('');
+  useEffect(() => {
+    if (form.thumbnail !== '' || form.thumbnail !== null) {
+      setSrc(form.thumbnail);
+    }
+  }, [form.thumbnail]);
   const dropHandler = async (e) => {
     e.preventDefault();
     if (e.dataTransfer.files.length !== 1) {
@@ -95,7 +115,7 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
     }
   };
   useEffect(() => {
-    if (src.length > 0) {
+    if (src !== '') {
       setForm((p) => ({ ...p, thumbnail: src }));
     }
   }, [src, setForm]);
@@ -113,10 +133,7 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
     <>
       <div>
         <div style={{ position: 'relative' }}>
-          <div
-            style={{ display: 'inline-block' }}
-            onClick={() => setClick(true)}
-          >
+          <div style={{ display: 'inline-block' }}>
             <TagSelector tagList={taglist} setTagList={setTaglist}>
               직무
             </TagSelector>
@@ -128,7 +145,12 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
               verticalAlign: 'top',
             }}
           >
-            <Order orderItem={positionTags} inOrder={positionHandler} />
+            <Order
+              orderItem={
+                form.position === 'PERMANENT' ? positionTags1 : positionTags2
+              }
+              inOrder={positionHandler}
+            />
           </div>
           <div
             style={{
@@ -139,12 +161,18 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
           >
             <Order orderItem={experienceTags} inOrder={experienceHandler} />
           </div>
+          <span style={{ color: '#a1a1a1' }}>
+            현재 설정값 : {form.position === 'PERMANENT' ? '정규직' : '계약직'}{' '}
+            {/* eslint-disable*/}
+            {form.experience > 0
+              ? form.experience + '년 이상'
+              : form.experience === 0
+              ? '신입'
+              : '경력무관'}
+            {/* eslint-disable*/}
+          </span>
         </div>
-        <div
-          className={'text-left'}
-          style={{ height: '50px', zIndex: '0' }}
-          onClick={() => setClick(true)}
-        >
+        <div className={'text-left'} style={{ height: '50px', zIndex: '0' }}>
           <TagShower tagList={taglist} setTagList={setTaglist} />
         </div>
         <textarea
@@ -178,7 +206,7 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
           onDragLeave={dragLeave}
           onDrop={dropHandler}
         >
-          {src.length === 0 ? (
+          {src === '' ? (
             '공고에 필요한 썸네일사진을 드래그해주세요.'
           ) : (
             <img

@@ -18,6 +18,36 @@ export default function Recruitment() {
     size: 10,
     page: 0,
   });
+  const experienceList = [
+    { name: '경력무관', sort: '-1' },
+    { name: '신 입', sort: '0' },
+    { name: '1년 이상', sort: '1' },
+    { name: '2년 이상', sort: '2' },
+    { name: '3년 이상', sort: '3' },
+    { name: '4년 이상', sort: '4' },
+    { name: '5년 이상', sort: '5' },
+    { name: '6년 이상', sort: '6' },
+    { name: '7년 이상', sort: '7' },
+    { name: '8년 이상', sort: '8' },
+    { name: '9년 이상', sort: '9' },
+  ];
+  const salaryList = [
+    { name: '연봉 전체', sort: '0' },
+    { name: '3,000 이상', sort: '3000' },
+    { name: '4,000 이상', sort: '4000' },
+    { name: '5,000 이상', sort: '5000' },
+    { name: '6,000 이상', sort: '6000' },
+    { name: '7,000 이상', sort: '7000' },
+    { name: '8,000 이상', sort: '8000' },
+    { name: '9,000 이상', sort: '9000' },
+  ];
+
+  const statusList = [
+    { name: '채용전', sort: 'STANDBY' },
+    { name: '채용중', sort: 'PROCESS' },
+    { name: '채용마감', sort: 'END' },
+    { name: '상시채용', sort: 'REGULAR' },
+  ];
   const recruitOrder = [
     { name: '조회순', sort: 'viewCount' },
     { name: '추천순', sort: 'favoriteCount' },
@@ -25,9 +55,7 @@ export default function Recruitment() {
   const initialList = [
     { name: '제 목', state: false, target: 'title' },
     { name: '내 용', state: false, target: 'content' },
-    { name: '연 봉', state: false, target: 'avgSalary' },
     { name: '작성자', state: false, target: 'companyName' },
-    // { name: '채용상태', state: false, target: 'state' },
   ];
   const history = useHistory();
   const dispatch = useDispatch();
@@ -149,7 +177,14 @@ export default function Recruitment() {
     isLast.current = false;
     observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
-  }, [form.tagIds, dispatch, form.order]);
+  }, [
+    form.tagIds,
+    dispatch,
+    form.order,
+    form.status,
+    form.avgSalary,
+    form.experience,
+  ]);
 
   const mapRecruit = recruitList.map((pl) => (
     <Post
@@ -166,11 +201,27 @@ export default function Recruitment() {
     />
   ));
 
-  // 게시물 검색하기
+  // 게시물 경력검색
+  const ExperienceHandler = (sort) => {
+    setForm({ ...form, experience: sort, page: 0 });
+  };
+
+  // 게시물 연봉검색
+  const SalaryHandler = (sort) => {
+    setForm({ ...form, avgSalary: sort, page: 0 });
+  };
+
+  // 게시물 상태조회
+  const StatusHandler = (sort) => {
+    setForm({ ...form, status: sort, page: 0 });
+  };
+
+  // 게시물 정렬하기
   const OrderHandler = (sort) => {
     setForm({ ...form, order: sort, page: 0 });
   };
 
+  // 게시물 검색하기
   const InputHandler = (e, i) => {
     setForm((p) => ({
       size: p.size,
@@ -211,15 +262,21 @@ export default function Recruitment() {
                 }}
               >
                 <div>
-                  <div
-                    style={{ display: 'inline-block', verticalAlign: 'top' }}
-                  >
-                    <Order inOrder={OrderHandler} orderItem={recruitOrder} />
-                  </div>
                   <div style={{ display: 'inline-block' }}>
                     <TagSelector tagList={taglist} setTagList={setTaglist}>
                       필터
                     </TagSelector>
+                  </div>
+                  <div
+                    style={{ display: 'inline-block', verticalAlign: 'top' }}
+                  >
+                    <Order inOrder={OrderHandler} orderItem={recruitOrder} />
+                    <Order inOrder={StatusHandler} orderItem={statusList} />
+                    <Order
+                      inOrder={ExperienceHandler}
+                      orderItem={experienceList}
+                    />
+                    <Order inOrder={SalaryHandler} orderItem={salaryList} />
                   </div>
                 </div>
                 <div>
@@ -230,7 +287,7 @@ export default function Recruitment() {
                     setForm={setForm}
                     initial={initialList}
                   />
-                  {me[0].role === 'ROLE_COMPANY' ? (
+                  {user.me?.role === 'ROLE_COMPANY' ? (
                     <TagBody
                       style={{ marginTop: '0', border: '1px solid #f5df4d' }}
                       onClick={() => {

@@ -30,6 +30,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -38,12 +39,14 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(name = "users")
+@SuperBuilder
 public class User extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
-	private Long id;
+	@Builder.Default
+	private Long id = 1L;
 
 	private String name;
 
@@ -92,7 +95,6 @@ public class User extends BaseTimeEntity {
 	)
 	private final List<Recruit> recruitFavorites = new ArrayList<>();
 
-	@Builder
 	public User(String name, String nickname, String email, String password, String picture,
 		String contact, Role role) {
 		this.name = name;

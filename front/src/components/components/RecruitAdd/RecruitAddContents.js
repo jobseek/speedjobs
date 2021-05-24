@@ -28,7 +28,7 @@ export default function RecruitAddContents({ onChange, form, setForm }) {
       {/* <AnnounceLocation />*/}
       {/* 공고 날짜 */}
       <AnnounceHeader>공고기간</AnnounceHeader>
-      <AnnouncementDate onChange={onChange} form={form} />
+      <AnnouncementDate onChange={onChange} form={form} setForm={setForm} />
       {/* 공고정보 */}
       <AnnounceHeader>공고정보</AnnounceHeader>
       <AnnouncementInfo onChange={onChange} form={form} setForm={setForm} />

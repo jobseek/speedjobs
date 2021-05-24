@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { COMPANY_GET_REQUEST } from '../../../reducers/company';
+import {
+  COMPANY_GET_DONE,
+  COMPANY_GET_REQUEST,
+} from '../../../reducers/company';
 
 const Info = styled.div`
   color: #a1a1a1;
@@ -24,8 +27,11 @@ export default function CompanySummaryInfo() {
   useEffect(() => {
     if (company.companyGetDone) {
       setInfo(company.companyGetData);
+      dispatch({
+        type: COMPANY_GET_DONE,
+      });
     }
-  }, [company.companyGetDone, company.companyGetData]);
+  }, [company.companyGetDone, company.companyGetData, dispatch]);
 
   return (
     <>
@@ -37,6 +43,7 @@ export default function CompanySummaryInfo() {
         <Info>회사 이름 : {info.companyName}</Info>
         <Info>회사 규모 : {info.scale}명</Info>
         <Info>회사 위치 : {info.address}</Info>
+        <Info>평균 연봉 : {info.avgSalary}만 원</Info>
         <Info>연락처 : {info.contact}</Info>
         <textarea
           placeholder="회사정보 수정은 마이페이지에서 가능합니다."

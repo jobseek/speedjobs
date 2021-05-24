@@ -21,7 +21,6 @@ export default function RecruitAdd() {
     openDate: '',
     closeDate: '',
     tagIds: [],
-    status: 'PROCESS',
   });
   const recruit = useSelector((state) => state.recruit);
   const dispatch = useDispatch();

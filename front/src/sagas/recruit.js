@@ -4,6 +4,7 @@ import {
   GET_CHAT_FAIL,
   GET_CHAT_REQUEST,
   GET_CHAT_SUCCESS,
+  RECRUIT_ADD_FAIL,
   RECRUIT_ADD_REQUEST,
   RECRUIT_ADD_SUCCESS,
   RECRUIT_DELETE_FAIL,
@@ -87,6 +88,7 @@ function* getRecruit(action) {
 
 // 공고 추가하기
 function recruitAddApi(action) {
+  console.log(action.data);
   return axios.post(`/recruit`, action.data).catch((err) => {
     throw err;
   });
@@ -101,7 +103,7 @@ function* recruitAdd(action) {
     });
   } catch (error) {
     yield put({
-      type: RECRUIT_LIST_FAIL,
+      type: RECRUIT_ADD_FAIL,
       error: 'error' ?? action.error,
     });
   }
@@ -128,15 +130,18 @@ function* getChat(action) {
 }
 
 // 공고 수정하기 -> api id 체크 필요
-function modifyRecruitAPI(data) {
-  return axios.put(`/recruit/${data}`).catch((error) => {
+function modifyRecruitAPI(action) {
+  const form = action.data;
+  const recruitId = action.recruitId;
+  console.log('form= ', form, 'recruitId= ', recruitId);
+  return axios.put(`/recruit/${recruitId}`, form).catch((error) => {
     throw error;
   });
 }
 
 function* modifyRecruit(action) {
   try {
-    const result = yield call(modifyRecruitAPI, action.data);
+    const result = yield call(modifyRecruitAPI, action);
     yield put({
       type: RECRUIT_MODIFY_SUCCESS,
       data: result.data,

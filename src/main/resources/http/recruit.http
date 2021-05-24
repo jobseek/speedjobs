@@ -19,7 +19,6 @@ Authorization: Bearer {{accessToken}}
   "title": "제목입니당",
   "openDate": "2020-01-02 00:00:00",
   "closeDate": "2021-12-15 00:00:00",
-  "status": "PROCESS",
   "thumbnail": "https://speedjobs.s3.ap-northeast-2.amazonaws.com/origin/778d095a-b899-4b3e-ae3f-0b294d3a25e3.jpeg",
   "experience": 3,
   "position": "PERMANENT",
@@ -69,8 +68,8 @@ Authorization: Bearer {{accessToken}}
 #GET http://{{host}}/recruit?sort=id,DESC
 #GET http://{{host}}/recruit?page=1&size=4&sort=viewCount,DESC
 #GET http://{{host}}/recruit?title=엔지니어
-#GET http://{{host}}/recruit?openDate=2021-04-01&closeDate=2021-04-30
-GET http://{{host}}/recruit?title=엔지니어&page=0&size=10&sort=id,DESC
+GET http://{{host}}/recruit?experience=-1
+#GET http://{{host}}/recruit?title=엔지니어&page=0&size=10&sort=id,DESC
 Accept: application/json
 
 ### 6. 공고 찜하기

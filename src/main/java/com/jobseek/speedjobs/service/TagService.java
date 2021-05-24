@@ -40,7 +40,7 @@ public class TagService {
 		Tag tag = findOne(tagId);
 		tag.getPosts().forEach(post -> post.getTags().remove(tag));
 		tag.getRecruits().forEach(recruit -> recruit.getTags().remove(tag));
-		tagRepository.deleteById(tagId);
+		tagRepository.delete(tag);
 	}
 
 	@Transactional

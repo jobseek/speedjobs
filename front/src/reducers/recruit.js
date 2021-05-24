@@ -85,6 +85,7 @@ const reducer = (state = initialState, action) =>
         break;
       case RECRUIT_GET_DONE:
         draft.recruitGetDone = false;
+        draft.recruit = null;
         draft.recruitGetError = null;
         break;
 

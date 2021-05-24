@@ -12,47 +12,28 @@ import {
   RECRUIT_GET_DONE,
   RECRUIT_GET_REQUEST,
   RECRUIT_MODIFY_DONE,
+  RECRUIT_MODIFY_REQUEST,
 } from '../../reducers/recruit';
 import RecruitAddContents from '../components/RecruitAdd/RecruitAddContents';
 
 export default function RecruitModify() {
   const { id } = useParams();
-  const [form, setForm] = useState();
-  const { recruit } = useSelector((state) => state);
-  const [totalTag, setTotalTag] = useState([]);
+  const [modify, setModify] = useState(false);
+  const [form, setForm] = useState({
+    title: '',
+    position: 'PERMANENT',
+    thumbnail: '',
+    experience: -1,
+    content: '',
+    openDate: '',
+    closeDate: '',
+    tagIds: [],
+  });
+  const recruit = useSelector((state) => state.recruit);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onChangHandler = useCallback(
-    (e) => {
-      console.log(e.target.name);
-      if (e.target.name.endsWith('Date')) {
-        console.log('hi');
-        setForm((prev) => ({
-          ...prev,
-          [e.target.name]: moment(e.target.value).format('YYYY-MM-DD 00:00:00'),
-        }));
-      } else {
-        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-      }
-      console.log(form);
-    },
-    [form]
-  );
-  const onSubmitHandler = useCallback(
-    (e) => {
-      e.preventDefault();
-      console.log(form);
-      if (form.title === '' || form.content === '') {
-        if (form.title === '') alert('제목을 입력하세요.');
-        else if (form.content === '') alert('내용을 입력하세요.');
-      } else {
-        // dispatch({ type: RECRUIT_MODIFY_REQUEST, data: form });
-      }
-    },
-    [form]
-  );
 
-  // 화면 렌더링 후 원래 공고글 정보 불러오기
+  // 공고 정보 불러오기
   useEffect(() => {
     dispatch({
       type: RECRUIT_GET_REQUEST,
@@ -61,13 +42,60 @@ export default function RecruitModify() {
   }, [dispatch, id]);
   useEffect(() => {
     if (recruit.recruitGetDone) {
-      setForm((p) => ({ ...p, ...recruit.recruit }));
+      setForm(recruit.recruit);
       dispatch({
         type: RECRUIT_GET_DONE,
       });
     }
-  }, [recruit.recruitGetDone, recruit.recruit, dispatch]);
+  }, [recruit.recruit, recruit.recruitGetDone, dispatch]);
 
+  // 공고정보 바꿔끼우기
+  const onChangHandler = useCallback((e) => {
+    if (e.target.name.endsWith('Date')) {
+      console.log('hi');
+      setForm((prev) => ({
+        ...prev,
+        [e.target.name]: moment(e.target.value).format('YYYY-MM-DD 00:00:00'),
+      }));
+    } else {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+  }, []);
+
+  // 공고 수정하기
+  const onModifyHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log('before= ', form);
+      if (form.title === '' || form.content === '') {
+        if (form.title === '') {
+          alert('제목을 입력하세요');
+        } else if (form.content === '') {
+          alert('내용을 입력하세요');
+        }
+      } else {
+        setForm((p) => ({
+          title: p.title,
+          position: p.position,
+          thumbnail: p.thumbnail,
+          experience: p.experience,
+          content: p.content,
+          openDate: p.openDate,
+          closeDate: p.closeDate,
+          tagIds: p.tagIds,
+        }));
+        setModify(true);
+      }
+    },
+    [form]
+  );
+  useEffect(() => {
+    if (modify) {
+      dispatch({ type: RECRUIT_MODIFY_REQUEST, data: form, recruitId: id });
+      setModify(false);
+      console.log('after= ', form);
+    }
+  }, [modify]);
   useEffect(() => {
     if (recruit.recruitModifyDone) {
       dispatch({
@@ -76,10 +104,6 @@ export default function RecruitModify() {
       history.goBack();
     }
   }, [recruit, history, dispatch]);
-
-  useEffect(() => {
-    setForm((p) => ({ ...p, tags: totalTag }));
-  }, [totalTag]);
 
   return (
     <div
@@ -96,15 +120,15 @@ export default function RecruitModify() {
             <PostTitleInput
               onChange={(e) => onChangHandler(e)}
               name={'title'}
+              value={form.title}
               placeholder={'제목을 입력해주세요'}
-              value={form?.title}
             />
           </HeaderTitle>
           <div style={{ flex: '0 0' }}>
             <StyledButton
               wide
               style={{ letterSpacing: '10px', paddingLeft: '20px' }}
-              onClick={(e) => onSubmitHandler(e)}
+              onClick={(e) => onModifyHandler(e)}
             >
               수정
             </StyledButton>
@@ -113,9 +137,9 @@ export default function RecruitModify() {
 
         <div className={'container'}>
           <RecruitAddContents
-            setTags={setTotalTag}
             onChange={onChangHandler}
             form={form}
+            setForm={setForm}
           />
         </div>
       </form>

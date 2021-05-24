@@ -237,16 +237,25 @@ export default function ResumeDetails() {
       <div className="container text-left">
         <StyledHeaderDiv padding>
           <PostTitleInput name={'title'} value={content.title} disabled />
-          <div style={{ flex: '0 0' }}>
-            <StyledButton mid onClick={() => history.push(`../modify/${id}`)}>
-              수정
-            </StyledButton>
-          </div>
-          <div style={{ flex: '0 0' }}>
-            <StyledButton mid onClick={() => DeleteHandler()}>
-              삭제
-            </StyledButton>
-          </div>
+          {user.me?.role !== 'ROLE_COMPANY' ? (
+            <>
+              <div style={{ flex: '0 0' }}>
+                <StyledButton
+                  mid
+                  onClick={() => history.push(`../modify/${id}`)}
+                >
+                  수정
+                </StyledButton>
+              </div>
+              <div style={{ flex: '0 0' }}>
+                <StyledButton mid onClick={() => DeleteHandler()}>
+                  삭제
+                </StyledButton>
+              </div>
+            </>
+          ) : (
+            ''
+          )}
         </StyledHeaderDiv>
         <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
