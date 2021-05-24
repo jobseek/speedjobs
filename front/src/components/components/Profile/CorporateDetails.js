@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProfileInputs from './ProfileInputs';
 import { InputText, MyImage, ProfileImg, TextArea } from '../Styled';
-import { PROFILE_GET_REQUEST } from '../../../reducers/profile';
 
 const StyledInputText = styled(InputText)`
   border: none;
@@ -14,8 +13,6 @@ const StyledTextarea = styled(TextArea)`
 `;
 
 export default function CorporateDetails() {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
   const [item, setItem] = useState({
     name: '',
@@ -31,11 +28,6 @@ export default function CorporateDetails() {
     companyName: '',
     registrationNumber: '',
   });
-
-  useEffect(() => {
-    if (user.me === null) return;
-    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
-  }, [user.me, dispatch]);
 
   useEffect(() => {
     if (profile.profileGetData) {

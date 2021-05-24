@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
 import { useHistory } from 'react-router';
@@ -11,7 +11,8 @@ import {
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
 import ResumeContents from '../components/resume/ResumeContents';
-import { RESUME_ADD_REQUEST, RESUME_LIST_REQUEST } from '../../reducers/resume';
+import { RESUME_ADD_DONE, RESUME_ADD_REQUEST } from '../../reducers/resume';
+import { ME_REQUEST } from '../../reducers/user';
 
 export default function Resume() {
   const history = useHistory();
@@ -123,6 +124,7 @@ export default function Resume() {
     }
   };
   const user = useSelector((state) => state.user);
+  const resume = useSelector((state) => state.resume);
   const [form, setForm] = useState({
     open: 'NO',
     name: '',
@@ -168,18 +170,23 @@ export default function Resume() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) {
-        return;
+      if (user.me === null) {
+        dispatch({ type: ME_REQUEST });
       }
       dispatch({
         type: RESUME_ADD_REQUEST,
         data: form,
       });
-      dispatch({ type: RESUME_LIST_REQUEST, data: user.me });
-      history.push('/resume/total');
     },
-    [dispatch, form, user.me, history]
+    [user.me, dispatch, form]
   );
+
+  useEffect(() => {
+    if (resume.resumeAddDone) {
+      dispatch({ type: RESUME_ADD_DONE });
+      history.goBack();
+    }
+  }, [resume, history, dispatch]);
 
   const onChangeHandler = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

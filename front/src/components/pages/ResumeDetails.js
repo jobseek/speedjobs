@@ -127,8 +127,8 @@ export default function ResumeDetails() {
 
   const careers = content.careers.map((x) => {
     return (
-      <div key={x.index}>
-        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+      <>
+        <div key={x.index} style={{ display: 'flex', flexWrap: 'nowrap' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'회사이름'}
@@ -159,13 +159,16 @@ export default function ResumeDetails() {
             />
           </div>
         </div>
-      </div>
+      </>
     );
   });
   const certificates = content.certificates.map((y) => {
     return (
-      <div key={y.index}>
-        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
+      <>
+        <div
+          key={y.index}
+          style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}
+        >
           <ResumeInputs
             flex={'1'}
             itemName={'이름'}
@@ -212,7 +215,7 @@ export default function ResumeDetails() {
             />
           </div>
         </div>
-      </div>
+      </>
     );
   });
 

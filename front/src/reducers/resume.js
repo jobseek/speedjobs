@@ -170,8 +170,8 @@ const reducer = (state = initialState, action) =>
         break;
       case RESUME_MODIFY_DONE:
         draft.resumeModifyDone = false;
-        draft.resumeModify = null;
         draft.resumeModifyError = null;
+        draft.resumeModify = null;
         break;
 
       // =========APPLY=========

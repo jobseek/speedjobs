@@ -90,7 +90,7 @@ export default function ResumeBasic({
         gender: profileTemp.gender,
         birth: new Date(
           profileTemp.birth[0],
-          profileTemp.birth[1],
+          profileTemp.birth[1] - 1,
           profileTemp.birth[2]
         ),
       }));

@@ -21,8 +21,9 @@ export default function ResumeTotal() {
   const resume = useSelector((state) => state.resume);
 
   useEffect(() => {
-    dispatch({ type: RESUME_LIST_REQUEST, data: user.me });
-  }, [dispatch, user.me]);
+    if (user.me === null) return;
+    dispatch({ type: RESUME_LIST_REQUEST, data: { size: 99, page: 0 } });
+  }, [user.me, dispatch]);
 
   useEffect(() => {
     if (resume.resumeListLoading) {
@@ -39,6 +40,15 @@ export default function ResumeTotal() {
       dispatch({ type: RESUME_LIST_DONE });
     }
   }, [dispatch, resume, setResumeList]);
+
+  // useEffect(() => {
+  //   if (resume.resumeList) {
+  //     const tmp = resume.resumeList.content.length;
+  //     setResumeCount(tmp);
+  //     setArr(resume.resumeList.content);
+  //     dispatch({ type: RESUME_LIST_DONE });
+  //   }
+  // }, [resume.resumeList, dispatch]);
 
   const mapResume = resumeList.map((rl) => (
     <div key={rl.id}>

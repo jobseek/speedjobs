@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../../components/DatePicker/customDatePickerWidth.css';
 import {
   PROFILE_GET_REQUEST,
+  PROFILE_UPDATE_DONE,
   PROFILE_UPDATE_REQUEST,
 } from '../../../reducers/profile';
 import {
@@ -65,22 +66,28 @@ export default function IndividualModify() {
   useEffect(() => {
     if (profile.profileGetData) {
       const profileTemp = { ...profile.profileGetData };
-      const date = new Date(
-        profileTemp.birth[0],
-        profileTemp.birth[1] - 1,
-        profileTemp.birth[2] + 1
-      );
-      date.setHours(date.getHours() - 9);
-
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      setForm((p) => ({
-        ...p,
-        ...profileTemp,
-        birth: date,
-      }));
+      if (profileTemp.birth !== null) {
+        const date = new Date(
+          profileTemp.birth[0],
+          profileTemp.birth[1] - 1,
+          profileTemp.birth[2]
+        );
+        date.setHours(date.getHours() + 9);
+        setForm((p) => ({
+          ...p,
+          ...profileTemp,
+          birth: date,
+        }));
+      } else {
+        setForm((p) => ({
+          ...p,
+          ...profileTemp,
+        }));
+      }
     }
   }, [profile.profileGetData]);
 
@@ -90,10 +97,12 @@ export default function IndividualModify() {
 
   const onChangeDate = useCallback((e) => {
     const event = { target: { name: 'birth', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
     if (event.target.name === 'birth') {
       setForm((prev) => ({
         ...prev,
-        [event.target.name]: event.target.value,
+        [event.target.name]: date,
       }));
     }
   }, []);
@@ -109,12 +118,16 @@ export default function IndividualModify() {
         data: form,
         me: user.me,
       });
-      // 회원정보 수정하고 조회 페이지로 넘어갈 때 새로고침해야 수정된 정보를 볼 수 있는 오류 해결
-      history.push('/profile');
     },
-
-    [dispatch, form, user.me, history]
+    [user.me, dispatch, form]
   );
+
+  useEffect(() => {
+    if (profile.profileUpdateDone) {
+      dispatch({ type: PROFILE_UPDATE_DONE });
+      history.goBack();
+    }
+  }, [profile, history, dispatch]);
 
   return (
     <div className="container text-left">

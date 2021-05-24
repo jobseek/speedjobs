@@ -15,9 +15,10 @@ import SideMenu from '../components/SideMenu';
 import ResumeContentsMd from '../components/resume/ResumeContentsMd';
 import {
   RESUME_GET_REQUEST,
-  RESUME_LIST_REQUEST,
+  RESUME_MODIFY_DONE,
   RESUME_MODIFY_REQUEST,
 } from '../../reducers/resume';
+import { ME_REQUEST } from '../../reducers/user';
 
 export default function Resume() {
   const history = useHistory();
@@ -298,21 +299,28 @@ export default function Resume() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
+      if (user.me === null) {
+        dispatch({ type: ME_REQUEST });
+      }
       dispatch({
         type: RESUME_MODIFY_REQUEST,
         data: form,
+        resumeId: id,
       });
-      dispatch({ type: RESUME_LIST_REQUEST, data: user.me });
-      history.push('/resume/total');
     },
-    [dispatch, form, history, user.me]
+    [user.me, dispatch, form, id]
   );
+
+  useEffect(() => {
+    if (resume.resumeModifyDone) {
+      dispatch({ type: RESUME_MODIFY_DONE });
+      history.goBack();
+    }
+  }, [resume, history, dispatch]);
 
   const onChangeHandler = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
-
-  console.log(form);
 
   return (
     <>

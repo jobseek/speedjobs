@@ -12,14 +12,6 @@ import SideMenu from '../../components/SideMenu';
 import IndividualDetails from '../../components/Profile/IndividualDetails';
 import CorporateDetails from '../../components/Profile/CorporateDetails';
 
-/**
- * 회원 조회 상위 컴포넌트
- * 1. dispatch => PROFILE_GET_REQUEST 액션 발생
- * 2. setRole을 이용해서 role의 정보를 저장한다. (useState 사용)
- * 3. role === ROLE_MEMBER => 개인회원 수정 페이지, 개인회원 조회 페이지
- * 4. role === ROLE_COMPANY => 기업회원 수정 페이지, 기업회원 조회 페이지
- */
-
 export default function Profile() {
   const dispatch = useDispatch();
   const [role, setRole] = useState('');

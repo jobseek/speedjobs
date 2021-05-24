@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   PROFILE_GET_REQUEST,
+  PROFILE_UPDATE_DONE,
   PROFILE_UPDATE_REQUEST,
 } from '../../../reducers/profile';
 import {
@@ -132,10 +133,16 @@ export default function CorporateModify() {
         data: form,
         me: user.me,
       });
-      history.push('/profile');
     },
-    [dispatch, form, user.me, history]
+    [dispatch, form, user.me]
   );
+
+  useEffect(() => {
+    if (profile.profileUpdateDone) {
+      dispatch({ type: PROFILE_UPDATE_DONE });
+      history.push('/profile');
+    }
+  }, [profile, history, dispatch]);
 
   useEffect(() => {
     if (user.me === null) return;

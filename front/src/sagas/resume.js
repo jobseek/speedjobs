@@ -22,15 +22,16 @@ import {
 } from '../reducers/resume';
 
 // ========== 이력서 목록 ==========
-function resumeListAPI() {
-  return axios.get('/resume').catch((error) => {
+function resumeListAPI(action) {
+  const { size, page } = action.data;
+  return axios.get(`/resume?size=${size}&page=${page}`).catch((error) => {
     throw error;
   });
 }
 
 function* resumeList(action) {
   try {
-    const result = yield call(resumeListAPI, action.data);
+    const result = yield call(resumeListAPI, action);
     yield put({
       type: RESUME_LIST_SUCCESS,
       data: result.data,
@@ -134,19 +135,19 @@ function* resumeDelete(action) {
 }
 
 // ========= 이력서 수정 =========
-function resumeModifyApi(data) {
-  const res = axios.put(`/resume/${data.id}`, data).catch((error) => {
-    throw error;
+function resumeModifyApi(action) {
+  const { data, resumeId } = action;
+  return axios.put(`/resume/${resumeId}`, data).catch((err) => {
+    throw err;
   });
-  return res;
 }
 
 function* resumeModify(action) {
   try {
-    const resume = yield call(resumeModifyApi, action.data);
+    const resume = yield call(resumeModifyApi, action);
     yield put({
       type: RESUME_MODIFY_SUCCESS,
-      data: resume,
+      data: resume.data,
     });
   } catch (error) {
     yield put({

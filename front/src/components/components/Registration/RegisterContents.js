@@ -71,7 +71,7 @@ export default function RegisterContents(props) {
     ) {
       dispatch({
         type: SIGN_UP_REQUEST,
-        data: company,
+        data: { ...company, nickname: company.name },
       });
     }
   };
