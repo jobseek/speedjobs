@@ -31,12 +31,35 @@ public class UserDto {
 	private CompanyDetail companyDetail;
 
 	public Member createMember() {
-		return new Member(name, nickname, email, password, picture, contact, role, gender, birth,
-			bio, oauthId, provider);
+		return Member.builder()
+			.name(name)
+			.nickname(nickname)
+			.email(email)
+			.password(password)
+			.picture(picture)
+			.contact(contact)
+			.role(role)
+			.gender(gender)
+			.birth(birth)
+			.bio(bio)
+			.oauthId(oauthId)
+			.provider(provider)
+			.build();
 	}
 
 	public Company createGuest() {
-		return new Company(name, nickname, email, password, picture, contact, role, companyName,
-			logoImage, scale, companyDetail);
+		return Company.builder()
+			.name(name)
+			.nickname(nickname)
+			.email(email)
+			.password(password)
+			.picture(picture)
+			.contact(contact)
+			.role(role)
+			.companyName(companyName)
+			.logoImage(logoImage)
+			.scale(scale)
+			.companyDetail(companyDetail)
+			.build();
 	}
 }
