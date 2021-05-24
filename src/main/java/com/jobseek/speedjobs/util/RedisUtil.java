@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.utils;
+package com.jobseek.speedjobs.util;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

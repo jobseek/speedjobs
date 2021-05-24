@@ -51,7 +51,7 @@ class UserServiceTest {
 			.password(MEMBER_PASSWORD)
 			.role(MEMBER_ROLE)
 			.build();
-		String key = userService.sendRegisterMail(request);
+		String key = userService.register(request);
 
 		userService.saveCustomUser(key);
 		assertEquals(userRepository.findByEmail(MEMBER_EMAIL)
@@ -72,7 +72,7 @@ class UserServiceTest {
 			.contact(COMPANY_CONTACT)
 			.homepage(COMPANY_HOMEPAGE)
 			.build();
-		String key = userService.sendRegisterMail(request);
+		String key = userService.register(request);
 
 		userService.saveCustomUser(key);
 		assertEquals(findByEmail(COMPANY_EMAIL).getName(), COMPANY_NAME);

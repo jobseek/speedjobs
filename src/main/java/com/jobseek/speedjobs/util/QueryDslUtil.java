@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.utils;
+package com.jobseek.speedjobs.util;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;

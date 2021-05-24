@@ -49,7 +49,7 @@ public class UserController {
 	@PostMapping("/signup/member")
 	public ResponseEntity<Void> registerMember(
 		@Validated(UserValidateGroup.member.class) @RequestBody UserSaveRequest userSaveRequest) {
-		userService.sendRegisterMail(userSaveRequest);
+		userService.register(userSaveRequest);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -58,7 +58,7 @@ public class UserController {
 	@PostMapping("/signup/company")
 	public ResponseEntity<Void> sendCompanyEmail(
 		@Valid @RequestBody UserSaveRequest userSaveRequest) {
-		userService.sendRegisterMail(userSaveRequest);
+		userService.register(userSaveRequest);
 		return ResponseEntity.noContent().build();
 	}
 

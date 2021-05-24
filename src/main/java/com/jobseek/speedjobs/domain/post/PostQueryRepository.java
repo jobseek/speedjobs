@@ -3,7 +3,7 @@ package com.jobseek.speedjobs.domain.post;
 import static com.jobseek.speedjobs.domain.post.QPost.post;
 import static com.jobseek.speedjobs.domain.tag.QTag.tag;
 import static com.jobseek.speedjobs.domain.user.QUser.user;
-import static com.jobseek.speedjobs.utils.QueryDslUtil.getAllOrderSpecifiers;
+import static com.jobseek.speedjobs.util.QueryDslUtil.getAllOrderSpecifiers;
 
 import com.jobseek.speedjobs.dto.post.PostSearchCondition;
 import com.querydsl.core.types.OrderSpecifier;

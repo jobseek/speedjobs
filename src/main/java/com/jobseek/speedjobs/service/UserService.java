@@ -27,13 +27,14 @@ import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
 import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
 import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
 import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
-import com.jobseek.speedjobs.utils.MailUtil;
-import com.jobseek.speedjobs.utils.RedisUtil;
+import com.jobseek.speedjobs.event.ApproveMailEvent;
+import com.jobseek.speedjobs.event.RegisterMailEvent;
+import com.jobseek.speedjobs.util.RedisUtil;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
+	private final ApplicationEventPublisher publisher;
+
 	private final UserRepository userRepository;
 	private final UserQueryRepository userQueryRepository;
 	private final CompanyRepository companyRepository;
@@ -53,20 +56,12 @@ public class UserService {
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
-	private final MailUtil mailUtil;
 
-	@Value("${front-url}")
-	private String frontUrl;
-
-	@Value("${back-url}")
-	private String backUrl;
-
-	public String sendRegisterMail(UserSaveRequest request) {
+	public String register(UserSaveRequest request) {
 		validateUserSaveRequest(request);
 		String key = UUID.randomUUID().toString();
 		redisUtil.set(key, request, 30 * 60 * 1000L);
-		String src = backUrl + "/user/signup/confirm/" + key;
-		mailUtil.sendMail(request.getEmail(), MailUtil.REGISTER_FILENAME, src);
+		publisher.publishEvent(new RegisterMailEvent(key, request.getEmail()));
 		return key;
 	}
 
@@ -74,7 +69,7 @@ public class UserService {
 	public void approveCompany(Long userId) {
 		User user = findOne(userId);
 		user.changeRole(ROLE_COMPANY);
-		mailUtil.sendMail(user.getEmail(), MailUtil.APPROVAL_FILENAME, frontUrl);
+		publisher.publishEvent(new ApproveMailEvent(user.getEmail()));
 	}
 
 	@Transactional

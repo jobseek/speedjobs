@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.utils;
+package com.jobseek.speedjobs.util;
 
 import java.io.StringWriter;
 import javax.mail.Message.RecipientType;

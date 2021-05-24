@@ -1,7 +1,7 @@
 package com.jobseek.speedjobs.domain.user;
 
 import static com.jobseek.speedjobs.domain.user.QUser.user;
-import static com.jobseek.speedjobs.utils.QueryDslUtil.getAllOrderSpecifiers;
+import static com.jobseek.speedjobs.util.QueryDslUtil.getAllOrderSpecifiers;
 
 import com.jobseek.speedjobs.dto.user.UserSearchCondition;
 import com.querydsl.core.types.OrderSpecifier;

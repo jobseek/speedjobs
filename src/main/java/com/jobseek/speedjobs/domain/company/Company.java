@@ -14,17 +14,16 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
+@SuperBuilder
 @NoArgsConstructor(access = PROTECTED)
 @PrimaryKeyJoinColumn(name = "user_id")
 @Table(name = "companies")
-@SuperBuilder
 public class Company extends User {
 
 	@Column(unique = true)

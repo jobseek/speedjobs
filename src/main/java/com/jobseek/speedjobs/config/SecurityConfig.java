@@ -6,7 +6,7 @@ import com.jobseek.speedjobs.config.auth.CustomOAuth2UserService;
 import com.jobseek.speedjobs.config.auth.JwtAuthenticationFilter;
 import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationFailureHandler;
 import com.jobseek.speedjobs.config.auth.OAuth2AuthenticationSuccessHandler;
-import com.jobseek.speedjobs.utils.JwtUtil;
+import com.jobseek.speedjobs.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

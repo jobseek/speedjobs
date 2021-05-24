@@ -86,9 +86,9 @@ public class RecruitService {
 		List<Recruit> toBeOpenRecruits = recruitRepository
 			.findAllByStatusAndOpenDateAfter(Status.STANDBY, LocalDateTime.now().minusMinutes(1L));
 		toBeOpenRecruits.forEach(recruit -> recruit.changeStatus(Status.PROCESS));
-		List<Recruit> recruits = recruitRepository
+		List<Recruit> toBeClosedRecruits = recruitRepository
 			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now().plusMinutes(1L));
-		recruits.forEach(recruit -> recruit.changeStatus(Status.END));
+		toBeClosedRecruits.forEach(recruit -> recruit.changeStatus(Status.END));
 	}
 
 	/**

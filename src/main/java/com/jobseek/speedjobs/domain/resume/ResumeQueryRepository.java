@@ -6,7 +6,7 @@ import static com.jobseek.speedjobs.domain.resume.QResume.resume;
 
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.resume.ResumeSearchCondition;
-import com.jobseek.speedjobs.utils.QueryDslUtil;
+import com.jobseek.speedjobs.util.QueryDslUtil;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;

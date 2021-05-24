@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.utils;
+package com.jobseek.speedjobs.util;
 
 import com.jobseek.speedjobs.config.auth.exception.ExpiredTokenException;
 import com.jobseek.speedjobs.config.auth.exception.InvalidTokenException;

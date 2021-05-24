@@ -2,7 +2,7 @@ package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.common.file.dto.FileResponses;
-import com.jobseek.speedjobs.utils.S3Util;
+import com.jobseek.speedjobs.util.S3Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;

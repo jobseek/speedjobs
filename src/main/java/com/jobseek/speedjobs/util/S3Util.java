@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.utils;
+package com.jobseek.speedjobs.util;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

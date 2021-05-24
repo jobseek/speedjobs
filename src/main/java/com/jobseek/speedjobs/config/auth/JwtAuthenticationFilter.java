@@ -1,6 +1,6 @@
 package com.jobseek.speedjobs.config.auth;
 
-import com.jobseek.speedjobs.utils.JwtUtil;
+import com.jobseek.speedjobs.util.JwtUtil;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
