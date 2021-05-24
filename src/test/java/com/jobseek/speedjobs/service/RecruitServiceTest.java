@@ -93,8 +93,6 @@ class RecruitServiceTest {
 			.build();
 		tags.add(tag);
 		expected.addTags(tags);
-		System.out.println(expected);
-		System.out.println(expected.getTags().size());
 
 		RecruitRequest recruitRequest = RecruitRequest
 			.builder()
@@ -150,7 +148,6 @@ class RecruitServiceTest {
 		given(recruitRepository.findById(anyLong()))
 			.willReturn(Optional.of(recruitRequest.toEntity(company)));
 		recruitService.update(id, company, recruitRequest);
-//		recruitService.update(id,uesr,request);
 	}
 
 	@DisplayName("공고 삭제 테스트")
