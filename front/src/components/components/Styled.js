@@ -312,8 +312,8 @@ const TagBodyInside = styled.div`
   width: fit-content;
   padding: 0 13px 0;
   @media (max-width: 768px) {
-    font-size: 13px;
-    height: 28px;
+    font-size: 11px;
+    height: 24px;
   }
 
   //태그 크기조절 sm
@@ -807,6 +807,7 @@ export const SearchBox = ({
       <Category onClick={() => setShow(true)}>{dropTop[0].name}</Category>
       <CategoryInput
         type="text"
+        placeholder={'검색어를 입력하세요'}
         value={keyword}
         onChange={(e) => {
           setKeyword(e.target.value);
@@ -815,37 +816,29 @@ export const SearchBox = ({
         onKeyPress={(e) => onKeyPress(e)}
         maxLength="8"
       />
-      <Search
-        style={{
-          verticalAlign: 'middle',
-          cursor: 'pointer',
-          transform: 'translateY(-2px)',
-        }}
-        onClick={() => onClick()}
-      />
       {show && <CategoryDrop>{DropList}</CategoryDrop>}
     </SearchOutline>
   );
 };
 
 const CategoryInput = styled.input`
-  width: 100px;
+  width: 100%;
   outline: none;
+  font-size: 13px;
   height: 100%;
   border: none;
   @media (max-width: 768px) {
-    width: 75px;
-    height: 20px;
+    font-size: 12px;
   }
 `;
 const CategoryDrop = styled.div`
   width: 85px;
   text-align: center;
   vertical-align: baseline;
-  position: relative;
+  position: absolute;
   z-index: 2;
   padding: 10px;
-  margin-top: 10px;
+  top: 40px;
   border-radius: 5px;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -857,14 +850,13 @@ const CategoryDrop = styled.div`
 `;
 
 const Category = styled.div`
-  width: 55px;
+  font-size: 13px;
+  flex: 0 0 50px;
+  display: flex;
   cursor: pointer;
   padding-left: 10px;
   text-align: left;
-  padding-top: 4px;
-  display: inline-block;
-  border-radius: 5px;
-  vertical-align: center;
+  align-items: center;
   @media (max-width: 768px) {
     width: 35px;
     font-size: 12px;
@@ -876,16 +868,18 @@ const SearchOutline = styled.div`
   color: #7c7c7c;
   height: 38px;
   padding-right: 8px;
-  margin-right: 5px;
-  display: inline-block;
-  border: 3px #7c7c7c solid;
+  margin-right: 20px;
+  display: inline-flex;
+  border: 2px #7c7c7c solid;
+  width: 250px;
   border-radius: 5px;
   vertical-align: top;
   text-align: left;
   @media (max-width: 768px) {
     font-size: 13px;
-    height: 28px;
-    width: 140px;
+    height: 24px;
+    width: 200px;
+    margin-right: 10px;
   }
 `;
 
@@ -933,9 +927,9 @@ const OrderList = styled.div`
   position: relative;
   //z-index: 2;
   @media (max-width: 768px) {
-    font-size: 13px;
-    height: 28px;
-    padding-top: 4px;
+    font-size: 11px;
+    height: 25px;
+    padding: 3px 13px 0px;
   }
 
   &:hover {

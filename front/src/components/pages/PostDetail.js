@@ -197,21 +197,29 @@ export default function PostDetail(props) {
         </StyledHeaderDiv>
         {/* 작성자*/}
         <div className={'container'}>
-          <div style={{ margin: '10px 0px 20px 0px' }}>
+          <div
+            style={{
+              fontSize: '15px',
+              fontWeight: 'lighter',
+              margin: '10px 0px 20px 0px',
+            }}
+          >
             {content.author} {content.createdDate}
           </div>
         </div>
         {/* 태그*/}
-        <div className={'container'}>
+        <div className={'container-fluid'}>
           <div>
             {content.tags.map((t) => (
-              <TagBody grey>{t.name}</TagBody>
+              <TagBody sm grey>
+                {t.name}
+              </TagBody>
             ))}
           </div>
           {/* 본문*/}
           <div
-            className={'container'}
-            style={{ whiteSpace: 'pre-line', width: '100%' }}
+            className={'container-fluid'}
+            style={{ whiteSpace: 'pre-line', width: '100%', padding: 0 }}
           >
             <autoheight-textarea>
               <PostTextarea value={content.content} />

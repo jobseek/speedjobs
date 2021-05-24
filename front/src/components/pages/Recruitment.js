@@ -49,7 +49,14 @@ export default function Recruitment() {
       { threshold: 1 }
     )
   );
-  const newObserve = () => {
+  const loadMore = useCallback(() => {
+    dispatch({
+      type: RECRUIT_LIST_REQUEST,
+      data: { ...form, page: form.page + 1 },
+    });
+    paging.current = true;
+  }, [dispatch, form]);
+  const newObserve = useCallback(() => {
     observe.current.unobserve(targetRef.current);
     return new IntersectionObserver(
       (entries) => {
@@ -62,7 +69,7 @@ export default function Recruitment() {
       },
       { threshold: 1 }
     );
-  };
+  }, [loadMore]);
 
   const rootRef = useRef();
   const { user, recruit } = useSelector((state) => state);
@@ -115,7 +122,7 @@ export default function Recruitment() {
       dispatch({ type: RECRUIT_LIST_DONE });
       observe.current = newObserve();
     }
-  }, [recruit, setRecruitList, setLoading, dispatch]);
+  }, [recruit, setRecruitList, setLoading, dispatch, newObserve]);
 
   useEffect(() => {
     setForm((p) => {
@@ -183,13 +190,6 @@ export default function Recruitment() {
     if (e.key === 'Enter') SearchHandler();
   };
 
-  const loadMore = useCallback(() => {
-    dispatch({
-      type: RECRUIT_LIST_REQUEST,
-      data: { ...form, page: form.page + 1 },
-    });
-    paging.current = true;
-  }, [dispatch, form]);
   return (
     <>
       <Banner />

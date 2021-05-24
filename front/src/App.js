@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCookies } from 'react-cookie';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Switch } from 'react-router';
 import styled from 'styled-components';
 import './App.css';
 import Header from './components/includes/Header';
@@ -36,6 +37,8 @@ import MyRecruitments from './components/pages/MyRecruitments';
 import MyPosts from './components/pages/MyPosts';
 import ResumeModify from './components/pages/ResumeModify';
 import RecruitModify from './components/pages/RecruitModify';
+import NotFound from './components/pages/NotFound';
+import SocialLogin from './components/pages/SocialLogin';
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -113,47 +116,63 @@ function App() {
         <ScrollToTop />
         <Header />
         <Container>
-          <Route exact path={'/community'} component={Community} />
-          <Route exact path={'/community/myList'} component={MyPosts} />
-          <Route exact path={'/'} component={Home} />
-          <Route exact path={'/recruit'} component={Recruitment} />
-          <Route path={'/recruit/detail/:id'} component={RecruitmentDetail} />
-          <Route path={'/community/post/:id'} component={PostDetail} />
-          <Route exact path={'/profile'} component={Profile} />
-          <Route exact path={'/profile/delete'} component={Withdrawal} />
-          <Route
-            exact
-            path={'/profile/individual/modify'}
-            component={IndividualModify}
-          />
-          <Route
-            exact
-            path={'/profile/corporate/modify'}
-            component={CorporateModify}
-          />
-          <Route exact path={'/resume'} component={Resume} />
-          <Route exact path={'/resume/total'} component={ResumeTotal} />
-          <Route exact path={'/resume/submit'} component={SubmitList} />
-          <Route exact path={'/resume/resume/:id'} component={ResumeDetails} />
-          <Route exact path={'/resume/modify/:id'} component={ResumeModify} />
-          <Route exact path={'/likelist/community'} component={CommuLike} />
-          <Route exact path={'/likelist/recruit'} component={RecruitLike} />
-          <Route exact path={'/registration'} component={MemberRegistration} />
-          <Route exact path={'/community/add'} component={PostAdd} />
-          <Route exact path={'/community/modify/:id'} component={PostModify} />
-          <Route exact path={'/recruitment/add'} component={RecruitAdd} />
-          <Route
-            exact
-            path={'/recruitment/modify/:id'}
-            component={RecruitModify}
-          />
-          <Route
-            exact
-            path={'/recruitment/myList'}
-            component={MyRecruitments}
-          />
-          <Route exact path={'/admin/login'} component={Login} />
-          <Route exact path={'/admin/home'} component={AdminHome} />
+          <Switch>
+            <Route exact path={'/community'} component={Community} />
+            <Route exact path={'/community/myList'} component={MyPosts} />
+            <Route exact path={'/'} component={Home} />
+            <Route exact path={'/recruit'} component={Recruitment} />
+            <Route path={'/recruit/detail/:id'} component={RecruitmentDetail} />
+            <Route path={'/community/post/:id'} component={PostDetail} />
+            <Route exact path={'/profile'} component={Profile} />
+            <Route exact path={'/profile/delete'} component={Withdrawal} />
+            <Route
+              exact
+              path={'/profile/individual/modify'}
+              component={IndividualModify}
+            />
+            <Route
+              exact
+              path={'/profile/corporate/modify'}
+              component={CorporateModify}
+            />
+            <Route exact path={'/resume'} component={Resume} />
+            <Route exact path={'/resume/total'} component={ResumeTotal} />
+            <Route exact path={'/resume/submit'} component={SubmitList} />
+            <Route
+              exact
+              path={'/resume/resume/:id'}
+              component={ResumeDetails}
+            />
+            <Route exact path={'/resume/modify/:id'} component={ResumeModify} />
+            <Route exact path={'/likelist/community'} component={CommuLike} />
+            <Route exact path={'/likelist/recruit'} component={RecruitLike} />
+            <Route
+              exact
+              path={'/registration'}
+              component={MemberRegistration}
+            />
+            <Route exact path={'/community/add'} component={PostAdd} />
+            <Route
+              exact
+              path={'/community/modify/:id'}
+              component={PostModify}
+            />
+            <Route exact path={'/recruitment/add'} component={RecruitAdd} />
+            <Route
+              exact
+              path={'/recruitment/modify/:id'}
+              component={RecruitModify}
+            />
+            <Route
+              exact
+              path={'/recruitment/myList'}
+              component={MyRecruitments}
+            />
+            <Route exact path={'/admin/login'} component={Login} />
+            <Route exact path={'/admin/home'} component={AdminHome} />
+            <Route exact path={'/login'} component={SocialLogin} />
+            <Route path={'*'} component={NotFound} />
+          </Switch>
         </Container>
         <Footer />
       </BrowserRouter>

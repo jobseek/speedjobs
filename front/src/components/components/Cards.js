@@ -38,7 +38,7 @@ const StyledCard = styled.div`
 `;
 
 const Image = styled.img`
-  width: 45px;
+  width: 40px;
   border: none;
   vertical-align: top;
   margin-right: 10px;
@@ -52,17 +52,24 @@ const Title = styled.div`
 const SubTitle = styled.div`
   position: relative;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.5;
   z-index: 1;
+  @media (max-width: 692px) {
+    font-size: 11px;
+  }
 
   ${(props) =>
     props.bold &&
     css`
       font-weight: bold;
+      font-size: 15px;
+      @media (max-width: 692px) {
+        font-size: 13px;
+      }
     `}
 
   ${(props) =>

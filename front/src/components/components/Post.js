@@ -15,13 +15,39 @@ import {
 const PostTitle = styled.div`
   margin-bottom: 30px;
   margin-top: 10px;
-  font-size: 25px;
-  font-weight: lighter;
+  font-size: 19px;
+  //font-weight: lighter;
   width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: justify;
   white-space: nowrap;
+  @media (max-width: 692px) {
+    font-size: 16px;
+  }
+`;
+
+const PostSubTitle = styled.span`
+  font-size: 14px;
+  font-weight: lighter;
+  @media (max-width: 692px) {
+    font-size: 12px;
+  }
+`;
+
+const PostIcons = styled.span`
+  font-weight: lighter;
+  font-size: 15px;
+  @media (max-width: 692px) {
+    font-size: 10px;
+  }
+`;
+
+const PostShow = styled(EyeShow)`
+  width: 20px;
+  @media (max-width: 692px) {
+    font-size: 15px;
+  }
 `;
 
 export default function Post({
@@ -36,17 +62,26 @@ export default function Post({
   id,
   type,
 }) {
+  // 스크린 사이즈 측정
+  const media = matchMedia('screen and (max-width: 768px)');
   const [inFav, set] = useState(fav);
   const [inFavCnt, setCnt] = useState(favoriteCount);
   const history = useHistory();
   const dispatch = useDispatch();
   const like = useSelector((state) => state.like);
+  useEffect(() => {
+    if (media.matches) {
+      console.log('mobile');
+    }
+  }, [media.matches]);
   // 태그 맵
-  const mapTags = tags.map((tag) => (
-    <TagBody grey sm key={tag.id}>
-      {tag.name}
-    </TagBody>
-  ));
+  const mapTags = (media.matches ? tags?.slice(0, 2) : tags?.slice(0, 5)).map(
+    (tag) => (
+      <TagBody grey sm key={tag.id}>
+        {tag.name}
+      </TagBody>
+    )
+  );
 
   const onClickHandler = useCallback(() => {
     history.push({
@@ -115,6 +150,13 @@ export default function Post({
         <PostTitle onClick={onClickHandler}>{title}</PostTitle>
         <Blank />
         {mapTags}
+        {tags.length > 2 && media.matches ? (
+          <TagBody sm grey>
+            ...
+          </TagBody>
+        ) : (
+          ''
+        )}
         <div
           style={{
             position: 'absolute',
@@ -123,24 +165,34 @@ export default function Post({
             textAlign: 'end',
           }}
         >
-          <div>{writer}</div>
-          <div style={{ marginBottom: '20px' }}>{date}</div>
+          <div>
+            <PostSubTitle>{writer}</PostSubTitle>
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <PostSubTitle>{date}</PostSubTitle>
+          </div>
           {type === 'community' && (
             <div style={{ display: 'inline-block' }}>
-              <ChatSquareQuote style={{ width: '25px' }} /> {commentCount}
+              <PostIcons>
+                <ChatSquareQuote style={{ width: '25px' }} /> {commentCount}
+              </PostIcons>
             </div>
           )}
           <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-            <EyeShow style={{ width: '25px' }} /> {viewCount}
+            <PostIcons>
+              <PostShow /> {viewCount}
+            </PostIcons>
           </div>
           <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-            {inFav ? (
-              <HeartFill onClick={unFavClick}></HeartFill>
-            ) : (
-              <Heart onClick={favClick}></Heart>
-            )}
-            <span style={{ width: '1px', marginRight: '5px' }}></span>
-            {inFavCnt}
+            <PostIcons>
+              {inFav ? (
+                <HeartFill onClick={unFavClick}></HeartFill>
+              ) : (
+                <Heart onClick={favClick}></Heart>
+              )}
+              <span style={{ width: '1px', marginRight: '5px' }}></span>
+              {inFavCnt}
+            </PostIcons>
           </div>
         </div>
       </div>

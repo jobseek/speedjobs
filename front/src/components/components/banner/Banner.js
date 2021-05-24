@@ -15,6 +15,10 @@ const Jumbo = styled.div`
   position: relative;
   height: 25vw;
   overflow-x: hidden;
+  border-radius: 0px;
+  @media (max-width: 692px) {
+    height: 27vw;
+  }
 `;
 
 export default function Banner(props) {

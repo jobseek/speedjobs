@@ -1,6 +1,8 @@
 import axios from 'axios';
 import address from './address';
 import setCookie from './setCookie';
+import { store } from '../index';
+import { ME_REQUEST } from '../reducers/user';
 
 export default function hello() {
   return null;
@@ -18,11 +20,11 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
   };
   const responseInterceptorError = (error) => {
     return new Promise((resolve, reject) => {
-      const originalReq = error.config;
+      const originalReq = error?.config;
       if (
-        error.response.status === 401 &&
-        error.config &&
-        !error.config?.__isRetryRequest
+        error?.response.status === 401 &&
+        error?.config &&
+        !error?.config?.__isRetryRequest
       ) {
         originalReq.__isRetryRequest = true;
         fetch(`${address()}/api/auth/reissue`, {
@@ -46,7 +48,12 @@ export const loginInterceptor = (refresh, removeRefresh, prevIDS) => {
             axios.defaults.headers.common[
               'Authorization'
             ] = `Bearer ${response.accessToken}`;
-            resolve(axios(originalReq));
+            store.dispatch({
+              type: ME_REQUEST,
+              data: { accessToken: response.accessToken },
+            });
+            resolve();
+            // resolve(axios(originalReq));
           })
           .catch((err) => {
             reject(error);

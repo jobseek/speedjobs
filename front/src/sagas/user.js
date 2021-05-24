@@ -30,7 +30,6 @@ function getUserApi(data) {
 }
 
 function getUserOnly(data) {
-  console.log(data);
   return axios.get('/user/me', {
     headers: {
       Authorization: `Bearer ${data.accessToken}`,

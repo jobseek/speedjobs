@@ -9,12 +9,18 @@ import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 import TagSelector from '../components/tag/TagSelector';
 import TagShower from '../components/tag/TagShower';
-import { RECRUIT_LIST_REQUEST } from '../../reducers/recruit';
 
 export const Blank = styled.div`
   display: inline-block;
   width: 1px;
   height: 25px;
+`;
+
+const Space = styled.div`
+  height: 30px;
+  @media (max-width: 768px) {
+    height: 0px;
+  }
 `;
 
 export default function Community(props) {
@@ -34,6 +40,11 @@ export default function Community(props) {
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const targetRef = useRef();
+  const paging = useRef(false);
+  const [form, setForm] = useState({
+    size: 10,
+    page: 0,
+  });
   const observe = useRef(
     new IntersectionObserver(
       (entries) => {
@@ -47,7 +58,15 @@ export default function Community(props) {
       { threshold: 1 }
     )
   );
-  const newObserve = () => {
+  const loadMore = useCallback(() => {
+    dispatch({
+      type: POST_LIST_REQUEST,
+      data: { ...form, page: form.page + 1 },
+    });
+    paging.current = true;
+  }, [dispatch, form]);
+
+  const newObserve = useCallback(() => {
     observe.current.unobserve(targetRef.current);
     return new IntersectionObserver(
       (entries) => {
@@ -60,7 +79,7 @@ export default function Community(props) {
       },
       { threshold: 1 }
     );
-  };
+  }, [loadMore]);
 
   // 게시물 목록 불러오기
 
@@ -69,7 +88,7 @@ export default function Community(props) {
 
   // 태그 정보 불러오기
   const [, setLoading] = useState(false);
-  const paging = useRef(false);
+
   const [postList, setPostList] = useState([]);
   const [taglist, setTaglist] = useState([]);
   const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
@@ -83,10 +102,7 @@ export default function Community(props) {
       setTaglist((p) => [...p, ...tt]);
     }
   }, [tagss.tagGetData]);
-  const [form, setForm] = useState({
-    size: 10,
-    page: 0,
-  });
+
   useEffect(() => {
     const currentObserver = observe.current;
     const divElm = targetRef.current;
@@ -100,7 +116,7 @@ export default function Community(props) {
         currentObserver.unobserve(divElm);
       }
     };
-  }, [user.me, refresh, form, observe.current]);
+  }, [user.me, refresh, form]);
 
   useEffect(() => {
     if (post.postListLoading) {
@@ -120,7 +136,7 @@ export default function Community(props) {
       dispatch({ type: POST_LIST_DONE });
       observe.current = newObserve();
     }
-  }, [post, setPostList, setLoading, dispatch]);
+  }, [post, setPostList, setLoading, dispatch, newObserve]);
 
   useEffect(() => {
     setForm((p) => {
@@ -187,13 +203,6 @@ export default function Community(props) {
   const EnterHandler = (e) => {
     if (e.key === 'Enter') SearchHandler();
   };
-  const loadMore = useCallback(() => {
-    dispatch({
-      type: POST_LIST_REQUEST,
-      data: { ...form, page: form.page + 1 },
-    });
-    paging.current = true;
-  }, [paging.current, dispatch, form]);
 
   return (
     <>
@@ -248,7 +257,7 @@ export default function Community(props) {
           <div className={'text-left'}>
             <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
           </div>
-          <div style={{ height: '30px' }}></div>
+          <Space></Space>
           {mapPost}
         </div>
         {/* 게시글 end*/}

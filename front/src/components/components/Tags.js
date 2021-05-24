@@ -21,6 +21,9 @@ export const TagDrop = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  @media (max-width: 768px) {
+    top: 25px;
+  }
 `;
 
 export const TagsInDrop = styled.div`

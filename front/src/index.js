@@ -12,7 +12,8 @@ import rootReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+// eslint-disable-next-line
+export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );

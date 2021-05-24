@@ -42,6 +42,7 @@ const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
       case ME_REQUEST:
+        draft.meError = null;
         break;
       case ME_SUCCESS:
         draft.meDone = true;
