@@ -31,12 +31,11 @@ public class ResumeQueryRepository {
 		List<OrderSpecifier> orders = QueryDslUtil.getAllOrderSpecifiers(pageable, resume);
 
 		JPAQuery<Resume> query = queryFactory
-			.selectDistinct(resume)
-			.from(resume)
+			.selectFrom(resume)
 			.leftJoin(resume.member, member).fetchJoin()
 			.leftJoin(resume.applies, apply).fetchJoin()
 			.where(
-				resume.member.id.eq(user.getId()),
+				eqMemberId(user),
 				eqOpen(condition.getOpen()),
 				containsTitle(condition.getTitle())
 			);
@@ -48,6 +47,10 @@ public class ResumeQueryRepository {
 			.fetch();
 
 		return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
+	}
+
+	private BooleanExpression eqMemberId(User user) {
+		return user.isMember() ? resume.member.id.eq(user.getId()) : null;
 	}
 
 	private BooleanExpression eqOpen(Open open) {

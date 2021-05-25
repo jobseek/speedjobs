@@ -68,7 +68,7 @@ public class ResumeController {
 	}
 
 	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")
-	@PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<ResumeResponse>> findAll(Pageable pageable,
 		ResumeSearchCondition condition, @LoginUser User user) {

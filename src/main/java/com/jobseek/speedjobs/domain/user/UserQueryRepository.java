@@ -28,8 +28,7 @@ public class UserQueryRepository {
 		List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, user);
 
 		JPAQuery<User> query = queryFactory
-			.selectDistinct(user)
-			.from(user)
+			.selectFrom(user)
 			.where(
 				containsName(condition.getName()),
 				containsNickname(condition.getNickname()),
