@@ -1,35 +1,25 @@
-import { useHistory } from 'react-router';
-import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { ToggleOff } from '@styled-icons/bootstrap/ToggleOff';
-import { ToggleOn } from '@styled-icons/bootstrap/ToggleOn';
+import { LockFill, UnlockFill } from '@styled-icons/bootstrap';
+
 import {
-  Private,
   ResumeImg,
   ResumeTitles,
   StyledHeaderMargin,
   Warning,
 } from '../Styled';
 import ResumeInputs from './ResumeInputs';
-import { PROFILE_GET_REQUEST } from '../../../reducers/profile';
 import ResumeGender from './ResumeGender';
-
-const Toggle1 = styled(ToggleOff)`
-  width: 30px;
-  color: gray;
-  cursor: pointer;
-`;
-
-const Toggle2 = styled(ToggleOn)`
-  width: 30px;
-  color: #f5df4d;
-  cursor: pointer;
-`;
+import {
+  PROFILE_GET_DONE,
+  PROFILE_GET_REQUEST,
+} from '../../../reducers/profile';
 
 const StyledDatePicker = styled(DatePicker)`
   width: 200px;
@@ -44,102 +34,113 @@ const StyledDatePicker = styled(DatePicker)`
     outline: none;
   }
 `;
+
+const MyLock = styled(LockFill)`
+  width: 25px;
+  color: red;
+  cursor: pointer;
+`;
+
+const MyUnlock = styled(UnlockFill)`
+  width: 25px;
+  color: #7c7c7c;
+  cursor: pointer;
+`;
 export default function ResumeBasic({
   onChange,
-  bookMark,
-  bookMark1,
+  handleOpen,
+  open,
   setForm,
   form,
 }) {
+  const inputRef = useRef();
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
-  const [img, setImage] = useState(
-    'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
-  );
 
-  const onChangeHandler2 = useCallback(
+  const onChangeHandlerDate = useCallback(
     (e) => {
       const event = { target: { name: 'birth', value: e } };
+      const date = event.target.value;
+      date.setHours(date.getHours() + 9);
       if (event.target.name === 'birth') {
         setForm((prev) => ({
           ...prev,
-          [event.target.name]: event.target.value,
+          [event.target.name]: date,
         }));
       }
     },
     [setForm]
   );
 
-  useEffect(() => {
-    if (profile.profileGetData) {
-      const profileTemp = { ...profile.profileGetData };
-      if (profile.profileGetData.picture === null) {
-        profileTemp.picture =
-          'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
-      }
-      if (profileTemp.birth === null) {
-        alert('이력서에 필요한 추가정보를 입력해주세요.(성별/연락처/생년월일)');
-        history.push('/profile/individual/modify');
-      }
-      setForm((p) => ({
-        ...p,
-        name: profileTemp.name,
-        contact: profileTemp.contact,
-        gender: profileTemp.gender,
-        birth: new Date(
-          profileTemp.birth[0],
-          profileTemp.birth[1] - 1,
-          profileTemp.birth[2]
-        ),
-      }));
-    }
-  }, [profile.profileGetData, setForm, history]);
+  const onButtonClick = (e) => {
+    e.preventDefault();
+    inputRef.current.click();
+  };
 
-  useEffect(() => {
-    if (user.me === null) {
-      return;
-    }
-    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
-  }, [user.me, dispatch]);
-
-  const onChange2 = async (e) => {
+  const onFileChange = async (e) => {
     const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('files', e.target.files[0]);
-
+    const data = new FormData();
+    data.append('files', e.target.files[0]);
     const url = await axios
-      .post('/file', formData)
+      .post('/file', data)
       .then((res) => res.data.files[0].url)
       .catch(
         () =>
-          'https://www.namethedish.com/wp-content/uploads/2020/03/img-placeholder-portrait.png.webp'
+          'http://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
       );
     if (file === undefined) {
-      setImage(img);
+      console.log('=== 이미지 업로드 실패(파일 미선택) ===');
     } else if (
       file.type !== 'image/jpeg' &&
       file.type !== 'image/png' &&
       file.type !== 'image/gif'
     ) {
       alert('이미지 파일만 등록할 수 있습니다.');
-      setImage(img);
     } else if (file.size > 1024 * 1024 * 10) {
-      alert('1MB 이하 이미지만 가능합니다.');
-      setImage(img);
+      alert('10MB 이하 이미지만 가능합니다.');
     } else {
-      setImage(url);
-      form.resumeImage = url;
+      e.target = { name: 'resumeImage', value: url.toString() };
+      onChange(e);
     }
   };
-  const hiddenFileInput = React.useRef(null);
-  const handleClick = async () => {
-    hiddenFileInput.current.click();
-  };
+
+  useEffect(() => {
+    if (user.me === null) return;
+    dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
+  }, [user.me, dispatch]);
+
+  useEffect(() => {
+    if (profile.profileGetData) {
+      const profileTemp = { ...profile.profileGetData };
+      if (profileTemp.birth !== null) {
+        const date = new Date(
+          profileTemp.birth[0],
+          profileTemp.birth[1] - 1,
+          profileTemp.birth[2]
+        );
+        date.setHours(date.getHours() + 9);
+        setForm((p) => ({
+          ...p,
+          name: profileTemp.name,
+          email: profileTemp.email,
+          contact: profileTemp.contact,
+          gender: profileTemp.gender,
+          birth: date,
+        }));
+      } else {
+        setForm((p) => ({
+          ...p,
+          ...profileTemp,
+        }));
+      }
+      dispatch({ type: PROFILE_GET_DONE });
+    }
+  }, [profile.profileGetData, setForm, history, dispatch]);
 
   return (
-    <form>
+    <>
       <div style={{ marginBottom: '40px' }}>
         <h5 style={{ display: 'inline-block' }}>기본 정보</h5>
         <Warning>
@@ -155,15 +156,14 @@ export default function ResumeBasic({
               top: '9px',
             }}
           >
-            {bookMark1 ? <Private>공개</Private> : <Private>비공개</Private>}
-            {bookMark1 ? (
-              <Toggle2
-                onClick={() => bookMark()}
+            {open ? (
+              <MyUnlock
+                onClick={() => handleOpen()}
                 onChange={(e) => onChange(e)}
               />
             ) : (
-              <Toggle1
-                onClick={() => bookMark()}
+              <MyLock
+                onClick={() => handleOpen()}
                 onChange={(e) => onChange(e)}
               />
             )}
@@ -176,17 +176,22 @@ export default function ResumeBasic({
             margin: '25px auto',
           }}
         >
-          <ResumeImg
-            onClick={handleClick}
-            src={img}
-            alt="resumeImg"
-            style={{ cursor: 'pointer' }}
-          />
           <input
             type="file"
-            ref={hiddenFileInput}
-            onChange={onChange2}
+            ref={inputRef}
+            onChange={onFileChange}
             style={{ display: 'none' }}
+          />
+          <ResumeImg
+            onClick={onButtonClick}
+            onChange={(e) => onChange(e)}
+            src={
+              form.resumeImage !== ''
+                ? form.resumeImage
+                : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+            }
+            alt="resumeImg"
+            style={{ cursor: 'pointer' }}
           />
         </div>
 
@@ -217,49 +222,44 @@ export default function ResumeBasic({
             name={'contact'}
             value={form?.contact || ''}
           />
-          <div
-            style={{
-              marginRight: '5px',
-              flex: '0 0 200px',
-            }}
-          >
+          <div style={{ marginRight: '5px', flex: '0 0 200px' }}>
             <ResumeTitles>&nbsp;생년월일</ResumeTitles>
             <div className="customDatePickerWidth">
               <StyledDatePicker
                 locale={ko}
-                dateFormat="yyyy-MM-dd"
-                selected={form?.birth}
-                onChange={(e) => onChangeHandler2(e)}
-                peekMonthDropdown
                 showYearDropdown
+                peekMonthDropdown
+                selected={form?.birth}
+                dateFormat="yyyy-MM-dd"
+                onChange={(e) => onChangeHandlerDate(e)}
               />
             </div>
           </div>
         </div>
         <div style={{ display: 'flex' }}>
           <ResumeInputs
-            itemName={'주소'}
             basic
-            onChange={(e) => onChange(e)}
             name={'address'}
+            itemName={'주소'}
             value={form?.address || ''}
+            onChange={(e) => onChange(e)}
           />
         </div>
         <ResumeInputs
-          itemName={'Github'}
           sns
-          onChange={(e) => onChange(e)}
           name={'githubUrl'}
+          itemName={'Github'}
+          onChange={(e) => onChange(e)}
           value={form?.githubUrl || ''}
         />
         <ResumeInputs
-          itemName={'기술 블로그'}
           sns
-          onChange={(e) => onChange(e)}
           name={'blogUrl'}
+          itemName={'기술 블로그'}
+          onChange={(e) => onChange(e)}
           value={form?.blogUrl || ''}
         />
       </div>
-    </form>
+    </>
   );
 }

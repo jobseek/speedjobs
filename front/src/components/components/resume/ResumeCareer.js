@@ -23,64 +23,16 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 export default function ResumeCareer({ form, setForm }) {
-  const itemList = form.careers.map((item) => {
-    return (
-      <div key={item.index}>
-        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
-          <ResumeInputs
-            flex={'1'}
-            itemName={'회사이름'}
-            value={item.companyName}
-            name={'companyName'}
-            onChange={(e) => onChangeCareer(e, item.index)}
-          />
-          <ResumeInputs
-            flex={'1'}
-            itemName={'직급'}
-            value={item.position}
-            name={'position'}
-            onChange={(e) => onChangeCareer(e, item.index)}
-          />
-          <div style={{ display: 'inline-block', margin: '0 0 5px 0' }}>
-            <ResumeTitles>&nbsp;입사날짜</ResumeTitles>
-            <StyledDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={item.inDate}
-              selectsStart
-              startDate={item.inDate}
-              endDate={item.outDate}
-              onChange={(date) => onChangeInDate(date, item.index)}
-              peekMonthDropdown
-              showYearDropdown
-            />
-          </div>
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeTitles>&nbsp;퇴사일자</ResumeTitles>
-            <StyledDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={item.outDate}
-              selectsEnd
-              startDate={item.inDate}
-              endDate={item.outDate}
-              onChange={(date) => onChangeOutDate(date, item.index)}
-              peekMonthDropdown
-              showYearDropdown
-            />
-          </div>
-        </div>
-      </div>
-    );
-  });
-
   const onChangeCareer = useCallback(
     (e, index) => {
       setForm((p) => {
-        p.careers[p.careers.findIndex((x) => x.index === index)][
-          e.target.name
-        ] = e.target.value;
-        return { ...p };
+        const temp = p.careers.map((c) => {
+          if (p.careers.indexOf(c) === index) {
+            return { ...c, [e.target.name]: e.target.value };
+          }
+          return c;
+        });
+        return { ...p, careers: temp };
       });
     },
     [setForm]
@@ -88,22 +40,40 @@ export default function ResumeCareer({ form, setForm }) {
 
   const onChangeInDate = useCallback(
     (date, index) => {
-      setForm((p) => {
-        p.careers[p.careers.findIndex((x) => x.index === index)]['inDate'] =
-          date;
-        return { ...p };
-      });
+      const event = { target: { name: 'inDate', value: date } };
+      if (event.target.name === 'inDate') {
+        const inDate = event.target.value;
+        inDate.setHours(inDate.getHours() + 9);
+        setForm((p) => {
+          const temp = p.careers.map((c) => {
+            if (p.careers.indexOf(c) === index) {
+              return { ...c, [event.target.name]: inDate };
+            }
+            return c;
+          });
+          return { ...p, careers: temp };
+        });
+      }
     },
     [setForm]
   );
 
   const onChangeOutDate = useCallback(
     (date, index) => {
-      setForm((p) => {
-        p.careers[p.careers.findIndex((x) => x.index === index)]['outDate'] =
-          date;
-        return { ...p };
-      });
+      const event = { target: { name: 'outDate', value: date } };
+      if (event.target.name === 'outDate') {
+        const outDate = event.target.value;
+        outDate.setHours(outDate.getHours() + 9);
+        setForm((p) => {
+          const temp = p.careers.map((c) => {
+            if (p.careers.indexOf(c) === index) {
+              return { ...c, [event.target.name]: outDate };
+            }
+            return c;
+          });
+          return { ...p, careers: temp };
+        });
+      }
     },
     [setForm]
   );
@@ -132,6 +102,56 @@ export default function ResumeCareer({ form, setForm }) {
       return { ...prev, careers: next };
     });
   }, [setForm]);
+  const itemList = form.careers.map((item, index) => {
+    return (
+      <div key={index}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+          <ResumeInputs
+            flex={'1'}
+            itemName={'회사이름'}
+            value={item.companyName}
+            name={'companyName'}
+            onChange={(e) => onChangeCareer(e, index)}
+          />
+          <ResumeInputs
+            flex={'1'}
+            itemName={'직급'}
+            value={item.position}
+            name={'position'}
+            onChange={(e) => onChangeCareer(e, index)}
+          />
+          <div style={{ display: 'inline-block', margin: '0 0 5px 0' }}>
+            <ResumeTitles>&nbsp;입사날짜</ResumeTitles>
+            <StyledDatePicker
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              selected={item.inDate}
+              selectsStart
+              startDate={item.inDate}
+              endDate={item.outDate}
+              onChange={(date) => onChangeInDate(date, index)}
+              peekMonthDropdown
+              showYearDropdown
+            />
+          </div>
+          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
+            <ResumeTitles>&nbsp;퇴사일자</ResumeTitles>
+            <StyledDatePicker
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              selected={item.outDate}
+              selectsEnd
+              startDate={item.inDate}
+              endDate={item.outDate}
+              onChange={(date) => onChangeOutDate(date, index)}
+              peekMonthDropdown
+              showYearDropdown
+            />
+          </div>
+        </div>
+      </div>
+    );
+  });
 
   return (
     <>

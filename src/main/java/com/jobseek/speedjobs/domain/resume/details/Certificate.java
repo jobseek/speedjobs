@@ -20,8 +20,8 @@ public class Certificate {
 
 	private LocalDate certDate;
 
-	private int score;
+	private Integer score;
 
-	private int degree;
+	private Integer degree;
 
 }

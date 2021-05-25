@@ -34,7 +34,7 @@ export default function ResumeWow({
 }) {
   const history = useHistory();
   const onClickHandler = useCallback(() => {
-    history.push(`/resume/resume/${id}`);
+    history.push(`/resume/${id}`);
   }, [history, id]);
 
   return (

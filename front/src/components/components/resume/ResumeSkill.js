@@ -1,13 +1,17 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import Tags from '../Tags';
 import { Warning } from '../Styled';
+import { RESUME_GET_DONE } from '../../../reducers/resume';
+import TagShower from '../tag/TagShower';
+import TagSelector from '../tag/TagSelector';
 
 export default function ResumeSkill({ setForm }) {
   const [totalTag, setTotalTag] = useState([]);
   const [tagList, setTagList] = useState([]);
-
+  const resume = useSelector((state) => state.resume);
   const tagss = useSelector((state) => state.tag);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setTotalTag([...tagList.filter((t) => t.selected).map((t) => t.id)]);
   }, [tagList]);
@@ -17,7 +21,22 @@ export default function ResumeSkill({ setForm }) {
   }, [totalTag, setForm]);
 
   useEffect(() => {
-    if (tagss.tagGetData) {
+    if (resume.resumeGetDone) {
+      if (tagss.tagGetData) {
+        const temp = Array.from(tagss.tagGetData.tags.SKILL);
+        const tempFromResume = [
+          ...(resume.resumeGet.tags ?? []).map((t) => t.id),
+        ];
+        const tt = temp.map((t) => {
+          if (tempFromResume.indexOf(t.id) >= 0) {
+            return { ...t, selected: true };
+          }
+          return { ...t, selected: false };
+        });
+        setTagList((p) => [...tt]);
+      }
+      dispatch({ type: RESUME_GET_DONE });
+    } else if (tagss.tagGetData) {
       const temp = Array.from(tagss.tagGetData.tags.SKILL);
 
       const tt = temp.map((t) => {
@@ -25,7 +44,7 @@ export default function ResumeSkill({ setForm }) {
       });
       setTagList((p) => [...p, ...tt]);
     }
-  }, [tagss.tagGetData]);
+  }, [tagss.tagGetData, resume.resumeGetDone, resume, dispatch]);
 
   return (
     <>
@@ -33,9 +52,10 @@ export default function ResumeSkill({ setForm }) {
         Skill <Warning>자신있는 언어를 선택해주세요</Warning>
       </h5>
       <div className={'col-12'}>
-        <Tags tagList={tagList} selected={setTagList}>
+        <TagSelector tagList={tagList} setTagList={setTagList}>
           기술
-        </Tags>
+        </TagSelector>
+        <TagShower tagList={tagList} setTagList={setTagList} />
       </div>
     </>
   );

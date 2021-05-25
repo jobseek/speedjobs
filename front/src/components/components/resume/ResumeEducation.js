@@ -20,48 +20,49 @@ const MyDatePicker = styled(DatePicker)`
 `;
 
 export default function ResumeEducation({
-  onChangeHighSchool,
+  onChangeHigh,
   onChangeUniversity,
   onChangeGraduate,
-  onChangeInDate,
-  onChangeOutDate,
-  onChangeInDate2,
-  onChangeOutDate2,
-  onChangeInDate3,
-  onChangeOutDate3,
+  onChangeHighInDate,
+  onChangeHighOutDate,
+  onChangeUniversityInDate,
+  onChangeUniversityOutDate,
+  onChangeGraduateInDate,
+  onChangeGraduateOutDate,
   setForm,
-  item,
-  item2,
-  item3,
+  high,
+  university,
+  graduate,
 }) {
   useEffect(() => {
     setForm((p) => ({
       ...p,
       scholars: [
         {
-          education: item.education,
-          schoolName: item.schoolName,
-          major: item.major,
-          inDate: item.inDate,
-          outDate: item.outDate,
+          education: high.education,
+          schoolName: high.schoolName,
+          major: high.major,
+          inDate: high.inDate,
+          outDate: high.outDate,
         },
         {
-          education: item2.education,
-          schoolName: item2.schoolName,
-          major: item2.major,
-          inDate: item2.inDate,
-          outDate: item2.outDate,
+          education: university.education,
+          schoolName: university.schoolName,
+          major: university.major,
+          inDate: university.inDate,
+          outDate: university.outDate,
         },
         {
-          education: item3.education,
-          schoolName: item3.schoolName,
-          major: item3.major,
-          inDate: item3.inDate,
-          outDate: item3.outDate,
+          education: graduate.education,
+          schoolName: graduate.schoolName,
+          major: graduate.major,
+          inDate: graduate.inDate,
+          outDate: graduate.outDate,
         },
       ],
     }));
-  }, [item, item2, item3, setForm]);
+  }, [high, university, graduate, setForm]);
+
   return (
     <>
       <div style={{ marginBottom: '40px' }}>
@@ -75,24 +76,26 @@ export default function ResumeEducation({
             flex={'1'}
             itemName={'학교이름'}
             name={'schoolName'}
-            onChange={(e) => onChangeHighSchool(e)}
+            value={high?.schoolName}
+            onChange={(e) => onChangeHigh(e)}
           />
           <ResumeInputs
             flex={'1'}
             itemName={'전공'}
             name={'major'}
-            onChange={(e) => onChangeHighSchool(e)}
+            value={high?.major}
+            onChange={(e) => onChangeHigh(e)}
           />
           <div style={{ display: 'inline-block' }}>
             <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
             <MyDatePicker
               locale={ko}
               dateFormat="yyyy-MM-dd"
-              selected={item.inDate}
-              onChange={(e) => onChangeInDate(e)}
+              selected={high?.inDate}
+              onChange={(e) => onChangeHighInDate(e)}
               selectsStart
-              startDate={item.inDate}
-              endDate={item.outDate}
+              startDate={high?.inDate}
+              endDate={high?.outDate}
               peekMonthDropdown
               showYearDropdown
             />
@@ -102,12 +105,12 @@ export default function ResumeEducation({
             <MyDatePicker
               locale={ko}
               dateFormat="yyyy-MM-dd"
-              selected={item.outDate}
-              onChange={(e) => onChangeOutDate(e)}
+              selected={high?.outDate}
+              onChange={(e) => onChangeHighOutDate(e)}
               selectsEnd
-              startDate={item.inDate}
-              endDate={item.outDate}
-              minDate={item.inDate}
+              startDate={high?.inDate}
+              endDate={high?.outDate}
+              minDate={high?.inDate}
               peekMonthDropdown
               showYearDropdown
             />
@@ -120,12 +123,14 @@ export default function ResumeEducation({
             flex={'1'}
             itemName={'학교이름'}
             name={'schoolName'}
+            value={university?.schoolName}
             onChange={(e) => onChangeUniversity(e)}
           />
           <ResumeInputs
             flex={'1'}
             itemName={'전공'}
             name={'major'}
+            value={university?.major}
             onChange={(e) => onChangeUniversity(e)}
           />
           <div style={{ display: 'inline-block' }}>
@@ -133,11 +138,11 @@ export default function ResumeEducation({
             <MyDatePicker
               locale={ko}
               dateFormat="yyyy-MM-dd"
-              selected={item2.inDate}
-              onChange={(e) => onChangeInDate2(e)}
+              selected={university?.inDate}
+              onChange={(e) => onChangeUniversityInDate(e)}
               selectsStart
-              startDate={item2.inDate}
-              endDate={item2.outDate}
+              startDate={university?.inDate}
+              endDate={university?.outDate}
               peekMonthDropdown
               showYearDropdown
             />
@@ -147,12 +152,12 @@ export default function ResumeEducation({
             <MyDatePicker
               locale={ko}
               dateFormat="yyyy-MM-dd"
-              selected={item2.outDate}
-              onChange={(e) => onChangeOutDate2(e)}
+              selected={university?.outDate}
+              onChange={(e) => onChangeUniversityOutDate(e)}
               selectsEnd
-              startDate={item2.inDate}
-              endDate={item2.outDate}
-              minDate={item2.inDate}
+              startDate={university?.inDate}
+              endDate={university?.outDate}
+              minDate={university?.inDate}
               peekMonthDropdown
               showYearDropdown
             />
@@ -165,12 +170,14 @@ export default function ResumeEducation({
             flex={'1'}
             itemName={'학교이름'}
             name={'schoolName'}
+            value={graduate?.schoolName}
             onChange={(e) => onChangeGraduate(e)}
           />
           <ResumeInputs
             flex={'1'}
             itemName={'전공'}
             name={'major'}
+            value={graduate?.major}
             onChange={(e) => onChangeGraduate(e)}
           />
           <div style={{ display: 'inline-block' }}>
@@ -178,11 +185,11 @@ export default function ResumeEducation({
             <MyDatePicker
               locale={ko}
               dateFormat="yyyy-MM-dd"
-              selected={item3.inDate}
-              onChange={(e) => onChangeInDate3(e)}
+              selected={graduate?.inDate}
+              onChange={(e) => onChangeGraduateInDate(e)}
               selectsStart
-              startDate={item3.inDate}
-              endDate={item3.outDate}
+              startDate={graduate?.inDate}
+              endDate={graduate?.outDate}
               peekMonthDropdown
               showYearDropdown
             />
@@ -192,12 +199,12 @@ export default function ResumeEducation({
             <MyDatePicker
               locale={ko}
               dateFormat="yyyy-MM-dd"
-              selected={item3.outDate}
-              onChange={(e) => onChangeOutDate3(e)}
+              selected={graduate?.outDate}
+              onChange={(e) => onChangeGraduateOutDate(e)}
               selectsEnd
-              startDate={item3.inDate}
-              endDate={item3.outDate}
-              minDate={item3.inDate}
+              startDate={graduate?.inDate}
+              endDate={graduate?.outDate}
+              minDate={graduate?.inDate}
               peekMonthDropdown
               showYearDropdown
             />

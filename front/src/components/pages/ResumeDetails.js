@@ -1,5 +1,7 @@
-import { v4 } from 'uuid';
 import React, { useEffect, useState } from 'react';
+import { v4 } from 'uuid';
+import styled from 'styled-components';
+import { LockFill, UnlockFill } from '@styled-icons/bootstrap';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
@@ -21,10 +23,21 @@ import SideMenu from '../components/SideMenu';
 import {
   RESUME_DELETE_DONE,
   RESUME_DELETE_REQUEST,
+  RESUME_GET_DONE,
   RESUME_GET_REQUEST,
 } from '../../reducers/resume';
 import ResumeInputs from '../components/resume/ResumeInputs';
 import ResumeGender from '../components/resume/ResumeGender';
+
+const MyLock = styled(LockFill)`
+  width: 25px;
+  color: red;
+`;
+
+const MyUnlock = styled(UnlockFill)`
+  width: 25px;
+  color: #7c7c7c;
+`;
 
 export default function ResumeDetails() {
   const dispatch = useDispatch();
@@ -35,8 +48,10 @@ export default function ResumeDetails() {
   const resume = useSelector((state) => state.resume);
   const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
   const [content, setContent] = useState({
+    title: '',
     open: '',
     name: '',
+    email: '',
     gender: '',
     contact: '',
     birth: '',
@@ -112,22 +127,61 @@ export default function ResumeDetails() {
   }, [dispatch, id, user.me, refresh]);
 
   useEffect(() => {
-    if (resume.resumeGet) {
+    if (resume.resumeGetDone) {
       const resumeTemp = { ...resume.resumeGet };
-      if (resume.resumeGet.resumeImage === null) {
+      if (resume.resumeGet.resumeImage === '') {
         resumeTemp.resumeImage =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
+      const birthDay = resumeTemp.birth?.join('-');
+      const highInDate = resumeTemp.scholars[0].inDate?.join('-');
+      const highOutDate = resumeTemp.scholars[0].outDate?.join('-');
+      const universityInDate = resumeTemp.scholars[1].inDate?.join('-');
+      const universityOutDate = resumeTemp.scholars[1].outDate?.join('-');
+      const graduateInDate = resumeTemp.scholars[2].inDate?.join('-');
+      const graduateOutDate = resumeTemp.scholars[2].outDate?.join('-');
+
       setContent((p) => ({
         ...p,
         ...resumeTemp,
+        birth: birthDay,
+        scholars: [
+          {
+            education: resumeTemp.scholars[0]?.education,
+            schoolName: resumeTemp.scholars[0]?.schoolName,
+            major: resumeTemp.scholars[0]?.major,
+            inDate: highInDate,
+            outDate: highOutDate,
+          },
+          {
+            education: resumeTemp.scholars[1]?.education,
+            schoolName: resumeTemp.scholars[1]?.schoolName,
+            major: resumeTemp.scholars[1]?.major,
+            inDate: universityInDate,
+            outDate: universityOutDate,
+          },
+          {
+            education: resumeTemp.scholars[2]?.education,
+            schoolName: resumeTemp.scholars[2]?.schoolName,
+            major: resumeTemp.scholars[2]?.major,
+            inDate: graduateInDate,
+            outDate: graduateOutDate,
+          },
+        ],
       }));
+      dispatch({ type: RESUME_GET_DONE });
     }
-  }, [resume.resumeGet, setContent]);
+  }, [resume.resumeGet, resume.resumeGetDone, setContent, dispatch]);
 
-  const careers = content.careers.map((x) => {
+  const careers = content.careers.map((x, index) => {
+    let inDate = '';
+    let outDate = '';
+    if (x.inDate !== null && x.outDate !== null) {
+      inDate = x.inDate[0] + '-' + x.inDate[1] + '-' + x.inDate[2];
+      outDate = x.outDate[0] + '-' + x.outDate[1] + '-' + x.outDate[2];
+    }
     return (
-      <>
+      <div key={index}>
         <div key={x.index} style={{ display: 'flex', flexWrap: 'nowrap' }}>
           <ResumeInputs
             flex={'1'}
@@ -138,7 +192,7 @@ export default function ResumeDetails() {
           <ResumeInputs
             flex={'1'}
             itemName={'직급'}
-            value={x.position}
+            value={x.position || ''}
             name={'position'}
             disabled
           />
@@ -146,7 +200,7 @@ export default function ResumeDetails() {
             <ResumeInputs
               itemName={'입사날짜'}
               basic
-              value={x.inDate || ''}
+              value={inDate || ''}
               disabled
             />
           </div>
@@ -154,17 +208,21 @@ export default function ResumeDetails() {
             <ResumeInputs
               itemName={'퇴사날짜'}
               basic
-              value={x.outDate || ''}
+              value={outDate || ''}
               disabled
             />
           </div>
         </div>
-      </>
+      </div>
     );
   });
-  const certificates = content.certificates.map((y) => {
+  const certificates = content.certificates.map((y, index) => {
+    let certDate = '';
+    if (y.certDate !== null) {
+      certDate = y.certDate[0] + '-' + y.certDate[1] + '-' + y.certDate[2];
+    }
     return (
-      <>
+      <div key={index}>
         <div
           key={y.index}
           style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}
@@ -172,21 +230,21 @@ export default function ResumeDetails() {
           <ResumeInputs
             flex={'1'}
             itemName={'이름'}
-            value={y.certName}
+            value={y.certName || ''}
             name={'certName'}
             disabled
           />
           <ResumeInputs
             flex={'1'}
             itemName={'급수'}
-            value={y.degree}
+            value={y.degree || ''}
             name={'degree'}
             disabled
           />
           <ResumeInputs
             flex={'1'}
             itemName={'점수'}
-            value={y.score}
+            value={y.score || ''}
             name={'score'}
             disabled
           />
@@ -195,14 +253,14 @@ export default function ResumeDetails() {
           <ResumeInputs
             flex={'1'}
             itemName={'발급기관'}
-            value={y.institute}
+            value={y.institute || ''}
             name={'institute'}
             disabled
           />
           <ResumeInputs
             flex={'1'}
             itemName={'발급번호'}
-            value={y.certNumber}
+            value={y.certNumber || ''}
             name={'certNumber'}
             disabled
           />
@@ -210,12 +268,12 @@ export default function ResumeDetails() {
             <ResumeInputs
               itemName={'발급일자'}
               basic
-              value={y.certDate || ''}
+              value={certDate || ''}
               disabled
             />
           </div>
         </div>
-      </>
+      </div>
     );
   });
 
@@ -231,7 +289,7 @@ export default function ResumeDetails() {
       dispatch({
         type: RESUME_DELETE_DONE,
       });
-      history.push('/resume/total');
+      history.push('/resume/list');
     }
   });
 
@@ -245,7 +303,7 @@ export default function ResumeDetails() {
               <div style={{ flex: '0 0' }}>
                 <StyledButton
                   mid
-                  onClick={() => history.push(`../modify/${id}`)}
+                  onClick={() => history.push(`/resume/modify/${id}`)}
                 >
                   수정
                 </StyledButton>
@@ -286,7 +344,15 @@ export default function ResumeDetails() {
                         top: '9px',
                       }}
                     >
-                      공개여부 : {content.open}
+                      {content.open === 'NO' ? (
+                        <span>
+                          <MyLock />
+                        </span>
+                      ) : (
+                        <span>
+                          <MyUnlock />
+                        </span>
+                      )}
                     </div>
                   </span>
                   <div
@@ -296,7 +362,7 @@ export default function ResumeDetails() {
                       margin: '25px auto',
                     }}
                   >
-                    <ResumeImg src={content.resumeImage} alt="resumeImg" />
+                    <ResumeImg src={content.resumeImage} alt="resume_img" />
                   </div>
                   <div style={{ marginTop: '20px' }}>
                     <StyledHeaderMargin
@@ -351,6 +417,13 @@ export default function ResumeDetails() {
                       disabled
                     />
                   </div>
+                  <ResumeInputs
+                    itemName={'이메일'}
+                    sns
+                    name={'email'}
+                    value={content?.email || ''}
+                    disabled
+                  />
                   <ResumeInputs
                     itemName={'Github'}
                     sns
@@ -416,14 +489,14 @@ export default function ResumeDetails() {
                       flex={'1'}
                       itemName={'학교이름'}
                       name={'schoolName'}
-                      value={content.scholars[1].schoolName}
+                      value={content?.scholars[1].schoolName || ''}
                       disabled
                     />
                     <ResumeInputs
                       flex={'1'}
                       itemName={'전공'}
                       name={'major'}
-                      value={content.scholars[1].major}
+                      value={content?.scholars[1].major || ''}
                       disabled
                     />
                     <div style={{ display: 'inline-block' }}>
@@ -510,8 +583,10 @@ export default function ResumeDetails() {
                 </div>
                 <h5>Skill</h5>
                 <div>
-                  {content.tags.map((t) => (
-                    <TagBody grey>{t.name}</TagBody>
+                  {content.tags.map((t, index) => (
+                    <TagBody key={index} grey>
+                      {t.name}
+                    </TagBody>
                   ))}
                 </div>
               </div>

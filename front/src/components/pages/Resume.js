@@ -10,124 +10,43 @@ import {
   StyledLeftLayout,
 } from '../components/Styled';
 import SideMenu from '../components/SideMenu';
-import ResumeContents from '../components/resume/ResumeContents';
 import { RESUME_ADD_DONE, RESUME_ADD_REQUEST } from '../../reducers/resume';
 import { ME_REQUEST } from '../../reducers/user';
+import ResumeContents from '../components/resume/ResumeContents';
 
 export default function Resume() {
   const history = useHistory();
-  const [item, setItem] = useState({
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state.user);
+  const resume = useSelector((state) => state.resume);
+  const [high, setHigh] = useState({
     education: 'HIGH',
     schoolName: '',
     major: '',
     inDate: '',
     outDate: '',
   });
-  const [item2, setItem2] = useState({
+  const [university, setUniversity] = useState({
     education: 'UNIVERSITY',
     schoolName: '',
     major: '',
     inDate: '',
     outDate: '',
   });
-  const [item3, setItem3] = useState({
+  const [graduate, setGraduate] = useState({
     education: 'GRADUATE',
     schoolName: '',
     major: '',
     inDate: '',
     outDate: '',
   });
-
-  const onChangeHighSchool = useCallback((e) => {
-    setItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
-  const onChangeUniversity = useCallback((e) => {
-    setItem2((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
-  const onChangeGraduate = useCallback((e) => {
-    setItem3((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
-
-  const onChangeInDate = useCallback((e) => {
-    const event = { target: { name: 'inDate', value: e } };
-    if (event.target.name === 'inDate') {
-      setItem((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  }, []);
-  const onChangeInDate2 = useCallback((e) => {
-    const event = { target: { name: 'inDate', value: e } };
-    if (event.target.name === 'inDate') {
-      setItem2((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  }, []);
-  const onChangeInDate3 = useCallback((e) => {
-    const event = { target: { name: 'inDate', value: e } };
-    if (event.target.name === 'inDate') {
-      setItem3((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  }, []);
-
-  const onChangeOutDate = useCallback((e) => {
-    const event = { target: { name: 'outDate', value: e } };
-    if (event.target.name === 'outDate') {
-      setItem((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  }, []);
-  const onChangeOutDate2 = useCallback((e) => {
-    const event = { target: { name: 'outDate', value: e } };
-    if (event.target.name === 'outDate') {
-      setItem2((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  }, []);
-  const onChangeOutDate3 = useCallback((e) => {
-    const event = { target: { name: 'outDate', value: e } };
-    if (event.target.name === 'outDate') {
-      setItem3((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  }, []);
-
-  const dispatch = useDispatch();
-  const [bookmark, setBookmark] = useState(false);
-
-  const onChangeIntro = (e) => {
-    if (e.target.value.length <= 500) {
-      setForm((prev) => ({ ...prev, coverLetter: e.target.value }));
-    } else {
-      alert('500자 이내로 작성해주세요');
-    }
-  };
-
-  const handleBookmark = () => {
-    setBookmark(!bookmark);
-    if (!bookmark) {
-      form.open = 'YES';
-    } else {
-      form.open = 'NO';
-    }
-  };
-  const user = useSelector((state) => state.user);
-  const resume = useSelector((state) => state.resume);
   const [form, setForm] = useState({
+    title: '',
     open: 'NO',
     name: '',
+    address: '',
+    email: '',
     gender: '',
     contact: '',
     birth: new Date(),
@@ -136,15 +55,7 @@ export default function Resume() {
     resumeImage: '',
     coverLetter: '',
     tags: [],
-    scholars: [
-      {
-        item,
-      },
-      {
-        item2,
-      },
-      { item3 },
-    ],
+    scholars: [{ high }, { university }, { graduate }],
     certificates: [
       {
         index: v4(),
@@ -167,16 +78,134 @@ export default function Resume() {
     ],
   });
 
+  const onChangeIntro = (e) => {
+    if (e.target.value.length <= 500) {
+      setForm((prev) => ({ ...prev, coverLetter: e.target.value }));
+    } else {
+      alert('500자 이내로 작성해주세요');
+    }
+  };
+  const handleOpen = () => {
+    setOpen(!open);
+    if (!open) {
+      form.open = 'YES';
+    } else {
+      form.open = 'NO';
+    }
+  };
+
+  const onChangeHandler = useCallback((e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+  const onChangeHigh = useCallback((e) => {
+    setHigh((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+  const onChangeUniversity = useCallback((e) => {
+    setUniversity((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+  const onChangeGraduate = useCallback((e) => {
+    setGraduate((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+
+  const onChangeHighInDate = useCallback((e) => {
+    const event = { target: { name: 'inDate', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
+    if (event.target.name === 'inDate') {
+      setHigh((prev) => ({
+        ...prev,
+        [event.target.name]: date,
+      }));
+    }
+  }, []);
+  const onChangeUniversityInDate = useCallback((e) => {
+    const event = { target: { name: 'inDate', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
+    if (event.target.name === 'inDate') {
+      setUniversity((prev) => ({
+        ...prev,
+        [event.target.name]: date,
+      }));
+    }
+  }, []);
+  const onChangeGraduateInDate = useCallback((e) => {
+    const event = { target: { name: 'inDate', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
+    if (event.target.name === 'inDate') {
+      setGraduate((prev) => ({
+        ...prev,
+        [event.target.name]: date,
+      }));
+    }
+  }, []);
+  const onChangeHighOutDate = useCallback((e) => {
+    const event = { target: { name: 'outDate', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
+    if (event.target.name === 'outDate') {
+      setHigh((prev) => ({
+        ...prev,
+        [event.target.name]: date,
+      }));
+    }
+  }, []);
+  const onChangeUniversityOutDate = useCallback((e) => {
+    const event = { target: { name: 'outDate', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
+    if (event.target.name === 'outDate') {
+      setUniversity((prev) => ({
+        ...prev,
+        [event.target.name]: date,
+      }));
+    }
+  }, []);
+  const onChangeGraduateOutDate = useCallback((e) => {
+    const event = { target: { name: 'outDate', value: e } };
+    const date = event.target.value;
+    date.setHours(date.getHours() + 9);
+    if (event.target.name === 'outDate') {
+      setGraduate((prev) => ({
+        ...prev,
+        [event.target.name]: date,
+      }));
+    }
+  }, []);
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
       if (user.me === null) {
         dispatch({ type: ME_REQUEST });
       }
-      dispatch({
-        type: RESUME_ADD_REQUEST,
-        data: form,
-      });
+      if (
+        form.title === '' ||
+        form.birth === null ||
+        form.address === '' ||
+        form.contact === null ||
+        form.email === '' ||
+        form.gender === null ||
+        form.name === ''
+      ) {
+        if (form.title === '') {
+          alert('제목을 입력하세요');
+        } else if (form.birth === null) {
+          alert('생년월일을 입력하세요');
+        } else if (form.address === '') {
+          alert('주소를 입력하세요');
+        } else if (form.contact === null) {
+          alert('연락처를 입력하세요');
+        } else if (form.email === '') {
+          alert('이메일을 입력하세요');
+        } else if (form.gender === null) {
+          alert('성별을 입력하세요');
+        } else if (form.name === '') {
+          alert('이름을 입력하세요');
+        }
+      } else {
+        dispatch({ type: RESUME_ADD_REQUEST, data: form });
+      }
     },
     [user.me, dispatch, form]
   );
@@ -187,10 +216,6 @@ export default function Resume() {
       history.goBack();
     }
   }, [resume, history, dispatch]);
-
-  const onChangeHandler = useCallback((e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }, []);
 
   return (
     <>
@@ -219,23 +244,23 @@ export default function Resume() {
             <ProfileDiv className={'col-12 col-lg-10 p-0'}>
               <ResumeContents
                 onChange={onChangeHandler}
-                bookMark={handleBookmark}
-                bookMark1={bookmark}
+                handleOpen={handleOpen}
+                open={open}
                 setForm={setForm}
                 form={form}
                 onChangeIntro={onChangeIntro}
-                onChangeHighSchool={onChangeHighSchool}
+                onChangeHigh={onChangeHigh}
                 onChangeUniversity={onChangeUniversity}
                 onChangeGraduate={onChangeGraduate}
-                onChangeInDate={onChangeInDate}
-                onChangeOutDate={onChangeOutDate}
-                onChangeInDate2={onChangeInDate2}
-                onChangeOutDate2={onChangeOutDate2}
-                onChangeInDate3={onChangeInDate3}
-                onChangeOutDate3={onChangeOutDate3}
-                item={item}
-                item2={item2}
-                item3={item3}
+                onChangeHighInDate={onChangeHighInDate}
+                onChangeHighOutDate={onChangeHighOutDate}
+                onChangeUniversityInDate={onChangeUniversityInDate}
+                onChangeUniversityOutDate={onChangeUniversityOutDate}
+                onChangeGraduateInDate={onChangeGraduateInDate}
+                onChangeGraduateOutDate={onChangeGraduateOutDate}
+                high={high}
+                university={university}
+                graduate={graduate}
               />
             </ProfileDiv>
           </div>

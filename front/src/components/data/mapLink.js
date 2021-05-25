@@ -19,7 +19,7 @@ const DropLinks = [
 const DropLinksUser = [
   { title: 'user', to: '/' },
   { title: '개인정보', to: '/profile' },
-  { title: '이력서', to: '/resume' },
+  { title: '이력서', to: '/resume/list' },
   { title: '게시글', to: '/likelist/community' },
   { title: '채용공고', to: '/likelist/recruit' },
   {

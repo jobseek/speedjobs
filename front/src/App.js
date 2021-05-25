@@ -16,7 +16,7 @@ import PostDetail from './components/pages/PostDetail';
 import Profile from './components/pages/profile/Profile';
 import Withdrawal from './components/pages/profile/Withdrawal';
 import Resume from './components/pages/Resume';
-import ResumeTotal from './components/pages/ResumeTotal';
+import ResumeList from './components/pages/ResumeList';
 import RecruitLike from './components/pages/RecruitLike';
 import CommuLike from './components/pages/CommuLike';
 import MemberRegistration from './components/pages/MemberRegistration';
@@ -135,14 +135,10 @@ function App() {
               path={'/profile/corporate/modify'}
               component={CorporateModify}
             />
-            <Route exact path={'/resume'} component={Resume} />
-            <Route exact path={'/resume/total'} component={ResumeTotal} />
+            <Route exact path={'/resume/new'} component={Resume} />
+            <Route exact path={'/resume/list'} component={ResumeList} />
             <Route exact path={'/resume/submit'} component={SubmitList} />
-            <Route
-              exact
-              path={'/resume/resume/:id'}
-              component={ResumeDetails}
-            />
+            <Route exact path={'/resume/:id'} component={ResumeDetails} />
             <Route exact path={'/resume/modify/:id'} component={ResumeModify} />
             <Route exact path={'/likelist/community'} component={CommuLike} />
             <Route exact path={'/likelist/recruit'} component={RecruitLike} />

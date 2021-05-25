@@ -2,63 +2,65 @@ import React from 'react';
 import ResumeBasic from './ResumeBasic';
 import ResumeEducation from './ResumeEducation';
 import ResumeCareer from './ResumeCareer';
-import ResumeSelf from './ResumeSelf';
+import ResumeSelfMd from './ResumeSelfMd';
 import ResumeSkill from './ResumeSkill';
 import ResumeCertificate from './ResumeCertificate';
 
 export default function ResumeContents({
   onChange,
-  bookMark,
-  bookMark1,
+  handleOpen,
+  open,
   setForm,
   form,
   onChangeIntro,
-  onChangeHighSchool,
+  onChangeHigh,
   onChangeUniversity,
   onChangeGraduate,
-  onChangeInDate,
-  onChangeOutDate,
-  onChangeInDate2,
-  onChangeOutDate2,
-  onChangeInDate3,
-  onChangeOutDate3,
-  item,
-  item2,
-  item3,
+  onChangeHighInDate,
+  onChangeHighOutDate,
+  onChangeUniversityInDate,
+  onChangeUniversityOutDate,
+  onChangeGraduateInDate,
+  onChangeGraduateOutDate,
+  high,
+  university,
+  graduate,
+  id,
 }) {
   return (
     <>
       <div className={'container-fluid'}>
         <ResumeBasic
           onChange={onChange}
-          bookMark={bookMark}
-          bookMark1={bookMark1}
+          handleOpen={handleOpen}
+          open={open}
           setForm={setForm}
           form={form}
         />
         <ResumeEducation
-          onChangeHighSchool={onChangeHighSchool}
+          onChangeHigh={onChangeHigh}
           onChangeUniversity={onChangeUniversity}
           onChangeGraduate={onChangeGraduate}
-          onChangeInDate={onChangeInDate}
-          onChangeOutDate={onChangeOutDate}
-          onChangeInDate2={onChangeInDate2}
-          onChangeOutDate2={onChangeOutDate2}
-          onChangeInDate3={onChangeInDate3}
-          onChangeOutDate3={onChangeOutDate3}
+          onChangeHighInDate={onChangeHighInDate}
+          onChangeHighOutDate={onChangeHighOutDate}
+          onChangeUniversityInDate={onChangeUniversityInDate}
+          onChangeUniversityOutDate={onChangeUniversityOutDate}
+          onChangeGraduateInDate={onChangeGraduateInDate}
+          onChangeGraduateOutDate={onChangeGraduateOutDate}
           setForm={setForm}
-          item={item}
-          item2={item2}
-          item3={item3}
+          form={form}
+          high={high}
+          university={university}
+          graduate={graduate}
         />
         <ResumeCertificate form={form} setForm={setForm} />
         <ResumeCareer form={form} setForm={setForm} />
-        <ResumeSelf
+        <ResumeSelfMd
           onChangeIntro={onChangeIntro}
           setForm={setForm}
           form={form}
         />
-        <ResumeSkill form={form} setForm={setForm} />
+        <ResumeSkill form={form} setForm={setForm} id={id} />
       </div>
     </>
   );

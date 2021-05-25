@@ -11,7 +11,7 @@ import {
 import SideMenu from '../components/SideMenu';
 import { RESUME_LIST_DONE, RESUME_LIST_REQUEST } from '../../reducers/resume';
 
-export default function ResumeTotal() {
+export default function ResumeList() {
   const dispatch = useDispatch();
   const page = useRef(0);
   const [, setLoading] = useState(false);
@@ -75,7 +75,7 @@ export default function ResumeTotal() {
       <div className="container text-left">
         <StyledHeaderDiv padding title={'이력서'}>
           <div style={{ flex: '0 0' }}>
-            <Link to="/resume">
+            <Link to="/resume/new">
               <StyledButton wide>작성</StyledButton>
             </Link>
           </div>
