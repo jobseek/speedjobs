@@ -1,12 +1,13 @@
 package com.jobseek.speedjobs.event;
 
-import lombok.AccessLevel;
+import static lombok.AccessLevel.PRIVATE;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = PRIVATE)
 @AllArgsConstructor
 public class RegisterMailEvent {
 

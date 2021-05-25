@@ -1,5 +1,8 @@
 package com.jobseek.speedjobs.dto.recruit;
 
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.recruit.Position;
@@ -10,7 +13,6 @@ import java.util.List;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +20,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class RecruitRequest {
 
 	@NotBlank

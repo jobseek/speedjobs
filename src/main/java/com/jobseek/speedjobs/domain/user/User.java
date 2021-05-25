@@ -25,28 +25,24 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
-@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
+@Getter
+@SuperBuilder()
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
-@SuperBuilder
 public class User extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
-	@Builder.Default
-	private Long id = 1L;
+	private Long id;
 
 	private String name;
 
@@ -106,7 +102,7 @@ public class User extends BaseTimeEntity {
 		this.role = role;
 	}
 
-	public User updateCustomUserInfo(String name, String nickname, String picture, String contact) {
+	protected User updateCustomUserInfo(String name, String nickname, String picture, String contact) {
 		this.name = name;
 		this.nickname = nickname;
 		this.picture = picture;
@@ -115,6 +111,9 @@ public class User extends BaseTimeEntity {
 	}
 
 	public void changeRole(Role role) {
+		if (role == Role.ROLE_ADMIN) {
+			throw new ForbiddenException("해당 요청을 수행할 수 없습니다.");
+		}
 		this.role = role;
 	}
 

@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-@Component
-@Aspect
 @Slf4j
+@Aspect
+@Component
 class ControllerLoggingAspect {
 
 	@Pointcut("execution(* com.jobseek.speedjobs..*Controller.*(..))")

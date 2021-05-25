@@ -1,9 +1,12 @@
 package com.jobseek.speedjobs.dto.user.company;
 
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
+import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +15,8 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class CompanyUpdateRequest {
 
 	//유저
@@ -63,5 +66,17 @@ public class CompanyUpdateRequest {
 	public CompanyDetail getCompanyDetail() {
 		return CompanyDetail.from(registrationNumber, description, homepage, address,
 			detailedAddress, avgSalary, latitude, longitude);
+	}
+
+	public Company toEntity() {
+		return Company.builder()
+			.name(name)
+			.nickname(nickname)
+			.picture(picture)
+			.contact(contact)
+			.companyName(companyName)
+			.scale(scale)
+			.companyDetail(getCompanyDetail())
+			.build();
 	}
 }

@@ -1,5 +1,8 @@
 package com.jobseek.speedjobs.dto.resume;
 
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.jobseek.speedjobs.domain.resume.Open;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.details.Career;
@@ -9,16 +12,15 @@ import com.jobseek.speedjobs.domain.resume.details.Scholar;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class ResumeResponse {
 
 	private Long id;
@@ -49,7 +51,7 @@ public class ResumeResponse {
 			.title(resume.getTitle())
 			.name(resume.getName())
 			.gender(resume.getGender())
-			.email(resume.getMember().getEmail())
+			.email(resume.getEmail())
 			.contact(resume.getContact())
 			.birth(resume.getBirth())
 			.address(resume.getAddress())

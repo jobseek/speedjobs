@@ -8,7 +8,6 @@ import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
-import static org.mockito.Mockito.times;
 
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
@@ -26,8 +25,8 @@ import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
 import com.jobseek.speedjobs.dto.tag.TagMap;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,17 +84,15 @@ class RecruitServiceTest {
 			.favoriteCount(100)
 			.recruitDetail(recruitDetail)
 			.build();
-		List<Tag> tags = new ArrayList<>();
 		Tag tag = Tag.builder()
 			.id(1L)
 			.type(Type.SKILL)
 			.name("재미있는 스프링부트")
 			.build();
-		tags.add(tag);
+		List<Tag> tags = Collections.singletonList(tag);
 		expected.addTags(tags);
 
-		RecruitRequest recruitRequest = RecruitRequest
-			.builder()
+		RecruitRequest recruitRequest = RecruitRequest.builder()
 			.title("백엔드 신입 개발자 모집합니다.")
 			.openDate(LocalDateTime.now())
 			.closeDate(LocalDateTime.of(2021, 6, 20, 0, 0, 0))
@@ -128,6 +125,7 @@ class RecruitServiceTest {
 		// given
 		Long id = 1L;
 		Company company = Company.builder()
+			.id(id)
 			.password("jobseek2021!")
 			.contact("010-1234-5678")
 			.nickname("잡식회사")
@@ -158,15 +156,8 @@ class RecruitServiceTest {
 			.position(Position.PERMANENT)
 			.content("저희 회사 백엔드 모집해요.")
 			.build();
-		User user = User.builder()
-			.password("jobseek2021!")
-			.contact("010-1234-5678")
-			.nickname("잡식회사")
-			.role(Role.ROLE_COMPANY)
-			.name("잡식회사")
-			.email("company@company.com")
-			.build();
 		Company company = Company.builder()
+			.id(1L)
 			.password("jobseek2021!")
 			.contact("010-1234-5678")
 			.nickname("잡식회사")
@@ -189,7 +180,7 @@ class RecruitServiceTest {
 		given(recruitRepository.findById(anyLong())).willReturn(Optional.of(recruit));
 
 		// when
-		recruitService.delete(1L, user);
+		recruitService.delete(1L, company);
 
 		// then
 		assertAll(

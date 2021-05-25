@@ -1,5 +1,8 @@
 package com.jobseek.speedjobs.dto.recruit;
 
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.recruit.Position;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -10,7 +13,6 @@ import com.jobseek.speedjobs.dto.tag.TagMap;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +20,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class RecruitListResponse {
 
 	private Long id;

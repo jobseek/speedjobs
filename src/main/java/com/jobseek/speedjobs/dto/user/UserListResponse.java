@@ -1,15 +1,16 @@
 package com.jobseek.speedjobs.dto.user;
 
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
-import com.jobseek.speedjobs.domain.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +18,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonInclude(Include.NON_NULL)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class UserListResponse {
 
 	// 유저
@@ -51,16 +52,16 @@ public class UserListResponse {
 	private String registrationNumber;
 	private String logoImage;
 
-	public static UserListResponse of(User user, Member member) {
+	public static UserListResponse of(Member member) {
 		return UserListResponse.builder()
-			.id(user.getId())
-			.name(user.getName())
-			.nickname(user.getNickname())
-			.email(user.getEmail())
-			.createdDate(user.getCreatedDate())
-			.contact(user.getContact())
-			.role(user.getRole())
-			.picture(user.getPicture())
+			.id(member.getId())
+			.name(member.getName())
+			.nickname(member.getNickname())
+			.email(member.getEmail())
+			.createdDate(member.getCreatedDate())
+			.contact(member.getContact())
+			.role(member.getRole())
+			.picture(member.getPicture())
 			.bio(member.getBio())
 			.birth(member.getBirth())
 			.gender(member.getGender())
@@ -69,16 +70,16 @@ public class UserListResponse {
 			.build();
 	}
 
-	public static UserListResponse of(User user, Company company) {
+	public static UserListResponse of(Company company) {
 		return UserListResponse.builder()
-			.id(user.getId())
-			.name(user.getName())
-			.nickname(user.getNickname())
-			.email(user.getEmail())
-			.createdDate(user.getCreatedDate())
-			.contact(user.getContact())
-			.role(user.getRole())
-			.picture(user.getPicture())
+			.id(company.getId())
+			.name(company.getName())
+			.nickname(company.getNickname())
+			.email(company.getEmail())
+			.createdDate(company.getCreatedDate())
+			.contact(company.getContact())
+			.role(company.getRole())
+			.picture(company.getPicture())
 			.companyName(company.getCompanyName())
 			.scale(company.getScale())
 			.address(company.getCompanyDetail().getAddress())

@@ -13,11 +13,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
 
 	@CreatedDate

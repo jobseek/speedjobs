@@ -1,14 +1,21 @@
 package com.jobseek.speedjobs.dto.user;
 
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
+import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
+import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
+import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
-import com.jobseek.speedjobs.domain.user.UserDto;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.exception.RoleNotFoundException;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class UserSaveRequest {
 
 	@NotBlank(groups = UserValidateGroup.member.class)
@@ -56,19 +63,32 @@ public class UserSaveRequest {
 	@URL(groups = UserValidateGroup.company.class)
 	private String homepage;
 
-	public UserDto getUserDto(PasswordEncoder passwordEncoder) {
-		return UserDto.builder()
-			.name(name)
-			.nickname(nickname)
-			.email(email)
-			.password(passwordEncoder.encode(password))
-			.provider(Provider.LOCAL)
-			.role(role)
-			.contact(contact)
-			.companyName(companyName)
-			.companyDetail(CompanyDetail.from(registrationNumber, null, homepage,
-				null, null, null, null, null))
-			.build();
+	public User toEntity(PasswordEncoder passwordEncoder) {
+		if (role == ROLE_MEMBER) {
+			return Member.builder()
+				.name(name)
+				.nickname(nickname)
+				.email(email)
+				.password(passwordEncoder.encode(password))
+				.role(role)
+				.provider(Provider.LOCAL)
+				.build();
+		} else if (role == ROLE_GUEST) {
+			return Company.builder()
+				.name(name)
+				.nickname(nickname)
+				.email(email)
+				.password(passwordEncoder.encode(password))
+				.role(role)
+				.contact(contact)
+				.companyName(companyName)
+				.companyDetail(CompanyDetail.builder()
+					.registrationNumber(registrationNumber)
+					.homepage(homepage)
+					.build())
+				.build();
+		} else {
+			throw new RoleNotFoundException("존재하지 않는 역할입니다.");
+		}
 	}
-
 }

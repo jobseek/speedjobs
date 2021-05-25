@@ -2,7 +2,6 @@ package com.jobseek.speedjobs.service;
 
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
@@ -12,11 +11,9 @@ import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
 import com.jobseek.speedjobs.domain.user.User;
-import com.jobseek.speedjobs.domain.user.UserDto;
 import com.jobseek.speedjobs.domain.user.UserQueryRepository;
 import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.domain.user.exception.KeyNotFoundException;
-import com.jobseek.speedjobs.domain.user.exception.RoleNotFoundException;
 import com.jobseek.speedjobs.domain.user.exception.SignUpRuleException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
@@ -33,7 +30,6 @@ import com.jobseek.speedjobs.util.RedisUtil;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +37,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -77,16 +72,7 @@ public class UserService {
 		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key)
 			.orElseThrow(() -> new KeyNotFoundException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
-		UserDto userDto = request.getUserDto(passwordEncoder);
-		if (userDto.getRole() == ROLE_MEMBER) {
-			Member member = userDto.createMember();
-			return memberRepository.save(member).getId();
-		} else if (userDto.getRole() == ROLE_GUEST) {
-			Company guest = userDto.createGuest();
-			return companyRepository.save(guest).getId();
-		} else {
-			throw new RoleNotFoundException("존재하지 않는 역할입니다.");
-		}
+		return userRepository.save(request.toEntity(passwordEncoder)).getId();
 	}
 
 	public MemberInfoResponse findMemberInfo(Long userId) {
@@ -102,17 +88,13 @@ public class UserService {
 	@Transactional
 	public void updateMemberInfo(Long userId, MemberUpdateRequest request) {
 		Member member = findMember(userId);
-		member.updateCustomMemberInfo(request.getName(), request.getNickname(),
-			request.getPicture(), request.getContact(), request.getBirth(),
-			request.getBio(), request.getGender());
+		member.updateCustomMemberInfo(request.toEntity());
 	}
 
 	@Transactional
 	public void updateCompanyInfo(Long userId, CompanyUpdateRequest request) {
 		Company company = findCompany(userId);
-		company.updateCompanyInfo(request.getName(), request.getNickname(),
-			request.getPicture(), request.getContact(), request.getCompanyName(),
-			request.getScale(), request.getCompanyDetail());
+		company.updateCompanyInfo(request.toEntity());
 	}
 
 	@Transactional
@@ -129,10 +111,10 @@ public class UserService {
 			.map(user -> {
 					if (memberRepository.findById(user.getId()).isPresent()) {
 						Member member = memberRepository.findById(user.getId()).get();
-						return UserListResponse.of(user, member);
+						return UserListResponse.of(member);
 					} else if (companyRepository.findById(user.getId()).isPresent()) {
 						Company company = companyRepository.findById(user.getId()).get();
-						return UserListResponse.of(user, company);
+						return UserListResponse.of(company);
 					} else {
 						return null;
 					}

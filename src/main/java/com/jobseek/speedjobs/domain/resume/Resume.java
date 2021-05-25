@@ -59,6 +59,8 @@ public class Resume extends BaseTimeEntity {
 
 	private String gender;
 
+	private String email;
+
 	private String contact;
 
 	private LocalDate birth;
@@ -96,13 +98,14 @@ public class Resume extends BaseTimeEntity {
 
 	@Builder
 	public Resume(Open open, String coverLetter, String title, String name, String gender,
-		String contact, LocalDate birth, String address, String blogUrl, String githubUrl,
-		String resumeImage) {
+		String email, String contact, LocalDate birth, String address, String blogUrl,
+		String githubUrl, String resumeImage) {
 		this.open = open;
 		this.coverLetter = coverLetter;
 		this.title = title;
 		this.name = name;
 		this.gender = gender;
+		this.email = email;
 		this.contact = contact;
 		this.birth = birth;
 		this.address = address;
@@ -111,18 +114,10 @@ public class Resume extends BaseTimeEntity {
 		this.resumeImage = resumeImage;
 	}
 
-	public static Resume createResume(Open open, String coverLetter, String title, String name,
-		String gender,
-		String contact, LocalDate birth, String address, String blogUrl, String githubUrl,
-		String resumeImage) {
-		return new Resume(open, coverLetter, title, name, gender, contact, birth, address, blogUrl,
-			githubUrl, resumeImage);
-	}
-
 	//연관관계 편의 메서드
 	public void setMember(Member member) {
 		this.member = member;
-		member.getResumeList().add(this);
+		member.getResumes().add(this);
 	}
 
 	public void addMoreInfo(List<Career> careers, List<Scholar> scholars,
@@ -146,6 +141,7 @@ public class Resume extends BaseTimeEntity {
 		this.title = resume.title;
 		this.name = resume.name;
 		this.gender = resume.gender;
+		this.email = resume.email;
 		this.contact = resume.contact;
 		this.birth = resume.birth;
 		this.address = resume.address;

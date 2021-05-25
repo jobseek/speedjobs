@@ -34,7 +34,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @EqualsAndHashCode(of = "id", callSuper = false)
@@ -75,13 +74,17 @@ public class Post extends BaseTimeEntity {
 	private final List<User> favorites = new ArrayList<>();
 
 	@Builder
-	public Post(String title, PostDetail postDetail) {
+	public Post(Long id, String title, PostDetail postDetail) {
+		this.id = id;
 		this.title = title;
 		this.postDetail = postDetail;
 	}
 
 	public static Post from(String title, String content) {
-		return new Post(title, PostDetail.from(content));
+		return Post.builder()
+			.title(title)
+			.postDetail(PostDetail.from(content))
+			.build();
 	}
 
 	public void increaseViewCount() {

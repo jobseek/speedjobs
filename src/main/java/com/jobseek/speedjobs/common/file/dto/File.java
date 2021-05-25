@@ -1,7 +1,9 @@
 package com.jobseek.speedjobs.common.file.dto;
 
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
 import javax.validation.constraints.NotBlank;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +12,8 @@ import org.hibernate.validator.constraints.URL;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class File {
 
 	@NotBlank
@@ -20,7 +22,6 @@ public class File {
 	@NotBlank
 	private String extension;
 
-	@NotBlank
 	@URL
 	private String url;
 

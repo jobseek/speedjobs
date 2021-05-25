@@ -3,7 +3,6 @@ package com.jobseek.speedjobs.domain.user;
 import static com.jobseek.speedjobs.domain.user.Provider.LOCAL;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_ADMIN;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_COMPANY;
-import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
 import static com.jobseek.speedjobs.domain.user.Role.ROLE_MEMBER;
 
 public class UserTest {
@@ -30,20 +29,4 @@ public class UserTest {
 	public static final String ADMIN_NICKNAME = "관리자";
 	public static final Role ADMIN_ROLE = ROLE_ADMIN;
 
-	public static final UserDto MEMBER_DTO = UserDto.builder()
-		.email(MEMBER_EMAIL)
-		.password(MEMBER_PASSWORD)
-		.name(MEMBER_NAME)
-		.nickname(MEMBER_NICKNAME)
-		.role(ROLE_MEMBER)
-		.provider(MEMBER_PROVIDER)
-		.build();
-
-	public static final UserDto COMPANY_DTO = UserDto.builder()
-		.email(COMPANY_EMAIL)
-		.password(COMPANY_PASSWORD)
-		.name(COMPANY_NAME)
-		.nickname(COMPANY_NICKNAME)
-		.role(ROLE_GUEST)
-		.build();
 }

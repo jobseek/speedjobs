@@ -38,8 +38,8 @@ public class RestExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> ValidException(BindException e) {
-		log.error("ValidException - {}", e.getMessage());
 		ErrorResponse response = new ErrorResponse("잘못 입력된 필드값이 있습니다. 양식을 맞춰주세요.");
+		log.error("ValidException - {}", e.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
 
