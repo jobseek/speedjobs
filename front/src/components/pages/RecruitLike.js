@@ -29,13 +29,7 @@ export default function CommunityLike() {
   return (
     <>
       <div className={'container text-left'}>
-        <StyledHeaderDiv padding title={'공고 찜목록'}>
-          <div style={{ flex: '0 0' }}>
-            <TagSelector button tagList={taglist} setTagList={setTaglist}>
-              직무
-            </TagSelector>
-          </div>
-        </StyledHeaderDiv>
+        <StyledHeaderDiv padding title={'공고 찜목록'}></StyledHeaderDiv>
         <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout
@@ -45,7 +39,7 @@ export default function CommunityLike() {
               <SideMenu />
             </StyledLeftLayout>
             <ProfileDiv
-              className={'col-12 col-lg-10'}
+              className={'col-12 p-0 col-lg-10'}
               style={{ paddingLeft: '30px' }}
             >
               <TagShower tagList={taglist} setTagList={setTaglist} />

@@ -1,10 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useCookies } from 'react-cookie';
-import styled from 'styled-components';
 import Banner from '../components/banner/Banner';
-import { Order, SearchBox, TagBody } from '../components/Styled';
+import {
+  Order,
+  SearchBox,
+  SearchBoxContainer,
+  SearchBoxContainerM,
+  SearchBoxContainerR,
+  SearchBoxContainerRM,
+  TagBody,
+} from '../components/Styled';
 import {
   RECRUIT_LIST_DONE,
   RECRUIT_LIST_REQUEST,
@@ -13,13 +20,7 @@ import Post from '../components/Post';
 import { COMPANY_GET_REQUEST } from '../../reducers/company';
 import TagSelector from '../components/tag/TagSelector';
 import TagShower from '../components/tag/TagShower';
-
-const SearchBoundary = styled.div`
-  padding: 0 10px 10px;
-  @media (max-width: 992px) {
-    flex-direction: column-reverse;
-  }
-`;
+import { Space } from './Community';
 
 export default function Recruitment() {
   const [form, setForm] = useState({
@@ -71,41 +72,29 @@ export default function Recruitment() {
   const isLast = useRef(false);
   const paging = useRef(false);
   const targetRef = useRef();
-  const [refresh, ,] = useCookies(['REFRESH_TOKEN']);
+  const [refresh] = useCookies(['REFRESH_TOKEN']);
   const observe = useRef(
     new IntersectionObserver(
       (entries) => {
         const firstEntry = entries[0];
         const y = firstEntry.boundingClientRect.y;
         if (prevY.current > y && !isLast.current) {
-          if (prevY.current !== 99999) loadMore();
+          if (prevY.current !== 99999) {
+            loadMore();
+          }
         }
         prevY.current = y;
       },
       { threshold: 1 }
     )
   );
-  const loadMore = useCallback(() => {
+  const loadMore = () => {
     dispatch({
       type: RECRUIT_LIST_REQUEST,
       data: { ...form, page: form.page + 1 },
     });
     paging.current = true;
-  }, [dispatch, form]);
-  const newObserve = useCallback(() => {
-    observe.current.unobserve(targetRef.current);
-    return new IntersectionObserver(
-      (entries) => {
-        const firstEntry = entries[0];
-        const y = firstEntry.boundingClientRect.y;
-        if (prevY.current > y && !isLast.current) {
-          if (prevY.current !== 99999) loadMore();
-        }
-        prevY.current = y;
-      },
-      { threshold: 1 }
-    );
-  }, [loadMore]);
+  };
 
   const rootRef = useRef();
   const { user, recruit } = useSelector((state) => state);
@@ -156,9 +145,9 @@ export default function Recruitment() {
         paging.current = false;
       }
       dispatch({ type: RECRUIT_LIST_DONE });
-      observe.current = newObserve();
+      observe.current.observe(targetRef.current);
     }
-  }, [recruit, setRecruitList, setLoading, dispatch, newObserve]);
+  }, [recruit, setRecruitList, setLoading, dispatch]);
 
   useEffect(() => {
     setForm((p) => {
@@ -183,6 +172,7 @@ export default function Recruitment() {
     });
     paging.current = false;
     isLast.current = false;
+    prevY.current = 99999;
     observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
   }, [
@@ -242,84 +232,116 @@ export default function Recruitment() {
       type: RECRUIT_LIST_REQUEST,
       data: form,
     });
-    isLast.current = false;
     paging.current = false;
+    isLast.current = false;
+    prevY.current = 99999;
+    observe.current.unobserve(targetRef.current);
   };
   const EnterHandler = (e) => {
-    if (e.key === 'Enter') SearchHandler();
+    if (e.key === 'Enter') {
+      SearchHandler();
+    }
   };
 
   return (
     <>
       <Banner />
-      <div className="container">
-        <div className={'row justify-content-center'}>
-          <div ref={rootRef} className={'container'}>
+      <div className={'container'}>
+        <div ref={rootRef}>
+          <div
+            className={'text-right'}
+            style={{
+              position: 'relative',
+              height: '60px',
+            }}
+          >
             <div
-              className={'text-right'}
-              style={{
-                position: 'relative',
-                height: '60px',
-              }}
+              className={'row justify-content-between'}
+              style={{ padding: '10px', paddingTop: '0' }}
             >
-              <SearchBoundary className={'row justify-content-between'}>
-                <div style={{ height: '38px' }}>
-                  <div style={{ display: 'inline-block' }}>
-                    <TagSelector tagList={taglist} setTagList={setTaglist}>
-                      필터
-                    </TagSelector>
-                  </div>
-                  <div
-                    style={{ display: 'inline-block', verticalAlign: 'top' }}
+              <SearchBoxContainerM>
+                <SearchBox
+                  onInput={InputHandler}
+                  onClick={SearchHandler}
+                  onKeyPress={EnterHandler}
+                  setForm={setForm}
+                  initial={initialList}
+                />
+                {user.me?.role === 'ROLE_COMPANY' ? (
+                  <TagBody
+                    style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                    onClick={() => {
+                      history.push('./recruitment/add');
+                      dispatch({
+                        type: COMPANY_GET_REQUEST,
+                        data: user.me,
+                      });
+                    }}
                   >
-                    <Order inOrder={OrderHandler} orderItem={recruitOrder} />
-                    <Order inOrder={StatusHandler} orderItem={statusList} />
-                    <Order
-                      inOrder={ExperienceHandler}
-                      orderItem={experienceList}
-                    />
-                    <Order inOrder={SalaryHandler} orderItem={salaryList} />
-                  </div>
+                    글쓰기
+                  </TagBody>
+                ) : (
+                  ''
+                )}
+              </SearchBoxContainerM>
+              <div style={{ marginLeft: '5px' }}>
+                <div style={{ display: 'inline-block' }}>
+                  <TagSelector tagList={taglist} setTagList={setTaglist}>
+                    필터
+                  </TagSelector>
                 </div>
-                <div>
-                  <SearchBox
-                    onInput={InputHandler}
-                    onClick={SearchHandler}
-                    onKeyPress={EnterHandler}
-                    setForm={setForm}
-                    initial={initialList}
+                <div style={{ display: 'inline-block', verticalAlign: 'top' }}>
+                  <Order inOrder={OrderHandler} orderItem={recruitOrder} />
+                  <Order inOrder={StatusHandler} orderItem={statusList} />
+                  <Order
+                    inOrder={ExperienceHandler}
+                    orderItem={experienceList}
                   />
-                  {user.me?.role === 'ROLE_COMPANY' ? (
-                    <TagBody
-                      style={{ marginTop: '0', border: '1px solid #f5df4d' }}
-                      onClick={() => {
-                        history.push('./recruitment/add');
-                        dispatch({
-                          type: COMPANY_GET_REQUEST,
-                          data: user.me,
-                        });
-                      }}
-                    >
-                      글쓰기
-                    </TagBody>
-                  ) : (
-                    ''
-                  )}
+                  <Order inOrder={SalaryHandler} orderItem={salaryList} />
                 </div>
-              </SearchBoundary>
+              </div>
+              <SearchBoxContainer>
+                <SearchBox
+                  onInput={InputHandler}
+                  onClick={SearchHandler}
+                  onKeyPress={EnterHandler}
+                  setForm={setForm}
+                  initial={initialList}
+                />
+                {user.me?.role === 'ROLE_COMPANY' ? (
+                  <TagBody
+                    style={{
+                      marginTop: '0',
+                      border: '1px solid #f5df4d',
+                    }}
+                    onClick={() => {
+                      history.push('./recruitment/add');
+                      dispatch({
+                        type: COMPANY_GET_REQUEST,
+                        data: user.me,
+                      });
+                    }}
+                  >
+                    글쓰기
+                  </TagBody>
+                ) : (
+                  ''
+                )}
+              </SearchBoxContainer>
             </div>
-            <div className={'text-left'} style={{ paddingTop: '8px' }}>
-              <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
-            </div>
-            <div style={{ height: '30px' }}></div>
-            {mapRecruit}
           </div>
+          <Space></Space>
+          <div className={'text-left'} style={{ paddingTop: '8px' }}>
+            <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
+          </div>
+          {mapRecruit}
         </div>
-        <div
-          style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
-          ref={targetRef}
-        />
       </div>
+      <div
+        style={{ top: '50px', position: 'relative', marginBottom: '100px' }}
+        ref={targetRef}
+      />
+      ;
     </>
   );
 }

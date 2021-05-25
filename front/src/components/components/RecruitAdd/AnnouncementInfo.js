@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { Order } from '../Styled';
+import { Order, SpanToDiv } from '../Styled';
 import TagSelector from '../tag/TagSelector';
 import TagShower from '../tag/TagShower';
+import { InfoText } from './CompanySummaryInfo';
 
 export default function AnnouncementInfo({ onChange, form, setForm }) {
   // experience 태그
@@ -161,7 +162,7 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
           >
             <Order orderItem={experienceTags} inOrder={experienceHandler} />
           </div>
-          <span style={{ color: '#a1a1a1' }}>
+          <SpanToDiv style={{ color: '#a1a1a1' }}>
             현재 설정값 : {form.position === 'PERMANENT' ? '정규직' : '계약직'}{' '}
             {/* eslint-disable*/}
             {form.experience > 0
@@ -170,23 +171,15 @@ export default function AnnouncementInfo({ onChange, form, setForm }) {
               ? '신입'
               : '경력무관'}
             {/* eslint-disable*/}
-          </span>
+          </SpanToDiv>
         </div>
         <div className={'text-left'} style={{ height: '50px', zIndex: '0' }}>
           <TagShower tagList={taglist} setTagList={setTaglist} />
         </div>
-        <textarea
+        <InfoText
           placeholder="공고 정보를 입력해주세요."
           name="content"
-          style={{
-            width: '100%',
-            height: '200px',
-            resize: 'none',
-            border: '1px solid #a1a1a1',
-            borderRadius: '15px',
-            padding: '5px 10px',
-            marginBottom: '10px',
-          }}
+          style={{ marginTop: 0 }}
           value={form?.content}
           onChange={(e) => onChange(e)}
         />

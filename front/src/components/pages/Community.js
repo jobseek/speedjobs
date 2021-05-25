@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import Banner from '../components/banner/Banner';
-import { Order, SearchBox, TagBody } from '../components/Styled';
+import {
+  Order,
+  SearchBox,
+  SearchBoxContainer,
+  SearchBoxContainerM,
+  TagBody,
+} from '../components/Styled';
 import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../../reducers/post';
 import TagSelector from '../components/tag/TagSelector';
@@ -16,10 +22,10 @@ export const Blank = styled.div`
   height: 25px;
 `;
 
-const Space = styled.div`
-  height: 30px;
+export const Space = styled.div`
+  //height: 10px;
   @media (max-width: 768px) {
-    height: 0px;
+    height: 14px;
   }
 `;
 
@@ -58,28 +64,13 @@ export default function Community(props) {
       { threshold: 1 }
     )
   );
-  const loadMore = useCallback(() => {
+  const loadMore = () => {
     dispatch({
       type: POST_LIST_REQUEST,
       data: { ...form, page: form.page + 1 },
     });
     paging.current = true;
-  }, [dispatch, form]);
-
-  const newObserve = useCallback(() => {
-    observe.current.unobserve(targetRef.current);
-    return new IntersectionObserver(
-      (entries) => {
-        const firstEntry = entries[0];
-        const y = firstEntry.boundingClientRect.y;
-        if (prevY.current > y && !isLast.current) {
-          if (prevY.current !== 99999) loadMore();
-        }
-        prevY.current = y;
-      },
-      { threshold: 1 }
-    );
-  }, [loadMore]);
+  };
 
   // 게시물 목록 불러오기
 
@@ -134,9 +125,9 @@ export default function Community(props) {
         paging.current = false;
       }
       dispatch({ type: POST_LIST_DONE });
-      observe.current = newObserve();
+      observe.current.observe(targetRef.current);
     }
-  }, [post, setPostList, setLoading, dispatch, newObserve]);
+  }, [post, setPostList, setLoading, dispatch]);
 
   useEffect(() => {
     setForm((p) => {
@@ -161,6 +152,7 @@ export default function Community(props) {
     });
     paging.current = false;
     isLast.current = false;
+    prevY.current = 99999;
     observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
   }, [form.tagIds, dispatch, form.order]);
@@ -197,8 +189,10 @@ export default function Community(props) {
       type: POST_LIST_REQUEST,
       data: form,
     });
-    isLast.current = false;
     paging.current = false;
+    isLast.current = false;
+    prevY.current = 99999;
+    observe.current.unobserve(targetRef.current);
   };
   const EnterHandler = (e) => {
     if (e.key === 'Enter') SearchHandler();
@@ -221,17 +215,7 @@ export default function Community(props) {
               className={'row justify-content-between'}
               style={{ padding: '10px', paddingTop: '0' }}
             >
-              <div>
-                <div style={{ display: 'inline-block', verticalAlign: 'top' }}>
-                  <Order inOrder={OrderHandler} orderItem={postOrder} />
-                </div>
-                <div style={{ display: 'inline-block' }}>
-                  <TagSelector tagList={taglist} setTagList={setTaglist}>
-                    필터
-                  </TagSelector>
-                </div>
-              </div>
-              <div>
+              <SearchBoxContainerM recruit>
                 <SearchBox
                   onInput={InputHandler}
                   onClick={SearchHandler}
@@ -251,13 +235,44 @@ export default function Community(props) {
                 ) : (
                   ''
                 )}
+              </SearchBoxContainerM>
+              <div style={{ marginLeft: '5px' }}>
+                <div style={{ display: 'inline-block', verticalAlign: 'top' }}>
+                  <Order inOrder={OrderHandler} orderItem={postOrder} />
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  <TagSelector tagList={taglist} setTagList={setTaglist}>
+                    필터
+                  </TagSelector>
+                </div>
               </div>
+              <SearchBoxContainer>
+                <SearchBox
+                  onInput={InputHandler}
+                  onClick={SearchHandler}
+                  onKeyPress={EnterHandler}
+                  setForm={setForm}
+                  initial={initialList}
+                />
+                {user.me !== null ? (
+                  <TagBody
+                    style={{ marginTop: '0', border: '1px solid #f5df4d' }}
+                    onClick={() => {
+                      history.push('./community/add');
+                    }}
+                  >
+                    글쓰기
+                  </TagBody>
+                ) : (
+                  ''
+                )}
+              </SearchBoxContainer>
             </div>
           </div>
+          <Space></Space>
           <div className={'text-left'}>
             <TagShower tagList={taglist} setTagList={setTaglist}></TagShower>
           </div>
-          <Space></Space>
           {mapPost}
         </div>
         {/* 게시글 end*/}

@@ -29,13 +29,7 @@ export default function LikeList() {
   return (
     <>
       <div className={'container text-left'}>
-        <StyledHeaderDiv padding title={'게시글 찜목록'}>
-          <div style={{ flex: '0 0' }}>
-            <TagSelector tagList={taglist} setTagList={setTaglist} button>
-              필터
-            </TagSelector>
-          </div>
-        </StyledHeaderDiv>
+        <StyledHeaderDiv padding title={'게시글 찜목록'}></StyledHeaderDiv>
         <div className="container-fluid" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout

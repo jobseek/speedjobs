@@ -126,7 +126,7 @@ export default function RecruitModify() {
           <div style={{ flex: '0 0' }}>
             <StyledButton
               wide
-              style={{ letterSpacing: '10px', paddingLeft: '20px' }}
+              style={{ letterSpacing: '7px', paddingLeft: '14px' }}
               onClick={(e) => onModifyHandler(e)}
             >
               수정

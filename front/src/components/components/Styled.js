@@ -46,10 +46,10 @@ const StyledButtonInside = styled.div`
   }
   @media (max-width: 576px) {
     width: 50px;
-    letter-spacing: 0;
-    font-size: 7px;
-    height: 25px;
-    padding: 4px 5px;
+    letter-spacing: 0px;
+    font-size: 8px;
+    height: 22px;
+    padding: 4px;
   }
 
   ${(props) =>
@@ -159,9 +159,10 @@ const StyledButtonInside = styled.div`
       //  width: 100px;
       //  font-size: 11px;
       //}
-      @media (max-width: 992px) {
-        width: 100px;
-        font-size: 11px;
+      @media (max-width: 576px) {
+        width: 80px;
+        font-size: 8px;
+        //padding: 5px;
       }
     `}
 `;
@@ -322,7 +323,7 @@ const TagBodyInside = styled.div`
   padding: 0 13px 0;
   @media (max-width: 768px) {
     font-size: 11px;
-    height: 24px;
+    height: 28px;
   }
 
   //태그 크기조절 sm
@@ -754,6 +755,38 @@ export const SearchInput = ({ placeholder, onChange, value }) => {
   );
 };
 
+export const SearchBoxContainerM = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+`;
+
+export const SearchBoxContainer = styled.div`
+  display: none;
+  @media (min-width: 769px) {
+    display: inline-block;
+  }
+`;
+
+export const SearchBoxContainerRM = styled.div`
+  display: none;
+  @media (max-width: 992px) {
+    display: flex;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+`;
+
+export const SearchBoxContainerR = styled.div`
+  display: none;
+  @media (min-width: 993px) {
+    display: inline-block;
+  }
+`;
+
 // 게시판 검색
 export const SearchBox = ({ initial, onKeyPress, onInput, setForm }) => {
   // 드롭다운 선택
@@ -861,9 +894,18 @@ const Category = styled.div`
   text-align: left;
   align-items: center;
   @media (max-width: 768px) {
-    flex: 0 0 35px;
-    font-size: 12px;
+    flex: 0 0 38px;
+    font-size: 10px;
     padding: 0 5px;
+  }
+`;
+
+export const SpanToDiv = styled.div`
+  display: inline;
+  font-size: 14px;
+  @media (max-width: 768px) {
+    display: block;
+    font-size: 9px;
   }
 `;
 
@@ -878,11 +920,16 @@ const SearchOutline = styled.div`
   border-radius: 5px;
   vertical-align: top;
   text-align: left;
+  @media (max-width: 992px) {
+    width: 200px;
+  }
   @media (max-width: 768px) {
+    flex: 1;
     font-size: 13px;
-    height: 24px;
+    height: 28px;
     width: 165px;
     margin-right: 10px;
+    margin-left: 5px;
   }
 `;
 
@@ -931,9 +978,9 @@ const OrderList = styled.div`
   //z-index: 2;
   @media (max-width: 768px) {
     font-size: 11px;
-    height: 24px;
-    margin-top: 2px;
-    padding: 3px 7px 0px;
+    height: 28px;
+    margin-top: 0px;
+    padding: 5px 7px 0px;
   }
 
   &:hover {

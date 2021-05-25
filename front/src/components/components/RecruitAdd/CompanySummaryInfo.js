@@ -9,6 +9,24 @@ import {
 const Info = styled.div`
   color: #a1a1a1;
   margin-right: 5px;
+  @media (max-width: 768px) {
+    font-size: 0.75em;
+  }
+`;
+
+export const InfoText = styled.textarea`
+  width: 100%;
+  height: 200px;
+  resize: none;
+  border: 1px solid #a1a1a1;
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin-top: 20px;
+  outline: none;
+  color: #a1a1a1;
+  @media (max-width: 768px) {
+    font-size: 0.75em;
+  }
 `;
 // 이름 규모 연락처
 export default function CompanySummaryInfo() {
@@ -45,19 +63,8 @@ export default function CompanySummaryInfo() {
         <Info>회사 위치 : {info.address}</Info>
         <Info>평균 연봉 : {info.avgSalary}만 원</Info>
         <Info>연락처 : {info.contact}</Info>
-        <textarea
+        <InfoText
           placeholder="회사정보 수정은 마이페이지에서 가능합니다."
-          style={{
-            width: '100%',
-            height: '200px',
-            resize: 'none',
-            border: '1px solid #a1a1a1',
-            borderRadius: '15px',
-            padding: '5px 10px',
-            marginTop: '20px',
-            outline: 'none',
-            color: '#a1a1a1',
-          }}
           value={info.description}
           readOnly
         />

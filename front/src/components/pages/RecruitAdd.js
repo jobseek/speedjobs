@@ -83,7 +83,7 @@ export default function RecruitAdd() {
           <div style={{ flex: '0 0' }}>
             <StyledButton
               wide
-              style={{ letterSpacing: '10px', paddingLeft: '20px' }}
+              style={{ letterSpacing: '7px', paddingLeft: '14px' }}
               onClick={(e) => onSubmitHandler(e)}
             >
               등록

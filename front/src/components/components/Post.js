@@ -56,6 +56,13 @@ const PostInfo = styled.div`
   text-align: end;
 `;
 
+const BlankTag = styled.div`
+  height: 38px;
+  @media (max-width: 768px) {
+    height: 24px;
+  }
+`;
+
 const Space = styled.div`
   height: 13px;
 `;
@@ -161,8 +168,9 @@ export default function Post({
             +{tags.length - 1}
           </TagBody>
         ) : (
-          ''
+          ' '
         )}
+        {tags.length === 0 && <BlankTag></BlankTag>}
         <PostInfo>
           <div>
             <PostSubTitle>{writer}</PostSubTitle>
