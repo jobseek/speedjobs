@@ -67,6 +67,21 @@ export default function PopUp({ type, text }) {
       color: 'white',
       text: '회원정보가 수정되었습니다.',
     },
+    resumeAdd: {
+      backColor: 'green',
+      color: 'white',
+      text: '이력서가 등록되었습니다.',
+    },
+    resumeModify: {
+      backColor: 'green',
+      color: 'white',
+      text: '이력서가 수정되었습니다.',
+    },
+    resumeDelete: {
+      backColor: 'green',
+      color: 'white',
+      text: '이력서가 삭제되었습니다.',
+    },
     withdraw: {
       backColor: 'red',
       color: 'white',

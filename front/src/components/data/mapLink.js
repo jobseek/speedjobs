@@ -17,8 +17,7 @@ const DropLinks = [
 ];
 //  아이디_MEMBER
 const DropLinksUser = [
-  { title: 'user', to: '/' },
-  { title: '개인정보', to: '/profile' },
+  { title: 'user', to: '/profile' },
   { title: '이력서', to: '/resume/list' },
   { title: '게시글', to: '/likelist/community' },
   { title: '채용공고', to: '/likelist/recruit' },
@@ -36,8 +35,7 @@ const DropLinksUser = [
 ];
 //  아이디_COMPANY
 const DropLinksCompany = [
-  { title: 'user', to: '/' },
-  { title: '개인정보', to: '/profile' },
+  { title: 'user', to: '/profile' },
   { title: '이력서', to: '/resume/submit' },
   { title: '게시글', to: '/community/myList' },
   { title: '채용공고', to: '/recruitment/myList' },

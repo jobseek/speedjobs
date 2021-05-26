@@ -156,7 +156,7 @@ export default function ResumeBasic({
               top: '9px',
             }}
           >
-            {open ? (
+            {open || form.open === 'YES' ? (
               <MyUnlock
                 onClick={() => handleOpen()}
                 onChange={(e) => onChange(e)}
@@ -245,6 +245,13 @@ export default function ResumeBasic({
             onChange={(e) => onChange(e)}
           />
         </div>
+        <ResumeInputs
+          sns
+          name={'email'}
+          itemName={'이메일'}
+          onChange={(e) => onChange(e)}
+          value={form?.email || ''}
+        />
         <ResumeInputs
           sns
           name={'githubUrl'}

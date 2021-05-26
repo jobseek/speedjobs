@@ -186,7 +186,8 @@ export default function Resume() {
         form.contact === null ||
         form.email === '' ||
         form.gender === null ||
-        form.name === ''
+        form.name === '' ||
+        form.coverLetter === ''
       ) {
         if (form.title === '') {
           alert('제목을 입력하세요');
@@ -199,9 +200,11 @@ export default function Resume() {
         } else if (form.email === '') {
           alert('이메일을 입력하세요');
         } else if (form.gender === null) {
-          alert('성별을 입력하세요');
+          alert('성별을 선택하세요');
         } else if (form.name === '') {
           alert('이름을 입력하세요');
+        } else if (form.coverLetter === '') {
+          alert('자기소개를 작성해주세요');
         }
       } else {
         dispatch({ type: RESUME_ADD_REQUEST, data: form });

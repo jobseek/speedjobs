@@ -18,7 +18,6 @@ import SideMenu from '../../components/SideMenu';
 import ProfileImage from '../../components/Profile/ProfileImage';
 import ProfileInputs from '../../components/Profile/ProfileInputs';
 import ProfileTextarea from '../../components/Profile/ProfileTextarea';
-import { ME_REQUEST } from '../../../reducers/user';
 import AnnounceLocation from '../../components/RecruitAdd/AnnounceLocation';
 
 const DropDownContainer = styled('div')`
@@ -125,9 +124,6 @@ export default function CorporateModify() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) {
-        dispatch({ type: ME_REQUEST });
-      }
       dispatch({
         type: PROFILE_UPDATE_REQUEST,
         data: form,
@@ -145,20 +141,20 @@ export default function CorporateModify() {
   }, [profile, history, dispatch]);
 
   useEffect(() => {
-    if (user.me === null) return;
     dispatch({ type: PROFILE_GET_REQUEST, me: user.me });
   }, [user.me, dispatch]);
 
   useEffect(() => {
-    if (profile.profileGetData) {
+    if (profile.profileGetDone) {
       const profileTemp = { ...profile.profileGetData };
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
       setForm((p) => ({ ...p, ...profileTemp }));
+      dispatch({ type: 'PROFILE_GET_DONE' });
     }
-  }, [profile.profileGetData]);
+  }, [profile.profileGetData, profile.profileGetDone, dispatch]);
 
   return (
     <div className="container text-left">
@@ -261,7 +257,7 @@ export default function CorporateModify() {
             <ProfileInputs name={'평균 연봉'} />
             <DropDownContainer>
               <DropDownHeader onClick={toggling}>
-                {selectedOption || '3,000 이상'}
+                {selectedOption || form.avgSalary}
               </DropDownHeader>
               {isOpen && (
                 <DropDownListContainer>

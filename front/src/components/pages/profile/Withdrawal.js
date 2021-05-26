@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
   PROFILE_DELETE_DONE,
   PROFILE_DELETE_REQUEST,
@@ -13,16 +14,17 @@ import {
 } from '../../components/Styled';
 import SideMenu from '../../components/SideMenu';
 
-/**
- * 회원 탈퇴 페이지
- * 1. 회원 탈퇴 시 비밀번호를 확인하고 탈퇴할 수 있도록 한다.
- * 2. useState를 이용해서 password를 빈 문자열로 초기화 해준다.
- * 3. 비밀번호 입력하는 input 태그에 onChangeHandler 이벤트를 걸어준다.
- * 4. 입력된 비밀번호를 회원탈퇴 버튼을 클릭했을 때 발생하는 onDeleteHandler 이벤트를 걸어준다.
- * 5. dispatch를 사용해 PROFILE_DELETE_REQUEST 리덕스 상태를 보내준다.(입력된 password form과 사용자 정보 user.me 함께)
- * 6. 입력된 비밀번호가 다른 경우(에러 400, 403) 알림창으로 '비밀번호가 다릅니다.' 띄운다.
- * 7. 입력된 비밀번호가 맞은 경우 dispatch를 이용해서 LOG_OUT_REQUEST 상태를 보내 최종적으로 회원탈퇴와 로그아웃이 되도록 한다.
- */
+const MyInput = styled.input`
+  width: 200px;
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid silver;
+  padding-left: 10px;
+
+  &:focus {
+    outline: none;
+  }
+`;
 
 export default function Withdrawal() {
   const user = useSelector((state) => state.user);
@@ -44,6 +46,15 @@ export default function Withdrawal() {
       });
     },
     [dispatch, user.me, form]
+  );
+
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key === 'Enter') {
+        onDeleteHandler(e);
+      }
+    },
+    [onDeleteHandler]
   );
 
   useEffect(() => {
@@ -92,9 +103,10 @@ export default function Withdrawal() {
                 <h2>경고: 정말로 탈퇴 하시겠습니까?</h2>
                 <p>회원탈퇴 버튼을 클릭하면 모든 정보가 지워집니다.</p>
                 <div>
-                  <input
+                  <MyInput
                     type="password"
                     onChange={(e) => onChangeHandler(e)}
+                    onKeyPress={(e) => handleKeyPress(e)}
                     name={'password'}
                     placeholder="비밀번호 확인"
                   />

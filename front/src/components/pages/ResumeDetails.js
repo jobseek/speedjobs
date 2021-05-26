@@ -196,22 +196,20 @@ export default function ResumeDetails() {
             name={'position'}
             disabled
           />
-          <div style={{ display: 'inline-block', margin: '0 0 5px 0' }}>
-            <ResumeInputs
-              itemName={'입사날짜'}
-              basic
-              value={inDate || ''}
-              disabled
-            />
-          </div>
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeInputs
-              itemName={'퇴사날짜'}
-              basic
-              value={outDate || ''}
-              disabled
-            />
-          </div>
+          <ResumeInputs
+            flex={'1'}
+            itemName={'입사날짜'}
+            basic
+            value={inDate || ''}
+            disabled
+          />
+          <ResumeInputs
+            flex={'1'}
+            itemName={'퇴사날짜'}
+            basic
+            value={outDate || ''}
+            disabled
+          />
         </div>
       </div>
     );
@@ -264,14 +262,13 @@ export default function ResumeDetails() {
             name={'certNumber'}
             disabled
           />
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeInputs
-              itemName={'발급일자'}
-              basic
-              value={certDate || ''}
-              disabled
-            />
-          </div>
+          <ResumeInputs
+            flex={'1'}
+            itemName={'발급일자'}
+            basic
+            value={certDate || ''}
+            disabled
+          />
         </div>
       </div>
     );
@@ -395,8 +392,7 @@ export default function ResumeDetails() {
                     />
                     <div
                       style={{
-                        marginRight: '5px',
-                        flex: '0 0 200px',
+                        flex: '0 0 205px',
                       }}
                     >
                       <ResumeInputs
@@ -461,26 +457,22 @@ export default function ResumeDetails() {
                       value={content?.scholars[0].major || ''}
                       disabled
                     />
-                    <div style={{ display: 'inline-block' }}>
-                      <ResumeInputs
-                        itemName={'입학날짜'}
-                        basic
-                        name={'contact'}
-                        value={content?.scholars[0].inDate || ''}
-                        disabled
-                      />
-                    </div>
-                    <div
-                      style={{ display: 'inline-block', marginBottom: '5px' }}
-                    >
-                      <ResumeInputs
-                        itemName={'졸업날짜'}
-                        basic
-                        name={'contact'}
-                        value={content?.scholars[0].outDate || ''}
-                        disabled
-                      />
-                    </div>
+                    <ResumeInputs
+                      flex={'1'}
+                      itemName={'입학날짜'}
+                      basic
+                      name={'contact'}
+                      value={content?.scholars[0].inDate || ''}
+                      disabled
+                    />
+                    <ResumeInputs
+                      flex={'1'}
+                      itemName={'졸업날짜'}
+                      basic
+                      name={'contact'}
+                      value={content?.scholars[0].outDate || ''}
+                      disabled
+                    />
                   </div>
 
                   <MyEducation>대학교</MyEducation>
@@ -499,24 +491,20 @@ export default function ResumeDetails() {
                       value={content?.scholars[1].major || ''}
                       disabled
                     />
-                    <div style={{ display: 'inline-block' }}>
-                      <ResumeInputs
-                        itemName={'입학날짜'}
-                        basic
-                        value={content?.scholars[1].inDate || ''}
-                        disabled
-                      />
-                    </div>
-                    <div
-                      style={{ display: 'inline-block', marginBottom: '5px' }}
-                    >
-                      <ResumeInputs
-                        itemName={'졸업날짜'}
-                        basic
-                        value={content?.scholars[1].outDate || ''}
-                        disabled
-                      />
-                    </div>
+                    <ResumeInputs
+                      flex={'1'}
+                      itemName={'입학날짜'}
+                      basic
+                      value={content?.scholars[1].inDate || ''}
+                      disabled
+                    />
+                    <ResumeInputs
+                      flex={'1'}
+                      itemName={'졸업날짜'}
+                      basic
+                      value={content?.scholars[1].outDate || ''}
+                      disabled
+                    />
                   </div>
 
                   <MyEducation>대학원</MyEducation>
@@ -535,24 +523,20 @@ export default function ResumeDetails() {
                       value={content.scholars[2]?.major || ''}
                       disabled
                     />
-                    <div style={{ display: 'inline-block' }}>
-                      <ResumeInputs
-                        itemName={'입학날짜'}
-                        basic
-                        value={content?.scholars[2]?.inDate || ''}
-                        disabled
-                      />
-                    </div>
-                    <div
-                      style={{ display: 'inline-block', marginBottom: '5px' }}
-                    >
-                      <ResumeInputs
-                        itemName={'졸업날짜'}
-                        basic
-                        value={content?.scholars[2]?.outDate || ''}
-                        disabled
-                      />
-                    </div>
+                    <ResumeInputs
+                      flex={'1'}
+                      itemName={'입학날짜'}
+                      basic
+                      value={content?.scholars[2]?.inDate || ''}
+                      disabled
+                    />
+                    <ResumeInputs
+                      flex={'1'}
+                      itemName={'졸업날짜'}
+                      basic
+                      value={content?.scholars[2]?.outDate || ''}
+                      disabled
+                    />
                   </div>
                 </div>
                 <div style={{ marginBottom: '40px' }}>

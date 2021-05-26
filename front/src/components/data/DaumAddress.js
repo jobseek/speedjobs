@@ -20,7 +20,7 @@ export default function DaumAddress({ onChange, setForm, value, value2 }) {
   };
   const [isOpen, setIsOpen] = useState(false);
   const [fullAddress, setFullAddress] = useState('');
-  const [address, setAddress] = useState('');
+  const [addr, setAddr] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
   const [, setExAddress] = useState('');
   const [, setZipcode] = useState('');
@@ -50,22 +50,22 @@ export default function DaumAddress({ onChange, setForm, value, value2 }) {
       }
       setIsOpen(false);
     }
-    setAddress(fullAddr); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setAddr(fullAddr); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     setExAddress(extraAddr);
     setZipcode(data.zonecode);
   };
   useEffect(() => {
     if (detailAddress !== '') {
-      setFullAddress(address + ', ' + detailAddress);
+      setFullAddress(addr + ', ' + detailAddress);
       setForm((p) => ({
         ...p,
-        address,
+        address: addr,
         detailedAddress: detailAddress,
         latitude: value,
         longitude: value2,
       }));
     }
-  }, [address, detailAddress, setForm, value, value2]);
+  }, [addr, detailAddress, setForm, value, value2]);
   useEffect(() => {
     onChange(fullAddress);
   }, [fullAddress, onChange]);
@@ -88,7 +88,7 @@ export default function DaumAddress({ onChange, setForm, value, value2 }) {
             type="text"
             name="roadAddress"
             placeholder="주소"
-            defaultValue={address}
+            defaultValue={addr}
             onClick={() => setIsOpen(isOpen !== true)}
           />
           <MyInputText

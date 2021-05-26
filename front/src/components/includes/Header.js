@@ -24,6 +24,11 @@ import {
   PROFILE_DELETE_FAIL,
   PROFILE_UPDATE_DONE,
 } from '../../reducers/profile';
+import {
+  RESUME_ADD_DONE,
+  RESUME_DELETE_DONE,
+  RESUME_MODIFY_DONE,
+} from '../../reducers/resume';
 
 // 네비바스타일
 const NavBar = styled.div`
@@ -156,6 +161,15 @@ export default function Header(props) {
       dispatch({
         type: PROFILE_DELETE_FAIL,
       });
+    } else if (state.resume.resumeAddDone) {
+      addPop({ type: 'resumeAdd', id: v4() });
+      dispatch({ type: RESUME_ADD_DONE });
+    } else if (state.resume.resumeModifyDone) {
+      addPop({ type: 'resumeModify', id: v4() });
+      dispatch({ type: RESUME_MODIFY_DONE });
+    } else if (state.resume.resumeDeleteDone) {
+      addPop({ type: 'resumeDelete', id: v4() });
+      dispatch({ type: RESUME_DELETE_DONE });
     }
   }, [state, dispatch, history, remove]);
 
