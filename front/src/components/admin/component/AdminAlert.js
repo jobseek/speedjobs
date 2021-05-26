@@ -76,7 +76,6 @@ export default function AdminAlert({ children, enter, done, error }) {
 
   // 끝 이펙트
   useEffect(() => {
-    console.log(end, toggle);
     if (end === true && !toggle) {
       setEnd(false);
       dispatch({

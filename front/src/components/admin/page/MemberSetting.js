@@ -89,18 +89,11 @@ export default function MemberSetting(props) {
           </InfoCard>
         </div>
         <div className={'col-6'}>
-          <InfoCard
-            index={2}
-            height={'48%'}
-            styleProps={{ marginBottom: '4%' }}
-          >
+          <InfoCard index={2}>
             <Header>회원정보</Header>
             <Content>
               <MemberInfo selected={selected}></MemberInfo>
             </Content>
-          </InfoCard>
-          <InfoCard index={3} height={'48%'}>
-            <Header>회원활동</Header>
           </InfoCard>
         </div>
       </div>

@@ -40,8 +40,8 @@ export default function PostSetting(props) {
             <Content style={{ padding: 0 }}>
               <div className={'container-fluid p-0'}>
                 <AdminStyledRow className={'row m-0'}>
-                  <div className={'col-7'}>제목</div>
-                  <div className={'col-2'}>작성자/회사</div>
+                  <div className={'col-5'}>제목</div>
+                  <div className={'col-4'}>작성자/회사</div>
                   <div className={'col-3'}>작성일</div>
                 </AdminStyledRow>
                 <div style={{ overflowY: 'scroll', height: '80vh' }}>
@@ -55,8 +55,8 @@ export default function PostSetting(props) {
                         id={pl?.id}
                         className={'row m-0'}
                       >
-                        <div className={'col-7'}>{pl.title}</div>
-                        <div className={'col-2'}>{pl.author}</div>
+                        <div className={'col-5'}>{pl.title}</div>
+                        <div className={'col-4'}>{pl.author}</div>
                       </AdminStyledCol>
                     ))
                   )}

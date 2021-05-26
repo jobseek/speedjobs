@@ -23,12 +23,9 @@ function UserChart({ userData }) {
     []
   );
   useEffect(() => {
-    console.log(userData);
     if (userData === undefined || userData.length === 0) return;
     const datasets = { ...initData, data: userData };
     const fullData = { ...data, datasets: [datasets] };
-    console.log(fullData);
-    console.log('set loading false');
     setChartData(fullData);
   }, [userData, data, initData]);
   // data 는 기업회원 기업회원 그리고 승인대기 회원 순으로 작성해야 합니다

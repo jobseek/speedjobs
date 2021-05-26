@@ -1,4 +1,4 @@
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   COMPANY_ALLOW_FAIL,
@@ -8,12 +8,15 @@ import {
   GET_BANNER_FAIL,
   GET_BANNER_REQUEST,
   GET_BANNER_SUCCESS,
+  GET_POST_REQUEST,
+  GET_POST_SUCCESS,
   POP_ALERT_DONE,
   POP_ALERT_REQUEST,
   USER_GET_FAIL,
   USER_GET_REQUEST,
   USER_GET_SUCCESS,
 } from '../reducers/admin';
+import { POST_GET_FAIL } from '../reducers/post';
 
 function* alertError(error, message) {
   yield put({
@@ -38,7 +41,6 @@ function* alertDone(message) {
 
 function getUserApi(action) {
   let role = '';
-  console.log(action.data);
   if (action.data !== undefined) {
     role = 'role=' + action.data + '&';
   }
@@ -105,6 +107,34 @@ function* companyAllow(action) {
     });
   }
 }
+function getPostApi(action) {
+  return axios.get(`/post?size=99999&page=0&createdDate=${action.data}`);
+}
+
+function getRecruitApi(action) {
+  return axios.get(`/recruit?size=99999&page=0&createdDate=${action.data}`);
+}
+
+function* getPost(action) {
+  try {
+    const post = yield call(getPostApi, action);
+    const recruit = yield call(getRecruitApi, action);
+    yield put({
+      type: GET_POST_SUCCESS,
+      data: { post: post.data, recruit: recruit.data },
+    });
+  } catch (error) {
+    yield alert(error, '포스트를 로딩하지 못했습니다');
+    yield put({
+      type: POST_GET_FAIL,
+      data: error.message ?? 'error',
+    });
+  }
+}
+
+function* watchGetPost() {
+  yield takeLatest(GET_POST_REQUEST, getPost);
+}
 
 function* watchCompanyAllow() {
   yield takeLatest(COMPANY_ALLOW_REQUEST, companyAllow);
@@ -119,5 +149,10 @@ function* watchGetUser() {
 }
 
 export default function* adminSaga() {
-  yield all([watchGetUser(), watchGetBanner(), watchCompanyAllow()]);
+  yield all([
+    watchGetUser(),
+    watchGetBanner(),
+    watchCompanyAllow(),
+    watchGetPost(),
+  ]);
 }

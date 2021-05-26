@@ -21,6 +21,10 @@ export const initialState = {
   companyAllowDone: false,
   companyAllowFail: false,
   companyInfo: null,
+  getPostLoading: false,
+  getPostDone: false,
+  getPostFail: false,
+  postList: null,
 };
 export const POP_ALERT_REQUEST = 'POP_ALERT_REQUEST';
 export const POP_ALERT_DONE = 'POP_ALERT_DONE';
@@ -40,6 +44,11 @@ export const COMPANY_ALLOW_REQUEST = 'COMPANY_ALLOW_REQUEST';
 export const COMPANY_ALLOW_SUCCESS = 'COMPANY_ALLOW_SUCCESS';
 export const COMPANY_ALLOW_DONE = 'COMPANY_ALLOW_DONE';
 export const COMPANY_ALLOW_FAIL = 'COMPANY_ALLOW_FAIL';
+
+export const GET_POST_REQUEST = 'GET_POST_REQUEST';
+export const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
+export const GET_POST_DONE = 'GET_POST_DONE';
+export const GET_POST_FAIL = 'GET_POST_FAIL';
 
 export const ERROR = 'ERROR';
 
@@ -129,6 +138,25 @@ const reducer = (state = initialState, action) =>
         draft.companyAllowDone = false;
         draft.adminError = null;
         draft.companyInfo = null;
+        break;
+      case GET_POST_REQUEST:
+        draft.getPostLoading = true;
+        break;
+      case GET_POST_SUCCESS:
+        draft.getPostDone = true;
+        draft.postList = action.data;
+        draft.getPostLoading = false;
+        break;
+      case GET_POST_FAIL:
+        draft.getPostFail = true;
+        draft.adminError = action.error ?? 'error';
+        draft.getPostLoading = false;
+        break;
+      case GET_POST_DONE:
+        draft.getPostFail = false;
+        draft.adminError = false;
+        draft.postList = null;
+        draft.getPostDone = false;
         break;
       default:
         break;

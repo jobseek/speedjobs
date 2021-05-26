@@ -40,7 +40,7 @@ export default function AdminHome(props) {
     <>
       <CoverAll style={{ textAlign: 'left' }}>
         <PageContainer>
-          {now === 'Main' && <AdminMain></AdminMain>}
+          {now === 'Main' && <AdminMain set={set}></AdminMain>}
           {now === 'Banner' && <BannerSetting></BannerSetting>}
           {now === 'Company' && <CompanySetting></CompanySetting>}
           {now === 'Post' && <PostSetting></PostSetting>}

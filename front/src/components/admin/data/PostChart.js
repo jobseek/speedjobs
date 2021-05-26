@@ -1,11 +1,19 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import moment from 'moment';
 
-function PostChart(props) {
+function PostChart({ postData }) {
   // labels ,지난 7일 날짜,
-  const initData = useMemo(
-    () => ({
-      labels: ['1', '2', '3', '4', '5', '6'],
+  const [data, set] = useState();
+  const initData = useMemo(() => {
+    return {
+      labels: [
+        moment().subtract(4, 'days').format('MM-DD'),
+        moment().subtract(3, 'days').format('MM-DD'),
+        moment().subtract(2, 'days').format('MM-DD'),
+        moment().subtract(1, 'days').format('MM-DD'),
+        moment().format('MM-DD'),
+      ],
       datasets: [
         {
           label: '커뮤니티 글 등록 현황',
@@ -18,12 +26,7 @@ function PostChart(props) {
           backgroundColor: 'rgba(242, 212, 17)',
         },
       ],
-    }),
-    []
-  );
-  useEffect(() => {
-    const today = new Date();
-    console.log(`${today.getMonth() + 1}월${today.getDate()}일`);
+    };
   }, []);
   const options = {
     scales: {
@@ -37,9 +40,30 @@ function PostChart(props) {
     },
     maintainAspectRatio: false,
   };
+
+  useEffect(() => {
+    if (postData.post) {
+      console.log(postData);
+      set({
+        ...initData,
+        datasets: [
+          {
+            label: '커뮤니티 글 등록 현황',
+            data: postData.post,
+            backgroundColor: 'rgb(159,159,159)',
+          },
+          {
+            label: '공고 글 등록 현황',
+            data: postData.recruit,
+            backgroundColor: 'rgba(242, 212, 17)',
+          },
+        ],
+      });
+    }
+  }, [postData]);
   return (
     <>
-      <Bar data={initData} options={options} />
+      <Bar data={data ?? initData} options={options} />
     </>
   );
 }
