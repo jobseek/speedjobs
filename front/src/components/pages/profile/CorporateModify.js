@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,6 +20,7 @@ import ProfileImage from '../../components/Profile/ProfileImage';
 import ProfileInputs from '../../components/Profile/ProfileInputs';
 import ProfileTextarea from '../../components/Profile/ProfileTextarea';
 import AnnounceLocation from '../../components/RecruitAdd/AnnounceLocation';
+import { ME_REQUEST } from '../../../reducers/user';
 
 const DropDownContainer = styled('div')`
   position: relative;
@@ -87,6 +89,7 @@ export default function CorporateModify() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [refresh] = useCookies(['REFRESH_TOKEN']);
 
   const toggling = () => setIsOpen(!isOpen);
 
@@ -136,9 +139,13 @@ export default function CorporateModify() {
   useEffect(() => {
     if (profile.profileUpdateDone) {
       dispatch({ type: PROFILE_UPDATE_DONE });
+      dispatch({
+        type: ME_REQUEST,
+        data: { accessToken: refresh['ACCESS_TOKEN'] },
+      });
       history.push('/profile');
     }
-  }, [profile, history, dispatch]);
+  }, [profile, history, dispatch, refresh]);
 
   useEffect(() => {
     dispatch({ type: PROFILE_GET_REQUEST, me: user.me });

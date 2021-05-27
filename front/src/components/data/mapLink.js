@@ -13,7 +13,6 @@ const DropLinks = [
   { title: 'Login', to: '/' },
   { title: 'Sign Up', to: '/' },
   { title: 'Membership', to: '/registration' },
-  { title: 'Profile 개발용', to: '/profile' },
 ];
 //  아이디_MEMBER
 const DropLinksUser = [

@@ -32,9 +32,17 @@ export default function CorporateDetails() {
   useEffect(() => {
     if (profile.profileGetData) {
       const profileTemp = { ...profile.profileGetData };
+      console.log(profileTemp);
       if (profile.profileGetData.picture === null) {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+      }
+      if (
+        profile.profileGetData.address === null ||
+        profile.profileGetData.detailedAddress === null
+      ) {
+        profileTemp.address = '';
+        profileTemp.detailedAddress = '';
       }
       setItem((p) => ({ ...p, ...profileTemp }));
     }
@@ -81,7 +89,7 @@ export default function CorporateDetails() {
       <ProfileInputs name={'회사 주소'} />
       <StyledInputText
         type="text"
-        value={item.address + ', ' + item.detailedAddress || ''}
+        value={item.address + '  ' + item.detailedAddress || ''}
         disabled
       />
       {/* 회사 소개*/}
