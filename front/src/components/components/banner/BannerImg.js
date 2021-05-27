@@ -7,15 +7,15 @@ const Img = styled.img`
   left: 0;
   height: 100%;
   transition: opacity 2s ease-in-out;
-  opacity: ${(props) => (props.now === 0 ? 1 : 0)};
+  opacity: ${(props) => (props.now ? 1 : 0)};
   object-fit: fill;
   z-index: ${(props) => props.zIndex};
 `;
 
-export default function BannerImg({ src, now, zIndex }) {
+export default function BannerImg({ src, now, zIndex, order }) {
   return (
     <>
-      <Img src={src} now={now * 100} zIndex={zIndex}></Img>
+      <Img src={src} now={now === order} zIndex={zIndex}></Img>
     </>
   );
 }

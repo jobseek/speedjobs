@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
@@ -25,6 +25,7 @@ export default function Banner(props) {
   const { admin } = useSelector((s) => s);
   const [bannerList, setBannerList] = useState([]);
   const [list, setList] = useState([]);
+  const time = useRef(0);
 
   useEffect(() => {
     dispatch({
@@ -50,38 +51,23 @@ export default function Banner(props) {
   }, [bannerList]);
 
   const mapImg = list.map((i) => (
-    <BannerImg now={i.order} src={i.src} key={i.key} zIndex={list.indexOf(i)} />
+    <BannerImg
+      order={i.order}
+      now={cnt % list.length}
+      src={i.src}
+      key={i.key}
+      zIndex={list.indexOf(i)}
+    />
   ));
 
   useEffect(() => {
-    const time = setTimeout(() => {
+    time.current = setTimeout(() => {
       setCnt((prev) => prev + 1);
     }, 20000);
-    if (bannerList.length > 0) {
-      setList((prev) =>
-        [
-          ...prev,
-          {
-            src: bannerList[bannerList.length - 1 - (cnt % bannerList.length)]
-              .src,
-            key: v4(),
-            order: bannerList.length - 1,
-          },
-        ].map((p) => ({ ...p, order: p.order-- }))
-      );
-    }
     return () => {
-      clearTimeout(time);
+      clearTimeout(time.current);
     };
-  }, [cnt, bannerList]);
-
-  useEffect(() => {
-    if (list.length > bannerList.length + 2) {
-      setList((prev) => {
-        return prev.slice(1);
-      });
-    }
-  }, [list.length, bannerList.length]);
+  }, [cnt, bannerList.length]);
 
   return (
     <div className="container-fluid" style={{ padding: 0, marginTop: '59px' }}>
