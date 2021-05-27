@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.authorizeRequests()
 				.antMatchers("/api/auth/**", "/api/tag", "/api/user/**",
-					"/api/recruit/**", "/api/post/**", "/chat/**", "/api/chat/**")
+					"/api/recruit/**", "/api/post/**", "/chat/**", "/api/chat/**", "/api/banner/**")
 					.permitAll()
 				.anyRequest()
 					.authenticated()

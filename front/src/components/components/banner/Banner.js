@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
-import Img from '../img/banners/img.png';
-import Img2 from '../img/banners/img2.png';
-import Img3 from '../img/banners/Img3.jpeg';
-import Img4 from '../img/banners/Img4.jpeg';
 import BannerImg from './BannerImg';
+import { GET_BANNER_DONE, GET_BANNER_REQUEST } from '../../../reducers/admin';
 
 const Jumbo = styled.div`
   left: 0;
@@ -23,16 +21,33 @@ const Jumbo = styled.div`
 
 export default function Banner(props) {
   const [cnt, setCnt] = useState(0);
-  const bannerList = useMemo(
-    () => [
-      { src: Img, key: 3, order: 1 },
-      { src: Img2, key: 2, order: 2 },
-      { src: Img3, key: 1, order: 0 },
-      { src: Img4, key: 4, order: 3 },
-    ],
-    []
-  );
-  const [list, setList] = useState(bannerList);
+  const dispatch = useDispatch();
+  const { admin } = useSelector((s) => s);
+  const [bannerList, setBannerList] = useState([]);
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    dispatch({
+      type: GET_BANNER_REQUEST,
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (admin.getBannerDone) {
+      setBannerList(
+        admin.getBannerList.banners?.map((b, idx) => {
+          return { src: b.file.url, key: b.id, order: idx };
+        })
+      );
+      dispatch({
+        type: GET_BANNER_DONE,
+      });
+    }
+  }, [admin.getBannerDone, dispatch, admin, admin.getBannerList?.banners]);
+
+  useEffect(() => {
+    setList(bannerList);
+  }, [bannerList]);
 
   const mapImg = list.map((i) => (
     <BannerImg now={i.order} src={i.src} key={i.key} zIndex={list.indexOf(i)} />
@@ -42,17 +57,19 @@ export default function Banner(props) {
     const time = setTimeout(() => {
       setCnt((prev) => prev + 1);
     }, 20000);
-    setList((prev) =>
-      [
-        ...prev,
-        {
-          src: bannerList[bannerList.length - 1 - (cnt % bannerList.length)]
-            .src,
-          key: v4(),
-          order: bannerList.length - 1,
-        },
-      ].map((p) => ({ ...p, order: p.order-- }))
-    );
+    if (bannerList.length > 0) {
+      setList((prev) =>
+        [
+          ...prev,
+          {
+            src: bannerList[bannerList.length - 1 - (cnt % bannerList.length)]
+              .src,
+            key: v4(),
+            order: bannerList.length - 1,
+          },
+        ].map((p) => ({ ...p, order: p.order-- }))
+      );
+    }
     return () => {
       clearTimeout(time);
     };

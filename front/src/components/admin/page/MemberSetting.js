@@ -2,18 +2,33 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InfoCard from '../component/InfoCard';
 import { Content, Header } from '../component/adminStyled';
-import { USER_GET_DONE, USER_GET_REQUEST } from '../../../reducers/admin';
+import {
+  DELETE_USER_DONE,
+  DELETE_USER_REQUEST,
+  USER_GET_DONE,
+  USER_GET_REQUEST,
+} from '../../../reducers/admin';
 import { AdminStyledCol, AdminStyledRow } from '../component/TagList';
 import moreString from '../../data/moreString';
 import MemberInfo from '../component/MemberInfo';
+import Alert from '../component/Alert';
 
 export default function MemberSetting(props) {
   const { admin, user } = useSelector((s) => s);
+  const [alert, setAlert] = useState(false);
   const [userList, setList] = useState([]);
   const [selected, setSelected] = useState(-1);
   const dispatch = useDispatch();
   const onClickHandler = useCallback((e) => {
     setSelected(e);
+  }, []);
+
+  const toggleAlert = useCallback((flag) => {
+    if (flag !== undefined) {
+      setAlert(flag);
+      return;
+    }
+    setAlert((p) => !p);
   }, []);
   useEffect(() => {
     if (user.me !== null) {
@@ -35,6 +50,27 @@ export default function MemberSetting(props) {
       });
     }
   }, [admin.getUserDone, dispatch, admin.getUserList?.content]);
+
+  const onOk = useCallback(() => {
+    dispatch({
+      type: DELETE_USER_REQUEST,
+      data: selected.id,
+    });
+    setAlert(false);
+  }, [selected, dispatch]);
+
+  useEffect(() => {
+    if (admin.deleteUserDone) {
+      setSelected(-1);
+      dispatch({
+        type: DELETE_USER_DONE,
+      });
+      dispatch({
+        type: USER_GET_REQUEST,
+      });
+    }
+  }, [admin.deleteUserDone, dispatch]);
+
   return (
     <>
       <div className={'row'} style={{ height: '100%' }}>
@@ -92,10 +128,18 @@ export default function MemberSetting(props) {
           <InfoCard index={2}>
             <Header>회원정보</Header>
             <Content>
-              <MemberInfo selected={selected}></MemberInfo>
+              <MemberInfo
+                setAlert={toggleAlert}
+                selected={selected}
+              ></MemberInfo>
             </Content>
           </InfoCard>
         </div>
+        {alert && (
+          <Alert setAlert={toggleAlert} onOk={onOk}>
+            정말로 삭제하시겠습니까?
+          </Alert>
+        )}
       </div>
     </>
   );

@@ -1,17 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Trash } from '@styled-icons/bootstrap';
 import styled from 'styled-components';
 import { Content, Header } from '../component/adminStyled';
 import InfoCard from '../component/InfoCard';
 import TagList from '../component/TagList';
-import { GET_BANNER_REQUEST } from '../../../reducers/admin';
+import {
+  DELETE_BANNER_DONE,
+  DELETE_BANNER_REQUEST,
+  GET_BANNER_REQUEST,
+  SET_BANNER_DONE,
+  SET_BANNER_REQUEST,
+} from '../../../reducers/admin';
 
-const Img = styled.img`
+const ImgInside = styled.img`
   background-color: white;
   width: 100%;
   height: 120px;
   margin: 20px 0 0;
 `;
+
+const Img = ({ src, alt, id, onClick }) => {
+  return (
+    <div style={{ position: 'relative' }}>
+      <Trash
+        onClick={() => onClick(id)}
+        style={{
+          position: 'absolute',
+          right: '-5px',
+          top: '10px',
+          backgroundColor: '#FD8282',
+          padding: '5px',
+          color: 'white',
+          borderRadius: '10px',
+        }}
+        size={'30px'}
+      ></Trash>
+      <ImgInside src={src} id={id} alt={alt}></ImgInside>
+    </div>
+  );
+};
 
 const ImgContainer = styled.div`
   margin-top: 20px;
@@ -28,21 +56,44 @@ export default function BannerSetting(props) {
   const admin = useSelector((state) => state.admin);
   const dropHandler = (e) => {
     e.preventDefault();
-    // const reader = new FileReader();
-    // reader.onload = function (event) {
-    //   set((p) => [...p, event.target.result]);
-    // };
-    // reader.readAsDataURL(e.dataTransfer.files[0]);
-    for (const f of e.dataTransfer.files) {
-      console.log(f);
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        set((p) => [...p, event.target.result]);
-      };
-      reader.readAsDataURL(f);
-    }
+    dispatch({
+      type: SET_BANNER_REQUEST,
+      data: e.dataTransfer.files[0],
+    });
   };
 
+  const onClickHandler = useCallback(
+    (e) => {
+      console.log(e);
+      dispatch({
+        type: DELETE_BANNER_REQUEST,
+        data: e,
+      });
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (admin.setBannerDone) {
+      dispatch({
+        type: GET_BANNER_REQUEST,
+      });
+      dispatch({
+        type: SET_BANNER_DONE,
+      });
+    }
+  }, [admin.setBannerDone, dispatch]);
+
+  useEffect(() => {
+    if (admin.deleteBannerDone) {
+      dispatch({
+        type: GET_BANNER_REQUEST,
+      });
+      dispatch({
+        type: DELETE_BANNER_DONE,
+      });
+    }
+  }, [admin.deleteBannerDone, dispatch]);
   // 배너불러오기
   useEffect(() => {
     dispatch({
@@ -53,7 +104,11 @@ export default function BannerSetting(props) {
   // 배너 불러오기 완료
   useEffect(() => {
     if (admin.getBannerList !== null) {
-      console.log(admin.getBannerList);
+      set(
+        admin.getBannerList.banners.map((b) => {
+          return { id: b.id, url: b.file.url };
+        })
+      );
     }
   }, [admin.getBannerList]);
 
@@ -91,7 +146,13 @@ export default function BannerSetting(props) {
                   <ImgContainer>사진이없습니다</ImgContainer>
                 )}
                 {src.map((s) => (
-                  <Img src={s} alt={'hello'} />
+                  <Img
+                    onClick={onClickHandler}
+                    key={s.id}
+                    id={s.id}
+                    src={s.url}
+                    alt={'hello'}
+                  />
                 ))}
               </Content>
             </div>

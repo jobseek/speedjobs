@@ -10,7 +10,7 @@ export default function ResumeItem({ resume }) {
     else {
       setId(resume.resumeId);
     }
-  }, []);
+  }, [resume.id, resume.resumeId]);
 
   return (
     <div

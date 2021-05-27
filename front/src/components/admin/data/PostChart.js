@@ -60,7 +60,7 @@ function PostChart({ postData }) {
         ],
       });
     }
-  }, [postData]);
+  }, [postData, initData]);
   return (
     <>
       <Bar data={data ?? initData} options={options} />

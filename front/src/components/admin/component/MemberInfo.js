@@ -1,14 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Data, DataName, Info } from './CompanyInfo';
 import { StyledButton } from '../../components/Styled';
 
-export default function MemberInfo({ selected }) {
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+export default function MemberInfo({ selected, setAlert }) {
   const userInfo = useCallback(() => {
     if (selected.role === 'ROLE_MEMBER') {
-      console.log('member');
       return (
         <>
           <div>
@@ -28,7 +24,7 @@ export default function MemberInfo({ selected }) {
             </Info>
             <Info>
               <DataName>생년월일</DataName>
-              <Data>{selected.birth.join('-')}</Data>
+              <Data>{selected.birth?.join('-')}</Data>
             </Info>
             <Info>
               <DataName>연락처</DataName>
@@ -64,16 +60,22 @@ export default function MemberInfo({ selected }) {
               <Data>{selected.contact}</Data>
             </Info>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <StyledButton grey>삭제</StyledButton>
-          </div>
         </>
       );
   }, [selected]);
   return (
     <div style={{ position: 'relative', overflow: 'hidden' }}>
       {selected === -1 && <>회원을 선택해주세요</>}
-      {selected !== -1 && <>{userInfo()}</>}
+      {selected !== -1 && (
+        <>
+          {userInfo()}
+          <div style={{ textAlign: 'right' }}>
+            <StyledButton grey onClick={setAlert}>
+              삭제
+            </StyledButton>
+          </div>
+        </>
+      )}
     </div>
   );
 }

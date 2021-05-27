@@ -31,7 +31,6 @@ Authorization: Bearer {{accessToken}}
 ### 2. 배너 전체 조회
 GET http://{{host}}/banner
 Accept: application/json
-Authorization: Bearer {{accessToken}}
 
 ### 3. 배너 삭제
 DELETE http://{{host}}/banner/1

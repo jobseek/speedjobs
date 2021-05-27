@@ -25,6 +25,15 @@ export const initialState = {
   getPostDone: false,
   getPostFail: false,
   postList: null,
+  deleteUserLoading: false,
+  deleteUserDone: false,
+  deleteUserFail: false,
+  setBannerLoading: false,
+  setBannerDone: false,
+  setBannerFail: false,
+  deleteBannerLoading: false,
+  deleteBannerDone: false,
+  deleteBannerFail: false,
 };
 export const POP_ALERT_REQUEST = 'POP_ALERT_REQUEST';
 export const POP_ALERT_DONE = 'POP_ALERT_DONE';
@@ -49,6 +58,21 @@ export const GET_POST_REQUEST = 'GET_POST_REQUEST';
 export const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
 export const GET_POST_DONE = 'GET_POST_DONE';
 export const GET_POST_FAIL = 'GET_POST_FAIL';
+
+export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_DONE = 'DELETE_USER_DONE';
+export const DELETE_USER_FAIL = 'DELETE_USER_FAIL';
+
+export const SET_BANNER_REQUEST = 'SET_BANNER_REQUEST';
+export const SET_BANNER_SUCCESS = 'SET_BANNER_SUCCESS';
+export const SET_BANNER_DONE = 'SET_BANNER_DONE';
+export const SET_BANNER_FAIL = 'SET_BANNER_FAIL';
+
+export const DELETE_BANNER_REQUEST = 'DELETE_BANNER_REQUEST';
+export const DELETE_BANNER_SUCCESS = 'DELETE_BANNER_SUCCESS';
+export const DELETE_BANNER_DONE = 'DELETE_BANNER_DONE';
+export const DELETE_BANNER_FAIL = 'DELETE_BANNER_FAIL';
 
 export const ERROR = 'ERROR';
 
@@ -116,7 +140,7 @@ const reducer = (state = initialState, action) =>
         break;
       case GET_BANNER_DONE:
         draft.getBannerFail = false;
-        draft.getUserDone = false;
+        draft.getBannerDone = false;
         draft.getBannerList = false;
         draft.adminError = null;
         break;
@@ -157,6 +181,54 @@ const reducer = (state = initialState, action) =>
         draft.adminError = false;
         draft.postList = null;
         draft.getPostDone = false;
+        break;
+      case DELETE_USER_REQUEST:
+        draft.deleteUserLoading = true;
+        break;
+      case DELETE_USER_SUCCESS:
+        draft.deleteUserLoading = false;
+        draft.deleteUserDone = true;
+        break;
+      case DELETE_USER_FAIL:
+        draft.deleteUserFail = true;
+        draft.adminError = action.error ?? 'error';
+        draft.deleteUserLoading = false;
+        break;
+      case DELETE_USER_DONE:
+        draft.deleteUserFail = false;
+        draft.deleteUserDone = false;
+        break;
+      case SET_BANNER_REQUEST:
+        draft.setBannerLoading = true;
+        break;
+      case SET_BANNER_SUCCESS:
+        draft.setBannerLoading = false;
+        draft.setBannerDone = true;
+        break;
+      case SET_BANNER_FAIL:
+        draft.setBannerFail = true;
+        draft.adminError = action.error ?? 'error';
+        draft.setBannerLoading = false;
+        break;
+      case SET_BANNER_DONE:
+        draft.setBannerFail = false;
+        draft.setBannerDone = false;
+        break;
+      case DELETE_BANNER_REQUEST:
+        draft.deleteBannerLoading = true;
+        break;
+      case DELETE_BANNER_SUCCESS:
+        draft.deleteBannerLoading = false;
+        draft.deleteBannerDone = true;
+        break;
+      case DELETE_BANNER_FAIL:
+        draft.deleteBannerFail = true;
+        draft.adminError = action.error ?? 'error';
+        draft.deleteBannerLoading = false;
+        break;
+      case DELETE_BANNER_DONE:
+        draft.deleteBannerFail = false;
+        draft.deleteBannerDone = false;
         break;
       default:
         break;

@@ -70,8 +70,6 @@ export default function SideBar({ toggle, setToggle, set }) {
         <SideDiv onClick={() => set('Banner')}>배너,태그관리</SideDiv>
         <SideSpan>메인홈화면 배너 변경,태그 추가 삭제 </SideSpan>
         <SideDiv onClick={() => set('Company')}>기업회원승인</SideDiv>
-        <SideSpan>게시물관리</SideSpan>
-        <SideDiv onClick={() => set('Post')}>게시물 삭제,관리</SideDiv>
         <SideSpan>회원관리</SideSpan>
         <SideDiv onClick={() => set('Member')}>회원탈퇴, 관리</SideDiv>
         <SideSpan>기업회원 회원가입 승인</SideSpan>
