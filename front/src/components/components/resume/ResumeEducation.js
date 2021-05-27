@@ -1,23 +1,12 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { ko } from 'date-fns/esm/locale';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ResumeInputs from './ResumeInputs';
-import { MyEducation, ResumeTitles, Warning } from '../Styled';
-
-const MyDatePicker = styled(DatePicker)`
-  width: 220px;
-  border-radius: 5px;
-  background-color: #fbfbfb;
-  margin-right: 5px;
-  height: 35px;
-  padding-left: 15px;
-  border: 1px solid silver;
-  &:focus {
-    outline: none;
-  }
-`;
+import {
+  MyEducation,
+  ResumeTitles,
+  StyledDatePicker,
+  Warning,
+} from '../Styled';
 
 export default function ResumeEducation({
   onChangeHigh,
@@ -86,34 +75,32 @@ export default function ResumeEducation({
             value={high?.major}
             onChange={(e) => onChangeHigh(e)}
           />
-          <div style={{ display: 'inline-block' }}>
-            <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
-            <MyDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={high?.inDate}
-              onChange={(e) => onChangeHighInDate(e)}
-              selectsStart
-              startDate={high?.inDate}
-              endDate={high?.outDate}
-              peekMonthDropdown
-              showYearDropdown
-            />
+        </div>
+        <div style={{ display: 'flex', flexFlow: 'wrap', marginRight: '5px' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ marginRight: '2.5px' }}>
+              <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
+              <StyledDatePicker
+                value={high?.inDate}
+                onChange={(e) => onChangeHighInDate(e)}
+                selectsStart
+                startDate={high?.inDate}
+                endDate={high?.outDate}
+              />
+            </div>
           </div>
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeTitles>&nbsp;졸업날짜</ResumeTitles>
-            <MyDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={high?.outDate}
-              onChange={(e) => onChangeHighOutDate(e)}
-              selectsEnd
-              startDate={high?.inDate}
-              endDate={high?.outDate}
-              minDate={high?.inDate}
-              peekMonthDropdown
-              showYearDropdown
-            />
+          <div style={{ flex: 1 }}>
+            <div style={{ marginLeft: '2.5px' }}>
+              <ResumeTitles>&nbsp;졸업날짜</ResumeTitles>
+              <StyledDatePicker
+                value={high?.outDate}
+                onChange={(e) => onChangeHighOutDate(e)}
+                selectsEnd
+                startDate={high?.inDate}
+                endDate={high?.outDate}
+                minDate={high?.inDate}
+              />
+            </div>
           </div>
         </div>
 
@@ -133,34 +120,32 @@ export default function ResumeEducation({
             value={university?.major}
             onChange={(e) => onChangeUniversity(e)}
           />
-          <div style={{ display: 'inline-block' }}>
-            <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
-            <MyDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={university?.inDate}
-              onChange={(e) => onChangeUniversityInDate(e)}
-              selectsStart
-              startDate={university?.inDate}
-              endDate={university?.outDate}
-              peekMonthDropdown
-              showYearDropdown
-            />
+        </div>
+        <div style={{ display: 'flex', flexFlow: 'wrap', marginRight: '5px' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ marginRight: '2.5px' }}>
+              <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
+              <StyledDatePicker
+                value={university?.inDate}
+                onChange={(e) => onChangeUniversityInDate(e)}
+                selectsStart
+                startDate={university?.inDate}
+                endDate={university?.outDate}
+              />
+            </div>
           </div>
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeTitles>&nbsp;졸업날짜</ResumeTitles>
-            <MyDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={university?.outDate}
-              onChange={(e) => onChangeUniversityOutDate(e)}
-              selectsEnd
-              startDate={university?.inDate}
-              endDate={university?.outDate}
-              minDate={university?.inDate}
-              peekMonthDropdown
-              showYearDropdown
-            />
+          <div style={{ flex: 1 }}>
+            <div style={{ marginLeft: '2.5px' }}>
+              <ResumeTitles>&nbsp;졸업날짜</ResumeTitles>
+              <StyledDatePicker
+                value={university?.outDate}
+                onChange={(e) => onChangeUniversityOutDate(e)}
+                selectsEnd
+                startDate={university?.inDate}
+                endDate={university?.outDate}
+                minDate={university?.inDate}
+              />
+            </div>
           </div>
         </div>
 
@@ -180,34 +165,32 @@ export default function ResumeEducation({
             value={graduate?.major}
             onChange={(e) => onChangeGraduate(e)}
           />
-          <div style={{ display: 'inline-block' }}>
+        </div>
+        <div style={{ display: 'flex', flexFlow: 'wrap', marginRight: '5px' }}>
+          <div style={{ flex: 1 }}>
             <ResumeTitles>&nbsp;입학날짜</ResumeTitles>
-            <MyDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={graduate?.inDate}
-              onChange={(e) => onChangeGraduateInDate(e)}
-              selectsStart
-              startDate={graduate?.inDate}
-              endDate={graduate?.outDate}
-              peekMonthDropdown
-              showYearDropdown
-            />
+            <div style={{ marginRight: '2.5px' }}>
+              <StyledDatePicker
+                value={graduate?.inDate}
+                onChange={(e) => onChangeGraduateInDate(e)}
+                selectsStart
+                startDate={graduate?.inDate}
+                endDate={graduate?.outDate}
+              />
+            </div>
           </div>
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeTitles>&nbsp;졸업날짜</ResumeTitles>
-            <MyDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={graduate?.outDate}
-              onChange={(e) => onChangeGraduateOutDate(e)}
-              selectsEnd
-              startDate={graduate?.inDate}
-              endDate={graduate?.outDate}
-              minDate={graduate?.inDate}
-              peekMonthDropdown
-              showYearDropdown
-            />
+          <div style={{ flex: 1 }}>
+            <div style={{ marginLeft: '2.5px' }}>
+              <ResumeTitles>&nbsp;졸업날짜</ResumeTitles>
+              <StyledDatePicker
+                value={graduate?.outDate}
+                onChange={(e) => onChangeGraduateOutDate(e)}
+                selectsEnd
+                startDate={graduate?.inDate}
+                endDate={graduate?.outDate}
+                minDate={graduate?.inDate}
+              />
+            </div>
           </div>
         </div>
       </div>

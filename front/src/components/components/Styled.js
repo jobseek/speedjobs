@@ -3,7 +3,10 @@ import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Plus } from '@styled-icons/octicons';
 import { Minus } from '@styled-icons/entypo/Minus';
-import { Search } from 'react-bootstrap-icons';
+import { Calendar2Week, Search } from 'react-bootstrap-icons';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import { ko } from 'date-fns/esm/locale';
 import { TagDrop, TagsInDrop } from './Tags';
 
 export const ProfileDiv = styled.div`
@@ -1014,7 +1017,7 @@ const OrderList = styled.div`
       : css`
           overflow: hidden;
           height: 38px;
-        `}
+        `};
   //z-index: 2;
   @media (max-width: 768px) {
     font-size: 11px;
@@ -1072,5 +1075,76 @@ export const FilterSelector = ({ filterList, filterHandler, children }) => {
         {show && <TagDrop>{filterDrop}</TagDrop>}
       </TagBody>
     </span>
+  );
+};
+
+const StyledDatePickerInside = styled(DatePicker)`
+  width: 35px;
+  height: 35px;
+  //transform: translateY(-1px);
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid silver;
+  cursor: pointer;
+  //padding-left: 15px;
+  font-size: 0;
+  z-index: 2;
+  &:focus {
+    outline: none;
+  }
+`;
+export const StyledDatePickerInput = styled(InputTextResume)`
+  flex: 1;
+  height: 35px;
+  margin: 0 5px 0 0;
+`;
+const CalendarIcon = styled(Calendar2Week)`
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+`;
+export const StyledDatePicker = ({
+  value,
+  onChange,
+  selectsStart,
+  selectsEnd,
+  startDate,
+  endDate,
+  minDate,
+  width = '100%',
+}) => {
+  return (
+    <div style={{ width, marginBottom: '5px' }}>
+      <div style={{ display: 'flex' }}>
+        {value !== '' && value !== null ? (
+          <StyledDatePickerInput
+            value={moment(value).format('YYYY-MM-DD')}
+            readOnly
+          />
+        ) : (
+          <StyledDatePickerInput value="" readOnly />
+        )}
+
+        <span style={{ position: 'relative' }}>
+          <StyledDatePickerInside
+            locale={ko}
+            showYearDropdown
+            peekMonthDropdown
+            selectsStart={selectsStart}
+            selectsEnd={selectsEnd}
+            dateFormat="yyyy-MM-dd"
+            selected={value}
+            startDate={startDate}
+            endDate={endDate}
+            minDate={minDate}
+            onChange={(e) => onChange(e)}
+          />
+          <CalendarIcon />
+        </span>
+      </div>
+    </div>
   );
 };

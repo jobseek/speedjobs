@@ -76,10 +76,13 @@ export default function ResumeList() {
         <StyledHeaderDiv padding title={'이력서'}>
           <div style={{ flex: '0 0' }}>
             <Link to="/resume/new">
-              <StyledButton wide>작성</StyledButton>
+              <StyledButton style={{ marginRight: '0' }} wide>
+                작성
+              </StyledButton>
             </Link>
           </div>
         </StyledHeaderDiv>
+
         <div className="container" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout
@@ -88,9 +91,7 @@ export default function ResumeList() {
             >
               <SideMenu />
             </StyledLeftLayout>
-            <ProfileDiv className={'col-12 col-lg-10 p-0'}>
-              {mapResume}
-            </ProfileDiv>
+            <ProfileDiv className={'col-12 col-lg-10'}>{mapResume}</ProfileDiv>
           </div>
         </div>
       </div>

@@ -1,26 +1,15 @@
 import React, { useCallback } from 'react';
 import { v4 } from 'uuid';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/esm/locale';
-import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
 import ResumeInputs from './ResumeInputs';
-import { Add, MyPlus, ResumeTitles, Subtract, Warning } from '../Styled';
-
-const StyledDatePicker = styled(DatePicker)`
-  width: 220px;
-  height: 35px;
-  border-radius: 5px;
-  background-color: #fdfdfd;
-  border: 1px solid silver;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  padding-left: 15px;
-
-  &:focus {
-    outline: none;
-  }
-`;
+import {
+  Add,
+  MyPlus,
+  ResumeTitles,
+  StyledDatePicker,
+  Subtract,
+  Warning,
+} from '../Styled';
 
 export default function ResumeCareer({ form, setForm }) {
   const onChangeCareer = useCallback(
@@ -120,33 +109,31 @@ export default function ResumeCareer({ form, setForm }) {
             name={'position'}
             onChange={(e) => onChangeCareer(e, index)}
           />
-          <div style={{ display: 'inline-block', margin: '0 0 5px 0' }}>
-            <ResumeTitles>&nbsp;입사날짜</ResumeTitles>
-            <StyledDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={item.inDate}
-              selectsStart
-              startDate={item.inDate}
-              endDate={item.outDate}
-              onChange={(date) => onChangeInDate(date, index)}
-              peekMonthDropdown
-              showYearDropdown
-            />
+        </div>
+        <div style={{ display: 'flex', flexFlow: 'wrap', marginRight: '5px' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ marginRight: '2.5px' }}>
+              <ResumeTitles>&nbsp;입사날짜</ResumeTitles>
+              <StyledDatePicker
+                value={item.inDate}
+                selectsStart
+                startDate={item.inDate}
+                endDate={item.outDate}
+                onChange={(date) => onChangeInDate(date, index)}
+              />
+            </div>
           </div>
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeTitles>&nbsp;퇴사일자</ResumeTitles>
-            <StyledDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={item.outDate}
-              selectsEnd
-              startDate={item.inDate}
-              endDate={item.outDate}
-              onChange={(date) => onChangeOutDate(date, index)}
-              peekMonthDropdown
-              showYearDropdown
-            />
+          <div style={{ flex: 1 }}>
+            <div style={{ marginLeft: '2.5px' }}>
+              <ResumeTitles>&nbsp;퇴사일자</ResumeTitles>
+              <StyledDatePicker
+                value={item.outDate}
+                selectsEnd
+                startDate={item.inDate}
+                endDate={item.outDate}
+                onChange={(date) => onChangeOutDate(date, index)}
+              />
+            </div>
           </div>
         </div>
       </div>

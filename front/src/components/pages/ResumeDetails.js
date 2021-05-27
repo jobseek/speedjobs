@@ -29,6 +29,11 @@ import {
 import ResumeInputs from '../components/resume/ResumeInputs';
 import ResumeGender from '../components/resume/ResumeGender';
 
+const MyPostTitleInput = styled(PostTitleInput)`
+  height: 35px;
+  padding: 0 20px 3px;
+`;
+
 const MyLock = styled(LockFill)`
   width: 25px;
   color: red;
@@ -196,6 +201,8 @@ export default function ResumeDetails() {
             name={'position'}
             disabled
           />
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'입사날짜'}
@@ -234,11 +241,13 @@ export default function ResumeDetails() {
           />
           <ResumeInputs
             flex={'1'}
-            itemName={'급수'}
-            value={y.degree || ''}
-            name={'degree'}
+            itemName={'발급기관'}
+            value={y.institute || ''}
+            name={'institute'}
             disabled
           />
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'점수'}
@@ -246,15 +255,15 @@ export default function ResumeDetails() {
             name={'score'}
             disabled
           />
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
-            itemName={'발급기관'}
-            value={y.institute || ''}
-            name={'institute'}
+            itemName={'급수'}
+            value={y.degree || ''}
+            name={'degree'}
             disabled
           />
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'발급번호'}
@@ -294,28 +303,38 @@ export default function ResumeDetails() {
     <>
       <div className="container text-left">
         <StyledHeaderDiv padding>
-          <PostTitleInput name={'title'} value={content.title} disabled />
-          {user.me?.role !== 'ROLE_COMPANY' ? (
-            <>
-              <div style={{ flex: '0 0' }}>
-                <StyledButton
-                  mid
-                  onClick={() => history.push(`/resume/modify/${id}`)}
-                >
-                  수정
-                </StyledButton>
-              </div>
-              <div style={{ flex: '0 0' }}>
-                <StyledButton mid onClick={() => DeleteHandler()}>
-                  삭제
-                </StyledButton>
-              </div>
-            </>
-          ) : (
-            ''
-          )}
+          <MyPostTitleInput name={'title'} value={content.title} disabled />
         </StyledHeaderDiv>
-        <div className="container" style={{ marginTop: '70px' }}>
+        {user.me?.role !== 'ROLE_COMPANY' ? (
+          <div
+            style={{
+              textAlign: 'right',
+              marginTop: '60px',
+            }}
+          >
+            <span style={{ flex: '0 0' }}>
+              <StyledButton
+                mid
+                onClick={() => history.push(`/resume/modify/${id}`)}
+                style={{ marginRight: '0' }}
+              >
+                수정
+              </StyledButton>
+            </span>
+            <span style={{ flex: '0 0' }}>
+              <StyledButton
+                mid
+                onClick={() => DeleteHandler()}
+                style={{ marginRight: '0' }}
+              >
+                삭제
+              </StyledButton>
+            </span>
+          </div>
+        ) : (
+          ''
+        )}
+        <div className="container">
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone
@@ -390,19 +409,19 @@ export default function ResumeDetails() {
                       value={content?.contact || ''}
                       disabled
                     />
-                    <div
-                      style={{
-                        flex: '0 0 205px',
-                      }}
-                    >
-                      <ResumeInputs
-                        itemName={'생년월일'}
-                        basic
-                        name={'contact'}
-                        value={content?.birth || ''}
-                        disabled
-                      />
-                    </div>
+                  </div>
+                  <div
+                    style={{
+                      flex: '0 0 205px',
+                    }}
+                  >
+                    <ResumeInputs
+                      itemName={'생년월일'}
+                      basic
+                      name={'contact'}
+                      value={content?.birth || ''}
+                      disabled
+                    />
                   </div>
                   <div style={{ display: 'flex' }}>
                     <ResumeInputs
@@ -444,37 +463,40 @@ export default function ResumeDetails() {
                   <MyEducation>고등학교</MyEducation>
                   <div style={{ display: 'flex', flexFlow: 'wrap' }}>
                     <ResumeInputs
-                      flex={'1'}
                       itemName={'학교이름'}
+                      basic
+                      flex={'1'}
                       name={'schoolName'}
                       value={content?.scholars[0].schoolName || ''}
                       disabled
                     />
                     <ResumeInputs
-                      flex={'1'}
                       itemName={'전공'}
+                      basic
+                      flex={'1'}
                       name={'major'}
                       value={content?.scholars[0].major || ''}
                       disabled
                     />
+                  </div>
+                  <div style={{ display: 'flex', flexFlow: 'wrap' }}>
                     <ResumeInputs
-                      flex={'1'}
                       itemName={'입학날짜'}
                       basic
+                      flex={'1'}
                       name={'contact'}
                       value={content?.scholars[0].inDate || ''}
                       disabled
                     />
                     <ResumeInputs
-                      flex={'1'}
                       itemName={'졸업날짜'}
                       basic
+                      flex={'1'}
                       name={'contact'}
                       value={content?.scholars[0].outDate || ''}
                       disabled
                     />
                   </div>
-
                   <MyEducation>대학교</MyEducation>
                   <div style={{ display: 'flex', flexFlow: 'wrap' }}>
                     <ResumeInputs
@@ -491,6 +513,8 @@ export default function ResumeDetails() {
                       value={content?.scholars[1].major || ''}
                       disabled
                     />
+                  </div>
+                  <div style={{ display: 'flex', flexFlow: 'wrap' }}>
                     <ResumeInputs
                       flex={'1'}
                       itemName={'입학날짜'}
@@ -523,6 +547,8 @@ export default function ResumeDetails() {
                       value={content.scholars[2]?.major || ''}
                       disabled
                     />
+                  </div>
+                  <div style={{ display: 'flex', flexFlow: 'wrap' }}>
                     <ResumeInputs
                       flex={'1'}
                       itemName={'입학날짜'}
@@ -551,18 +577,10 @@ export default function ResumeDetails() {
                     {careers}
                   </div>
                 </div>
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: '20px', marginRight: '5px' }}>
                   <h5 style={{ marginBottom: '15px' }}>자기소개</h5>
-                  <div
-                    className={'container-fluid'}
-                    style={{ padding: '0 0p 0px 30px', width: '100%' }}
-                  >
-                    <TextArea
-                      cols="96"
-                      rows="10"
-                      value={content.coverLetter}
-                      disabled
-                    />
+                  <div className={'container-fluid'} style={{ padding: '0' }}>
+                    <TextArea rows="10" value={content.coverLetter} disabled />
                   </div>
                 </div>
                 <h5>Skill</h5>

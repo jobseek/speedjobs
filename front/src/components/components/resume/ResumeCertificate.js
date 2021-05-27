@@ -1,25 +1,14 @@
-import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
 import { v4 } from 'uuid';
-import { ko } from 'date-fns/esm/locale';
 import React, { useCallback } from 'react';
 import ResumeInputs from './ResumeInputs';
-import { Add, MyPlus, ResumeTitles, Subtract, Warning } from '../Styled';
-
-const StyledDatePicker = styled(DatePicker)`
-  width: 295px;
-  height: 35px;
-  border-radius: 5px;
-  background-color: #fdfdfd;
-  border: 1px solid silver;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  padding-left: 15px;
-
-  &:focus {
-    outline: none;
-  }
-`;
+import {
+  Add,
+  MyPlus,
+  ResumeTitles,
+  StyledDatePicker,
+  Subtract,
+  Warning,
+} from '../Styled';
 
 export default function ResumeCertificate({ form, setForm }) {
   const onChangeCertificate = useCallback(
@@ -102,6 +91,8 @@ export default function ResumeCertificate({ form, setForm }) {
             name={'degree'}
             onChange={(e) => onChangeCertificate(e, index)}
           />
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'점수'}
@@ -109,8 +100,6 @@ export default function ResumeCertificate({ form, setForm }) {
             name={'score'}
             onChange={(e) => onChangeCertificate(e, index)}
           />
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'발급기관'}
@@ -118,6 +107,8 @@ export default function ResumeCertificate({ form, setForm }) {
             name={'institute'}
             onChange={(e) => onChangeCertificate(e, index)}
           />
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', width: '100%' }}>
           <ResumeInputs
             flex={'1'}
             itemName={'발급번호'}
@@ -125,16 +116,22 @@ export default function ResumeCertificate({ form, setForm }) {
             name={'certNumber'}
             onChange={(e) => onChangeCertificate(e, index)}
           />
-          <div style={{ display: 'inline-block', marginBottom: '5px' }}>
-            <ResumeTitles>&nbsp;발급일자</ResumeTitles>
-            <StyledDatePicker
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              selected={item.certDate || ''}
-              onChange={(date) => onChangeDate(date, index)}
-              peekMonthDropdown
-              showYearDropdown
-            />
+          <div style={{ flex: 1 }}>
+            <div
+              style={{
+                width: '100%',
+                display: 'inline-block',
+                marginBottom: '5px',
+              }}
+            >
+              <div style={{ marginRight: '5px' }}>
+                <ResumeTitles>&nbsp;발급일자</ResumeTitles>
+                <StyledDatePicker
+                  value={item?.certDate || ''}
+                  onChange={(date) => onChangeDate(date, index)}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

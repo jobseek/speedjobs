@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../components/DatePicker/customDatePickerWidth.css';
@@ -44,6 +45,7 @@ export default function IndividualModify() {
   const history = useHistory();
   const user = useSelector((state) => state.user);
   const profile = useSelector((state) => state.profile);
+  const [refresh] = useCookies(['REFRESH_TOKEN']);
   const [, setStartDate] = useState('');
   const [form, setForm] = useState({
     name: '',
@@ -110,14 +112,13 @@ export default function IndividualModify() {
   const onSubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (user.me.id === null) {
-        dispatch({ type: ME_REQUEST });
+      if (user.me !== null) {
+        dispatch({
+          type: PROFILE_UPDATE_REQUEST,
+          data: form,
+          me: user.me,
+        });
       }
-      dispatch({
-        type: PROFILE_UPDATE_REQUEST,
-        data: form,
-        me: user.me,
-      });
     },
     [user.me, dispatch, form]
   );
@@ -125,9 +126,13 @@ export default function IndividualModify() {
   useEffect(() => {
     if (profile.profileUpdateDone) {
       dispatch({ type: PROFILE_UPDATE_DONE });
+      dispatch({
+        type: ME_REQUEST,
+        data: { accessToken: refresh['ACCESS_TOKEN'] },
+      });
       history.goBack();
     }
-  }, [profile, history, dispatch]);
+  }, [profile, history, dispatch, refresh]);
 
   return (
     <div className="container text-left">

@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -11,6 +9,7 @@ import { LockFill, UnlockFill } from '@styled-icons/bootstrap';
 import {
   ResumeImg,
   ResumeTitles,
+  StyledDatePicker,
   StyledHeaderMargin,
   Warning,
 } from '../Styled';
@@ -20,20 +19,6 @@ import {
   PROFILE_GET_DONE,
   PROFILE_GET_REQUEST,
 } from '../../../reducers/profile';
-
-const StyledDatePicker = styled(DatePicker)`
-  width: 200px;
-  height: 35px;
-  border-radius: 5px;
-  background-color: #fdfdfd;
-  border: 1px solid silver;
-  margin-bottom: 5px;
-  padding-left: 15px;
-
-  &:focus {
-    outline: none;
-  }
-`;
 
 const MyLock = styled(LockFill)`
   width: 25px;
@@ -222,19 +207,13 @@ export default function ResumeBasic({
             name={'contact'}
             value={form?.contact || ''}
           />
-          <div style={{ marginRight: '5px', flex: '0 0 200px' }}>
-            <ResumeTitles>&nbsp;생년월일</ResumeTitles>
-            <div className="customDatePickerWidth">
-              <StyledDatePicker
-                locale={ko}
-                showYearDropdown
-                peekMonthDropdown
-                selected={form?.birth}
-                dateFormat="yyyy-MM-dd"
-                onChange={(e) => onChangeHandlerDate(e)}
-              />
-            </div>
-          </div>
+        </div>
+        <div style={{ marginRight: '5px', flex: '0 0 200px' }}>
+          <ResumeTitles>&nbsp;생년월일</ResumeTitles>
+          <StyledDatePicker
+            value={form?.birth}
+            onChange={(e) => onChangeHandlerDate(e)}
+          />
         </div>
         <div style={{ display: 'flex' }}>
           <ResumeInputs
