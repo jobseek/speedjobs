@@ -109,6 +109,7 @@ export default function CorporateModify() {
     scale: '',
     homepage: '',
     address: '',
+    detailedAddress: '',
     avgSalary: '',
     latitude: '',
     longitude: '',

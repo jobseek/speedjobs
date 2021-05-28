@@ -4,7 +4,7 @@ import DaumAddress from '../../data/DaumAddress';
 
 export default function AnnounceLocation({ form, setForm }) {
   // 도로명주소
-  const [addr, setAddr] = useState('');
+  const [, setAddr] = useState('');
   const [location, setLocation] = useState([]);
 
   const value = location[0];
@@ -25,7 +25,11 @@ export default function AnnounceLocation({ form, setForm }) {
           value={value}
           value2={value2}
         />
-        <KakaoMap location={setLocation} address={addr} setForm={setForm} />
+        <KakaoMap
+          location={setLocation}
+          address={form.address}
+          setForm={setForm}
+        />
       </div>
     </>
   );

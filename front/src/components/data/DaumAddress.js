@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
 import { InputText } from '../components/Styled';
@@ -8,7 +8,13 @@ const MyInputText = styled(InputText)`
   display: inline-block;
 `;
 
-export default function DaumAddress({ onChange, setForm, value, value2 }) {
+export default function DaumAddress({
+  onChange,
+  setForm,
+  form,
+  value,
+  value2,
+}) {
   const addressStyle = {
     boxShadow:
       '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
@@ -19,9 +25,9 @@ export default function DaumAddress({ onChange, setForm, value, value2 }) {
     zIndex: '2',
   };
   const [isOpen, setIsOpen] = useState(false);
-  const [fullAddress, setFullAddress] = useState('');
+  const [fullAddress] = useState('');
   const [addr, setAddr] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
+  const [detailedAddr] = useState('');
   const [, setExAddress] = useState('');
   const [, setZipcode] = useState('');
   const dropRef = useRef();
@@ -54,18 +60,32 @@ export default function DaumAddress({ onChange, setForm, value, value2 }) {
     setExAddress(extraAddr);
     setZipcode(data.zonecode);
   };
+  const detailedAddrHandler = useCallback(
+    (e) => {
+      setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    },
+    [setForm]
+  );
+
   useEffect(() => {
-    if (detailAddress !== '') {
-      setFullAddress(addr + ', ' + detailAddress);
+    if (addr !== '') {
       setForm((p) => ({
         ...p,
         address: addr,
-        detailedAddress: detailAddress,
         latitude: value,
         longitude: value2,
+        detailedAddress: detailedAddr,
+      }));
+    } else {
+      setForm((p) => ({
+        ...p,
+        address: p.address,
+        latitude: p.latitude,
+        longitude: p.longitude,
+        detailedAddress: p.detailedAddress,
       }));
     }
-  }, [addr, detailAddress, setForm, value, value2]);
+  }, [addr, setForm, value, value2, detailedAddr]);
   useEffect(() => {
     onChange(fullAddress);
   }, [fullAddress, onChange]);
@@ -88,14 +108,16 @@ export default function DaumAddress({ onChange, setForm, value, value2 }) {
             type="text"
             name="roadAddress"
             placeholder="주소"
-            defaultValue={addr}
+            value={form.address}
             onClick={() => setIsOpen(isOpen !== true)}
+            readOnly
           />
           <MyInputText
             type="text"
-            name="detailAddress"
+            name="detailedAddress"
             placeholder="상세주소"
-            onChange={(e) => setDetailAddress(e.target.value)}
+            value={form.detailedAddress}
+            onChange={(e) => detailedAddrHandler(e)}
           />
         </div>
       </div>
