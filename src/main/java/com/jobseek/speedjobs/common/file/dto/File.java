@@ -3,6 +3,7 @@ package com.jobseek.speedjobs.common.file.dto;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import org.hibernate.validator.constraints.URL;
 @Builder
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class File {
+public class File implements Serializable {
 
 	@NotBlank
 	private String baseName;

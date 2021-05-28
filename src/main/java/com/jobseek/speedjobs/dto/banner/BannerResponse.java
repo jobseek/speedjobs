@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.common.file.dto.File;
 import com.jobseek.speedjobs.domain.banner.Banner;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class BannerResponse {
+public class BannerResponse implements Serializable {
 
 	private Long id;
 	private File file;

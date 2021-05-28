@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ public class BannerService {
 	private final BannerRepository bannerRepository;
 
 	@Transactional
+	@CacheEvict(value = "banners", allEntries = true)
 	public BannerResponses save(List<File> files) {
 		List<Banner> banners = files.stream()
 			.map(file -> bannerRepository.save(Banner.builder()
@@ -31,11 +34,13 @@ public class BannerService {
 		return BannerResponses.of(banners);
 	}
 
+	@Cacheable(value = "banners")
 	public BannerResponses find() {
 		return BannerResponses.of(new ArrayList<>(bannerRepository.findAll()));
 	}
 
 	@Transactional
+	@CacheEvict(value = "banners", allEntries = true)
 	public void delete(Long id) {
 		Banner banner = bannerRepository.findById(id)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 배너입니다."));
