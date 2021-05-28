@@ -88,6 +88,7 @@ export default function IndividualModify() {
         setForm((p) => ({
           ...p,
           ...profileTemp,
+          bio: '',
         }));
       }
     }
@@ -96,6 +97,14 @@ export default function IndividualModify() {
   const onChangeInput = useCallback((e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
+
+  const onChangeBio = (e) => {
+    if (e.target.value.length <= 100) {
+      setForm((p) => ({ ...p, bio: e.target.value }));
+    } else {
+      alert('100자 이내로 작성해주세요');
+    }
+  };
 
   const onChangeDate = useCallback((e) => {
     const event = { target: { name: 'birth', value: e } };
@@ -206,8 +215,8 @@ export default function IndividualModify() {
             {/* 한 줄 소개 */}
             <ProfileInputs name={'한 줄 소개'} />
             <ProfileTextarea
-              onChange={(e) => onChangeInput(e)}
-              name={'bio'}
+              onChange={onChangeBio}
+              value={form.bio || ''}
               form={form}
               setForm={setForm}
             />

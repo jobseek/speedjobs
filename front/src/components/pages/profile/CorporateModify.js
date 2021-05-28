@@ -118,6 +118,14 @@ export default function CorporateModify() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
+  const onChangeDescription = (e) => {
+    if (e.target.value.length <= 100) {
+      setForm((p) => ({ ...p, description: e.target.value }));
+    } else {
+      alert('100자 이내로 작성해주세요');
+    }
+  };
+
   const onOptionClicked = (value, name) => () => {
     setSelectedOption(name);
     setForm((p) => ({ ...p, avgSalary: value }));
@@ -159,7 +167,6 @@ export default function CorporateModify() {
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
       setForm((p) => ({ ...p, ...profileTemp }));
-      dispatch({ type: 'PROFILE_GET_DONE' });
     }
   }, [profile.profileGetData, profile.profileGetDone, dispatch]);
 
@@ -285,9 +292,10 @@ export default function CorporateModify() {
             {/* 소개*/}
             <ProfileInputs name={'소개'} />
             <ProfileTextarea
-              onChange={(e) => onChangeInput(e)}
-              name={'description'}
+              onChange={onChangeDescription}
+              form={form}
               value={form.description || ''}
+              setForm={setForm}
             />
           </ProfileDiv>
         </div>
