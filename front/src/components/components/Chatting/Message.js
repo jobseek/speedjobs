@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import imgpf from './imgpf.png';
 
@@ -66,7 +66,26 @@ const SentMsg = styled.div`
   text-align: right;
 `;
 
-export default function Message({ income, out, author, children }) {
+export default function Message({ income, out, author, children, date }) {
+  const [inDate, set] = useState('');
+  useEffect(() => {
+    if (typeof date === 'object') {
+      set(
+        date[3].toString(10).padStart(2, '0') +
+          ':' +
+          date[4].toString(10).padStart(2, '0') +
+          '|' +
+          date[1].toString(10).padStart(2, '0') +
+          '/' +
+          date[2].toString(10).padStart(2, '0')
+      );
+    } else {
+      const split = date.split('T');
+      const dates = split[0].split('-');
+      const times = split[1].split(':');
+      set(`${times[0]}:${times[1]}|${dates[1]}/${dates[2]}`);
+    }
+  }, [date]);
   return (
     <>
       {income && (
@@ -76,7 +95,7 @@ export default function Message({ income, out, author, children }) {
             <ReceivedMsg>
               <p>{children}</p>
             </ReceivedMsg>
-            <TimeDate> 11:01 AM | June 9</TimeDate>
+            <TimeDate>{inDate}</TimeDate>
           </ReceivedWithdMsg>
         </IncomingMsg>
       )}
@@ -88,7 +107,7 @@ export default function Message({ income, out, author, children }) {
                 {author} {children}
               </p>
             </SentMsg>
-            <TimeDate> 11:01 AM | June 9</TimeDate>
+            <TimeDate>{inDate}</TimeDate>
           </SentWithdMsg>
         </OutgoingMsg>
       )}

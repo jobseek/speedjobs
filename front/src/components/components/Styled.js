@@ -239,6 +239,7 @@ export const StyledHeaderDiv = ({ children, padding, fix, title, mobile }) => (
         style={{
           display: 'flex',
           paddingBottom: '2px',
+          // borderBottom: '1px solid #eee',
         }}
       >
         {title !== undefined && (

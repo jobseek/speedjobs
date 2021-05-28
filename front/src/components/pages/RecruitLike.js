@@ -29,7 +29,7 @@ export default function CommunityLike() {
     <>
       <div className={'container text-left'}>
         <StyledHeaderDiv padding title={'공고 찜목록'}></StyledHeaderDiv>
-        <div className="container" style={{ marginTop: '70px' }}>
+        <div className="container-fluid" style={{ marginTop: '70px' }}>
           <div className="row justify-content-center">
             <StyledLeftLayout
               borderNone
@@ -37,10 +37,7 @@ export default function CommunityLike() {
             >
               <SideMenu />
             </StyledLeftLayout>
-            <ProfileDiv
-              className={'col-12 p-0 col-lg-10'}
-              style={{ paddingLeft: '30px' }}
-            >
+            <ProfileDiv className={'col-12 col-lg-10'}>
               <TagShower tagList={taglist} setTagList={setTaglist} />
               <PostList
                 type={'recruit'}

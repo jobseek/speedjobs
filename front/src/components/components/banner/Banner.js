@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 } from 'uuid';
 import BannerImg from './BannerImg';
 import { GET_BANNER_DONE, GET_BANNER_REQUEST } from '../../../reducers/admin';
 

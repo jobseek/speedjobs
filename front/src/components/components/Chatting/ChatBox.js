@@ -102,6 +102,7 @@ export default function ChatBox({ recruitId, ...props }) {
           content: c.content,
           authorId: c.authorId,
           author: c.author,
+          createdDate: c.createdDate,
           id: c.id,
         };
         if (c.authorId === user.me?.id) {
@@ -111,7 +112,6 @@ export default function ChatBox({ recruitId, ...props }) {
         }
         return temp;
       });
-      console.log(list);
       setMsgHistory([...list]);
     } else if (recruit.getChatFail) {
       setLoading(false);
@@ -122,20 +122,17 @@ export default function ChatBox({ recruitId, ...props }) {
     (m, t) => {
       m.out = false;
       m.income = false;
-      console.log(user.me?.id);
-      console.log(m.authorId);
       if (m.authorId === user.me?.id) {
         m.out = true;
       } else {
         m.income = true;
       }
-      console.log(m);
       setMsgHistory((p) => [...p, m]);
     },
     [setMsgHistory, user.me?.id]
   );
   const mapMsgHistory = msgHistory.map((m) => (
-    <Message income={m.income} out={m.out} key={m.id}>
+    <Message income={m.income} out={m.out} key={m.id} date={m.createdDate}>
       {m.content}
     </Message>
   ));
@@ -159,7 +156,6 @@ export default function ChatBox({ recruitId, ...props }) {
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
               onKeyPress={(e) => {
-                console.log('hi');
                 if (e.key === 'Enter') {
                   sendMessage();
                 }
