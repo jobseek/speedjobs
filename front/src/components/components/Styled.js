@@ -1004,7 +1004,6 @@ const StyledDatePickerInside = styled(DatePicker)`
   cursor: pointer;
   //padding-left: 15px;
   font-size: 0;
-  z-index: 2;
   &:focus {
     outline: none;
   }
@@ -1019,7 +1018,6 @@ const CalendarIcon = styled(Calendar2Week)`
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 1;
   transform: translate(-50%, -50%);
 `;
 export const StyledDatePicker = ({
@@ -1047,6 +1045,8 @@ export const StyledDatePicker = ({
         <span style={{ position: 'relative' }}>
           <StyledDatePickerInside
             locale={ko}
+            left
+            popperPlacement="auto"
             showYearDropdown
             peekMonthDropdown
             selectsStart={selectsStart}

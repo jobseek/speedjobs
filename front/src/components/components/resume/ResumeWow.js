@@ -14,15 +14,26 @@ const MyUnlock = styled(UnlockFill)`
 `;
 
 const ResumeTitle = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   margin-top: 10px;
-  font-size: 25px;
-  font-weight: lighter;
-  width: 70%;
+  font-size: 19px;
+  //font-weight: lighter;
+  width: 65%;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: justify;
   white-space: nowrap;
+  @media (max-width: 692px) {
+    font-size: 16px;
+  }
+`;
+
+const PostSubTitle = styled.span`
+  font-size: 14px;
+  font-weight: lighter;
+  @media (max-width: 692px) {
+    font-size: 12px;
+  }
 `;
 
 export default function ResumeWow({
@@ -57,7 +68,7 @@ export default function ResumeWow({
               <MyUnlock />
             </span>
           )}
-          &nbsp;&nbsp;{title}
+          &emsp;{title}
         </ResumeTitle>
         <div
           style={{
@@ -67,8 +78,12 @@ export default function ResumeWow({
             textAlign: 'end',
           }}
         >
-          <div>작성 : {createdDate}</div>
-          <div>수정 : {modifiedDate}</div>
+          <div>
+            <PostSubTitle>작성 {createdDate}</PostSubTitle>
+          </div>
+          <div>
+            <PostSubTitle>수정 {modifiedDate}</PostSubTitle>
+          </div>
         </div>
       </div>
     </>

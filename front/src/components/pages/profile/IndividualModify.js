@@ -208,7 +208,8 @@ export default function IndividualModify() {
             <ProfileTextarea
               onChange={(e) => onChangeInput(e)}
               name={'bio'}
-              value={form.bio || ''}
+              form={form}
+              setForm={setForm}
             />
           </ProfileDiv>
         </div>

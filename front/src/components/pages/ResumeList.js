@@ -41,15 +41,6 @@ export default function ResumeList() {
     }
   }, [dispatch, resume, setResumeList]);
 
-  // useEffect(() => {
-  //   if (resume.resumeList) {
-  //     const tmp = resume.resumeList.content.length;
-  //     setResumeCount(tmp);
-  //     setArr(resume.resumeList.content);
-  //     dispatch({ type: RESUME_LIST_DONE });
-  //   }
-  // }, [resume.resumeList, dispatch]);
-
   const mapResume = resumeList.map((rl) => (
     <div key={rl.id}>
       <ResumeWow

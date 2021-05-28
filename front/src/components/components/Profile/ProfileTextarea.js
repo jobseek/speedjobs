@@ -13,14 +13,16 @@ import { TextArea, TextAreaLength } from '../Styled';
  * 8. 마지막으로 TextAreaLength 태그 안에 value에 변경된 내용의 길이 result를 담는다.
  */
 
-export default function ProfileTextarea({ onChange, name, value }) {
-  const [text, setText] = useState('');
+export default function ProfileTextarea({ name, form, setForm }) {
   const [result, setResult] = useState(0);
 
-  const onChangeHandler = (e) => {
+  function calc() {
+    setResult(form.bio.length);
+  }
+
+  const onChangeBio = (e) => {
     if (e.target.value.length <= 100) {
-      setText(e.target.value);
-      setResult(text.length);
+      setForm((p) => ({ ...p, bio: e.target.value }));
     } else {
       alert('100자 이내로 작성해주세요');
     }
@@ -32,11 +34,11 @@ export default function ProfileTextarea({ onChange, name, value }) {
         cols="96"
         rows="3"
         name={name}
-        onChange={onChange}
-        onKeyPress={(e) => onChangeHandler(e)}
-        onKeyDown={(e) => onChangeHandler(e)}
-        onKeyUp={(e) => onChangeHandler(e)}
-        value={value}
+        onChange={(e) => onChangeBio(e)}
+        onKeyPress={calc}
+        onKeyDown={calc}
+        onKeyUp={calc}
+        value={form.bio}
       />
       <div style={{ textAlign: 'right' }}>
         <TextAreaLength type="number" value={result} readOnly />
