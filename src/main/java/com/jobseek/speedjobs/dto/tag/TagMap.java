@@ -6,7 +6,7 @@ import static lombok.AccessLevel.PROTECTED;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class TagMap {
 	}
 
 	public static Map<Type, List<TagMap>> toMap(List<Tag> tags) {
-		Map<Type, List<TagMap>> result = new HashMap<>();
+		Map<Type, List<TagMap>> result = new EnumMap<>(Type.class);
 		tags.forEach(tag -> result.computeIfAbsent(tag.getType(), t -> new ArrayList<>())
 			.add(TagMap.of(tag)));
 		return result;

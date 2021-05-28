@@ -7,10 +7,9 @@ import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.Type;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,21 +21,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class TagResponses implements Serializable {
 
-	private Map<Type, List<TagResponse>> tags = new HashMap<>();
+	private Map<Type, List<TagResponse>> tags;
 
 	public static TagResponses mappedByType(List<Tag> tags) {
-		Map<Type, List<TagResponse>> result = new HashMap<>();
+		Map<Type, List<TagResponse>> result = new EnumMap<>(Type.class);
 		for (Tag tag : tags) {
 			result.computeIfAbsent(tag.getType(), t -> new ArrayList<>()).add(TagResponse.of(tag));
 		}
 		return new TagResponses(result);
-	}
-
-	public void addTags(Type type, List<Tag> tags) {
-		List<TagResponse> result = tags.stream()
-			.map(TagResponse::of)
-			.collect(Collectors.toList());
-		this.tags.put(type, result);
 	}
 
 	@Getter
