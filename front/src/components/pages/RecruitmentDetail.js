@@ -358,12 +358,16 @@ export default function RecruitmentDetail(props) {
               <p>
                 <strong>주요 서비스 :</strong> {content.description}
               </p>
-              <p>
-                <strong>채용 기간 :</strong> {content.openDate[0]}-
-                {content.openDate[1]}-{content.openDate[2]} ~{' '}
-                {content.closeDate[0]}-{content.closeDate[1]}-
-                {content.closeDate[2]}
-              </p>
+              {content.status !== 'REGULAR' ? (
+                <p>
+                  <strong>채용 기간 :</strong> {content.openDate[0]}-
+                  {content.openDate[1]}-{content.openDate[2]} ~{' '}
+                  {content.closeDate[0]}-{content.closeDate[1]}-
+                  {content.closeDate[2]}
+                </p>
+              ) : (
+                ''
+              )}
             </div>
             {/* 업무소개*/}
             <div
