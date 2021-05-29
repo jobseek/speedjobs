@@ -33,11 +33,11 @@ const Chatting = styled.div`
   }
 `;
 
-const MapWrapper = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
+// const MapWrapper = styled.div`
+//   @media (max-width: 768px) {
+//     display: none;
+//   }
+// `;
 
 const Choice = styled.div`
   border-radius: 5px;
@@ -393,12 +393,9 @@ export default function RecruitmentDetail(props) {
               <ChatBox recruitId={id} pop={pop} button={ButtonEvent} />
               <ChatIcon onclick={ButtonEvent} />
             </Chatting>
-            <MapWrapper>
-              <KakaoMap
-                address={content.address}
-                location={setLocation}
-              ></KakaoMap>
-            </MapWrapper>
+            {/* <MapWrapper>*/}
+            <KakaoMap address={content.address} location={setLocation} />
+            {/* </MapWrapper>*/}
 
             {user.me?.id === content.companyId && (
               <div style={{ textAlign: 'right' }}>

@@ -103,23 +103,21 @@ export default function DaumAddress({
         {isOpen && (
           <DaumPostcode style={addressStyle} onComplete={handleComplete} />
         )}
-        <div ref={dropRef} style={{ display: 'flex', flexWrap: 'nowrap' }}>
-          <MyInputText
-            type="text"
-            name="roadAddress"
-            placeholder="주소"
-            value={form.address}
-            onClick={() => setIsOpen(isOpen !== true)}
-            readOnly
-          />
-          <MyInputText
-            type="text"
-            name="detailedAddress"
-            placeholder="상세주소"
-            value={form.detailedAddress}
-            onChange={(e) => detailedAddrHandler(e)}
-          />
-        </div>
+        <MyInputText
+          type="text"
+          name="roadAddress"
+          placeholder="주소"
+          value={form.address}
+          onClick={() => setIsOpen(isOpen !== true)}
+          readOnly
+        />
+        <MyInputText
+          type="text"
+          name="detailedAddress"
+          placeholder="상세주소"
+          value={form.detailedAddress}
+          onChange={(e) => detailedAddrHandler(e)}
+        />
       </div>
     </>
   );

@@ -51,7 +51,14 @@ export default function CorporateDetails() {
     <div className="container">
       {/* 프로필 이미지*/}
       <ProfileImg>
-        <MyImage src={item.picture} alt="profile_image" />
+        <MyImage
+          src={
+            item.picture === ''
+              ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+              : item.picture
+          }
+          alt="profile_image"
+        />
       </ProfileImg>
       {/* 기업이름*/}
       <ProfileInputs name={'기업이름'} />

@@ -45,7 +45,14 @@ export default function IndividualDetails() {
     <div className="container">
       {/* 프로필 이미지*/}
       <ProfileImg>
-        <MyImage src={item.picture} alt="profile_image" />
+        <MyImage
+          src={
+            item.picture === ''
+              ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+              : item.picture
+          }
+          alt="profile_image"
+        />
       </ProfileImg>
       {/* 이름*/}
       <ProfileInputs name={'이름'} />
