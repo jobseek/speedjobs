@@ -106,6 +106,7 @@ export default function PostList({
       favoriteCount={pl.favoriteCount}
       commentCount={pl.commentCount}
       viewCount={pl.viewCount}
+      status={pl.status}
       date={
         pl.createdDate
           ? `${pl.createdDate[0]}/${pl.createdDate[1]}/${pl.createdDate[2]}`
