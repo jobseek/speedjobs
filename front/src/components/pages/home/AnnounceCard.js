@@ -27,7 +27,7 @@ export default function AnnounceCard() {
       const arr = recruit.recruitList.content;
       const arr2 = arr.map((i) => {
         let thumb = i.thumbnail;
-        if (i.thumbnail === null || i.thumbnail === ' ') {
+        if (i.thumbnail === null || i.thumbnail === '') {
           thumb = jobseekLogo;
         }
         return {

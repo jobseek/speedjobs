@@ -226,7 +226,7 @@ export default function CorporateModify() {
               readonly
             />
             {/* 담당자 연락처*/}
-            <ProfileInputs name={'담장자 연락처'} />
+            <ProfileInputs name={'담당자 연락처'} />
             <InputText
               onChange={(e) => onChangeInput(e)}
               name={'contact'}
