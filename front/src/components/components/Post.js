@@ -176,7 +176,7 @@ export default function Post({
     <>
       <PostBack className={'container-fluid text-left'} status={status}>
         <PostTitle onClick={onClickHandler}>
-          [{statusText}] {title}
+          {status !== undefined && `[${statusText}]`} {title}
         </PostTitle>
         <Space />
         {mapTags}

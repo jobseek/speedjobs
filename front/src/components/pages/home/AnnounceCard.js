@@ -6,6 +6,7 @@ import {
   RECRUIT_LIST_DONE,
   RECRUIT_LIST_REQUEST,
 } from '../../../reducers/recruit';
+import jobseekLogo from '../../components/img/jobseekLogo.png';
 
 export default function AnnounceCard() {
   const history = useHistory();
@@ -26,9 +27,8 @@ export default function AnnounceCard() {
       const arr = recruit.recruitList.content;
       const arr2 = arr.map((i) => {
         let thumb = i.thumbnail;
-        if (i.thumbnail === null) {
-          thumb =
-            'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+        if (i.thumbnail === null || i.thumbnail === ' ') {
+          thumb = jobseekLogo;
         }
         return {
           id: i.id,
