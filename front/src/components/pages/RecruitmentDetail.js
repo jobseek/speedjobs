@@ -390,7 +390,12 @@ export default function RecruitmentDetail(props) {
             style={{ padding: '15px 5px 0px' }}
           >
             <Chatting>
-              <ChatBox recruitId={id} pop={pop} button={ButtonEvent} />
+              <ChatBox
+                recruitId={id}
+                pop={pop}
+                chatName={content.title}
+                button={ButtonEvent}
+              />
               <ChatIcon onclick={ButtonEvent} />
             </Chatting>
             {/* <MapWrapper>*/}

@@ -65,7 +65,15 @@ const BackButton = styled(ArrowLeftSquareFill)`
   }
 `;
 
-export default function ChatBox({ recruitId, ...props }) {
+const Welcome = styled.span`
+  font-size: 12px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 3px 15px;
+  font-weight: lighter;
+`;
+
+export default function ChatBox({ chatName, recruitId, ...props }) {
   const chatRef = useRef();
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
@@ -112,12 +120,18 @@ export default function ChatBox({ recruitId, ...props }) {
         }
         return temp;
       });
-      setMsgHistory([...list]);
+      setMsgHistory([...list, { welcome: true, title: chatName }]);
     } else if (recruit.getChatFail) {
       setLoading(false);
       console.log('fail');
     }
-  }, [recruit.getChatDone, recruit.chat, recruit.getChatFail, user.me?.id]);
+  }, [
+    recruit.getChatDone,
+    recruit.chat,
+    recruit.getChatFail,
+    user.me?.id,
+    chatName,
+  ]);
   const getMessage = useCallback(
     (m, t) => {
       m.out = false;
@@ -131,17 +145,31 @@ export default function ChatBox({ recruitId, ...props }) {
     },
     [setMsgHistory, user.me?.id]
   );
-  const mapMsgHistory = msgHistory.map((m) => (
-    <Message
-      income={m.income}
-      out={m.out}
-      key={m.id}
-      date={m.createdDate}
-      author={m.author}
-    >
-      {m.content}
-    </Message>
-  ));
+  const mapMsgHistory = msgHistory.map((m) => {
+    if (m.welcome)
+      return (
+        <div
+          style={{
+            textAlign: 'center',
+            margin: '5px 0',
+            borderBottom: '1px solid #eee',
+          }}
+        >
+          <Welcome>"{m.title}"채팅방에 오신것을 환영합니다</Welcome>
+        </div>
+      );
+    return (
+      <Message
+        income={m.income}
+        out={m.out}
+        key={m.id}
+        date={m.createdDate}
+        author={m.author}
+      >
+        {m.content}
+      </Message>
+    );
+  });
   return (
     <>
       <Container pop={props.pop}>
