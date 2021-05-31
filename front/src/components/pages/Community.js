@@ -46,6 +46,7 @@ export default function Community(props) {
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const targetRef = useRef();
+  const page = useRef(0);
   const paging = useRef(false);
   const [form, setForm] = useState({
     size: 10,
@@ -67,9 +68,10 @@ export default function Community(props) {
   const loadMore = () => {
     dispatch({
       type: POST_LIST_REQUEST,
-      data: { ...form, page: form.page + 1 },
+      data: { ...form, page: page.current + 1 },
     });
     paging.current = true;
+    page.current++;
   };
 
   // 게시물 목록 불러오기
@@ -152,6 +154,7 @@ export default function Community(props) {
     paging.current = false;
     isLast.current = false;
     prevY.current = 99999;
+    page.current = 0;
     observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
   }, [form.tagIds, dispatch, form.order]);
@@ -191,6 +194,7 @@ export default function Community(props) {
     paging.current = false;
     isLast.current = false;
     prevY.current = 99999;
+    page.current = 0;
     observe.current.unobserve(targetRef.current);
   };
   const EnterHandler = (e) => {

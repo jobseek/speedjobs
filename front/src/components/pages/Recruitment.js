@@ -71,6 +71,7 @@ export default function Recruitment() {
   const prevY = useRef(99999);
   const isLast = useRef(false);
   const paging = useRef(false);
+  const page = useRef(0);
   const targetRef = useRef();
   const [refresh] = useCookies(['REFRESH_TOKEN']);
   const observe = useRef(
@@ -91,8 +92,9 @@ export default function Recruitment() {
   const loadMore = () => {
     dispatch({
       type: RECRUIT_LIST_REQUEST,
-      data: { ...form, page: form.page + 1 },
+      data: { ...form, page: page.current + 1 },
     });
+    page.current++;
     paging.current = true;
   };
 
@@ -172,6 +174,7 @@ export default function Recruitment() {
     });
     paging.current = false;
     isLast.current = false;
+    page.current = 0;
     prevY.current = 99999;
     observe.current.unobserve(targetRef.current);
     // eslint-disable-next-line
@@ -242,6 +245,7 @@ export default function Recruitment() {
       paging.current = false;
       isLast.current = false;
       prevY.current = 99999;
+      page.current = 0;
       observe.current.unobserve(targetRef.current);
     }
   };
