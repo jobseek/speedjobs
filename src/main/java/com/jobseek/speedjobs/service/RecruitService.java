@@ -79,13 +79,13 @@ public class RecruitService {
 	}
 
 	@Transactional
-	@Scheduled(cron = "0 0 0 * * *")
+	@Scheduled(cron = "0 0 * * * *")
 	public void changeStatus() {
 		List<Recruit> toBeOpenRecruits = recruitRepository
-			.findAllByStatusAndOpenDateBefore(Status.STANDBY, LocalDateTime.now().minusMinutes(1L));
+			.findAllByStatusAndOpenDateAfter(Status.STANDBY, LocalDateTime.now().minusMinutes(1L));
 		toBeOpenRecruits.forEach(recruit -> recruit.changeStatus(Status.PROCESS));
 		List<Recruit> toBeClosedRecruits = recruitRepository
-			.findAllByStatusAndCloseDateAfter(Status.PROCESS, LocalDateTime.now().plusMinutes(1L));
+			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now().plusMinutes(1L));
 		toBeClosedRecruits.forEach(recruit -> recruit.changeStatus(Status.END));
 	}
 
