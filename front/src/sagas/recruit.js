@@ -101,9 +101,10 @@ function* recruitAdd(action) {
       data: recruit.data,
     });
   } catch (error) {
+    console.log(error.message);
     yield put({
       type: RECRUIT_ADD_FAIL,
-      error: 'error' ?? action.error,
+      error: error ?? 'error',
     });
   }
 }

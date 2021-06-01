@@ -4,10 +4,6 @@ export default function setCookie(name, value, type) {
   exDate.setMilliseconds(exDate + milliSec);
   const cookie =
     escape(value) +
-    (milliSec == null ? '' : ';expires=' + exDate.toUTCString());
+    (milliSec == null ? '' : ';path=/;expires=' + exDate.toUTCString());
   document.cookie = name + '=' + cookie;
 }
-
-//
-// access-validity-in-ms: 1800000
-// refresh-validity-in-ms: 1209600000
