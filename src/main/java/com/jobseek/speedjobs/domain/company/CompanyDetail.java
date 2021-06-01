@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @Getter
 @Builder
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor(access = PRIVATE)
 public class CompanyDetail {
 

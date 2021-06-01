@@ -120,9 +120,8 @@ public class Recruit extends BaseTimeEntity {
 		setStatus();
 	}
 
-	public Recruit changeStatus(Status status) {
+	public void changeStatus(Status status) {
 		this.status = status;
-		return this;
 	}
 
 	public void addTags(List<Tag> tags) {
