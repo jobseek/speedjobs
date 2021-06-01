@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useCookies } from 'react-cookie';
@@ -86,14 +86,31 @@ export default function Recruitment() {
       { threshold: 1 }
     )
   );
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
+    console.log(form);
     dispatch({
       type: RECRUIT_LIST_REQUEST,
       data: { ...form, page: page.current + 1 },
     });
     page.current++;
     paging.current = true;
-  };
+  }, [form, dispatch]);
+
+  const newObserve = useCallback(() => {
+    return new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        const y = firstEntry.boundingClientRect.y;
+        if (prevY.current > y && !isLast.current) {
+          if (prevY.current !== 99999) {
+            loadMore();
+          }
+        }
+        prevY.current = y;
+      },
+      { threshold: 1 }
+    );
+  }, [loadMore]);
 
   const rootRef = useRef();
   const { user, recruit } = useSelector((state) => state);
@@ -144,9 +161,10 @@ export default function Recruitment() {
         paging.current = false;
       }
       dispatch({ type: RECRUIT_LIST_DONE });
+      observe.current = newObserve();
       observe.current.observe(targetRef.current);
     }
-  }, [recruit, setRecruitList, setLoading, dispatch]);
+  }, [recruit, setRecruitList, setLoading, dispatch, loadMore, newObserve]);
 
   useEffect(() => {
     setForm((p) => {
