@@ -66,7 +66,7 @@ public class RecruitService {
 	@Transactional
 	public RecruitResponse findById(Long recruitId, User user) {
 		Recruit recruit = findOne(recruitId);
-		if (user != recruit.getCompany()) {
+		if (!user.equals(recruit.getCompany())) {
 			recruit.increaseViewCount();
 		}
 		return RecruitResponse.of(recruit, user);
@@ -79,13 +79,13 @@ public class RecruitService {
 	}
 
 	@Transactional
-	@Scheduled(cron = "0 0 * * * *")
+	@Scheduled(cron = "0 0 0 * * *")
 	public void changeStatus() {
 		List<Recruit> toBeOpenRecruits = recruitRepository
-			.findAllByStatusAndOpenDateAfter(Status.STANDBY, LocalDateTime.now().minusMinutes(1L));
+			.findAllByStatusAndOpenDateBefore(Status.STANDBY, LocalDateTime.now().plusMinutes(30L));
 		toBeOpenRecruits.forEach(recruit -> recruit.changeStatus(Status.PROCESS));
 		List<Recruit> toBeClosedRecruits = recruitRepository
-			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now().plusMinutes(1L));
+			.findAllByStatusAndCloseDateAfter(Status.PROCESS, LocalDateTime.now().minusMinutes(30L));
 		toBeClosedRecruits.forEach(recruit -> recruit.changeStatus(Status.END));
 	}
 
