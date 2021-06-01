@@ -48,7 +48,7 @@ export default function Recruitment() {
   ];
   const statusList = [
     { name: '채용 전체', sort: '' },
-    { name: '채용전', sort: 'STANDBY' },
+    { name: '채용전', sort: 'DRAFT' },
     { name: '채용중', sort: 'PROCESS' },
     { name: '채용마감', sort: 'END' },
     { name: '상시채용', sort: 'REGULAR' },

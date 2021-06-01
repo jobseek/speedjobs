@@ -40,7 +40,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Table(name = "recruits")
@@ -90,6 +89,21 @@ public class Recruit extends BaseTimeEntity {
 
 	@ManyToMany(mappedBy = "recruitFavorites")
 	private final List<User> favorites = new ArrayList<>();
+
+	@Builder
+	public Recruit(Long id, String title, LocalDateTime openDate, LocalDateTime closeDate,
+		Status status, String thumbnail, Integer experience,
+		RecruitDetail recruitDetail, Company company) {
+		this.id = id;
+		this.title = title;
+		this.openDate = openDate;
+		this.closeDate = closeDate;
+		this.status = status;
+		this.thumbnail = thumbnail;
+		this.experience = experience;
+		this.recruitDetail = recruitDetail;
+		this.company = company;
+	}
 
 	public void increaseViewCount() {
 		viewCount += 1;
@@ -158,7 +172,7 @@ public class Recruit extends BaseTimeEntity {
 		if (closeDate.getYear() == 9999) {
 			status = Status.REGULAR;
 		} else if (openDate.isAfter(now)) {
-			status = Status.STANDBY;
+			status = Status.DRAFT;
 		} else if (openDate.isBefore(now) && closeDate.isAfter(now)) {
 			status = Status.PROCESS;
 		} else {
