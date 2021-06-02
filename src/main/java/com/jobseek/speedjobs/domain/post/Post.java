@@ -70,7 +70,11 @@ public class Post extends BaseTimeEntity {
 	)
 	private final List<Tag> tags = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "postFavorites")
+	@ManyToMany
+	@JoinTable(name = "post_favorites",
+		joinColumns = @JoinColumn(name = "post_id"),
+		inverseJoinColumns = @JoinColumn(name = "user_id")
+	)
 	private final List<User> favorites = new ArrayList<>();
 
 	@Builder

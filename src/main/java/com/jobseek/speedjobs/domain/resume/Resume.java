@@ -99,9 +99,10 @@ public class Resume extends BaseTimeEntity {
 	private final List<Apply> applies = new ArrayList<>();
 
 	@Builder
-	public Resume(Open open, String coverLetter, String title, String name, String gender,
+	public Resume(Long id, Open open, String coverLetter, String title, String name, String gender,
 		String email, String contact, LocalDate birth, String address, String blogUrl,
 		String githubUrl, String resumeImage) {
+		this.id = id;
 		this.open = open;
 		this.coverLetter = coverLetter;
 		this.title = title;

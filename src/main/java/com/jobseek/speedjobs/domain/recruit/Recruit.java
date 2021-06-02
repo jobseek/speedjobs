@@ -87,7 +87,11 @@ public class Recruit extends BaseTimeEntity {
 	)
 	private final List<Tag> tags = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "recruitFavorites")
+	@ManyToMany
+	@JoinTable(name = "recruit_favorites",
+		joinColumns = @JoinColumn(name = "recruit_id"),
+		inverseJoinColumns = @JoinColumn(name = "user_id")
+	)
 	private final List<User> favorites = new ArrayList<>();
 
 	@Builder
@@ -120,9 +124,8 @@ public class Recruit extends BaseTimeEntity {
 		setStatus();
 	}
 
-	public Recruit changeStatus(Status status) {
+	public void changeStatus(Status status) {
 		this.status = status;
-		return this;
 	}
 
 	public void addTags(List<Tag> tags) {

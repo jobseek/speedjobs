@@ -70,25 +70,10 @@ public class User extends BaseTimeEntity {
 	@OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
 	private List<Message> messages;
 
-	@ManyToMany
-	@JoinTable(name = "post_favorites",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "post_id")
-	)
+	@ManyToMany(mappedBy = "favorites", cascade = ALL)
 	private final List<Post> postFavorites = new ArrayList<>();
 
-	@ManyToMany
-	@JoinTable(name = "comment_favorites",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "comment_id")
-	)
-	private final List<Comment> commentFavorites = new ArrayList<>();
-
-	@ManyToMany
-	@JoinTable(name = "recruit_favorites",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "recruit_id")
-	)
+	@ManyToMany(mappedBy = "favorites", cascade = ALL)
 	private final List<Recruit> recruitFavorites = new ArrayList<>();
 
 	public User(String name, String nickname, String email, String password, String picture,

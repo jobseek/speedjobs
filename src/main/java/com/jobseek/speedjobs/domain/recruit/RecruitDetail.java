@@ -1,18 +1,21 @@
 package com.jobseek.speedjobs.domain.recruit;
 
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
 public class RecruitDetail {
 
 	@Lob

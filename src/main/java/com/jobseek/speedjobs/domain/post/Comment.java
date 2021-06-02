@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -34,9 +35,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "comments")
 public class Comment extends BaseTimeEntity {
 
-	@ManyToMany(mappedBy = "commentFavorites")
-	private final List<User> favorites = new ArrayList<>();
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "comment_id")
@@ -53,6 +51,13 @@ public class Comment extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@ManyToMany
+	@JoinTable(name = "comment_favorites",
+		joinColumns = @JoinColumn(name = "comment_id"),
+		inverseJoinColumns = @JoinColumn(name = "user_id")
+	)
+	private final List<User> favorites = new ArrayList<>();
+
 	public void updateComment(Comment comment) {
 		this.content = comment.getContent();
 	}
@@ -62,7 +67,6 @@ public class Comment extends BaseTimeEntity {
 			throw new DuplicatedException("이미 추천한 댓글입니다.");
 		}
 		favorites.add(user);
-		user.getCommentFavorites().add(this);
 	}
 
 	public void removeFavorite(User user) {
@@ -70,7 +74,6 @@ public class Comment extends BaseTimeEntity {
 			throw new DuplicatedException("이미 추천 취소한 댓글입니다.");
 		}
 		favorites.remove(user);
-		user.getCommentFavorites().remove(this);
 	}
 
 	public boolean favoriteOf(User user) {
