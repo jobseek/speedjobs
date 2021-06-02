@@ -12,10 +12,9 @@ import {
   TagBody,
 } from '../components/Styled';
 import Post from '../components/Post';
-import { POST_LIST_DONE } from '../reducers/post';
+import { POST_LIST_DONE, POST_LIST_REQUEST } from '../reducers/post';
 import TagSelector from '../components/tag/TagSelector';
 import TagShower from '../components/tag/TagShower';
-import { POST_LIST_REQUEST } from '../reducers/recruit';
 
 export const Blank = styled.div`
   display: inline-block;
