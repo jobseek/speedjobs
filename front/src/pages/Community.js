@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
@@ -15,6 +15,7 @@ import Post from '../components/Post';
 import { POST_LIST_DONE, POST_LIST_REQUEST } from '../reducers/post';
 import TagSelector from '../components/tag/TagSelector';
 import TagShower from '../components/tag/TagShower';
+import { RECRUIT_LIST_REQUEST } from '../reducers/recruit';
 
 export const Blank = styled.div`
   display: inline-block;
@@ -65,14 +66,31 @@ export default function Community(props) {
       { threshold: 1 }
     )
   );
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
+    console.log(form);
     dispatch({
-      type: POST_LIST_REQUEST,
+      type: RECRUIT_LIST_REQUEST,
       data: { ...form, page: page.current + 1 },
     });
-    paging.current = true;
     page.current++;
-  };
+    paging.current = true;
+  }, [form, dispatch]);
+
+  const newObserve = useCallback(() => {
+    return new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        const y = firstEntry.boundingClientRect.y;
+        if (prevY.current > y && !isLast.current) {
+          if (prevY.current !== 99999) {
+            loadMore();
+          }
+        }
+        prevY.current = y;
+      },
+      { threshold: 1 }
+    );
+  }, [loadMore]);
 
   // 게시물 목록 불러오기
   const rootRef = useRef();
@@ -126,9 +144,10 @@ export default function Community(props) {
         paging.current = false;
       }
       dispatch({ type: POST_LIST_DONE });
+      observe.current = newObserve();
       observe.current.observe(targetRef.current);
     }
-  }, [post, setPostList, setLoading, dispatch]);
+  }, [post, setPostList, setLoading, dispatch, newObserve]);
 
   useEffect(() => {
     setForm((p) => {

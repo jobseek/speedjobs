@@ -66,7 +66,7 @@ public class RecruitService {
 	@Transactional
 	public RecruitResponse findById(Long recruitId, User user) {
 		Recruit recruit = findOne(recruitId);
-		if (!user.equals(recruit.getCompany())) {
+		if (user != recruit.getCompany()) {
 			recruit.increaseViewCount();
 		}
 		return RecruitResponse.of(recruit, user);
