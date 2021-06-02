@@ -12,10 +12,10 @@ import {
   TagBody,
 } from '../components/Styled';
 import Post from '../components/Post';
-import { POST_LIST_DONE, POST_LIST_REQUEST } from '../reducers/post';
+import { POST_LIST_DONE } from '../reducers/post';
 import TagSelector from '../components/tag/TagSelector';
 import TagShower from '../components/tag/TagShower';
-import { RECRUIT_LIST_REQUEST } from '../reducers/recruit';
+import { POST_LIST_REQUEST } from '../reducers/recruit';
 
 export const Blank = styled.div`
   display: inline-block;
@@ -69,7 +69,7 @@ export default function Community(props) {
   const loadMore = useCallback(() => {
     console.log(form);
     dispatch({
-      type: RECRUIT_LIST_REQUEST,
+      type: POST_LIST_REQUEST,
       data: { ...form, page: page.current + 1 },
     });
     page.current++;
