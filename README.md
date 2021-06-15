@@ -6,7 +6,7 @@
 
 |             서비스             |                    모바일 시연 영상                    |
 | :--------------------------: | :-----------------------------------------------: |
-| [링크](https://speedjobs.ml/) | [링크](https://www.youtube.com/watch?v=vCqWm8rBXvE) |
+| [링크](https://speedjobs.site/) | [링크](https://www.youtube.com/watch?v=vCqWm8rBXvE) |
 
 # 서비스 소개
 - 기업이 필요로 하는 개발자를 쉽고 빠르게 만나볼 수 있습니다.
