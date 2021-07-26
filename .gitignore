@@ -54,3 +54,4 @@ generated
 
 # SonarQube Plugin
 .idea/**/sonarIssues.xml
+*.out
