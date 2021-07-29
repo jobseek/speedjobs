@@ -17,9 +17,9 @@ Authorization: Bearer {{accessToken}}
 
 [
   {
-      "baseName": "img",
-      "extension": "png",
-      "url": "https://abcd.com"
+    "baseName": "img",
+    "extension": "png",
+    "url": "https://abcd.com"
   },
   {
     "baseName": "imgs",

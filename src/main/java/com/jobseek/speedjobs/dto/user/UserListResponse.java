@@ -9,6 +9,8 @@ import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.user.Provider;
 import com.jobseek.speedjobs.domain.user.Role;
+import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserVisitor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -52,44 +54,58 @@ public class UserListResponse {
 	private String registrationNumber;
 	private String logoImage;
 
-	public static UserListResponse of(Member member) {
-		return UserListResponse.builder()
-			.id(member.getId())
-			.name(member.getName())
-			.nickname(member.getNickname())
-			.email(member.getEmail())
-			.createdDate(member.getCreatedDate())
-			.contact(member.getContact())
-			.role(member.getRole())
-			.picture(member.getPicture())
-			.bio(member.getBio())
-			.birth(member.getBirth())
-			.gender(member.getGender())
-			.oauthId(member.getOauthId())
-			.provider(member.getProvider())
-			.build();
+	public static UserListResponse of(User user) {
+		return user.accept(new UserToUserListResponseVisitor());
 	}
 
-	public static UserListResponse of(Company company) {
-		return UserListResponse.builder()
-			.id(company.getId())
-			.name(company.getName())
-			.nickname(company.getNickname())
-			.email(company.getEmail())
-			.createdDate(company.getCreatedDate())
-			.contact(company.getContact())
-			.role(company.getRole())
-			.picture(company.getPicture())
-			.companyName(company.getCompanyName())
-			.scale(company.getScale())
-			.address(company.getCompanyDetail().getAddress())
-			.avgSalary(company.getCompanyDetail().getAvgSalary())
-			.description(company.getCompanyDetail().getDescription())
-			.homepage(company.getCompanyDetail().getHomepage())
-			.latitude(company.getCompanyDetail().getLatitude())
-			.longitude(company.getCompanyDetail().getLongitude())
-			.registrationNumber(company.getCompanyDetail().getRegistrationNumber())
-			.logoImage(company.getLogoImage())
-			.build();
+	private static class UserToUserListResponseVisitor implements UserVisitor<UserListResponse> {
+
+		@Override
+		public UserListResponse visitUser(User user) {
+			return null;
+		}
+
+		@Override
+		public UserListResponse visitMember(Member member) {
+			return UserListResponse.builder()
+				.id(member.getId())
+				.name(member.getName())
+				.nickname(member.getNickname())
+				.email(member.getEmail())
+				.createdDate(member.getCreatedDate())
+				.contact(member.getContact())
+				.role(member.getRole())
+				.picture(member.getPicture())
+				.bio(member.getBio())
+				.birth(member.getBirth())
+				.gender(member.getGender())
+				.oauthId(member.getOauthId())
+				.provider(member.getProvider())
+				.build();
+		}
+
+		@Override
+		public UserListResponse visitCompany(Company company) {
+			return UserListResponse.builder()
+				.id(company.getId())
+				.name(company.getName())
+				.nickname(company.getNickname())
+				.email(company.getEmail())
+				.createdDate(company.getCreatedDate())
+				.contact(company.getContact())
+				.role(company.getRole())
+				.picture(company.getPicture())
+				.companyName(company.getCompanyName())
+				.scale(company.getScale())
+				.address(company.getCompanyDetail().getAddress())
+				.avgSalary(company.getCompanyDetail().getAvgSalary())
+				.description(company.getCompanyDetail().getDescription())
+				.homepage(company.getCompanyDetail().getHomepage())
+				.latitude(company.getCompanyDetail().getLatitude())
+				.longitude(company.getCompanyDetail().getLongitude())
+				.registrationNumber(company.getCompanyDetail().getRegistrationNumber())
+				.logoImage(company.getLogoImage())
+				.build();
+		}
 	}
 }

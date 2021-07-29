@@ -8,6 +8,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.tag.Tag;
@@ -28,15 +29,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "posts")
 public class Post extends BaseTimeEntity {
 
@@ -44,10 +45,6 @@ public class Post extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
 	private Long id;
-
-	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
-	@JoinColumn(name = "user_id")
-	private User user;
 
 	private String title;
 
@@ -60,35 +57,34 @@ public class Post extends BaseTimeEntity {
 
 	private int commentCount;
 
+	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-	private final List<Comment> comments = new ArrayList<>();
+	private List<Comment> comments = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "post_tags",
 		joinColumns = @JoinColumn(name = "post_id"),
 		inverseJoinColumns = @JoinColumn(name = "tag_id")
 	)
-	private final List<Tag> tags = new ArrayList<>();
+	private List<Tag> tags = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "post_favorites",
 		joinColumns = @JoinColumn(name = "post_id"),
 		inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
-	private final List<User> favorites = new ArrayList<>();
+	private List<User> favorites = new ArrayList<>();
 
 	@Builder
-	public Post(Long id, String title, PostDetail postDetail) {
+	public Post(Long id, String title, PostDetail postDetail, User user) {
+		validateParams(title, postDetail, user);
 		this.id = id;
 		this.title = title;
 		this.postDetail = postDetail;
-	}
-
-	public static Post from(String title, String content) {
-		return Post.builder()
-			.title(title)
-			.postDetail(PostDetail.from(content))
-			.build();
+		this.user = user;
 	}
 
 	public void increaseViewCount() {
@@ -103,8 +99,11 @@ public class Post extends BaseTimeEntity {
 		this.commentCount -= 1;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	private void validateParams(String title, PostDetail postDetail, User user) {
+		if (ObjectUtils.anyNull(postDetail, user) ||
+			StringUtils.isAnyBlank(title, postDetail.getContent())) {
+			throw new IllegalParameterException();
+		}
 	}
 
 	public void update(Post post, List<Tag> tags) {

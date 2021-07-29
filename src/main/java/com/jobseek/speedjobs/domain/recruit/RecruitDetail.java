@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.domain.recruit;
 
 import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;

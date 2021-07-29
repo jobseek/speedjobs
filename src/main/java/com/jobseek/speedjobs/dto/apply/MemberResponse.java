@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// 회사가 자신의 공고로 지원된 이력서내역들을 조회할 때
 @Getter
 @Builder
 @AllArgsConstructor(access = PRIVATE)

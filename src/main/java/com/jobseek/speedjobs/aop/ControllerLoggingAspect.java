@@ -22,7 +22,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 class ControllerLoggingAspect {
 
 	@Pointcut("execution(* com.jobseek.speedjobs..*Controller.*(..))")
-	public void loggerPointCut() {}
+	public void loggerPointCut() {
+	}
 
 	@Around("loggerPointCut()")
 	public Object methodLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -30,7 +31,8 @@ class ControllerLoggingAspect {
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
-		String controllerName = proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName();
+		String controllerName = proceedingJoinPoint.getSignature().getDeclaringType()
+			.getSimpleName();
 		String methodName = proceedingJoinPoint.getSignature().getName();
 
 		Map<String, Object> params = new HashMap<>();

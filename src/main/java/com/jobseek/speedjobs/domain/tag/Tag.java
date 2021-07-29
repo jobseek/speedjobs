@@ -3,6 +3,7 @@ package com.jobseek.speedjobs.domain.tag;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import java.util.ArrayList;
@@ -18,15 +19,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-@EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "tags")
 public class Tag {
 
@@ -42,16 +43,23 @@ public class Tag {
 	private Type type;
 
 	@ManyToMany(mappedBy = "tags")
-	private final List<Post> posts = new ArrayList<>();
+	private List<Post> posts = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "tags")
-	private final List<Recruit> recruits = new ArrayList<>();
+	private List<Recruit> recruits = new ArrayList<>();
 
 	@Builder
-	public Tag(Type type, Long id, String name) {
+	public Tag(Long id, String name, Type type) {
+		validateParams(name, type);
 		this.id = id;
 		this.type = type;
 		this.name = name;
+	}
+
+	private void validateParams(String name, Type type) {
+		if (StringUtils.isBlank(name) || ObjectUtils.anyNull(type)) {
+			throw new IllegalParameterException();
+		}
 	}
 
 	public void changeTag(Type type, String name) {

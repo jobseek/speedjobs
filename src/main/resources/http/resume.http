@@ -74,7 +74,11 @@ Authorization: Bearer {{accessToken}}
       "degree": null
     }
   ],
-  "tagIds": [19,24,25]
+  "tagIds": [
+    19,
+    24,
+    25
+  ]
 }
 
 #### 2. 이력서 수정
@@ -139,7 +143,12 @@ Authorization: Bearer {{accessToken}}
       "degree": null
     }
   ],
-  "tagIds": [24,27,30,31]
+  "tagIds": [
+    24,
+    27,
+    30,
+    31
+  ]
 }
 
 ### 3. 이력서 삭제

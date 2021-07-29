@@ -83,5 +83,4 @@ public class PostQueryRepository {
 	private BooleanExpression afterCreatedDate(LocalDateTime createdDate) {
 		return ObjectUtils.isEmpty(createdDate) ? null : post.createdDate.after(createdDate);
 	}
-
 }

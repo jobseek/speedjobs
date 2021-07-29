@@ -17,7 +17,8 @@ import org.springframework.stereotype.Component;
 public class ServiceLoggingAspect {
 
 	@Pointcut("execution(* com.jobseek.speedjobs..*Service.*(..))")
-	public void loggerPointCut() { }
+	public void loggerPointCut() {
+	}
 
 	@Around("loggerPointCut()")
 	public Object methodLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
