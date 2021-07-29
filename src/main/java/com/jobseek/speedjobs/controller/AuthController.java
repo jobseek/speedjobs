@@ -1,6 +1,6 @@
 package com.jobseek.speedjobs.controller;
 
-import com.jobseek.speedjobs.dto.auth.TokenRequest;
+import com.jobseek.speedjobs.dto.auth.LocalLoginRequest;
 import com.jobseek.speedjobs.dto.auth.TokenResponse;
 import com.jobseek.speedjobs.service.AuthService;
 import io.swagger.annotations.Api;
@@ -25,8 +25,8 @@ public class AuthController {
 
 	@ApiOperation(value = "로그인")
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@Valid @RequestBody TokenRequest tokenRequest) {
-		return ResponseEntity.ok(authService.login(tokenRequest));
+	public ResponseEntity<TokenResponse> login(@Valid @RequestBody LocalLoginRequest request) {
+		return ResponseEntity.ok(authService.localLogin(request));
 	}
 
 	@ApiOperation(value = "로그아웃")

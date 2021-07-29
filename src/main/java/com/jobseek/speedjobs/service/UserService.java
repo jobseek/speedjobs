@@ -6,7 +6,6 @@ import static com.jobseek.speedjobs.domain.user.Role.ROLE_GUEST;
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.company.Company;
-import com.jobseek.speedjobs.domain.company.CompanyQueryRepository;
 import com.jobseek.speedjobs.domain.company.CompanyRepository;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.member.MemberRepository;
@@ -18,14 +17,13 @@ import com.jobseek.speedjobs.domain.user.UserRepository;
 import com.jobseek.speedjobs.domain.user.exception.KeyNotFoundException;
 import com.jobseek.speedjobs.domain.user.exception.SignUpRuleException;
 import com.jobseek.speedjobs.domain.user.exception.WrongPasswordException;
+import com.jobseek.speedjobs.dto.user.CompanyUpdateRequest;
+import com.jobseek.speedjobs.dto.user.MemberUpdateRequest;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
+import com.jobseek.speedjobs.dto.user.UserInfoResponse;
 import com.jobseek.speedjobs.dto.user.UserListResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.UserSearchCondition;
-import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
-import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
-import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
-import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.event.ApproveMailEvent;
 import com.jobseek.speedjobs.event.RegisterMailEvent;
 import com.jobseek.speedjobs.util.RedisUtil;
@@ -48,9 +46,8 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final UserQueryRepository userQueryRepository;
-	private final CompanyRepository companyRepository;
-	private final CompanyQueryRepository companyQueryRepository;
 	private final MemberRepository memberRepository;
+	private final CompanyRepository companyRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 
@@ -64,66 +61,69 @@ public class UserService {
 
 	@Transactional
 	public void approveCompany(Long userId) {
-		User user = findOne(userId);
+		User user = getUser(userId);
 		user.changeRole(ROLE_COMPANY);
 		publisher.publishEvent(new ApproveMailEvent(user.getEmail()));
 	}
 
 	@Transactional
-	public Long saveCustomUser(String key) {
+	public User save(String key) {
 		UserSaveRequest request = (UserSaveRequest) redisUtil.get(key)
 			.orElseThrow(() -> new KeyNotFoundException("이미 처리된 요청이거나 시간초과되었습니다."));
 		redisUtil.delete(key);
-		return userRepository.save(request.toEntity(passwordEncoder)).getId();
-	}
-
-	public MemberInfoResponse findMemberInfo(Long userId) {
-		Member member = findMember(userId);
-		return MemberInfoResponse.of(member);
-	}
-
-	public CompanyInfoResponse findCompanyInfo(Long userId) {
-		Company company = findCompany(userId);
-		return CompanyInfoResponse.of(company);
+		return userRepository.save(request.toEntity(passwordEncoder));
 	}
 
 	@Transactional
 	public void updateMemberInfo(Long userId, MemberUpdateRequest request) {
-		Member member = findMember(userId);
-		member.updateCustomMemberInfo(request.toEntity());
+		Member member = getMember(userId);
+		member.updateInfo(request.toEntity());
 	}
 
 	@Transactional
 	public void updateCompanyInfo(Long userId, CompanyUpdateRequest request) {
-		Company company = findCompany(userId);
-		company.updateCompanyInfo(request.toEntity());
+		Company company = getCompany(userId);
+		company.updateInfo(request.toEntity());
 	}
 
 	@Transactional
-	public void delete(UserCheckRequest userCheckRequest, Long targetId, User user) {
-		User target = findOne(targetId);
-		target.getComments().stream().map(Comment::getPost)
-			.forEach(Post::decreaseCommentCount);
+	public void delete(UserCheckRequest request, Long targetId, User user) {
+		User target = getUser(targetId);
+		target.getComments().stream().map(Comment::getPost).forEach(Post::decreaseCommentCount);
 		if (!user.isAdmin()) {
-			validatePassword(userCheckRequest, target);
+			validatePassword(request, target);
 		}
 		userRepository.delete(target);
 	}
 
+	public UserInfoResponse findOne(Long userId) {
+		User user = getUser(userId);
+		return UserInfoResponse.of(user);
+	}
+
 	public Page<UserListResponse> findAll(UserSearchCondition condition, Pageable pageable) {
-		return userQueryRepository.findAll(condition, pageable)
-			.map(user -> {
-					if (memberRepository.findById(user.getId()).isPresent()) {
-						Member member = memberRepository.findById(user.getId()).get();
-						return UserListResponse.of(member);
-					} else if (companyRepository.findById(user.getId()).isPresent()) {
-						Company company = companyRepository.findById(user.getId()).get();
-						return UserListResponse.of(company);
-					} else {
-						return null;
-					}
-				}
-			);
+		return userQueryRepository.findAll(condition, pageable).map(UserListResponse::of);
+	}
+
+	public User getUser(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 회원입니다."));
+	}
+
+	public Member getMember(Long userId) {
+		return memberRepository.findById(userId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 개인회원입니다."));
+	}
+
+	public Company getCompany(Long userId) {
+		return companyRepository.findById(userId)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
+	}
+
+	private void validatePassword(UserCheckRequest request, User user) {
+		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			throw new WrongPasswordException("비밀번호가 틀렸습니다.");
+		}
 	}
 
 	private void validateUserSaveRequest(UserSaveRequest request) {
@@ -149,35 +149,15 @@ public class UserService {
 			) {
 				throw new SignUpRuleException("회원가입 형식에 맞지 않습니다.");
 			}
-			if (companyQueryRepository.existsByCompanyNameOrRegistrationNumber(
-				request.getCompanyName(), request.getRegistrationNumber())) {
+			if (Boolean.TRUE.equals(companyRepository
+				.existsByCompanyNameOrCompanyDetail_RegistrationNumber(request.getCompanyName(),
+					request.getRegistrationNumber()))) {
 				throw new DuplicatedException("이미 존재하는 기업회원입니다.");
 			}
 		}
 
-		if (userRepository.existsByEmail(request.getEmail())) {
+		if (Boolean.TRUE.equals(userRepository.existsByEmail(request.getEmail()))) {
 			throw new DuplicatedException("이미 존재하는 이메일입니다.");
 		}
-	}
-
-	public void validatePassword(UserCheckRequest request, User user) {
-		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-			throw new WrongPasswordException("비밀번호가 틀렸습니다.");
-		}
-	}
-
-	public User findOne(Long userId) {
-		return userRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 회원입니다."));
-	}
-
-	public Member findMember(Long userId) {
-		return memberRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 개인회원입니다."));
-	}
-
-	public Company findCompany(Long userId) {
-		return companyRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException("존재하지 않는 기업회원입니다."));
 	}
 }

@@ -30,6 +30,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		if (principal == null || principal.getClass() == String.class) {
 			return null;
 		}
-		return userService.findOne((Long) principal);
+		return userService.getUser((Long) principal);
 	}
 }

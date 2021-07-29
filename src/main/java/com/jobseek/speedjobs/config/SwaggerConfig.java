@@ -28,6 +28,9 @@ public class SwaggerConfig {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title("SpeedJobs API Documentation")
 			.description("채용 사이트 SpeedJobs를 위한 서버 API 문서입니다.")
-			.license("jobseek").licenseUrl("https://github.com/jobseek").version("1").build();
+			.license("jobseek")
+			.licenseUrl("https://github.com/jobseek")
+			.version("1")
+			.build();
 	}
 }

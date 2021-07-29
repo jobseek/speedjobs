@@ -25,17 +25,13 @@ public class BannerService {
 	@CacheEvict(value = "banners", allEntries = true)
 	public BannerResponses save(List<File> files) {
 		List<Banner> banners = files.stream()
-			.map(file -> bannerRepository.save(Banner.builder()
-				.baseName(file.getBaseName())
-				.extension(file.getExtension())
-				.url(file.getUrl())
-				.build()))
+			.map(file -> bannerRepository.save(file.toBanner()))
 			.collect(Collectors.toList());
 		return BannerResponses.of(banners);
 	}
 
 	@Cacheable(value = "banners")
-	public BannerResponses find() {
+	public BannerResponses findAll() {
 		return BannerResponses.of(new ArrayList<>(bannerRepository.findAll()));
 	}
 

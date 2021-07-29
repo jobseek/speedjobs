@@ -37,9 +37,9 @@ public class ResumeController {
 	@ApiOperation(value = "이력서 등록", notes = "이력서를 등록한다.")
 	@PreAuthorize("hasRole('MEMBER')")
 	@PostMapping
-	public ResponseEntity<Void> save(@Valid @RequestBody ResumeRequest resumeRequest,
+	public ResponseEntity<Void> save(@Valid @RequestBody ResumeRequest request,
 		@LoginUser User user) {
-		Long resumeId = resumeService.save(user, resumeRequest);
+		Long resumeId = resumeService.save(user, request);
 		return ResponseEntity.created(URI.create(RESUME_URL_PREFIX + resumeId)).build();
 	}
 
@@ -47,8 +47,8 @@ public class ResumeController {
 	@PreAuthorize("hasRole('MEMBER')")
 	@PutMapping("/{resumeId}")
 	public ResponseEntity<Void> update(@PathVariable Long resumeId, @LoginUser User user,
-		@Valid @RequestBody ResumeRequest resumeRequest) {
-		resumeService.update(resumeId, user, resumeRequest);
+		@Valid @RequestBody ResumeRequest request) {
+		resumeService.update(resumeId, user, request);
 		return ResponseEntity.created(URI.create(RESUME_URL_PREFIX + resumeId)).build();
 	}
 
@@ -64,7 +64,7 @@ public class ResumeController {
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@GetMapping("/{resumeId}")
 	public ResponseEntity<ResumeResponse> findResume(@PathVariable Long resumeId) {
-		return ResponseEntity.ok().body(resumeService.findById(resumeId));
+		return ResponseEntity.ok().body(resumeService.findOne(resumeId));
 	}
 
 	@ApiOperation(value = "이력서 전체 조회", notes = "이력서를 전체 조회한다")

@@ -13,13 +13,8 @@ import {
 } from '../reducers/profile';
 
 function getProfileApi(action) {
-  const role = action.me.role;
   const me = action.me.id;
-  if (role === 'ROLE_MEMBER') {
-    return axios.get(`/user/member/${me}`);
-  } else {
-    return axios.get(`/user/company/${me}`);
-  }
+  return axios.get(`/user/${me}`);
 }
 
 function* getProfile(action) {
@@ -40,16 +35,9 @@ function* getProfile(action) {
 function updateProfileApi(action) {
   const { data, me } = action;
   const userId = me.id;
-  const role = me.role;
-  if (role === 'ROLE_MEMBER') {
-    return axios.patch(`/user/member/${userId}`, data).catch((err) => {
-      throw err;
-    });
-  } else {
-    return axios.patch(`/user/company/${userId}`, data).catch((err) => {
-      throw err;
-    });
-  }
+  axios.patch(`/user/${userId}`, data).catch((err) => {
+    throw err;
+  });
 }
 
 function* updateProfile(action) {

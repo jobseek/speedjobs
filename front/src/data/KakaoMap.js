@@ -12,7 +12,7 @@ function KakaoMap({ position = [37.506502, 127.053617], address, location }) {
     const script = document.createElement('script');
     script.async = true;
     script.src =
-      '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3a0b25a25a28289a900e2e2483fe055f&libraries=services';
+      '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=eecba215264581da2a246aed399a5b72&libraries=services';
     document.body.appendChild(script);
     script.onload = () => {
       /* eslint-disable */

@@ -2,16 +2,15 @@ package com.jobseek.speedjobs.controller;
 
 import com.jobseek.speedjobs.config.auth.LoginUser;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.dto.user.CompanyUpdateRequest;
+import com.jobseek.speedjobs.dto.user.LoginUserResponse;
+import com.jobseek.speedjobs.dto.user.MemberUpdateRequest;
 import com.jobseek.speedjobs.dto.user.UserCheckRequest;
 import com.jobseek.speedjobs.dto.user.UserInfoResponse;
 import com.jobseek.speedjobs.dto.user.UserListResponse;
 import com.jobseek.speedjobs.dto.user.UserSaveRequest;
 import com.jobseek.speedjobs.dto.user.UserSearchCondition;
 import com.jobseek.speedjobs.dto.user.UserValidateGroup;
-import com.jobseek.speedjobs.dto.user.company.CompanyInfoResponse;
-import com.jobseek.speedjobs.dto.user.company.CompanyUpdateRequest;
-import com.jobseek.speedjobs.dto.user.member.MemberInfoResponse;
-import com.jobseek.speedjobs.dto.user.member.MemberUpdateRequest;
 import com.jobseek.speedjobs.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,8 +47,8 @@ public class UserController {
 	@ApiOperation(value = "개인 회원가입(이메일 인증 전)", notes = "정상적으로 처리되면 인증 이메일이 발송된다.")
 	@PostMapping("/signup/member")
 	public ResponseEntity<Void> registerMember(
-		@Validated(UserValidateGroup.member.class) @RequestBody UserSaveRequest userSaveRequest) {
-		userService.register(userSaveRequest);
+		@Validated(UserValidateGroup.member.class) @RequestBody UserSaveRequest request) {
+		userService.register(request);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -57,8 +56,8 @@ public class UserController {
 		notes = "인증 이메일이 발송되고 관리자의 승인 전까진 기업회원으로 활동할 수 없다.")
 	@PostMapping("/signup/company")
 	public ResponseEntity<Void> sendCompanyEmail(
-		@Valid @RequestBody UserSaveRequest userSaveRequest) {
-		userService.register(userSaveRequest);
+		@Valid @RequestBody UserSaveRequest request) {
+		userService.register(request);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -66,7 +65,7 @@ public class UserController {
 	@GetMapping("/signup/confirm/{key}")
 	public void saveCustomUser(@PathVariable String key, HttpServletResponse response)
 		throws IOException {
-		userService.saveCustomUser(key);
+		userService.save(key);
 		response.sendRedirect(frontUrl);
 	}
 
@@ -78,32 +77,25 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@ApiOperation(value = "회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다.")
+	@ApiOperation(value = "로그인 회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다.")
 	@GetMapping("/me")
-	public ResponseEntity<UserInfoResponse> findLoginUserInfo(@LoginUser User user) {
-		return ResponseEntity.ok(UserInfoResponse.of(user));
+	public ResponseEntity<LoginUserResponse> findLoginUserInfo(@LoginUser User user) {
+		return ResponseEntity.ok(LoginUserResponse.of(user));
 	}
 
-	@ApiOperation(value = "개인회원 상세정보 조회", notes = "개인회원의 상세정보를 조회한다.")
+	@ApiOperation(value = "회원 상세정보 조회", notes = "회원의 상세정보를 조회한다.")
 	@PreAuthorize("hasRole('ADMIN') or principal == #userId")
-	@GetMapping("/member/{userId}")
-	public ResponseEntity<MemberInfoResponse> findMemberDetail(@PathVariable Long userId) {
-		return ResponseEntity.ok(userService.findMemberInfo(userId));
-	}
-
-	@ApiOperation(value = "기업회원 상세정보 조회", notes = "기업회원의 상세정보를 조회한다.")
-	@PreAuthorize("hasRole('ADMIN') or principal == #userId")
-	@GetMapping("/company/{userId}")
-	public ResponseEntity<CompanyInfoResponse> findCompanyDetail(@PathVariable Long userId) {
-		return ResponseEntity.ok(userService.findCompanyInfo(userId));
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserInfoResponse> findUserInfo(@PathVariable Long userId) {
+		return ResponseEntity.ok(userService.findOne(userId));
 	}
 
 	@ApiOperation(value = "개인회원 정보 수정", notes = "자신의 정보를 수정한다.")
 	@PreAuthorize("principal == #userId")
 	@PatchMapping("/member/{userId}")
 	public ResponseEntity<Void> updateMemberInfo(@PathVariable Long userId,
-		@RequestBody MemberUpdateRequest memberUpdateRequest) {
-		userService.updateMemberInfo(userId, memberUpdateRequest);
+		@Valid @RequestBody MemberUpdateRequest request) {
+		userService.updateMemberInfo(userId, request);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -111,8 +103,8 @@ public class UserController {
 	@PreAuthorize("principal == #userId")
 	@PatchMapping("/company/{userId}")
 	public ResponseEntity<Void> updateCompanyInfo(@PathVariable Long userId,
-		@RequestBody CompanyUpdateRequest companyUpdateRequest) {
-		userService.updateCompanyInfo(userId, companyUpdateRequest);
+		@Valid @RequestBody CompanyUpdateRequest request) {
+		userService.updateCompanyInfo(userId, request);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -120,8 +112,8 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN') or principal == #userId")
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long userId,
-		@Valid @RequestBody UserCheckRequest userCheckRequest, @LoginUser User user) {
-		userService.delete(userCheckRequest, userId, user);
+		@Valid @RequestBody UserCheckRequest request, @LoginUser User user) {
+		userService.delete(request, userId, user);
 		return ResponseEntity.noContent().build();
 	}
 
