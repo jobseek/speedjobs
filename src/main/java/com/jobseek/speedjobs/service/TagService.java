@@ -22,20 +22,20 @@ public class TagService {
 
 	@Transactional
 	@CacheEvict(value = "tags", allEntries = true)
-	public Long saveTag(TagRequest request) {
+	public Long save(TagRequest request) {
 		return tagRepository.save(request.toEntity()).getId();
 	}
 
 	@Cacheable(value = "tags")
-	public TagResponses findTagsByType() {
+	public TagResponses findAll() {
 		List<Tag> tags = tagRepository.findAll();
 		return TagResponses.mappedByType(tags);
 	}
 
 	@Transactional
 	@CacheEvict(value = "tags", allEntries = true)
-	public void deleteTag(Long tagId) {
-		Tag tag = findOne(tagId);
+	public void delete(Long tagId) {
+		Tag tag = getTag(tagId);
 		tag.getPosts().forEach(post -> post.getTags().remove(tag));
 		tag.getRecruits().forEach(recruit -> recruit.getTags().remove(tag));
 		tagRepository.delete(tag);
@@ -43,19 +43,20 @@ public class TagService {
 
 	@Transactional
 	@CacheEvict(value = "tags", allEntries = true)
-	public void updateTag(Long tagId, TagRequest request) {
-		Tag tag = findOne(tagId);
+	public Tag update(Long tagId, TagRequest request) {
+		Tag tag = getTag(tagId);
 		tag.changeTag(request.getTagType(), request.getTagName());
+		return tag;
 	}
 
-	public Tag findOne(Long tagId) {
+	public List<Tag> getTagsByIds(List<Long> tagIds) {
+		return tagIds.stream()
+			.map(this::getTag)
+			.collect(Collectors.toList());
+	}
+
+	private Tag getTag(Long tagId) {
 		return tagRepository.findById(tagId)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 태그입니다."));
-	}
-
-	public List<Tag> findTagsById(List<Long> tagIds) {
-		return tagIds.stream()
-			.map(this::findOne)
-			.collect(Collectors.toList());
 	}
 }

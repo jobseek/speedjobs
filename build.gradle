@@ -38,6 +38,7 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'org.apache.velocity:velocity:1.7'
     implementation 'commons-io:commons-io:2.8.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.querydsl:querydsl-jpa'
     implementation group: 'org.json', name: 'json', version: '20201115'
 

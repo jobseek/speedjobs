@@ -3,6 +3,7 @@ package com.jobseek.speedjobs.dto.resume;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.resume.Open;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.details.Career;
@@ -13,6 +14,7 @@ import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,7 +47,7 @@ public class ResumeRequest {
 	@NotBlank
 	private String contact;
 
-	@NotNull
+	@Past
 	private LocalDate birth;
 
 	@NotBlank
@@ -65,7 +67,7 @@ public class ResumeRequest {
 
 	private List<Long> tags;
 
-	public Resume toEntity() {
+	public Resume toEntity(Member member) {
 		return Resume.builder()
 			.open(open)
 			.coverLetter(coverLetter)
@@ -79,6 +81,7 @@ public class ResumeRequest {
 			.blogUrl(blogUrl)
 			.githubUrl(githubUrl)
 			.resumeImage(resumeImage)
+			.member(member)
 			.build();
 	}
 }

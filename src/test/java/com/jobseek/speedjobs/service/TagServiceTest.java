@@ -2,164 +2,131 @@ package com.jobseek.speedjobs.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.tag.Tag;
 import com.jobseek.speedjobs.domain.tag.TagRepository;
 import com.jobseek.speedjobs.domain.tag.Type;
 import com.jobseek.speedjobs.dto.tag.TagRequest;
 import com.jobseek.speedjobs.dto.tag.TagResponses;
-import java.util.Arrays;
+import com.jobseek.speedjobs.dto.tag.TagResponses.TagResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
 class TagServiceTest {
 
-	@Mock
-	TagRepository tagRepository;
+	private Tag tag1;
+	private Tag tag2;
 
-	TagService tagService;
+	private TagService tagService;
+
+	@Mock
+	private TagRepository tagRepository;
 
 	@BeforeEach
 	void setUp() {
 		tagService = new TagService(tagRepository);
-	}
 
-	@DisplayName("서비스 생성 테스트")
-	@Test
-	void createService() {
-		assertNotNull(tagService);
-	}
-
-	@DisplayName("태그 저장 테스트")
-	@Test
-	void saveTest() {
-		// given
-		Tag expected = Tag.builder()
+		tag1 = Tag.builder()
 			.id(1L)
+			.name("스프링")
 			.type(Type.SKILL)
-			.name("테스트 태그")
 			.build();
 
-		TagRequest tagRequest = TagRequest.builder()
-			.tagType(Type.SKILL)
-			.tagName("테스트 태그")
-			.build();
-		when(tagRepository.save(any(Tag.class))).thenReturn(expected);
-//		given(tagRepository.save(any(Tag.class))).willReturn(expected);
-
-		// when
-		Long savedTag = tagService.saveTag(tagRequest);
-//		when(tagService.saveTag(tagRequest)).thenReturn(anyLong());
-
-		// then
-		assertAll(
-			() -> assertNotNull(tagService),
-			() -> assertEquals(expected.getId(), savedTag)
-		);
-	}
-
-	@DisplayName("태그 수정 테스트")
-	@Test
-	void updateTest() {
-		// given
-		Long id = 2L;
-		TagRequest tagRequest = TagRequest.builder()
-			.tagType(Type.POSITION)
-			.tagName("수정된 태그")
-			.build();
-		given(tagRepository.findById(anyLong())).willReturn(Optional.of(tagRequest.toEntity()));
-
-		// when
-		tagService.updateTag(id, tagRequest);
-
-		// then
-		assertAll(
-			() -> assertNotNull(tagService),
-			() -> verify(tagRepository).findById(eq(2L)),
-			() -> assertEquals("수정된 태그", tagRepository.findById(2L).get().getName())
-		);
-	}
-
-	@DisplayName("태그 삭제 테스트")
-	@Test
-	void deleteTest() {
-		// given
-		Tag expected = Tag.builder()
-			.id(1L)
-			.type(Type.SKILL)
-			.name("테스트 태그")
-			.build();
-		given(tagRepository.findById(anyLong())).willReturn(Optional.of(expected));
-
-		// when
-		tagService.deleteTag(1L);
-
-		// then
-		assertAll(
-			() -> assertNotNull(tagService),
-			() -> assertEquals(Type.SKILL, tagRepository.findById(1L).get().getType()),
-			() -> verify(tagRepository).delete(eq(expected))
-		);
-	}
-
-	@DisplayName("태그 전체 조회 테스트")
-	@Test
-	void readAll() {
-		// given
-		Tag t1 = Tag.builder()
-			.id(1L)
-			.type(Type.SKILL)
-			.name("테스트 태그1")
-			.build();
-		Tag t2 = Tag.builder()
+		tag2 = Tag.builder()
 			.id(2L)
-			.type(Type.SKILL)
-			.name("테스트 태그2")
+			.name("백엔드")
+			.type(Type.POSITION)
 			.build();
-		List<Tag> expected = Arrays.asList(t1, t2);
-		given(tagRepository.findAll()).willReturn(expected);
+	}
 
-		// when
-		TagResponses tagResponses = tagService.findTagsByType();
-		String name = tagResponses.getTags().get(Type.SKILL).get(0).getName();
-		String name1 = tagResponses.getTags().get(Type.SKILL).get(1).getName();
+	@DisplayName("태그 등록")
+	@Test
+	void save() {
+		TagRequest request = TagRequest.builder()
+			.tagName("스프링")
+			.tagType(Type.SKILL)
+			.build();
+		given(tagRepository.save(any(Tag.class))).willReturn(tag1);
 
-		// then
+		Long id = tagService.save(request);
+
+		assertEquals(1L, id);
+	}
+
+	@DisplayName("태그 타입별 전체 조회")
+	@Test
+	void findAll() {
+		List<Tag> tagList = List.of(tag1, tag2);
+		given(tagRepository.findAll()).willReturn(tagList);
+
+		TagResponses responses = tagService.findAll();
+
+		Map<Type, List<TagResponse>> tags = responses.getTags();
 		assertAll(
-			() -> assertNotNull(tagService),
-			() -> assertNotNull(tagResponses),
-			() -> assertEquals("테스트 태그1", name),
-			() -> assertEquals("테스트 태그2", name1)
+			() -> assertEquals(1L, tags.get(Type.SKILL).get(0).getId()),
+			() -> assertEquals("스프링", tags.get(Type.SKILL).get(0).getName()),
+			() -> assertEquals(2L, tags.get(Type.POSITION).get(0).getId()),
+			() -> assertEquals("백엔드", tags.get(Type.POSITION).get(0).getName())
 		);
 	}
 
-	@DisplayName("없는 태그 id 조회 시 예외 발생")
+	@DisplayName("태그 삭제")
 	@Test
-	void read_Invalid_Tag_id() {
-		given(tagRepository.findById(99L))
-			.willThrow(new NotFoundException("존재하지 않는 태그입니다."));
-		assertThrows(NotFoundException.class, () -> tagRepository.findById(99L));
+	void delete() {
+		given(tagRepository.findById(any())).willReturn(Optional.of(tag1));
+		doNothing().when(tagRepository).delete(tag1);
+
+		tagService.delete(1L);
+
+		verify(tagRepository, times(1)).delete(tag1);
 	}
 
+	@DisplayName("태그 수정")
+	@Test
+	void update() {
+		TagRequest request = TagRequest.builder()
+			.tagName("프론트엔드")
+			.tagType(Type.POSITION)
+			.build();
+		given(tagRepository.findById(any())).willReturn(Optional.of(tag1));
+
+		Tag tag = tagService.update(1L, request);
+
+		assertAll(
+			() -> assertEquals(1L, tag.getId()),
+			() -> assertEquals("프론트엔드", tag.getName()),
+			() -> assertEquals(Type.POSITION, tag.getType())
+		);
+	}
+
+	@DisplayName("태그 ID 조회")
+	@Test
+	void getTagsByIds() {
+		given(tagRepository.findById(1L)).willReturn(Optional.of(tag1));
+		given(tagRepository.findById(2L)).willReturn(Optional.of(tag2));
+
+		List<Tag> tags = tagService.getTagsByIds(List.of(1L, 2L));
+
+		assertAll(
+			() -> assertEquals(1L, tags.get(0).getId()),
+			() -> assertEquals(tag1.getName(), tags.get(0).getName()),
+			() -> assertEquals(tag1.getType(), tags.get(0).getType()),
+			() -> assertEquals(2L, tags.get(1).getId()),
+			() -> assertEquals(tag2.getName(), tags.get(1).getName()),
+			() -> assertEquals(tag2.getType(), tags.get(1).getType())
+		);
+	}
 }

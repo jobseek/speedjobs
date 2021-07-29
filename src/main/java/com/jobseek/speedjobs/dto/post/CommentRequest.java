@@ -21,11 +21,7 @@ public class CommentRequest {
 	@NotBlank
 	private String content;
 
-	public Comment toEntity() {
-		return Comment.builder().content(content).build();
-	}
-
-	public Comment of(User user, Post post) {
+	public Comment toEntity(User user, Post post) {
 		return Comment.builder()
 			.user(user)
 			.post(post)

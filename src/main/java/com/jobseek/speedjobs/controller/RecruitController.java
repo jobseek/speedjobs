@@ -7,7 +7,6 @@ import com.jobseek.speedjobs.dto.recruit.RecruitRequest;
 import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitSearchCondition;
 import com.jobseek.speedjobs.service.RecruitService;
-import com.jobseek.speedjobs.service.ResumeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
@@ -35,14 +34,13 @@ public class RecruitController {
 	private static final String RECRUIT_URL_PREFIX = "/api/recruit/";
 
 	private final RecruitService recruitService;
-	private final ResumeService resumeService;
 
 	@ApiOperation(value = "공고 등록", notes = "공고를 등록한다.")
 	@PreAuthorize("hasRole('COMPANY')")
 	@PostMapping
 	public ResponseEntity<Void> saveRecruit(@LoginUser User user,
-		@Valid @RequestBody RecruitRequest recruitRequest) {
-		Long id = recruitService.save(recruitRequest, user);
+		@Valid @RequestBody RecruitRequest request) {
+		Long id = recruitService.save(request, user).getId();
 		return ResponseEntity.created(URI.create(RECRUIT_URL_PREFIX + id)).build();
 	}
 
@@ -50,8 +48,8 @@ public class RecruitController {
 	@PreAuthorize("hasRole('COMPANY')")
 	@PutMapping("/{recruitId}")
 	public ResponseEntity<Void> updateRecruit(@PathVariable Long recruitId, @LoginUser User user,
-		@Valid @RequestBody RecruitRequest recruitRequest) {
-		recruitService.update(recruitId, user, recruitRequest);
+		@Valid @RequestBody RecruitRequest request) {
+		recruitService.update(recruitId, user, request);
 		return ResponseEntity.created(URI.create(RECRUIT_URL_PREFIX + recruitId)).build();
 	}
 
@@ -67,7 +65,7 @@ public class RecruitController {
 	@GetMapping("/{recruitId}")
 	public ResponseEntity<RecruitResponse> findRecruit(@PathVariable Long recruitId,
 		@LoginUser User user) {
-		return ResponseEntity.ok().body(recruitService.findById(recruitId, user));
+		return ResponseEntity.ok().body(recruitService.findOne(recruitId, user));
 	}
 
 	@ApiOperation(value = "공고 전체 조회", notes = "공고를 전체 조회한다")
@@ -77,9 +75,6 @@ public class RecruitController {
 		return ResponseEntity.ok().body(recruitService.findAll(condition, pageable, user));
 	}
 
-	/**
-	 * 찜하기
-	 */
 	@ApiOperation(value = "공고 찜하기", notes = "공고를 찜한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping("/{recruitId}/favorite")
@@ -103,25 +98,5 @@ public class RecruitController {
 	public ResponseEntity<Page<RecruitListResponse>> findRecruitFavorites(@LoginUser User user,
 		Pageable pageable) {
 		return ResponseEntity.ok().body(recruitService.findRecruitFavorites(pageable, user));
-	}
-
-	/**
-	 * 지원하기
-	 */
-	@ApiOperation(value = "공고 지원", notes = "해당 이력서로 공고에 지원한다")
-	@PreAuthorize("hasRole('MEMBER')")
-	@PostMapping("/{recruitId}/resume/{resumeId}")
-	public ResponseEntity<Void> apply(@PathVariable Long recruitId, @PathVariable Long resumeId,
-		@LoginUser User user) {
-		resumeService.apply(recruitId, resumeId, user);
-		return ResponseEntity.noContent().build();
-	}
-
-	@ApiOperation(value = "공고 지원 취소", notes = "지원을 취소한다")
-	@PreAuthorize("hasRole('MEMBER')")
-	@DeleteMapping("/{recruitId}/resume")
-	public ResponseEntity<Void> cancel(@PathVariable Long recruitId, @LoginUser User user) {
-		resumeService.cancelApply(recruitId, user);
-		return ResponseEntity.noContent().build();
 	}
 }

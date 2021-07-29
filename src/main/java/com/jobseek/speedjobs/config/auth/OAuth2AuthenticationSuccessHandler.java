@@ -1,7 +1,7 @@
 package com.jobseek.speedjobs.config.auth;
 
 import com.jobseek.speedjobs.domain.user.Provider;
-import com.jobseek.speedjobs.dto.auth.TokenRequest;
+import com.jobseek.speedjobs.dto.auth.SocialLoginRequest;
 import com.jobseek.speedjobs.dto.auth.TokenResponse;
 import com.jobseek.speedjobs.service.AuthService;
 import java.io.IOException;
@@ -24,20 +24,21 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 	private String frontUrl;
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
+		HttpServletResponse httpServletResponse,
 		Authentication authentication) throws IOException {
-		String[] path = request.getRequestURI().split("/");
+		String[] path = httpServletRequest.getRequestURI().split("/");
 		Provider provider = Provider.valueOf(path[path.length - 1].toUpperCase());
 		String oauthId = authentication.getName();
-		TokenRequest tokenRequest = TokenRequest.builder()
+		SocialLoginRequest request = SocialLoginRequest.builder()
 			.oauthId(oauthId)
 			.provider(provider)
 			.build();
-		TokenResponse tokenResponse = authService.login(tokenRequest);
+		TokenResponse response = authService.socialLogin(request);
 		String uri = UriComponentsBuilder.fromUriString(frontUrl + "/login")
-			.queryParam("token", tokenResponse.getRefreshToken())
+			.queryParam("token", response.getRefreshToken())
 			.build()
 			.toUriString();
-		response.sendRedirect(uri);
+		httpServletResponse.sendRedirect(uri);
 	}
 }

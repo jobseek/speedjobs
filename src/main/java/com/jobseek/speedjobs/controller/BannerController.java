@@ -36,7 +36,7 @@ public class BannerController {
 	@ApiOperation(value = "배너 조회", notes = "배너를 조회한다.")
 	@GetMapping
 	public ResponseEntity<BannerResponses> find() {
-		return ResponseEntity.ok().body(bannerService.find());
+		return ResponseEntity.ok().body(bannerService.findAll());
 	}
 
 	@ApiOperation(value = "배너 삭제", notes = "배너를 삭제한다.")

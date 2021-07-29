@@ -6,6 +6,7 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -54,10 +56,17 @@ public class Apply {
 
 	@Builder
 	public Apply(Resume resume, Recruit recruit, Long memberId, Long companyId) {
+		validateParams(resume, recruit, memberId, companyId);
 		this.resume = resume;
 		this.recruit = recruit;
 		this.memberId = memberId;
 		this.companyId = companyId;
+	}
+
+	private void validateParams(Resume resume, Recruit recruit, Long memberId, Long companyId) {
+		if (ObjectUtils.anyNull(resume, recruit, memberId, companyId)) {
+			throw new IllegalParameterException();
+		}
 	}
 
 }
