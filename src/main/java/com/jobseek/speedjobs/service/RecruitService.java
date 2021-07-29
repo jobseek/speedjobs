@@ -14,10 +14,8 @@ import com.jobseek.speedjobs.dto.recruit.RecruitResponse;
 import com.jobseek.speedjobs.dto.recruit.RecruitSearchCondition;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,38 +32,38 @@ public class RecruitService {
 	private final UserService userService;
 
 	@Transactional
-	public Long save(RecruitRequest recruitRequest, User user) {
-		Company company = userService.findCompany(user.getId());
-		List<Tag> tags = tagService.findTagsById(recruitRequest.getTagIds());
+	public Recruit save(RecruitRequest recruitRequest, User user) {
+		Company company = userService.getCompany(user.getId());
+		List<Tag> tags = tagService.getTagsByIds(recruitRequest.getTagIds());
 		Recruit recruit = recruitRequest.toEntity(company);
-		recruit.setStatus();
 		recruit.addTags(tags);
-		return recruitRepository.save(recruit).getId();
+		return recruitRepository.save(recruit);
 	}
 
 	@Transactional
-	public void update(Long recruitId, User user, RecruitRequest recruitRequest) {
-		Recruit recruit = findOne(recruitId);
+	public Recruit update(Long recruitId, User user, RecruitRequest recruitRequest) {
+		Recruit recruit = getRecruit(recruitId);
 		Company company = recruit.getCompany();
-		company.validateMe(user.getId());
-		List<Tag> tags = tagService.findTagsById(recruitRequest.getTagIds());
+		company.verifyMe(user.getId());
+		List<Tag> tags = tagService.getTagsByIds(recruitRequest.getTagIds());
 		recruit.update(recruitRequest.toEntity(company), tags);
+		return recruit;
 	}
 
 
 	@Transactional
 	public void delete(Long recruitId, User user) {
-		Recruit recruit = findOne(recruitId);
+		Recruit recruit = getRecruit(recruitId);
 		Company company = recruit.getCompany();
 		if (!user.isAdmin()) {
-			company.validateMe(user.getId());
+			company.verifyMe(user.getId());
 		}
 		recruitRepository.delete(recruit);
 	}
 
 	@Transactional
-	public RecruitResponse findById(Long recruitId, User user) {
-		Recruit recruit = findOne(recruitId);
+	public RecruitResponse findOne(Long recruitId, User user) {
+		Recruit recruit = getRecruit(recruitId);
 		if (user != recruit.getCompany()) {
 			recruit.increaseViewCount();
 		}
@@ -80,38 +78,38 @@ public class RecruitService {
 
 	@Transactional
 	@Scheduled(cron = "0 0 0 * * *")
-	public void changeStatus() {
-		List<Recruit> toBeOpenRecruits = recruitRepository
+	public void openScheduling() {
+		List<Recruit> recruits = recruitRepository
 			.findAllByStatusAndOpenDateBefore(Status.DRAFT, LocalDateTime.now().plusMinutes(30L));
-		toBeOpenRecruits.forEach(recruit -> recruit.changeStatus(Status.PROCESS));
-		List<Recruit> toBeClosedRecruits = recruitRepository
-			.findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now().plusMinutes(30L));
-		toBeClosedRecruits.forEach(recruit -> recruit.changeStatus(Status.END));
+		recruits.forEach(recruit -> recruit.changeStatus(Status.PROCESS));
 	}
 
-	/**
-	 * 찜하기
-	 */
+	@Transactional
+	@Scheduled(cron = "0 0 0 * * *")
+	public void closeScheduling() {
+		List<Recruit> recruits = recruitRepository.
+			findAllByStatusAndCloseDateBefore(Status.PROCESS, LocalDateTime.now().plusMinutes(30L));
+		recruits.forEach(recruit -> recruit.changeStatus(Status.END));
+	}
+
 	@Transactional
 	public void saveRecruitFavorite(Long recruitId, User user) {
-		Recruit recruit = findOne(recruitId);
+		Recruit recruit = getRecruit(recruitId);
 		recruit.addFavorite(user);
 	}
 
 	@Transactional
 	public void deleteRecruitFavorite(Long recruitId, User user) {
-		Recruit recruit = findOne(recruitId);
+		Recruit recruit = getRecruit(recruitId);
 		recruit.removeFavorite(user);
 	}
 
 	public Page<RecruitListResponse> findRecruitFavorites(Pageable pageable, User user) {
-		List<Recruit> recruits = user.getRecruitFavorites();
-		return new PageImpl<>(recruits.stream()
-			.map(recruit -> RecruitListResponse.of(recruit, user))
-			.collect(Collectors.toList()), pageable, recruits.size());
+		return recruitRepository.findAllByFavoritesContains(user, pageable)
+			.map(recruit -> RecruitListResponse.of(recruit, user));
 	}
 
-	public Recruit findOne(Long recruitId) {
+	public Recruit getRecruit(Long recruitId) {
 		return recruitRepository.findById(recruitId)
 			.orElseThrow(() -> new NotFoundException("해당 공고가 존재하지 않습니다."));
 	}

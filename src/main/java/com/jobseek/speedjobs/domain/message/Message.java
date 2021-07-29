@@ -3,9 +3,9 @@ package com.jobseek.speedjobs.domain.message;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
@@ -18,16 +18,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
 @Table(name = "messages")
 public class Message extends BaseTimeEntity {
 
@@ -47,11 +46,18 @@ public class Message extends BaseTimeEntity {
 	@JoinColumn(name = "recruit_id")
 	private Recruit recruit;
 
-	public static Message of(String content, User user, Recruit recruit) {
-		return Message.builder()
-			.content(content)
-			.user(user)
-			.recruit(recruit)
-			.build();
+	@Builder
+	private Message(Long id, String content, User user, Recruit recruit) {
+		validateParams(content, user, recruit);
+		this.id = id;
+		this.content = content;
+		this.user = user;
+		this.recruit = recruit;
+	}
+
+	private void validateParams(String content, User user, Recruit recruit) {
+		if (ObjectUtils.anyNull(user, recruit) || StringUtils.isBlank(content)) {
+			throw new IllegalParameterException();
+		}
 	}
 }

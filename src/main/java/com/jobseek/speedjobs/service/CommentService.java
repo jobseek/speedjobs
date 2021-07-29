@@ -7,11 +7,8 @@ import com.jobseek.speedjobs.domain.post.Post;
 import com.jobseek.speedjobs.domain.user.User;
 import com.jobseek.speedjobs.dto.post.CommentRequest;
 import com.jobseek.speedjobs.dto.post.CommentResponse;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,50 +22,49 @@ public class CommentService {
 	private final PostService postService;
 
 	@Transactional
-	public Long saveComment(CommentRequest commentRequest, User user, Long postId) {
-		Post post = postService.findOne(postId);
+	public void save(CommentRequest request, User user, Long postId) {
+		Post post = postService.getPost(postId);
+		Comment comment = request.toEntity(user, post);
 		post.increaseCommentCount();
-		Comment comment = commentRequest.of(user, post);
-		return commentRepository.save(comment).getId();
+		post.getComments().add(comment);
 	}
 
 	@Transactional
-	public void updateComment(CommentRequest commentRequest, User user, Long commentId) {
-		Comment comment = findOne(commentId);
-		comment.getUser().validateMe(user.getId());
-		comment.updateComment(commentRequest.toEntity());
+	public void update(CommentRequest request, User user, Long commentId) {
+		Comment comment = getComment(commentId);
+		comment.getUser().verifyMe(user.getId());
+		comment.update(request.getContent());
 	}
 
 	@Transactional
-	public void deleteComment(User user, Long commentId) {
-		Comment comment = findOne(commentId);
+	public void delete(User user, Long commentId) {
+		Comment comment = getComment(commentId);
 		if (!user.isAdmin()) {
-			comment.getUser().validateMe(user.getId());
+			comment.getUser().verifyMe(user.getId());
 		}
-		comment.getPost().decreaseCommentCount();
-		commentRepository.delete(comment);
+		Post post = comment.getPost();
+		post.decreaseCommentCount();
+		post.getComments().remove(comment);
 	}
 
-	public Page<CommentResponse> findByPage(Long postId, User user, Pageable pageable) {
-		List<Comment> comments = postService.findOne(postId).getComments();
-		return new PageImpl<>(comments.stream()
-			.map(comment -> CommentResponse.of(comment, user))
-			.collect(Collectors.toList()), pageable, comments.size());
+	public Page<CommentResponse> findAllByPost(Long postId, User user, Pageable pageable) {
+		return commentRepository.findAllByPostId(postId, pageable)
+			.map(comment -> CommentResponse.of(comment, user));
 	}
 
 	@Transactional
 	public void saveCommentFavorite(Long commentId, User user) {
-		Comment comment = findOne(commentId);
+		Comment comment = getComment(commentId);
 		comment.addFavorite(user);
 	}
 
 	@Transactional
 	public void deleteCommentFavorite(Long commentId, User user) {
-		Comment comment = findOne(commentId);
+		Comment comment = getComment(commentId);
 		comment.removeFavorite(user);
 	}
 
-	private Comment findOne(Long commentId) {
+	private Comment getComment(Long commentId) {
 		return commentRepository.findById(commentId)
 			.orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않습니다."));
 	}

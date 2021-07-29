@@ -13,7 +13,7 @@ import {
 function getCompanyInfoAPI(data) {
   const { id } = data;
   const info = axios
-    .get(`/user/company/${id}`)
+    .get(`/user/${id}`)
     .then((response) => response)
     .catch((err) => {
       throw err;

@@ -29,21 +29,21 @@ public class TagController {
 	@ApiOperation(value = "태그 등록", notes = "태그를 등록한다.")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Long> saveTag(@Valid @RequestBody TagRequest tagRequest) {
-		return ResponseEntity.ok().body(tagService.saveTag(tagRequest));
+	public ResponseEntity<Long> saveTag(@Valid @RequestBody TagRequest request) {
+		return ResponseEntity.ok().body(tagService.save(request));
 	}
 
 	@ApiOperation(value = "태그 조회", notes = "태그를 조회한다.")
 	@GetMapping
 	public ResponseEntity<TagResponses> findTagsByType() {
-		return ResponseEntity.ok().body(tagService.findTagsByType());
+		return ResponseEntity.ok().body(tagService.findAll());
 	}
 
 	@ApiOperation(value = "태그 삭제", notes = "태그를 삭제한다.")
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{tagId}")
 	public ResponseEntity<Void> deleteTag(@PathVariable Long tagId) {
-		tagService.deleteTag(tagId);
+		tagService.delete(tagId);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -51,8 +51,8 @@ public class TagController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{tagId}")
 	public ResponseEntity<Void> updateTag(@PathVariable Long tagId,
-		@Valid @RequestBody TagRequest tagRequest) {
-		tagService.updateTag(tagId, tagRequest);
+		@Valid @RequestBody TagRequest request) {
+		tagService.update(tagId, request);
 		return ResponseEntity.noContent().build();
 	}
 }

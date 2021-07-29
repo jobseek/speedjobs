@@ -6,6 +6,7 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.member.Member;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
@@ -36,6 +37,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
@@ -96,12 +99,13 @@ public class Resume extends BaseTimeEntity {
 	private List<ResumeTag> tags = new ArrayList<>();
 
 	@OneToMany(mappedBy = "resume", cascade = {PERSIST, MERGE}, orphanRemoval = true)
-	private final List<Apply> applies = new ArrayList<>();
+	private List<Apply> applies = new ArrayList<>();
 
 	@Builder
-	public Resume(Long id, Open open, String coverLetter, String title, String name, String gender,
+	private Resume(Long id, Open open, String coverLetter, String title, String name, String gender,
 		String email, String contact, LocalDate birth, String address, String blogUrl,
-		String githubUrl, String resumeImage) {
+		String githubUrl, String resumeImage, Member member) {
+		validateParams(open, coverLetter, title, name, email, contact, birth, address, member);
 		this.id = id;
 		this.open = open;
 		this.coverLetter = coverLetter;
@@ -115,12 +119,15 @@ public class Resume extends BaseTimeEntity {
 		this.blogUrl = blogUrl;
 		this.githubUrl = githubUrl;
 		this.resumeImage = resumeImage;
+		this.member = member;
 	}
 
-	//연관관계 편의 메서드
-	public void setMember(Member member) {
-		this.member = member;
-		member.getResumes().add(this);
+	private void validateParams(Open open, String coverLetter, String title, String name,
+		String email, String contact, LocalDate birth, String address, Member member) {
+		if (ObjectUtils.anyNull(open, birth, member) ||
+			StringUtils.isAnyBlank(coverLetter, title, name, email, contact, address)) {
+			throw new IllegalParameterException();
+		}
 	}
 
 	public void addMoreInfo(List<Career> careers, List<Scholar> scholars,
@@ -139,6 +146,8 @@ public class Resume extends BaseTimeEntity {
 	}
 
 	public void update(Resume resume) {
+		validateParams(resume.open, resume.coverLetter, resume.title, resume.name, resume.email,
+			resume.contact, resume.birth, resume.address, member);
 		this.open = resume.open;
 		this.coverLetter = resume.coverLetter;
 		this.title = resume.title;
@@ -156,8 +165,7 @@ public class Resume extends BaseTimeEntity {
 		this.careers = resume.careers;
 	}
 
-	// 로직
-	public void applyTo(Recruit recruit) {
+	public void apply(Recruit recruit) {
 		Apply apply = Apply.builder()
 			.resume(this)
 			.recruit(recruit)

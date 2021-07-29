@@ -1,53 +1,80 @@
 package com.jobseek.speedjobs.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.jobseek.speedjobs.common.file.dto.File;
-import com.jobseek.speedjobs.dto.banner.BannerResponse;
+import com.jobseek.speedjobs.domain.banner.Banner;
+import com.jobseek.speedjobs.domain.banner.BannerRepository;
 import com.jobseek.speedjobs.dto.banner.BannerResponses;
-import java.util.ArrayList;
 import java.util.List;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
-public class BannerServiceTest {
+@ExtendWith(MockitoExtension.class)
+class BannerServiceTest {
 
-	@Autowired
+	private Banner banner;
+
 	private BannerService bannerService;
 
-	private Long id;
+	@Mock
+	private BannerRepository bannerRepository;
 
 	@BeforeEach
-	@DisplayName("배너 테스트정보 입력")
 	void setUp() {
-		File file = File.builder().baseName("img").extension("png").url("https://abcd.com").build();
+		bannerService = new BannerService(bannerRepository);
 
-		ArrayList<File> files = new ArrayList<File>();
-		files.add(file);
-
-		BannerResponses bannerResponses = bannerService.save(files);
-		List<BannerResponse> res = bannerResponses.getBanners();
-		id = res.get(0).getId();
+		banner = Banner.builder()
+			.id(1L)
+			.baseName("https://speedjobs.s3.ap-northeast-2.amazonaws.com/example/img1")
+			.extension("jpg")
+			.url("https://speedjobs.s3.ap-northeast-2.amazonaws.com/example/img1.jpg")
+			.build();
 	}
 
-	@AfterEach
-	@DisplayName("배너 테스트정보 삭제")
-	void After() {
-		bannerService.delete(id);
-	}
-
+	@DisplayName("배너 등록")
 	@Test
-	@DisplayName("배너 이미지 가져오기")
-	void readTest() {
-		BannerResponses responses = bannerService.find();
-		List<BannerResponse> result = responses.getBanners();
-		int length = responses.getCount();
-		Long tmp = result.get(length - 1).getId();
+	void save() {
+		File file = File.builder()
+			.baseName(banner.getBaseName())
+			.extension(banner.getExtension())
+			.url(banner.getUrl())
+			.build();
+		given(bannerRepository.save(any(Banner.class))).willReturn(banner);
 
-		Assertions.assertThat(tmp).isEqualTo(id);
+		BannerResponses responses = bannerService.save(List.of(file));
+
+		assertEquals(1, responses.getCount());
+	}
+
+	@DisplayName("배너 전체 조회")
+	@Test
+	void findAll() {
+		given(bannerRepository.findAll()).willReturn(List.of(banner));
+
+		BannerResponses responses = bannerService.findAll();
+
+		assertEquals(1, responses.getCount());
+	}
+
+	@DisplayName("배너 삭제")
+	@Test
+	void delete() {
+		given(bannerRepository.findById(any())).willReturn(Optional.of(banner));
+		doNothing().when(bannerRepository).delete(banner);
+
+		bannerService.delete(1L);
+
+		verify(bannerRepository, times(1)).delete(banner);
 	}
 }

@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.recruit.Recruit;
 import com.jobseek.speedjobs.domain.user.User;
+import com.jobseek.speedjobs.domain.user.UserVisitor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -13,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -22,7 +22,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(callSuper = true)
 @PrimaryKeyJoinColumn(name = "user_id")
 @Table(name = "companies")
 public class Company extends User {
@@ -40,12 +39,16 @@ public class Company extends User {
 	@Embedded
 	private CompanyDetail companyDetail;
 
-	public void updateCompanyInfo(Company company) {
-		updateCustomUserInfo(company.getName(), company.getNickname(), company.getPicture(),
+	public void updateInfo(Company company) {
+		update(company.getName(), company.getNickname(), company.getPicture(),
 			company.getContact());
 		this.companyName = company.companyName;
 		this.scale = company.scale;
 		this.companyDetail = company.companyDetail;
 	}
 
+	@Override
+	public <T> T accept(UserVisitor<T> visitor) {
+		return visitor.visitCompany(this);
+	}
 }

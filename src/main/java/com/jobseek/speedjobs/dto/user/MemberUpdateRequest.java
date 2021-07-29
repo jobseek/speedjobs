@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.dto.user.member;
+package com.jobseek.speedjobs.dto.user;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -19,7 +19,6 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor(access = PROTECTED)
 public class MemberUpdateRequest {
 
-	//유저
 	@NotBlank
 	@Length(min = 2, max = 15)
 	private String name;
@@ -31,7 +30,7 @@ public class MemberUpdateRequest {
 	private String password;
 	private String picture;
 	private String contact;
-	//멤버
+
 	@JsonFormat(timezone = "Asia/Seoul")
 	private LocalDate birth;
 	private String bio;

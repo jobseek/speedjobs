@@ -4,6 +4,8 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.domain.post.Post;
+import com.jobseek.speedjobs.domain.post.PostDetail;
+import com.jobseek.speedjobs.domain.user.User;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -25,7 +27,11 @@ public class PostRequest {
 
 	private List<Long> tagIds;
 
-	public Post toEntity() {
-		return Post.from(title, content);
+	public Post toEntity(User user) {
+		return Post.builder()
+			.title(title)
+			.postDetail(PostDetail.from(content))
+			.user(user)
+			.build();
 	}
 }

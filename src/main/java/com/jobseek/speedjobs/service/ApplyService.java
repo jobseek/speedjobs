@@ -1,7 +1,10 @@
 package com.jobseek.speedjobs.service;
 
+import com.jobseek.speedjobs.common.exception.BadRequestException;
+import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.ForbiddenException;
 import com.jobseek.speedjobs.domain.recruit.Recruit;
+import com.jobseek.speedjobs.domain.resume.Apply;
 import com.jobseek.speedjobs.domain.resume.ApplyRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.user.User;
@@ -22,11 +25,8 @@ public class ApplyService {
 	private final ResumeService resumeService;
 	private final RecruitService recruitService;
 
-	/**
-	 * 멤버가 지원한 공고들을 조회
-	 */
-	public Page<CompanyResponse> findRecruits(Long resumeId, User user, Pageable pageable) {
-		Resume resume = resumeService.findOne(resumeId);
+	public Page<CompanyResponse> findAppliedRecruits(Long resumeId, User user, Pageable pageable) {
+		Resume resume = resumeService.getResume(resumeId);
 		if (!user.isAdmin() && resume.getMember() != user) {
 			throw new ForbiddenException("본인이 지원한 공고만 조회 가능합니다.");
 		}
@@ -34,11 +34,8 @@ public class ApplyService {
 			.map(CompanyResponse::of);
 	}
 
-	/**
-	 * 공고에 지원된 이력서들을 조회
-	 */
-	public Page<MemberResponse> findResumes(Long recruitId, User user, Pageable pageable) {
-		Recruit recruit = recruitService.findOne(recruitId);
+	public Page<MemberResponse> findAppliedResumes(Long recruitId, User user, Pageable pageable) {
+		Recruit recruit = recruitService.getRecruit(recruitId);
 		if (!user.isAdmin() && recruit.getCompany() != user) {
 			throw new ForbiddenException("본인이 작성한 공고만 조회 가능합니다.");
 		}
@@ -46,4 +43,21 @@ public class ApplyService {
 			.map(MemberResponse::of);
 	}
 
+	@Transactional
+	public void save(Long recruitId, Long resumeId, User user) {
+		Recruit recruit = recruitService.getRecruit(recruitId);
+		Resume resume = resumeService.getResume(resumeId);
+		resume.getMember().verifyMe(user.getId());
+		if (recruit.isApplied(user.getId())) {
+			throw new DuplicatedException("이미 지원한 공고입니다.");
+		}
+		resume.apply(recruit);
+	}
+
+	@Transactional
+	public void delete(Long recruitId, User user) {
+		Apply apply = applyRepository.findByRecruitAndMember(recruitId, user.getId())
+			.orElseThrow(() -> new BadRequestException("지원하지 않은 공고입니다."));
+		applyRepository.delete(apply);
+	}
 }

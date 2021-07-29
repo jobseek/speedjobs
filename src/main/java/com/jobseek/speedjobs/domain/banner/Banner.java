@@ -2,6 +2,7 @@ package com.jobseek.speedjobs.domain.banner;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
@@ -32,14 +34,17 @@ public class Banner extends BaseTimeEntity {
 	private String url;
 
 	@Builder
-	public Banner(Long id, String baseName, String extension, String url) {
+	private Banner(Long id, String baseName, String extension, String url) {
+		validateParams(baseName, extension, url);
 		this.id = id;
 		this.baseName = baseName;
 		this.extension = extension;
 		this.url = url;
 	}
 
-	public void changeExtension(String extension) {
-		this.extension = extension;
+	private void validateParams(String baseName, String extension, String url) {
+		if (StringUtils.isAnyBlank(baseName, extension, url)) {
+			throw new IllegalParameterException();
+		}
 	}
 }

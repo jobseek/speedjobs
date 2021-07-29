@@ -1,7 +1,6 @@
 package com.jobseek.speedjobs.domain.company;
 
 import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

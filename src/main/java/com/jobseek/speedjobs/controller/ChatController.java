@@ -26,7 +26,7 @@ public class ChatController {
 
 	@MessageMapping("/message")
 	public void saveMessage(MessageRequest messageRequest) {
-		chatService.saveMessage(messageRequest);
+		chatService.save(messageRequest);
 	}
 
 	@ApiOperation(value = "채팅 조회", notes = "채팅 내역을 조회한다.")
@@ -41,7 +41,7 @@ public class ChatController {
 	@DeleteMapping("/api/chat/{roomId}/message/{messageId}")
 	public ResponseEntity<Void> deleteMessage(@PathVariable Long roomId,
 		@PathVariable Long messageId) {
-		chatService.deleteMessage(messageId);
+		chatService.delete(messageId);
 		return ResponseEntity.created(URI.create("/api/chat/" + roomId)).build();
 	}
 }

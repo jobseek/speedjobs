@@ -26,13 +26,13 @@ public class ChatService {
 	private final SimpMessagingTemplate simpMessagingTemplate;
 
 	@Transactional
-	public void saveMessage(MessageRequest messageRequest) {
-		Recruit recruit = recruitService.findOne(messageRequest.getRoomId());
-		User user = userService.findOne(messageRequest.getAuthorId());
-		Message message = Message.of(messageRequest.getContent(), user, recruit);
-		messageRepository.save(message);
-		simpMessagingTemplate.convertAndSend(DESTINATION_PREFIX + messageRequest.getRoomId(),
+	public Long save(MessageRequest request) {
+		Recruit recruit = recruitService.getRecruit(request.getRoomId());
+		User user = userService.getUser(request.getAuthorId());
+		Message message = messageRepository.save(request.toEntity(user, recruit));
+		simpMessagingTemplate.convertAndSend(DESTINATION_PREFIX + request.getRoomId(),
 			MessageResponse.from(message));
+		return message.getId();
 	}
 
 	public Page<MessageResponse> findAll(Long roomId, Pageable pageable) {
@@ -40,7 +40,7 @@ public class ChatService {
 			.map(MessageResponse::from);
 	}
 
-    public void deleteMessage(Long messageId) {
+	public void delete(Long messageId) {
 		messageRepository.deleteById(messageId);
-    }
+	}
 }

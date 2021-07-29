@@ -43,8 +43,8 @@ public class PostController {
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<Void> savePost(@LoginUser User user,
-		@Valid @RequestBody PostRequest postRequest) {
-		Long postId = postService.save(postRequest, user);
+		@Valid @RequestBody PostRequest request) {
+		Long postId = postService.save(request, user);
 		return ResponseEntity.created(URI.create(POST_URL_PREFIX + postId)).build();
 	}
 
@@ -52,8 +52,8 @@ public class PostController {
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PutMapping("/{postId}")
 	public ResponseEntity<Void> updatePost(@PathVariable Long postId, @LoginUser User user,
-		@Valid @RequestBody PostRequest postRequest) {
-		postService.update(postId, user, postRequest);
+		@Valid @RequestBody PostRequest request) {
+		postService.update(postId, user, request);
 		return ResponseEntity.created(URI.create(POST_URL_PREFIX + postId)).build();
 	}
 
@@ -68,7 +68,7 @@ public class PostController {
 	@ApiOperation(value = "게시글 단건 조회", notes = "게시글을 조회한다.")
 	@GetMapping("/{postId}")
 	public ResponseEntity<PostResponse> findPost(@PathVariable Long postId, @LoginUser User user) {
-		return ResponseEntity.ok().body(postService.findById(postId, user));
+		return ResponseEntity.ok().body(postService.findOne(postId, user));
 	}
 
 	@ApiOperation(value = "게시글 전체 조회", notes = "게시글을 전체 조회한다.")
@@ -78,9 +78,6 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.findAll(condition, pageable, user));
 	}
 
-	/**
-	 * 찜하기
-	 */
 	@ApiOperation(value = "게시글 찜하기", notes = "게시글을 찜한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping("/{postId}/favorite")
@@ -105,25 +102,22 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.findPostFavorites(pageable, user));
 	}
 
-	/**
-	 * 댓글 등록, 수정, 삭제, 조회
-	 */
 	@ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PostMapping("/{postId}/comment")
 	public ResponseEntity<Void> saveComment(@LoginUser User user,
-		@Valid @RequestBody CommentRequest commentRequest,
+		@Valid @RequestBody CommentRequest request,
 		@PathVariable Long postId) {
-		commentService.saveComment(commentRequest, user, postId);
+		commentService.save(request, user, postId);
 		return ResponseEntity.created(URI.create(POST_URL_PREFIX + postId)).build();
 	}
 
 	@ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
 	@PreAuthorize("hasAnyRole('MEMBER', 'COMPANY', 'ADMIN')")
 	@PutMapping("/{postId}/comment/{commentId}")
-	public ResponseEntity<Void> updateComment(@Valid @RequestBody CommentRequest commentRequest,
+	public ResponseEntity<Void> updateComment(@Valid @RequestBody CommentRequest request,
 		@PathVariable Long postId, @PathVariable Long commentId, @LoginUser User user) {
-		commentService.updateComment(commentRequest, user, commentId);
+		commentService.update(request, user, commentId);
 		return ResponseEntity.created(URI.create(POST_URL_PREFIX + postId)).build();
 	}
 
@@ -132,7 +126,7 @@ public class PostController {
 	@DeleteMapping("/{postId}/comment/{commentId}")
 	public ResponseEntity<Void> deleteComment(@LoginUser User user, @PathVariable Long postId,
 		@PathVariable Long commentId) {
-		commentService.deleteComment(user, commentId);
+		commentService.delete(user, commentId);
 		return ResponseEntity.created(URI.create(POST_URL_PREFIX + postId)).build();
 	}
 
@@ -140,7 +134,7 @@ public class PostController {
 	@GetMapping("/{postId}/comments")
 	public ResponseEntity<Page<CommentResponse>> findCommentsByPage(@PathVariable Long postId,
 		Pageable pageable, @LoginUser User user) {
-		return ResponseEntity.ok().body(commentService.findByPage(postId, user, pageable));
+		return ResponseEntity.ok().body(commentService.findAllByPost(postId, user, pageable));
 	}
 
 	@ApiOperation(value = "댓글 좋아요", notes = "댓글 추천")
@@ -160,5 +154,4 @@ public class PostController {
 		commentService.deleteCommentFavorite(commentId, user);
 		return ResponseEntity.created(URI.create(POST_URL_PREFIX + postId)).build();
 	}
-
 }
