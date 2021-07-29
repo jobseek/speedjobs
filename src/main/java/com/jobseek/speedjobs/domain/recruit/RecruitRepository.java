@@ -1,16 +1,17 @@
 package com.jobseek.speedjobs.domain.recruit;
 
+import com.jobseek.speedjobs.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface RecruitRepository extends JpaRepository<Recruit, Long> {
-
-	@Query("SELECT r FROM Recruit r ORDER BY r.id DESC")
-	List<Recruit> findAllDesc();
 
 	List<Recruit> findAllByStatusAndOpenDateBefore(Status status, LocalDateTime now);
 
 	List<Recruit> findAllByStatusAndCloseDateBefore(Status status, LocalDateTime now);
+
+	Page<Recruit> findAllByFavoritesContains(User user, Pageable pageable);
 }

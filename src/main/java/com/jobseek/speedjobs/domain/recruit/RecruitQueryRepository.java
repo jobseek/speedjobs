@@ -46,7 +46,7 @@ public class RecruitQueryRepository {
 				loeExperience(condition.getExperience()),
 				containsStatus(condition.getStatus()),
 				afterCreatedDate(condition.getCreatedDate())
-				);
+			);
 
 		List<Recruit> content = query
 			.offset(pageable.getOffset())

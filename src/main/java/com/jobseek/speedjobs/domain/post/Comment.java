@@ -3,10 +3,10 @@ package com.jobseek.speedjobs.domain.post;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.user.User;
 import java.util.ArrayList;
@@ -22,16 +22,15 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
 @Table(name = "comments")
 public class Comment extends BaseTimeEntity {
 
@@ -58,8 +57,26 @@ public class Comment extends BaseTimeEntity {
 	)
 	private final List<User> favorites = new ArrayList<>();
 
-	public void updateComment(Comment comment) {
-		this.content = comment.getContent();
+	@Builder
+	private Comment(Long id, String content, Post post, User user) {
+		validateParams(content, post, user);
+		this.id = id;
+		this.content = content;
+		this.post = post;
+		this.user = user;
+	}
+
+	private void validateParams(String content, Post post, User user) {
+		if (StringUtils.isBlank(content) || ObjectUtils.anyNull(post, user)) {
+			throw new IllegalParameterException();
+		}
+	}
+
+	public void update(String content) {
+		if (StringUtils.isBlank(content)) {
+			throw new IllegalParameterException();
+		}
+		this.content = content;
 	}
 
 	public void addFavorite(User user) {

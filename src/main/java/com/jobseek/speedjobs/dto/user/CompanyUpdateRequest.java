@@ -1,4 +1,4 @@
-package com.jobseek.speedjobs.dto.user.company;
+package com.jobseek.speedjobs.dto.user;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -7,6 +7,7 @@ import com.jobseek.speedjobs.domain.company.Company;
 import com.jobseek.speedjobs.domain.company.CompanyDetail;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,6 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor(access = PROTECTED)
 public class CompanyUpdateRequest {
 
-	//유저
 	@NotBlank
 	@Length(min = 2, max = 15)
 	private String name;
@@ -28,9 +28,6 @@ public class CompanyUpdateRequest {
 	@Length(min = 2, max = 15)
 	private String nickname;
 
-	@NotBlank
-	private String companyName;
-
 	private String password;
 
 	private String picture;
@@ -38,7 +35,10 @@ public class CompanyUpdateRequest {
 	@NotBlank
 	private String contact;
 
-	@NotNull
+	@NotBlank
+	private String companyName;
+
+	@Positive
 	private Integer scale;
 
 	@NotBlank
@@ -54,7 +54,7 @@ public class CompanyUpdateRequest {
 
 	private String detailedAddress;
 
-	@NotNull
+	@Positive
 	private Integer avgSalary;
 
 	@NotNull
@@ -63,20 +63,18 @@ public class CompanyUpdateRequest {
 	@NotNull
 	private Double longitude;
 
-	public CompanyDetail getCompanyDetail() {
-		return CompanyDetail.from(registrationNumber, description, homepage, address,
-			detailedAddress, avgSalary, latitude, longitude);
-	}
-
 	public Company toEntity() {
+		CompanyDetail detail = CompanyDetail
+			.from(registrationNumber, description, homepage, address,
+				detailedAddress, avgSalary, latitude, longitude);
 		return Company.builder()
 			.name(name)
 			.nickname(nickname)
 			.picture(picture)
 			.contact(contact)
 			.companyName(companyName)
-			.scale(scale)
-			.companyDetail(getCompanyDetail())
+			.scale(scale == null ? 0 : scale)
+			.companyDetail(detail)
 			.build();
 	}
 }

@@ -7,8 +7,8 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.jobseek.speedjobs.common.exception.BadRequestException;
 import com.jobseek.speedjobs.common.exception.DuplicatedException;
+import com.jobseek.speedjobs.common.exception.IllegalParameterException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.BaseTimeEntity;
 import com.jobseek.speedjobs.domain.company.Company;
@@ -37,6 +37,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
@@ -71,10 +73,10 @@ public class Recruit extends BaseTimeEntity {
 	private RecruitDetail recruitDetail;
 
 	@OneToMany(mappedBy = "recruit", cascade = ALL, orphanRemoval = true)
-	private final List<Apply> applies = new ArrayList<>();
+	private List<Apply> applies = new ArrayList<>();
 
 	@OneToMany(cascade = ALL, orphanRemoval = true)
-	private final List<Message> messages = new ArrayList<>();
+	private List<Message> messages = new ArrayList<>();
 
 	@ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
 	@JoinColumn(name = "company_id")
@@ -85,28 +87,36 @@ public class Recruit extends BaseTimeEntity {
 		joinColumns = @JoinColumn(name = "recruit_id"),
 		inverseJoinColumns = @JoinColumn(name = "tag_id")
 	)
-	private final List<Tag> tags = new ArrayList<>();
+	private List<Tag> tags = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "recruit_favorites",
 		joinColumns = @JoinColumn(name = "recruit_id"),
 		inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
-	private final List<User> favorites = new ArrayList<>();
+	private List<User> favorites = new ArrayList<>();
 
 	@Builder
 	public Recruit(Long id, String title, LocalDateTime openDate, LocalDateTime closeDate,
-		Status status, String thumbnail, Integer experience,
-		RecruitDetail recruitDetail, Company company) {
+		String thumbnail, Integer experience, RecruitDetail recruitDetail, Company company) {
+		validateParams(title, openDate, closeDate, experience, company, recruitDetail);
 		this.id = id;
 		this.title = title;
 		this.openDate = openDate;
 		this.closeDate = closeDate;
-		this.status = status;
 		this.thumbnail = thumbnail;
 		this.experience = experience;
 		this.recruitDetail = recruitDetail;
 		this.company = company;
+		setStatus();
+	}
+
+	private void validateParams(String title, LocalDateTime openDate, LocalDateTime closeDate,
+		Integer experience, Company company, RecruitDetail recruitDetail) {
+		if (ObjectUtils.anyNull(openDate, closeDate, experience, company, recruitDetail) ||
+			StringUtils.isAnyBlank(title, recruitDetail.getContent())) {
+			throw new IllegalParameterException();
+		}
 	}
 
 	public void increaseViewCount() {
@@ -120,6 +130,7 @@ public class Recruit extends BaseTimeEntity {
 		this.openDate = recruit.getOpenDate();
 		this.closeDate = recruit.getCloseDate();
 		this.thumbnail = recruit.getThumbnail();
+		this.experience = recruit.getExperience();
 		this.recruitDetail = recruit.getRecruitDetail();
 		setStatus();
 	}
@@ -169,17 +180,20 @@ public class Recruit extends BaseTimeEntity {
 		return applies.stream().anyMatch(apply -> apply.getMemberId().equals(userId));
 	}
 
-	public void setStatus() {
+	private void setStatus() {
 		LocalDateTime now = LocalDateTime.now();
 
 		if (closeDate.getYear() == 9999) {
 			status = Status.REGULAR;
+			return;
+		}
+
+		if (closeDate.isBefore(now)) {
+			status = Status.END;
 		} else if (openDate.isAfter(now)) {
 			status = Status.DRAFT;
-		} else if (openDate.isBefore(now) && closeDate.isAfter(now)) {
-			status = Status.PROCESS;
 		} else {
-			throw new BadRequestException("공고 일자가 올바르지 않습니다.");
+			status = Status.PROCESS;
 		}
 	}
 }

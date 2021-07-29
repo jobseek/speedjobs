@@ -1,12 +1,7 @@
 package com.jobseek.speedjobs.service;
 
-import com.jobseek.speedjobs.common.exception.BadRequestException;
-import com.jobseek.speedjobs.common.exception.DuplicatedException;
 import com.jobseek.speedjobs.common.exception.NotFoundException;
 import com.jobseek.speedjobs.domain.member.Member;
-import com.jobseek.speedjobs.domain.recruit.Recruit;
-import com.jobseek.speedjobs.domain.resume.Apply;
-import com.jobseek.speedjobs.domain.resume.ApplyRepository;
 import com.jobseek.speedjobs.domain.resume.Resume;
 import com.jobseek.speedjobs.domain.resume.ResumeQueryRepository;
 import com.jobseek.speedjobs.domain.resume.ResumeRepository;
@@ -29,44 +24,42 @@ public class ResumeService {
 
 	private final ResumeRepository resumeRepository;
 	private final ResumeQueryRepository resumeQueryRepository;
-	private final ApplyRepository applyRepository;
 	private final TagService tagService;
 	private final UserService userService;
-	private final RecruitService recruitService;
 
 	@Transactional
-	public Long save(User user, ResumeRequest resumeRequest) {
-		Resume resume = resumeRequest.toEntity();
-		Member member = userService.findMember(user.getId());
-		resume.setMember(member);
+	public Long save(User user, ResumeRequest request) {
+		Member member = userService.getMember(user.getId());
+		Resume resume = request.toEntity(member);
 		resume.addMoreInfo(
-			resumeRequest.getCareers(),
-			resumeRequest.getScholars(),
-			resumeRequest.getCertificates()
+			request.getCareers(),
+			request.getScholars(),
+			request.getCertificates()
 		);
-		List<Tag> tags = getTags(resumeRequest);
+		List<Tag> tags = getTags(request);
 		resume.addTags(tags);
 		return resumeRepository.save(resume).getId();
 	}
 
 	@Transactional
-	public void update(Long resumeId, User user, ResumeRequest resumeRequest) {
-		Resume resume = findOne(resumeId);
-		resume.getMember().validateMe(user.getId());
-		resume.update(resumeRequest.toEntity());
+	public Resume update(Long resumeId, User user, ResumeRequest request) {
+		Resume resume = getResume(resumeId);
+		resume.getMember().verifyMe(user.getId());
+		resume.update(request.toEntity(resume.getMember()));
 		resume.updateMoreInfo(
-			resumeRequest.getCareers(),
-			resumeRequest.getScholars(),
-			resumeRequest.getCertificates()
+			request.getCareers(),
+			request.getScholars(),
+			request.getCertificates()
 		);
-		List<Tag> tags = getTags(resumeRequest);
+		List<Tag> tags = getTags(request);
 		resume.updateTags(tags);
+		return resume;
 	}
 
 	@Transactional
 	public void delete(Long resumeId, User user) {
-		Resume resume = findOne(resumeId);
-		resume.getMember().validateMe(user.getId());
+		Resume resume = getResume(resumeId);
+		resume.getMember().verifyMe(user.getId());
 		resumeRepository.delete(resume);
 	}
 
@@ -76,35 +69,17 @@ public class ResumeService {
 			.map(ResumeResponse::of);
 	}
 
-	public ResumeResponse findById(Long resumeId) {
-		Resume resume = findOne(resumeId);
+	public ResumeResponse findOne(Long resumeId) {
+		Resume resume = getResume(resumeId);
 		return ResumeResponse.of(resume);
 	}
 
-	@Transactional
-	public void apply(Long recruitId, Long resumeId, User user) {
-		Recruit recruit = recruitService.findOne(recruitId);
-		Resume resume = findOne(resumeId);
-		resume.getMember().validateMe(user.getId());
-		if (recruit.isApplied(user.getId())) {
-			throw new DuplicatedException("이미 지원한 공고입니다.");
-		}
-		resume.applyTo(recruit);
-	}
-
-	@Transactional
-	public void cancelApply(Long recruitId, User user) {
-		Apply apply = applyRepository.findByRecruitAndMember(recruitId, user.getId())
-			.orElseThrow(() -> new BadRequestException("지원하지 않은 공고입니다."));
-		applyRepository.delete(apply);
-	}
-
-	public Resume findOne(Long id) {
+	public Resume getResume(Long id) {
 		return resumeRepository.findById(id)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 이력서입니다."));
 	}
 
 	private List<Tag> getTags(ResumeRequest resumeRequest) {
-		return tagService.findTagsById(resumeRequest.getTags());
+		return tagService.getTagsByIds(resumeRequest.getTags());
 	}
 }
