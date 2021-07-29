@@ -36,9 +36,11 @@
 # ERD
 ![click to enlarge](front/resource/erd.png)
 
-# 만든 사람들
-- [이유진](https://github.com/yujinl9654)
-- [이승복](https://github.com/lsb530)
-- [장우진](https://github.com/jeeneee)
-- [채성원](https://github.com/swchae516)
+# JobSeek
+### 프론트엔드
 - [배상휘](https://github.com/enoch1118)
+- [이유진](https://github.com/yujinl9654)
+- [채성원](https://github.com/swchae516)
+### 백엔드
+- [장우진(팀장)](https://github.com/jeeneee)
+- [이승복](https://github.com/lsb530)
