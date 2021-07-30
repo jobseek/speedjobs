@@ -35,9 +35,16 @@ function* getProfile(action) {
 function updateProfileApi(action) {
   const { data, me } = action;
   const userId = me.id;
-  axios.patch(`/user/${userId}`, data).catch((err) => {
-    throw err;
-  });
+  const role = me.role;
+  if (role === 'ROLE_MEMBER') {
+    return axios.patch(`/user/member/${userId}`, data).catch((err) => {
+      throw err;
+    });
+  } else {
+    return axios.patch(`/user/company/${userId}`, data).catch((err) => {
+      throw err;
+    });
+  }
 }
 
 function* updateProfile(action) {
