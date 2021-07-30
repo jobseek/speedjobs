@@ -72,7 +72,7 @@ export default function IndividualModify() {
         profileTemp.picture =
           'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
       }
-      if (profileTemp.birth !== null) {
+      if (profileTemp.birth) {
         const date = new Date(
           profileTemp.birth[0],
           profileTemp.birth[1] - 1,

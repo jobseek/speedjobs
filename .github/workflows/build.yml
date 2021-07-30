@@ -26,6 +26,3 @@ jobs:
       
     - name: Build with Gradle
       run: ./gradlew build
-      
-    - name: SonarQube analysis
-      run: ./gradlew sonarqube --info -Dsonar.host.url=${{ secrets.SONAR_HOST }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
